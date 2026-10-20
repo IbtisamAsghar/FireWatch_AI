@@ -1,0 +1,34 @@
+name: Backend implementation task
+description: A small task tied to a FireWatch phase and acceptance gate.
+title: "[Phase X.Y] "
+body:
+  - type: input
+    id: phase
+    attributes:
+      label: Phase and module owner
+      placeholder: "Phase 1.2 / Member 1"
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Problem and required outcome
+      description: Include scope, dependencies, and shared contracts affected.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance checks
+      description: State measurable results and meaningful validation commands.
+      value: |
+        - [ ] Required result demonstrated
+        - [ ] Validation recorded
+        - [ ] Documentation updated
+    validations:
+      required: true
+  - type: textarea
+    id: access
+    attributes:
+      label: Access or data dependencies
+      description: Name required access without including credentials or private data.

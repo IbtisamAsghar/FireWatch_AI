@@ -218,3 +218,29 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# FireWatch project exclusions (retain generic Python rules above)
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+/secrets/
+/wallets/
+/keystore/
+/data/*
+!/data/sample/
+/data/sample/*
+!/data/sample/README.md
+/models/*
+!/models/README.md
+*.joblib
+*.pkl
+*.pickle
+*.parquet
+/backups/
+/artifacts/
+/.chain/
+/broadcast/
+/node_modules/

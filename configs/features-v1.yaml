@@ -1,0 +1,10 @@
+# Design metadata only; not yet consumed by code.
+schema_version: features-v1
+status: draft
+cluster_radius_km: 2
+snapshot_lookback_hours: 6
+activity_lookbacks_hours: [6, 12, 24]
+weather_cache_grid_degrees: 0.1
+weather_max_age_hours: 3
+climate_reference_years: null # Select before training; at least ten complete years preferred.
+missing_value_policy: null_with_quality_flags

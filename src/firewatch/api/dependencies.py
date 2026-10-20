@@ -1,6 +1,5 @@
 """Read-only sessions and constant-time operator authentication."""
 
-import secrets
 from collections.abc import Generator
 from typing import Annotated
 
@@ -9,6 +8,7 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
+from firewatch.api.security import authenticated
 from firewatch.config import Settings
 from firewatch.db.session import get_session
 
@@ -22,9 +22,10 @@ def api_settings(request: Request) -> Settings:
 def require_operator(
     request: Request, credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(bearer)]
 ) -> None:
-    expected = api_settings(request).admin_api_token.get_secret_value().encode()
-    supplied = credentials.credentials.encode() if credentials is not None else b""
-    if not secrets.compare_digest(supplied, expected):
+    if not authenticated(
+        request.headers.getlist("authorization"),
+        api_settings(request).admin_api_token.get_secret_value(),
+    ):
         raise HTTPException(401, headers={"WWW-Authenticate": "Bearer"})
 
 

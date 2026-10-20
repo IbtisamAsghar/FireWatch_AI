@@ -8,11 +8,14 @@ and rank hotspot clusters for analyst review.
 
 Phase 1.4 adds all 15 typed read APIs: run-scoped ranking, detail, summary,
 GeoJSON, source freshness, replay history, saved evidence verification and
-authenticated job progress. The native PostgreSQL schema and immutable publication
+authenticated job progress. Phase 1.5 adds authenticated, bounded, idempotent
+refresh/replay/anchor job submission, atomic anchor outbox writes and log redaction.
+The native PostgreSQL schema and immutable publication
 rules from Phase 1.3 remain in use. OpenAPI is exported as a CI artifact.
 Ingestion, worker orchestration, scorer execution and chain adapters remain later
 modules. See the [implementation plan](FireWatchImplementationPlan.md),
-[Phase 1.4 acceptance](docs/phase-1.4-checklist.md), and
+[Phase 1.4 acceptance](docs/phase-1.4-checklist.md),
+[Phase 1.5 acceptance](docs/phase-1.5-checklist.md), [operator API](docs/operator-api.md), and
 [frontend API handoff](docs/frontend-handoff.md). No real-data coverage,
 trained-model accuracy or team sign-off is implied.
 
@@ -46,7 +49,8 @@ Readiness is at `http://127.0.0.1:8000/health/ready`, regions at
 `http://127.0.0.1:8000/api/v1/regions`, and Swagger at
 `http://127.0.0.1:8000/docs`. Business reads are deliberately public on this local
 prototype (`PUBLIC_READS_ENABLED=true`); set it to false for private deployments.
-Job details always require the operator bearer token; never ship it to a browser. Liveness never queries the
+Mutations and job details always require the operator bearer token; never ship it
+to a browser. Production defaults private when public reads are unspecified. Liveness never queries the
 database or providers. Required secrets are validated at application startup.
 
 See [native development instructions](docs/local-development.md) for lifecycle,

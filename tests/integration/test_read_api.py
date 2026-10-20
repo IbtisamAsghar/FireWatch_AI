@@ -6,13 +6,10 @@ from datetime import timedelta
 from uuid import UUID, uuid4
 
 import pytest
-from conftest import migrate
-from fastapi.testclient import TestClient
 from sqlalchemy import func, insert, select, text
 from sqlalchemy.orm import Session
 from test_schema import T, alert, batch, observation, outputs, region, running
 
-from firewatch.config import Settings
 from firewatch.db.models import (
     Alert,
     Anchor,
@@ -27,8 +24,6 @@ from firewatch.db.models import (
     Score,
     SourceAsset,
 )
-from firewatch.db.session import get_session
-from firewatch.main import create_app
 from firewatch.repositories.detections import save_detection
 from firewatch.repositories.runs import complete_and_publish_run
 from firewatch.schemas.common import (
@@ -44,27 +39,6 @@ from firewatch.schemas.common import (
 
 pytestmark = pytest.mark.integration
 TOKEN = "test-only-operator-" + "x" * 40
-
-
-@pytest.fixture
-def api(empty_engine, tmp_path):
-    migrate(empty_engine)
-    settings = Settings(
-        database_url="postgresql+psycopg://test:password@localhost:1/firewatch_test",
-        admin_api_token=TOKEN,
-        model_dir=tmp_path,
-        _env_file=None,
-    )
-    app = create_app(settings)
-
-    def sessions():
-        with Session(empty_engine) as session:
-            yield session
-
-    app.dependency_overrides[get_session] = sessions
-    with TestClient(app, raise_server_exceptions=False) as client:
-        app.state.clock = lambda: T + timedelta(hours=5)
-        yield client, empty_engine, settings
 
 
 def seed(engine):

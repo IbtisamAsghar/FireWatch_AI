@@ -1,6 +1,7 @@
 # Frontend read API: api-v1
 
-Phase 1.4 implements all 15 planned GET operations. Run the API using the Windows
+Phase 1.4 implements all 15 planned GET operations. Phase 1.5 adds three protected
+POSTs; see [operator API](operator-api.md). Run the API using the Windows
 commands in the README; local base URL is `http://127.0.0.1:8000`. Explore `/docs`
 and `/openapi.json`. Generate the identical contract without starting services:
 
@@ -19,14 +20,18 @@ The local research prototype deliberately permits sanitized business reads with
 `PUBLIC_READS_ENABLED=true` (default); the server still binds to localhost using
 the README command. Set it to `false` for a private deployment: every `/api/v1`
 read then requires the operator bearer token. Health routes remain public.
+Production defaults private when the setting is absent; explicit true opts into
+public reads.
 OpenAPI describes the two deployment alternatives for business reads.
 `GET /api/v1/jobs/{job_id}` always requires `Authorization: Bearer <operator-token>`.
 Never put this token in frontend source, browser storage, screenshots, or URLs.
 Operator jobs remain a server-side tool until a real login system exists.
 
 CORS uses only explicit `CORS_ORIGINS`; its default is an empty allowlist.
-Authorization headers are permitted for approved origins; credentialed cookies
-are disabled. The API provides no mutation operations in Phase 1.4.
+Authorization and Idempotency-Key headers and GET/POST preflights are permitted
+for approved origins; credentialed cookies are disabled. Phase 1.5 adds the three
+authenticated server-side operator mutations with required
+idempotency keys. They queue durable work; executors remain later modules.
 
 ## Choose a run explicitly
 

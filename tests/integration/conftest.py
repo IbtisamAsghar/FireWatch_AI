@@ -2,17 +2,24 @@
 
 import os
 from contextlib import contextmanager
+from datetime import timedelta
 from pathlib import Path
 from uuid import uuid4
 
 import pytest
 from alembic import command
 from alembic.config import Config
+from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, text
 from sqlalchemy.engine import make_url
 from sqlalchemy.orm import Session
 
+from firewatch.config import Settings
+from firewatch.db.session import get_session
+from firewatch.main import create_app
+
 ROOT = Path(__file__).resolve().parents[2]
+TOKEN = "test-only-operator-" + "x" * 40
 
 
 @contextmanager
@@ -74,3 +81,26 @@ def session(schema_engine):
         with Session(bind=connection) as session:
             yield session
         transaction.rollback()
+
+
+@pytest.fixture
+def api(empty_engine, tmp_path):
+    from test_schema import T
+
+    migrate(empty_engine)
+    settings = Settings(
+        database_url="postgresql+psycopg://test:password@localhost:1/firewatch_test",
+        admin_api_token=TOKEN,
+        model_dir=tmp_path,
+        _env_file=None,
+    )
+    app = create_app(settings)
+
+    def sessions():
+        with Session(empty_engine) as session:
+            yield session
+
+    app.dependency_overrides[get_session] = sessions
+    with TestClient(app, raise_server_exceptions=False) as client:
+        app.state.clock = lambda: T + timedelta(hours=5)
+        yield client, empty_engine, settings

@@ -114,3 +114,15 @@ GeoJSON includes the bounded return count and explicit truncation boolean.
 Source status freshness uses retrieval age, so an empty valid fetch can be fresh.
 Alert hashes identify original canonical bytes, not their public payload projection.
 See [frontend handoff](frontend-handoff.md) for enums, errors and examples.
+
+## Operator job admission
+
+`JobAccepted` carries public `schema_version=api-v1`, research notice, UUID job ID,
+job type/status, availability UTC time and nullable result run ID. Location identifies
+the authenticated status resource; Idempotency-Replayed identifies retries.
+Worker payloads are private `jobs-v1` objects. Refresh/replay freeze region, mode,
+window, cutoff and versions; replay adds scenario metadata and imported asset UUIDs;
+anchor adds outbox/alert IDs, configured chain/contract, network identity and original
+evidence digest. No key, token, RPC URL or source download URL is accepted/stored.
+The jobs `payload_hash` is the canonical request identity digest for idempotency,
+not an integrity signature or checksum of the enriched worker payload.

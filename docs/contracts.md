@@ -114,3 +114,19 @@ Read sessions issue `SET TRANSACTION READ ONLY`; no GET publishes a run or job.
 Evidence API payloads are credential-safe projections, while SHA-256 verification
 always uses the immutable original canonical bytes. Source-file/artifact verification
 is explicitly not performed by the alert verification endpoint.
+
+## Phase 1.5 operator admission: jobs-v1
+
+`schemas/operator.py` defines strict refresh/replay/empty-anchor bodies, trusted
+replays-v1 configuration and typed acceptance. `repositories/jobs.py` owns the
+short write transaction and global admission lock; handlers return only after
+commit. Idempotency hashes canonical operation/request identity, while job payloads
+freeze server-selected versions, cutoff, region, replay assets or anchor target.
+All fields reject client-supplied credentials/paths/override extras by construction.
+
+The worker payload `schema_version` is `jobs-v1`, distinct from the public api-v1
+response and internal contracts-v1 DTOs. Jobs are admission records, not execution
+results. Future workers must honor frozen inputs, validate coverage/files/models,
+recheck chain policy, and implement leases/retries before marking success. Future
+producers must use the same advisory-lock/capacity admission protocol. Full endpoint
+contracts and bounds are in [operator API](operator-api.md).

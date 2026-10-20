@@ -26,7 +26,7 @@ def settings(**kwargs):
 
 def test_openapi_operations_are_typed_unique_and_stable():
     document = create_app().openapi()
-    operations = [item["get"] for item in document["paths"].values()]
+    operations = [item["get"] for item in document["paths"].values() if "get" in item]
     assert len(operations) == 15
     expected = {
         "health_live",

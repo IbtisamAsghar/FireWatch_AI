@@ -399,14 +399,17 @@ Implementation and native PostgreSQL acceptance are documented in
 | `POST /api/v1/jobs/replay` | Queue an allowlisted historical scenario |
 | `POST /api/v1/alerts/{alert_id}/anchor` | Queue an optional anchor transaction |
 
-- [ ] Require a server-configured high-entropy bearer token for every mutation and job-detail response.
-- [ ] Do not ship an operator token in future browser frontend code. Operator actions stay server-side or require a later real login system.
-- [ ] Permit public reads only after deciding whether the deployment is public; document that policy.
-- [ ] Require `Idempotency-Key` for mutation requests; identical retries return the original job, conflicting bodies return 409.
-- [ ] Restrict regions, time windows, replay IDs, request size, and job queue depth.
-- [ ] Keep training, model promotion, and archive imports as trusted CLI operations.
-- [ ] Configure CORS with explicit future frontend origins; no wildcard credentialed origins.
-- [ ] Redact authorization headers, FIRMS key-bearing URL paths, database credentials, and private keys from logs.
+- [x] Require a server-configured high-entropy bearer token for every mutation and job-detail response.
+- [x] Do not ship an operator token in future browser frontend code. Operator actions stay server-side or require a later real login system.
+- [x] Permit public reads only after deciding whether the deployment is public; document that policy.
+- [x] Require `Idempotency-Key` for mutation requests; identical retries return the original job, conflicting bodies return 409.
+- [x] Restrict regions, time windows, replay IDs, request size, and job queue depth.
+- [x] Keep training, model promotion, and archive imports as trusted CLI operations.
+- [x] Configure CORS with explicit future frontend origins; no wildcard credentialed origins.
+- [x] Redact authorization headers, FIRMS key-bearing URL paths, database credentials, and private keys from logs.
+
+Implementation, operator contracts and acceptance are documented in
+`docs/operator-api.md` and `docs/phase-1.5-checklist.md`.
 
 ### Phase 1.6: Acceptance and handoff
 

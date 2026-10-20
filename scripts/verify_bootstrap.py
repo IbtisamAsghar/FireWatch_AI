@@ -84,17 +84,49 @@ def main() -> int:
                 "/docs",
                 "/openapi.json",
             ):
-                with urllib.request.urlopen(
-                    f"http://127.0.0.1:{port}{route}", timeout=3
-                ) as response:
+                headers = {}
+                if route.startswith("/api/v1/") and not settings.public_reads_enabled:
+                    headers["Authorization"] = (
+                        "Bearer " + settings.admin_api_token.get_secret_value()
+                    )
+                request = urllib.request.Request(f"http://127.0.0.1:{port}{route}", headers=headers)
+                with urllib.request.urlopen(request, timeout=3) as response:
                     assert response.status == 200
+            # Invalid requests exercise real operator HTTP/auth without creating app jobs.
+            for authenticated, expected in ((False, 401), (True, 422)):
+                headers = {
+                    "Content-Type": "application/json",
+                    "Idempotency-Key": "bootstrap-smoke-key",
+                }
+                if authenticated:
+                    headers["Authorization"] = (
+                        "Bearer " + settings.admin_api_token.get_secret_value()
+                    )
+                request = urllib.request.Request(
+                    f"http://127.0.0.1:{port}/api/v1/jobs/refresh",
+                    data=b"{}",
+                    headers=headers,
+                    method="POST",
+                )
+                try:
+                    urllib.request.urlopen(request, timeout=3).close()
+                    raise RuntimeError("Operator smoke unexpectedly accepted an invalid request")
+                except urllib.error.HTTPError as response:
+                    assert response.code == expected
             print(
                 "HTTP smoke passed: liveness, readiness, regions, status, Swagger, OpenAPI; "
-                "app role is unprivileged."
+                "operator authentication verified; app role is unprivileged."
             )
         finally:
             process.terminate()
             process.wait(timeout=10)
+        log.seek(0)
+        logged = log.read()
+        if (
+            settings.admin_api_token.get_secret_value().encode() in logged
+            or b"--- Logging error ---" in logged
+        ):
+            raise RuntimeError("Operator HTTP logging check failed")
     return 0
 
 

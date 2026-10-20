@@ -1,0 +1,4 @@
+schema_version: replays-v1
+# Trusted operators add fixed real-data scenarios after archive preparation.
+# Empty until real source assets, region coverage and versions are verified.
+scenarios: []

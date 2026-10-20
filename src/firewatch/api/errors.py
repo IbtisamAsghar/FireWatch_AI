@@ -57,7 +57,9 @@ def install_errors(app: FastAPI) -> None:
 
     @app.exception_handler(RequestValidationError)
     async def validation_error(request: Request, exc: RequestValidationError) -> JSONResponse:
-        return error_response(request, 422, "VALIDATION_ERROR", "Invalid path or query parameters.")
+        return error_response(
+            request, 422, "VALIDATION_ERROR", "Invalid path, query, header or request body."
+        )
 
     @app.exception_handler(SQLAlchemyError)
     async def database_error(request: Request, exc: SQLAlchemyError) -> JSONResponse:

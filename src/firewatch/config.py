@@ -37,6 +37,15 @@ class Settings(BaseSettings):
     regions_config: Path = Path("configs/regions.yaml")
     raw_data_dir: Path = Path("data/raw")
     model_dir: Path = Path("models")
+    replays_config: Path = Path("configs/replays.yaml")
+    max_request_body_bytes: int = Field(default=16384, ge=1024, le=1048576)
+    request_body_timeout_seconds: int = Field(default=5, ge=1, le=30)
+    max_job_queue_depth: int = Field(default=100, ge=1, le=10000)
+    queue_lock_timeout_ms: int = Field(default=3000, ge=100, le=30000)
+    max_refresh_window_hours: int = Field(default=48, ge=1, le=72)
+    max_refresh_age_hours: int = Field(default=72, ge=1, le=168)
+    max_replay_window_days: int = Field(default=31, ge=1, le=366)
+    max_region_area_degrees2: float = Field(default=100, gt=0, le=1000)
     active_scorer: str = "baseline-v1"
     refresh_interval_minutes: int = Field(default=15, ge=1, le=1440)
     weather_cache_grid_degrees: float = Field(default=0.1, gt=0, le=5)
@@ -77,8 +86,10 @@ class Settings(BaseSettings):
     @classmethod
     def validate_admin_token(cls, value: SecretStr) -> SecretStr:
         token = value.get_secret_value()
-        if _is_placeholder(token) or len(token) < 32:
-            raise ValueError("ADMIN_API_TOKEN must be a generated secret of at least 32 characters")
+        if _is_placeholder(token) or not re.fullmatch(r"[A-Za-z0-9_-]{32,256}", token):
+            raise ValueError(
+                "ADMIN_API_TOKEN must be a generated URL-safe secret of 32-256 characters"
+            )
         return value
 
     @field_validator("firms_map_key", "chain_private_key", mode="before")
@@ -108,6 +119,8 @@ class Settings(BaseSettings):
 
     @model_validator(mode="after")
     def validate_chain_configuration(self) -> "Settings":
+        if self.app_env == "production" and "public_reads_enabled" not in self.model_fields_set:
+            self.public_reads_enabled = False
         if self.chain_enabled:
             url = urlsplit(self.chain_rpc_url.get_secret_value())
             if url.scheme not in {"http", "https"} or not url.hostname:

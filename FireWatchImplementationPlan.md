@@ -240,12 +240,14 @@ Use Pydantic DTOs or dataclasses, not unstructured dictionaries between modules.
 ### Phase 1.1: Prepare accounts, tools, and repository
 
 - [ ] Create the shared Git repository and grant access to five members.
-- [ ] Install Git, Python 3.12, Docker Engine/Desktop with Compose, and an editor.
+- [x] Install Git, Python 3.12, Docker Engine/Desktop with Compose, and an editor.
 - [x] Use Windows PowerShell locally; use Linux containers for shared infrastructure.
-- [ ] Create branches such as `module-1-api`, `module-2-firms`, `module-3-pipeline`, `module-4-ml`, `module-5-delivery`.
-- [ ] Establish short PRs, one reviewer, passing CI, and no direct shared-main changes.
+- [x] Create branches such as `module-1-api`, `module-2-firms`, `module-3-pipeline`, `module-4-ml`, `module-5-delivery`.
+- [x] Establish short PRs, one reviewer, passing CI, and no direct shared-main changes.
 - [x] Create `.gitignore`/`.dockerignore` excluding secrets, local environments, downloaded data, wallets, and private model bundles.
-- [ ] Commit `.env.example`, README, architecture decisions, issue checklist, and directory skeleton.
+- [x] Commit `.env.example`, README, architecture decisions, issue checklist, and directory skeleton.
+
+Module branches use the `codex/` prefix. Tools are installed; Docker Linux-engine readiness, collaborator invitations, and independent PR review remain pending.
 
 Detailed completion evidence and pending account/tool gates: [Phase 1.1 checklist](docs/phase-1.1-checklist.md).
 

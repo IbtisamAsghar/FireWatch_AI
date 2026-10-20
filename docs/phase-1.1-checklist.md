@@ -15,8 +15,8 @@ runnable API/package/Compose infrastructure assigned to Phase 1.2.
 - [x] Package directories, source placeholders, config/doc handoff skeleton.
 - [x] Dependency-free scaffold CI for Python 3.12 on Linux and Windows.
 - [x] Local scaffold validation and staged diff checked; see validation record.
-- [ ] Setup changes committed on `codex/phase-1-1-setup`.
-- [ ] Five local module branches created from the setup commit.
+- [x] Setup changes committed on `codex/phase-1-1-setup`.
+- [x] Five local module branches created from the setup commit.
 
 ## Local tools and infrastructure readiness
 
@@ -30,8 +30,10 @@ runnable API/package/Compose infrastructure assigned to Phase 1.2.
 
 - [ ] User supplies GitHub usernames/module assignments for five team members.
 - [ ] Owner grants access and collaborators accept invitations.
-- [ ] Setup branch published, PR opened, hosted CI green, independent review.
-- [ ] GitHub main protection enforces PRs, one approval, and passing CI.
+- [x] Setup branch published and draft PR opened.
+- [x] Linux and Windows hosted scaffold checks passed on the initial setup commit.
+- [ ] Independent team review and approval received.
+- [x] GitHub main protection enforces PRs, one approval, and passing CI.
 - [ ] Reviewed setup PR merged; module branches updated/published as needed.
 
 These items need real account/tool evidence. They remain unchecked until
@@ -49,3 +51,28 @@ passed with 33 required files and 32 Python files; Markdown links, environment
 template and representative ignore paths validated. `git diff --check` passed.
 Existing Git credential authentication has repository admin access; remote setup
 can proceed without asking the user for a token. Docker startup is still pending.
+
+## GitHub verification
+
+- Initial scaffold commit: `32c2493` on `codex/phase-1-1-setup`.
+- Draft review: https://github.com/IbtisamAsghar/FireWatch_AI/pull/1
+- Hosted checks passed on Linux and Windows:
+  https://github.com/IbtisamAsghar/FireWatch_AI/actions/runs/39452707048
+- Main protection was configured through the authenticated owner account:
+  one approval, stale approval dismissal, strict `scaffold` and
+  `scaffold-windows` status checks, conversation resolution, administrator
+  enforcement, blocked force pushes and deletion.
+- No direct main push or PR merge was performed. Team identities remain unknown;
+  no collaborator invites were sent. The owner must supply the remaining four
+  usernames if the owner is one of the five members, plus module assignments.
+- Module branches use `codex/` prefixes and should follow reviewed main after merge.
+
+## Remaining local readiness
+
+WSL reports default distribution `docker-desktop` and default version 2. The
+Docker Desktop executable is installed. A CLI startup attempt did not expose the
+Linux engine; a background application launch was then attempted. Until
+`docker info --format '{{.OSType}}'` returns `linux`, Linux container readiness
+remains unchecked. If startup shows a first-run prompt, sign-in, license,
+virtualization or restart requirement, the user must resolve it interactively.
+No license terms, machine reboot, or firmware settings were accepted/changed.

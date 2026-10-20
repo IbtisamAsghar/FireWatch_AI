@@ -20,8 +20,8 @@ ingestion, worker execution and ML remain in their later phases.
 - [x] Native lifecycle/backup helper and reproducible PowerShell setup instructions.
 - [x] Linux PostgreSQL CI and Windows Python-package CI configured.
 - [x] Final local database/restart/HTTP acceptance checks completed.
-- [ ] Linux hosted runtime/dev lock, build and real PostgreSQL verification passed.
-- [ ] Windows hosted installation and unit tests passed.
+- [x] Linux hosted runtime/dev lock, build and real PostgreSQL verification passed on current development (Phase 1.3 run).
+- [x] Windows hosted installation and unit tests passed on current development (Phase 1.3 run).
 
 ## Verification record
 
@@ -70,3 +70,10 @@ opening a PR because external publication for this phase needs explicit approval
 All changes remain on local `codex/phase-1-2-bootstrap`; hosted Linux and Windows
 acceptance is pending. The prepared CI workflow performs those checks after
 publication. No Phase 1.2 PR or hosted CI success is claimed.
+
+
+Subsequent verification: after the user authorized publication on development,
+the Phase 1.3 implementation commit `ea47dd6` passed both backend and scaffold
+jobs on Linux/Windows, including bootstrap tests, hashed locks and wheel builds.
+This supersedes the earlier publication/hosted-verification pending record:
+https://github.com/IbtisamAsghar/FireWatch_AI/actions/runs/39460725845

@@ -51,4 +51,18 @@ configuration, not a source-coverage or event-quality assertion.
 
 Human contract review remains an external coordination task. Hosted CI is
 configured for `development`, including migration tests on PostgreSQL 16;
-only locally observed results are asserted here until a hosted run completes.
+the hosted implementation run has now passed all four checks (record below).
+
+
+## Hosted verification
+
+Implementation commit `ea47dd6` passed `backend-linux`, `backend-windows`,
+`scaffold`, and `scaffold-windows`:
+https://github.com/IbtisamAsghar/FireWatch_AI/actions/runs/39460725845
+
+Linux CI exercised real PostgreSQL migrations/integrity and all 82 tests,
+Ruff/format, strict mypy, hashed development/runtime installations, pip
+compatibility, CLI and distribution builds. Windows CI verified hashed dependency
+installation and unit tests. The implementation is published on the existing
+development branch; no new branch or PR was created. This record update changes
+documentation only. Team DTO agreement remains a human review item.

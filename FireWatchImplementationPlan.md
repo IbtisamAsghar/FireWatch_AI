@@ -314,7 +314,7 @@ firewatch-ai/
 ### Phase 1.2: Bootstrap Python and local infrastructure
 
 - [x] Define an installable `src/` package with runtime/dev dependency groups in `pyproject.toml`.
-- [ ] Generate exact compatible runtime and dev lock files, including transitive dependencies; verify on Python 3.12/Linux. Locks are generated and verified on Windows; Linux hosted execution awaits publication approval.
+- [x] Generate exact compatible runtime and dev lock files, including transitive dependencies; verify on Python 3.12/Linux. Windows local verification and Linux hosted verification passed; see Phase 1.3 acceptance for the current development run.
 - [x] Implement validated environment settings; missing required secrets fail startup clearly.
 - [x] Set up native PostgreSQL 16 for Windows with a dedicated local role/database and persistent data directory; verify readiness with `pg_isready`. Compose configuration is a later Linux deployment deliverable.
 - [x] Bind native local PostgreSQL to loopback only; document per-user process lifecycle, optional existing Windows service startup, and local backup paths. Never expose the database publicly in production.

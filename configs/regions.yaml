@@ -1,0 +1,3 @@
+# No region selected yet. Member 2 proves coverage before enabling a bbox.
+# Phase 1.2+ implements a validated config schema and seed CLI.
+regions: []

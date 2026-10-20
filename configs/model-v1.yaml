@@ -1,0 +1,15 @@
+# Design metadata only; no training data, thresholds, or model exists yet.
+schema_version: model-v1
+status: draft
+active_scorer: baseline-v1
+feature_schema_version: features-v1
+label_horizon_hours: 24
+label_radius_km: 2
+frp_increase_min_mw: 5
+frp_increase_fraction: 0.20
+random_seed: 42
+dataset_manifest: null
+split_manifest: null
+calibration_policy: null
+priority_thresholds: null
+# Member 4 freezes dataset paths, splits, and policies before training.

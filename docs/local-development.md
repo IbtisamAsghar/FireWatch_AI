@@ -14,6 +14,8 @@ py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe scripts/native_postgres.py setup
 .\.venv\Scripts\firewatch.exe check-config
 .\.venv\Scripts\firewatch.exe db-check
+.\.venv\Scripts\alembic.exe upgrade head
+.\.venv\Scripts\firewatch.exe seed-regions --config configs/regions.yaml
 .\.venv\Scripts\firewatch.exe --help
 ```
 
@@ -98,8 +100,8 @@ installations on the same port or put administrator credentials in `.env`.
 
 ```powershell
 py -3.12 scripts/check_scaffold.py
-.\.venv\Scripts\ruff.exe check src tests scripts/native_postgres.py scripts/verify_bootstrap.py
-.\.venv\Scripts\ruff.exe format --check src tests scripts/native_postgres.py scripts/verify_bootstrap.py
+.\.venv\Scripts\ruff.exe check src tests migrations scripts/native_postgres.py scripts/verify_bootstrap.py
+.\.venv\Scripts\ruff.exe format --check src tests migrations scripts/native_postgres.py scripts/verify_bootstrap.py
 .\.venv\Scripts\mypy.exe
 .\.venv\Scripts\python.exe -m pytest tests/unit
 .\.venv\Scripts\python.exe -m pip check
@@ -131,8 +133,10 @@ also pinned and installed from the development lock; `--no-build-isolation` avoi
 silently resolving a separate build environment. Runtime-only deployments install
 the hashed runtime lock followed by a trusted built wheel with `--no-deps`.
 
-Phase 1.3 owns application tables, Alembic configuration and migrations. Until then,
-`alembic upgrade head` is intentionally absent from the runnable setup workflow.
+Phase 1.3 implements migrations through `0002`, typed schemas, idempotent region
+seeding and completed-run publication. Apply migrations once before writers start;
+the API never migrates automatically. See [database rules](database-schema.md).
+Migration tests use generated schemas only in a disposable `_test` database.
 
 A complete local acceptance check is `.\.venv\Scripts\python.exe scripts/verify_bootstrap.py`.
 It checks the unprivileged application role, runs unit/integration tests against

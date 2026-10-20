@@ -6,12 +6,14 @@ and rank hotspot clusters for analyst review.
 
 ## Current status
 
-Phase 1.2 provides an installable Python 3.12 package, hashed runtime/development
-dependency locks, validated settings, pooled PostgreSQL sessions, the operator
-CLI, and `GET /health/live`. Native PostgreSQL runs without Docker Desktop.
-Ingestion, application tables/migrations, worker orchestration, ranking, ML and
-chain integration are not yet implemented. See the [implementation plan](FireWatchImplementationPlan.md)
-and [Phase 1.2 acceptance record](docs/phase-1.2-checklist.md).
+Phase 1.3 adds 19 SQLAlchemy tables, versioned DTOs, Alembic migrations,
+idempotent region seeding and atomic completed-run publication. PostgreSQL guards
+protect saved evidence, completed outputs and live/replay separation. The Python
+package, settings, CLI and liveness bootstrap from Phase 1.2 remain runnable.
+Ingestion, worker orchestration, business read APIs, ML and chain adapters remain
+later work. See the [implementation plan](FireWatchImplementationPlan.md) and
+[Phase 1.3 acceptance](docs/phase-1.3-checklist.md). DTOs are ready for team review;
+no team approval or source-coverage claim is implied.
 
 ## Start locally on Windows
 
@@ -25,6 +27,8 @@ py -3.12 -m venv .venv
 .\.venv\Scripts\firewatch.exe --help
 .\.venv\Scripts\firewatch.exe check-config
 .\.venv\Scripts\firewatch.exe db-check
+.\.venv\Scripts\alembic.exe upgrade head
+.\.venv\Scripts\firewatch.exe seed-regions --config configs/regions.yaml
 .\.venv\Scripts\python.exe -m uvicorn firewatch.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
@@ -42,7 +46,8 @@ database or providers. Required secrets are validated at application startup.
 
 See [native development instructions](docs/local-development.md) for lifecycle,
 backup locations, existing PostgreSQL services, configuration, tests and lock updates.
-Application migrations and `alembic upgrade head` begin in Phase 1.3.
+Migrations are implemented through revision `0002`. The supplied demo region
+is disabled until source coverage is verified. See [schema and publication rules](docs/database-schema.md).
 
 ## Repository layout and ownership
 
@@ -77,7 +82,7 @@ and container builds are added when their corresponding phases are implemented.
 ## Design and handoff documents
 
 - [Architecture decisions](docs/architecture-decisions.md)
-- [Contracts](docs/contracts.md) and [data dictionary](docs/data-dictionary.md)
+- [Contracts](docs/contracts.md), [database schema](docs/database-schema.md), and [data dictionary](docs/data-dictionary.md)
 - [Model card](docs/model-card.md)
 - [Operations runbook](docs/runbook.md)
 - [Frontend handoff](docs/frontend-handoff.md)

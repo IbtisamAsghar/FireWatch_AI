@@ -1,3 +1,10 @@
-# No region selected yet. Member 2 proves coverage before enabling a bbox.
-# Phase 1.2+ implements a validated config schema and seed CLI.
-regions: []
+schema_version: regions-v1
+regions:
+  - name: demo-region
+    description: "Illustrative northwest Pakistan bbox; source coverage is not yet validated."
+    enabled: false
+    bbox:
+      west: 70.0
+      south: 33.0
+      east: 74.0
+      north: 36.0

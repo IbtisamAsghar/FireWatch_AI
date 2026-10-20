@@ -1,1 +1,1 @@
-"""FireWatch backend ownership skeleton; implementation pending."""
+"""Persistence models and PostgreSQL connection scopes."""

@@ -8,3 +8,8 @@ Native local lifecycle and development backup commands are now implemented in
 [the local development guide](local-development.md). PostgreSQL runs per user
 without a machine-wide Windows service; start it manually after reboot. Production
 deployment, encrypted external backups and restore/rollback acceptance remain pending.
+
+Phase 1.3 migration, seed and publication guidance is now implemented in
+[database operations](database-schema.md). Back up before upgrades. Revision
+0002 protects saved evidence and completed outputs; tests downgrade only their
+own disposable schemas. Production role separation and restore drills remain Module 5.

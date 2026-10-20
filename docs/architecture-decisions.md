@@ -82,3 +82,24 @@ Five module owners work against agreed interfaces. Require short PRs, one
 independent approval, passing CI, and no direct shared-main changes. Start
 with dependency-free scaffold CI; expand it alongside implementation. No
 backend tests, deployment, or hosted CI success are claimed by scaffolding.
+
+
+## ADR-010: Database-enforced run/evidence boundaries
+
+Use 19 SQLAlchemy tables with many-to-many observation/source/region lineage,
+composite run/snapshot/score references and stable names. Store timestamps as
+timestamptz and exact evidence as BYTEA with a checked SHA-256 digest. Frozen
+Alembic 0001 creates the schema; 0002 installs explicit PostgreSQL guards.
+
+Complete and publish under region/run locks in one caller-owned transaction.
+All stages and persisted outputs must satisfy the versioned contract. Replay
+and older/tied cutoffs never replace the current live head. Empty completed runs
+remain valid. Protect evidence and completed outputs from ordinary SQL mutation,
+including truncation. Preserve pending final checkpoints in no-autoflush sessions.
+Privileged schema owners can bypass triggers; independent anchoring remains separate.
+
+Use contracts-v1 DTOs, validated regions-v1 YAML and repeatable UUID-preserving
+seeding. The example bbox remains disabled until source coverage is proven.
+Tests upgrade populated previous revisions and exercise rollback/concurrency in
+generated schemas under a disposable test database, never by resetting local
+application data. Human cross-module contract agreement is recorded separately.

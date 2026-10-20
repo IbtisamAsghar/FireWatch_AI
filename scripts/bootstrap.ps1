@@ -17,4 +17,8 @@ if (-not $SkipPostgres) {
     if ($LASTEXITCODE -ne 0) { throw 'Configuration validation failed' }
     & .\.venv\Scripts\firewatch.exe db-check
     if ($LASTEXITCODE -ne 0) { throw 'Database connectivity check failed' }
+    & .\.venv\Scripts\alembic.exe upgrade head
+    if ($LASTEXITCODE -ne 0) { throw 'Database migration failed' }
+    & .\.venv\Scripts\firewatch.exe seed-regions --config configs/regions.yaml
+    if ($LASTEXITCODE -ne 0) { throw 'Region seed failed' }
 }

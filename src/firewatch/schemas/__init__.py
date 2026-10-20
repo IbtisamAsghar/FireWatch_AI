@@ -1,1 +1,1 @@
-"""FireWatch backend ownership skeleton; implementation pending."""
+"""Versioned cross-module validation contracts."""

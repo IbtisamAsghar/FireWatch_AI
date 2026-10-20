@@ -20,6 +20,7 @@ dependencies = [
   "httpx>=0.28,<1",
   "tenacity>=9,<10",
   "typer>=0.15,<1",
+  "pyyaml>=6,<7",
 ]
 
 [dependency-groups]
@@ -32,6 +33,7 @@ dev = [
   "pytest>=8.3,<10",
   "pytest-cov>=6,<8",
   "respx>=0.22,<1",
+  "types-PyYAML>=6,<7",
 ]
 
 [project.scripts]
@@ -61,3 +63,7 @@ markers = ["integration: requires FIREWATCH_TEST_DATABASE_URL pointing to a disp
 [tool.coverage.run]
 source = ["firewatch"]
 branch = true
+
+# Frozen migration SQL can exceed the Python source line width.
+[tool.ruff.lint.per-file-ignores]
+"migrations/versions/*.py" = ["E501"]

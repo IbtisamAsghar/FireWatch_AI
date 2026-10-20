@@ -1,1 +1,1 @@
-"""FireWatch backend ownership skeleton; implementation pending."""
+"""Caller-owned transactional persistence and publication boundaries."""

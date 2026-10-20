@@ -335,7 +335,8 @@ py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe scripts/native_postgres.py setup
 .\.venv\Scripts\firewatch.exe check-config
 .\.venv\Scripts\firewatch.exe db-check
-# Application tables and Alembic migrations begin in Phase 1.3.
+.\.venv\Scripts\alembic.exe upgrade head
+.\.venv\Scripts\firewatch.exe seed-regions --config configs/regions.yaml
 .\.venv\Scripts\python.exe -m uvicorn firewatch.main:app --reload
 ```
 
@@ -343,14 +344,19 @@ Use explicit `.venv` executable paths so Windows execution-policy settings do no
 
 ### Phase 1.3: Define schemas and migrations
 
-- [ ] Turn the shared table contract into SQLAlchemy models and versioned migrations.
+- [x] Turn the shared table contract into SQLAlchemy models and versioned migrations.
 - [ ] Agree DTOs with Members 2-5 before they write integration code.
-- [ ] Validate coordinates, allowed products, UTC timestamps, enum values, and numeric ranges.
-- [ ] Support nullable provider fields and preserved raw values where conversion fails.
-- [ ] Add uniqueness constraints, provenance links, and immutable alert restrictions.
-- [ ] Test migrations on an empty database and on the previous revision with sample data.
-- [ ] Seed one region through a repeatable CLI command, not a manual database edit.
-- [ ] Implement completed-run publication in a transaction: incomplete runs cannot become latest.
+- [x] Validate coordinates, allowed products, UTC timestamps, enum values, and numeric ranges.
+- [x] Support nullable provider fields and preserved raw values where conversion fails.
+- [x] Add uniqueness constraints, provenance links, and immutable alert restrictions.
+- [x] Test migrations on an empty database and on the previous revision with sample data.
+- [x] Seed one region through a repeatable CLI command, not a manual database edit.
+- [x] Implement completed-run publication in a transaction: incomplete runs cannot become latest.
+
+Implementation evidence: [Phase 1.3 acceptance](docs/phase-1.3-checklist.md),
+[schema/publication rules](docs/database-schema.md), and [contracts-v1](docs/contracts.md).
+DTO code and handoff documentation are ready; human agreement by Members 2-5 is
+an external review step and remains unchecked.
 
 ### Phase 1.4: Build read APIs
 

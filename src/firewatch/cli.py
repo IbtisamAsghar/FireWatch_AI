@@ -2,8 +2,12 @@
 
 import json
 from importlib.metadata import version
+from pathlib import Path
+from typing import Annotated
 
 import typer
+import yaml
+from pydantic import ValidationError
 from sqlalchemy.exc import SQLAlchemyError
 
 from firewatch.config import ConfigurationError, get_settings
@@ -64,3 +68,44 @@ def main(
     ),
 ) -> None:
     """Inspect configuration and bootstrap database connectivity."""
+
+
+@app.command("seed-regions")
+def seed_regions_command(
+    config: Annotated[
+        Path, typer.Option("--config", help="Validated regions-v1 YAML configuration.")
+    ] = Path("configs/regions.yaml"),
+) -> None:
+    """Idempotently create/update regions without enabling unvalidated source coverage."""
+    from firewatch.repositories.regions import load_regions, seed_regions
+
+    try:
+        configuration = load_regions(config)
+        settings = get_settings()
+    except (OSError, ValueError, ValidationError, yaml.YAMLError, ConfigurationError):
+        typer.echo(
+            "Invalid region configuration or environment. Check the config path, bbox and secrets.",
+            err=True,
+        )
+        raise typer.Exit(2) from None
+    database = Database(settings)
+    try:
+        with database.transaction() as session:
+            identifiers = seed_regions(session, configuration)
+        typer.echo(
+            json.dumps(
+                {
+                    "status": "ok",
+                    "regions": len(identifiers),
+                    "region_ids": [str(identifier) for identifier in identifiers],
+                }
+            )
+        )
+    except SQLAlchemyError:
+        typer.echo(
+            "Region seed failed. Check database connectivity and run alembic upgrade head.",
+            err=True,
+        )
+        raise typer.Exit(1) from None
+    finally:
+        database.close()

@@ -2,7 +2,7 @@ name: Repository checks
 on:
   pull_request:
   push:
-    branches: [main, 'codex/**']
+    branches: [main, development, 'codex/**']
   workflow_dispatch:
 permissions:
   contents: read
@@ -64,10 +64,10 @@ jobs:
           python -m pip check
       - name: Formatting, lint and types
         run: |
-          ruff check src tests scripts/native_postgres.py scripts/verify_bootstrap.py scripts/check_locks.py
-          ruff format --check src tests scripts/native_postgres.py scripts/verify_bootstrap.py scripts/check_locks.py
+          ruff check src tests migrations scripts/native_postgres.py scripts/verify_bootstrap.py scripts/check_locks.py
+          ruff format --check src tests migrations scripts/native_postgres.py scripts/verify_bootstrap.py scripts/check_locks.py
           mypy
-      - name: Unit and PostgreSQL transaction tests
+      - name: Unit, PostgreSQL migration and integrity tests
         run: python -m pytest --cov=firewatch --cov-report=term-missing --junitxml=test-results.xml
       - name: Verify CLI and build distributions
         run: |

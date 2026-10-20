@@ -240,14 +240,14 @@ Use Pydantic DTOs or dataclasses, not unstructured dictionaries between modules.
 ### Phase 1.1: Prepare accounts, tools, and repository
 
 - [ ] Create the shared Git repository and grant access to five members.
-- [x] Install Git, Python 3.12, Docker Engine/Desktop with Compose, and an editor.
-- [x] Use Windows PowerShell locally; use Linux containers for shared infrastructure.
+- [x] Install Git, Python 3.12, and an editor. User selected native Windows development; Docker Desktop is not required. Native PostgreSQL 16 setup belongs to Phase 1.2.
+- [x] Use Windows PowerShell locally with Python processes and native PostgreSQL 16. Linux containers remain a separate deployment option.
 - [x] Create branches such as `module-1-api`, `module-2-firms`, `module-3-pipeline`, `module-4-ml`, `module-5-delivery`.
 - [x] Establish short PRs, one reviewer, passing CI, and no direct shared-main changes.
 - [x] Create `.gitignore`/`.dockerignore` excluding secrets, local environments, downloaded data, wallets, and private model bundles.
 - [x] Commit `.env.example`, README, architecture decisions, issue checklist, and directory skeleton.
 
-Module branches use the `codex/` prefix. Tools are installed; Docker Linux-engine readiness, collaborator invitations, and independent PR review remain pending.
+Module branches use the `codex/` prefix. Phase 1.1 tools are installed; collaborator invitations and independent PR review remain pending. Native PostgreSQL readiness belongs to Phase 1.2; Docker Desktop is not required.
 
 Detailed completion evidence and pending account/tool gates: [Phase 1.1 checklist](docs/phase-1.1-checklist.md).
 
@@ -316,8 +316,8 @@ firewatch-ai/
 - [ ] Define an installable `src/` package with runtime/dev dependency groups in `pyproject.toml`.
 - [ ] Generate exact compatible runtime and dev lock files, including transitive dependencies; verify on Python 3.12/Linux.
 - [ ] Implement validated environment settings; missing required secrets fail startup clearly.
-- [ ] Add PostgreSQL service, persistent volume, and `pg_isready` health check to Compose.
-- [ ] Bind local development PostgreSQL to loopback only; never publish its port in production.
+- [ ] Set up native PostgreSQL 16 for Windows with a dedicated local role/database and persistent data directory; verify readiness with `pg_isready`. Compose configuration is a later Linux deployment deliverable.
+- [ ] Bind native local PostgreSQL to loopback only; document Windows service startup and local backup paths. Never expose the database publicly in production.
 - [ ] Implement database sessions, connection pooling, and transaction boundaries.
 - [ ] Provide `firewatch --help` and `/health/live` as the first runnable interfaces.
 
@@ -330,7 +330,8 @@ py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -e . --no-deps
 Copy-Item .env.example .env
 # Edit .env before starting services; replace every placeholder secret.
-docker compose up -d db
+# Start the configured native PostgreSQL 16 Windows service first.
+# Confirm localhost readiness with pg_isready before running migrations.
 .\.venv\Scripts\python.exe -m alembic upgrade head
 .\.venv\Scripts\python.exe -m uvicorn firewatch.main:app --reload
 ```

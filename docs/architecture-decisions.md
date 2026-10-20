@@ -65,6 +65,17 @@ costs require a separate decision. Pin compatible dependencies in Phase 1.2;
 Python 3.12 and PostgreSQL 16 are compatibility choices, not newest-version
 claims. Keep runtime/dev locks, trained artifacts, and inference compatible.
 
+## ADR-009: Native Windows development
+
+User decision: do not use Docker Desktop. Local development uses a Python 3.12
+virtual environment, native PostgreSQL 16 bound to loopback, and separate API
+and worker processes launched from PowerShell. No WSL or container engine is
+required on the development computer. Phase 1.2 must document installation,
+service startup, role/database creation, migrations, and process startup without
+Compose. Keep DATABASE_URL compatible with PostgreSQL/psycopg. Production Linux
+Docker Engine/Compose remains a future deployment option distinct from local
+development. Do not substitute SQLite or a paid database service.
+
 ## ADR-008: Review, CI, and ownership
 
 Five module owners work against agreed interfaces. Require short PRs, one

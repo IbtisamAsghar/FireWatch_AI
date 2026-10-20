@@ -2,7 +2,7 @@
 
 Phase 1.1 prepares accounts, tools, collaboration rules, exclusions, environment
 template, documentation, and ownership skeleton. It does not implement the
-runnable API/package/Compose infrastructure assigned to Phase 1.2.
+runnable API/package/native PostgreSQL infrastructure assigned to Phase 1.2.
 
 ## Repository deliverables
 
@@ -24,7 +24,8 @@ runnable API/package/Compose infrastructure assigned to Phase 1.2.
 - [x] VS Code installed; Windows PowerShell available.
 - [x] Python 3.12 installed and `py -3.12 --version` verified.
 - [x] Docker CLI and Compose installed (observed 29.2.0 / v5.0.2).
-- [ ] Docker Desktop running with a working Linux engine.
+- [x] Local Docker Desktop requirement removed per user preference.
+- [ ] Native PostgreSQL 16 setup and verification scheduled for Phase 1.2.
 
 ## External account and review gates
 
@@ -50,7 +51,7 @@ Python 3.12.10 installed and verified. `py -3.12 scripts/check_scaffold.py`
 passed with 33 required files and 32 Python files; Markdown links, environment
 template and representative ignore paths validated. `git diff --check` passed.
 Existing Git credential authentication has repository admin access; remote setup
-can proceed without asking the user for a token. Docker startup is still pending.
+can proceed without asking the user for a token. Docker startup is no longer required.
 
 ## GitHub verification
 
@@ -67,12 +68,17 @@ can proceed without asking the user for a token. Docker startup is still pending
   usernames if the owner is one of the five members, plus module assignments.
 - Module branches use `codex/` prefixes and should follow reviewed main after merge.
 
-## Remaining local readiness
+## Superseded Docker readiness investigation
 
 WSL reports default distribution `docker-desktop` and default version 2. The
 Docker Desktop executable is installed. A CLI startup attempt did not expose the
 Linux engine; a background application launch was then attempted. Until
 `docker info --format '{{.OSType}}'` returns `linux`, Linux container readiness
-remains unchecked. If startup shows a first-run prompt, sign-in, license,
+was not confirmed during the original investigation. If startup shows a first-run prompt, sign-in, license,
 virtualization or restart requirement, the user must resolve it interactively.
 No license terms, machine reboot, or firmware settings were accepted/changed.
+
+The user subsequently declined Docker Desktop. That supersedes the original
+Docker readiness gate: no further Docker Desktop startup or troubleshooting is
+required. Use native Windows PostgreSQL 16 and Python processes in Phase 1.2.
+PostgreSQL installation has not yet been verified. No software was uninstalled.

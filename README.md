@@ -15,10 +15,10 @@ and external steps still pending.
 
 ## Prepare Windows development tools
 
-Required: Git, Python 3.12, Windows PowerShell, Docker Desktop with the WSL 2
-backend and Linux containers, and an editor such as VS Code. Docker Desktop
-must be running before infrastructure work begins. Use the same Python minor
-version locally and in CI. Do not use Windows containers for the backend.
+Required locally: Git, Python 3.12, Windows PowerShell, an editor such as
+VS Code, and native PostgreSQL 16 when Phase 1.2 begins. Run the API and worker
+as Python processes in a virtual environment. Docker Desktop and WSL are not
+required. Use the same Python minor version locally and in CI.
 
 ```powershell
 git clone https://github.com/IbtisamAsghar/FireWatch_AI.git
@@ -26,20 +26,22 @@ Set-Location FireWatch_AI
 git switch -c codex/my-task
 py -3.12 --version
 git --version
-docker compose version
-docker info --format '{{.OSType}}'
 py -3.12 scripts/check_scaffold.py
 Copy-Item .env.example .env
 ```
 
-The Docker check must print `linux`. Copy the environment template only when
+Copy the environment template only when
 `.env` does not already exist. Replace placeholder credentials locally when
 their corresponding services are implemented. Never paste secrets into
 commits, screenshots, issues, or logs. FIRMS credentials are obtained from
 [NASA's free MAP_KEY registration](https://firms.modaps.eosdis.nasa.gov/api/map_key/).
 
-Dependency installation, package metadata/lock files, Compose services,
+Dependency installation, package metadata/lock files, native PostgreSQL setup,
 migrations, `firewatch --help`, and `/health/live` belong to Phase 1.2.
+PostgreSQL setup will use a dedicated local role/database, a loopback listener,
+and the existing localhost DATABASE_URL template. Production Linux Docker Engine
+and Compose remain a separate future deployment option; they do not require
+Docker Desktop on this computer.
 No install or service-start commands are advertised as working before then.
 
 ## Repository layout and ownership

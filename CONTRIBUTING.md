@@ -41,7 +41,9 @@ manifests in later phases. Never load arbitrary pickle/joblib artifacts.
 
 ## Local development conventions
 
-Use Python 3.12 and PowerShell locally; shared services use Linux containers.
+Use Python 3.12, PowerShell, and native PostgreSQL 16 locally. Run the API
+and worker in a virtual environment; Docker Desktop is not required. Linux
+containers remain a separate production deployment option.
 Follow `.editorconfig` and `.gitattributes`. Do not alter global Git/editor
 settings for this project. Follow the plan's exact dependency locking in
 Phase 1.2. Do not add Redis, paid APIs, a frontend, or chain dependencies to

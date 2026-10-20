@@ -244,3 +244,8 @@ __marimo__/
 /.chain/
 /broadcast/
 /node_modules/
+
+# Native local infrastructure must never enter version control
+/.local/
+/.runtime/
+*.dump

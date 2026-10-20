@@ -25,7 +25,7 @@ runnable API/package/native PostgreSQL infrastructure assigned to Phase 1.2.
 - [x] Python 3.12 installed and `py -3.12 --version` verified.
 - [x] Docker CLI and Compose installed (observed 29.2.0 / v5.0.2).
 - [x] Local Docker Desktop requirement removed per user preference.
-- [ ] Native PostgreSQL 16 setup and verification scheduled for Phase 1.2.
+- [x] Native PostgreSQL 16 setup and verification completed in Phase 1.2.
 
 ## External account and review gates
 

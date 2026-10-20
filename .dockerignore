@@ -49,3 +49,5 @@ build
 ENV
 env.bak
 venv.bak
+.local
+.runtime

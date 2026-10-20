@@ -313,26 +313,29 @@ firewatch-ai/
 
 ### Phase 1.2: Bootstrap Python and local infrastructure
 
-- [ ] Define an installable `src/` package with runtime/dev dependency groups in `pyproject.toml`.
-- [ ] Generate exact compatible runtime and dev lock files, including transitive dependencies; verify on Python 3.12/Linux.
-- [ ] Implement validated environment settings; missing required secrets fail startup clearly.
-- [ ] Set up native PostgreSQL 16 for Windows with a dedicated local role/database and persistent data directory; verify readiness with `pg_isready`. Compose configuration is a later Linux deployment deliverable.
-- [ ] Bind native local PostgreSQL to loopback only; document Windows service startup and local backup paths. Never expose the database publicly in production.
-- [ ] Implement database sessions, connection pooling, and transaction boundaries.
-- [ ] Provide `firewatch --help` and `/health/live` as the first runnable interfaces.
+- [x] Define an installable `src/` package with runtime/dev dependency groups in `pyproject.toml`.
+- [ ] Generate exact compatible runtime and dev lock files, including transitive dependencies; verify on Python 3.12/Linux. Locks are generated and verified on Windows; Linux hosted execution awaits publication approval.
+- [x] Implement validated environment settings; missing required secrets fail startup clearly.
+- [x] Set up native PostgreSQL 16 for Windows with a dedicated local role/database and persistent data directory; verify readiness with `pg_isready`. Compose configuration is a later Linux deployment deliverable.
+- [x] Bind native local PostgreSQL to loopback only; document per-user process lifecycle, optional existing Windows service startup, and local backup paths. Never expose the database publicly in production.
+- [x] Implement database sessions, connection pooling, and transaction boundaries.
+- [x] Provide `firewatch --help` and `/health/live` as the first runnable interfaces.
+
+Implementation and verification details: [Phase 1.2 acceptance record](docs/phase-1.2-checklist.md) and [native development guide](docs/local-development.md). Windows acceptance has passed; hosted Linux/Windows checks must pass before merging.
 
 Local bootstrap commands after cloning the actual repository:
 
 ```powershell
 py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install --upgrade pip
-.\.venv\Scripts\python.exe -m pip install -r requirements-dev.lock
-.\.venv\Scripts\python.exe -m pip install -e . --no-deps
-Copy-Item .env.example .env
-# Edit .env before starting services; replace every placeholder secret.
-# Start the configured native PostgreSQL 16 Windows service first.
-# Confirm localhost readiness with pg_isready before running migrations.
-.\.venv\Scripts\python.exe -m alembic upgrade head
+.\.venv\Scripts\python.exe -m pip install --require-hashes -r requirements-dev.lock
+.\.venv\Scripts\python.exe -m pip install -e . --no-deps --no-build-isolation
+# Native setup generates .env if absent. Preserve existing local credentials.
+# For an external PostgreSQL install, configure .env manually instead.
+.\.venv\Scripts\python.exe scripts/native_postgres.py setup
+.\.venv\Scripts\firewatch.exe check-config
+.\.venv\Scripts\firewatch.exe db-check
+# Application tables and Alembic migrations begin in Phase 1.3.
 .\.venv\Scripts\python.exe -m uvicorn firewatch.main:app --reload
 ```
 

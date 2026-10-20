@@ -48,3 +48,8 @@ Follow `.editorconfig` and `.gitattributes`. Do not alter global Git/editor
 settings for this project. Follow the plan's exact dependency locking in
 Phase 1.2. Do not add Redis, paid APIs, a frontend, or chain dependencies to
 the initial backend foundation without a documented scope decision.
+
+Phase 1.2 adds `backend-linux` and `backend-windows` CI. Require these to pass
+before merging bootstrap changes. Add them to server-side required checks after
+their workflow is present on main, so the prerequisite setup PR is not blocked
+by checks it does not yet define. See [local validation](docs/local-development.md).

@@ -1,0 +1,63 @@
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "firewatch-ai"
+version = "0.1.0"
+description = "Regional satellite hotspot prioritization backend"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = "MIT"
+dependencies = [
+  "fastapi>=0.115,<1",
+  "uvicorn>=0.34,<1",
+  "pydantic>=2.10,<3",
+  "pydantic-settings>=2.7,<3",
+  "sqlalchemy>=2.0.38,<2.1",
+  "psycopg[binary]>=3.2,<4",
+  "alembic>=1.14,<2",
+  "httpx>=0.28,<1",
+  "tenacity>=9,<10",
+  "typer>=0.15,<1",
+]
+
+[dependency-groups]
+dev = [
+  "hatchling==1.27.0",
+  "editables>=0.5,<1",
+  "build>=1.2,<2",
+  "ruff>=0.11,<1",
+  "mypy>=1.15,<2",
+  "pytest>=8.3,<10",
+  "pytest-cov>=6,<8",
+  "respx>=0.22,<1",
+]
+
+[project.scripts]
+firewatch = "firewatch.cli:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/firewatch"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+files = ["src/firewatch"]
+plugins = ["pydantic.mypy"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+markers = ["integration: requires FIREWATCH_TEST_DATABASE_URL pointing to a disposable PostgreSQL database"]
+
+[tool.coverage.run]
+source = ["firewatch"]
+branch = true

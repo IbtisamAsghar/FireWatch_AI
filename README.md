@@ -6,43 +6,43 @@ and rank hotspot clusters for analyst review.
 
 ## Current status
 
-Phase 1.1 provides repository preparation and the directory skeleton.
-The API, CLI, database, worker, ML pipeline, and chain adapter are **not
-implemented yet**. Python module files are ownership placeholders, not
-working interfaces. See [the implementation plan](FireWatchImplementationPlan.md)
-and [the Phase 1.1 checklist](docs/phase-1.1-checklist.md) for completion evidence
-and external steps still pending.
+Phase 1.2 provides an installable Python 3.12 package, hashed runtime/development
+dependency locks, validated settings, pooled PostgreSQL sessions, the operator
+CLI, and `GET /health/live`. Native PostgreSQL runs without Docker Desktop.
+Ingestion, application tables/migrations, worker orchestration, ranking, ML and
+chain integration are not yet implemented. See the [implementation plan](FireWatchImplementationPlan.md)
+and [Phase 1.2 acceptance record](docs/phase-1.2-checklist.md).
 
-## Prepare Windows development tools
+## Start locally on Windows
 
-Required locally: Git, Python 3.12, Windows PowerShell, an editor such as
-VS Code, and native PostgreSQL 16 when Phase 1.2 begins. Run the API and worker
-as Python processes in a virtual environment. Docker Desktop and WSL are not
-required. Use the same Python minor version locally and in CI.
+Required: Git, Python 3.12, PowerShell and an editor. Run from this repository:
 
 ```powershell
-git clone https://github.com/IbtisamAsghar/FireWatch_AI.git
-Set-Location FireWatch_AI
-git switch -c codex/my-task
-py -3.12 --version
-git --version
-py -3.12 scripts/check_scaffold.py
-Copy-Item .env.example .env
+py -3.12 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install --require-hashes -r requirements-dev.lock
+.\.venv\Scripts\python.exe -m pip install -e . --no-deps --no-build-isolation
+.\.venv\Scripts\python.exe scripts/native_postgres.py setup
+.\.venv\Scripts\firewatch.exe --help
+.\.venv\Scripts\firewatch.exe check-config
+.\.venv\Scripts\firewatch.exe db-check
+.\.venv\Scripts\python.exe -m uvicorn firewatch.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
-Copy the environment template only when
-`.env` does not already exist. Replace placeholder credentials locally when
-their corresponding services are implemented. Never paste secrets into
-commits, screenshots, issues, or logs. FIRMS credentials are obtained from
-[NASA's free MAP_KEY registration](https://firms.modaps.eosdis.nasa.gov/api/map_key/).
+The native setup helper downloads official PostgreSQL 16 binaries, stores
+persistent data outside OneDrive, and generates a protected ignored `.env` with
+random local secrets. Existing `.env` files are preserved. No FIRMS key is needed
+until satellite ingestion is implemented. Use `setup --port 55432` if 5432 is
+already occupied. No Docker Desktop, WSL, paid service or administrator Windows
+service registration is required. The database runs as a per-user background process.
 
-Dependency installation, package metadata/lock files, native PostgreSQL setup,
-migrations, `firewatch --help`, and `/health/live` belong to Phase 1.2.
-PostgreSQL setup will use a dedicated local role/database, a loopback listener,
-and the existing localhost DATABASE_URL template. Production Linux Docker Engine
-and Compose remain a separate future deployment option; they do not require
-Docker Desktop on this computer.
-No install or service-start commands are advertised as working before then.
+In another PowerShell window, call
+`Invoke-RestMethod http://127.0.0.1:8000/health/live`; expect `{"status":"ok"}`.
+Swagger is available at `http://127.0.0.1:8000/docs`. Liveness never queries the
+database or providers. Required secrets are validated at application startup.
+
+See [native development instructions](docs/local-development.md) for lifecycle,
+backup locations, existing PostgreSQL services, configuration, tests and lock updates.
+Application migrations and `alembic upgrade head` begin in Phase 1.3.
 
 ## Repository layout and ownership
 
@@ -56,22 +56,23 @@ No install or service-start commands are advertised as working before then.
 - `configs`: reviewed non-secret configuration; region selection is pending.
 - `data/sample`: small, sanitized, explicitly licensed fixtures only.
 - `models`: documentation only until trusted bundles are approved.
-- `tests/unit`, `integration`, `contract`, `e2e`: future test suites.
+- `tests/unit`, `integration`: bootstrap tests; contract/e2e suites expand in later phases.
 - `migrations`: Member 1 owns revision numbering and integration.
 
 ## Collaboration and validation
 
 Read [CONTRIBUTING.md](CONTRIBUTING.md) before changing shared contracts.
 Use short PRs, one approval from someone other than the author, and passing
-`Repository checks / scaffold` CI. Do not push directly to shared `main`.
+required scaffold CI and backend checks. Do not push directly to shared `main`.
 [GitHub setup](docs/github-setup.md) explains how the owner enforces this.
 A local passing check is not evidence of a GitHub-hosted CI run.
 
 The Phase 1.1 check uses only Python's standard library and Git: it validates
 scaffold files, local Markdown targets, Python syntax, environment-template
 safety, and representative Git exclusions. It does not validate backend
-behavior. Phase 1.2 and Module 5 expand CI to Ruff, mypy, pytest, migrations,
-and container builds as those components become available.
+behavior. Phase 1.2 adds Ruff, mypy, unit tests, real PostgreSQL transaction
+tests and package/lock checks on Linux, plus Windows package tests. Migrations
+and container builds are added when their corresponding phases are implemented.
 
 ## Design and handoff documents
 

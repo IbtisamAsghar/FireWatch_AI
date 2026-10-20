@@ -33,6 +33,16 @@ for approved origins; credentialed cookies are disabled. Phase 1.5 adds the thre
 authenticated server-side operator mutations with required
 idempotency keys. They queue durable work; executors remain later modules.
 
+## Reproducible Module 1 handoff
+
+Run `python -m scripts.demo_api --port 8001` for an isolated synthetic Swagger demo;
+see [walkthrough](demo-walkthrough.md) for all 15 reads and safe cleanup. Regular
+application data stays untouched. `python -m scripts.export_handoff` generates
+`artifacts/handoff` with the real 18-operation OpenAPI, actual sample/error responses,
+complete machine field dictionary, demo UUID index, human docs and version/checksum
+manifest. CI publishes `firewatch-frontend-handoff`. Synthetic fixture scores are
+not predictions, and no token is included. See [Phase 1.6 acceptance](phase-1.6-checklist.md).
+
 ## Choose a run explicitly
 
 1. `GET /api/v1/regions` lists region UUIDs, bounding boxes, actual available

@@ -413,14 +413,18 @@ Implementation, operator contracts and acceptance are documented in
 
 ### Phase 1.6: Acceptance and handoff
 
-- [ ] A clean database migrates and seeds successfully.
-- [ ] Swagger `/docs` can demonstrate all read operations with sample data.
-- [ ] Protected operations reject missing/wrong tokens and enforce idempotency.
-- [ ] API never returns cross-run/live-replay mixed results.
-- [ ] API contracts, error format, and field dictionary are committed.
-- [ ] Contract tests cover timestamps, units, pagination, GeoJSON order, and null probability behavior.
+- [x] A clean database migrates and seeds successfully.
+- [x] Swagger `/docs` can demonstrate all read operations with sample data.
+- [x] Protected operations reject missing/wrong tokens and enforce idempotency.
+- [x] API never returns cross-run/live-replay mixed results.
+- [x] API contracts, error format, and field dictionary are committed.
+- [x] Contract tests cover timestamps, units, pagination, GeoJSON order, and null probability behavior.
 
 Deliverable: running API skeleton, database migrations, validated DTOs, OpenAPI specification, and API test suite.
+
+Acceptance evidence and reproducible commands: `docs/phase-1.6-checklist.md`.
+The Swagger walkthrough and frontend bundle use explicitly synthetic isolated fixtures;
+real ingestion, scoring, replay execution and chain integration remain later modules.
 
 ## 7. Module 2 / Member 2: Satellite ingestion and historical data
 

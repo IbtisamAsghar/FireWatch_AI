@@ -152,12 +152,22 @@ class HotspotView(DTO):
     longitude: Longitude
     member_count: int
     latest_detection_at: UTCDateTime
-    frp_max_mw: float | None
-    frp_sum_mw: float | None
+    frp_max_mw: float | None = Field(
+        ge=0, description="Maximum fire radiative power in MW; null means missing."
+    )
+    frp_sum_mw: float | None = Field(
+        ge=0, description="Sum of fire radiative power in MW; null means missing."
+    )
     priority: Priority
-    priority_score: float
+    priority_score: float = Field(
+        ge=0, description="Version-specific ranking index; not an escalation probability."
+    )
     score_kind: ScoreKind
-    escalation_probability: float | None
+    escalation_probability: float | None = Field(
+        ge=0,
+        le=1,
+        description="Calibrated probability in [0,1] only when supported; otherwise null.",
+    )
     scorer_version: str
     feature_version: str
     scored_at: UTCDateTime
@@ -175,7 +185,9 @@ class HotspotPage(RunContext):
 
 class Geometry(DTO):
     type: Literal["Point"] = "Point"
-    coordinates: tuple[Longitude, Latitude]
+    coordinates: tuple[Longitude, Latitude] = Field(
+        description="WGS84 decimal degrees in longitude, latitude order."
+    )
 
 
 class GeoJSONFeature(DTO):
@@ -291,7 +303,9 @@ class HotspotDetail(RunContext):
     algorithm_version: str
     features: dict[str, JsonValue]
     missing_flags: dict[str, bool]
-    units: dict[str, str]
+    units: dict[str, str] = Field(
+        description="Feature-name to explicit unit mapping; missing values are not zero."
+    )
     feature_hash: str
     explanation: dict[str, JsonValue]
     evidence: AlertView | None

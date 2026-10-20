@@ -1,0 +1,13 @@
+{
+  "schema_version": "synthetic-demo-v1",
+  "synthetic": true,
+  "license": "MIT",
+  "notice": "Invented software acceptance fixtures. No real fire observations or trained predictions.",
+  "live_as_of": "2025-06-11T12:00:00Z",
+  "replay_as_of": "2025-06-10T12:00:00Z",
+  "snapshots": [
+    {"name": "live-critical", "mode": "live", "latitude": 34.0, "longitude": 71.0, "frp_mw": 42.0, "temperature_c": 32.0, "wind_ms": 5.0, "priority": "CRITICAL", "priority_score": 0.95},
+    {"name": "live-low", "mode": "live", "latitude": 35.0, "longitude": 73.0, "frp_mw": null, "temperature_c": null, "wind_ms": null, "priority": "LOW", "priority_score": 0.15},
+    {"name": "replay-high", "mode": "replay", "latitude": 33.5, "longitude": 72.0, "frp_mw": 12.0, "temperature_c": 28.0, "wind_ms": 3.0, "priority": "HIGH", "priority_score": 0.70}
+  ]
+}

@@ -233,6 +233,7 @@ __marimo__/
 !/data/sample/
 /data/sample/*
 !/data/sample/README.md
+!/data/sample/synthetic-demo-v1.json
 /models/*
 !/models/README.md
 *.joblib

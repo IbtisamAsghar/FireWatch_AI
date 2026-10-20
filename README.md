@@ -10,13 +10,15 @@ Phase 1.4 adds all 15 typed read APIs: run-scoped ranking, detail, summary,
 GeoJSON, source freshness, replay history, saved evidence verification and
 authenticated job progress. Phase 1.5 adds authenticated, bounded, idempotent
 refresh/replay/anchor job submission, atomic anchor outbox writes and log redaction.
-The native PostgreSQL schema and immutable publication
+Phase 1.6 adds isolated synthetic Swagger fixtures, explicit frontend contract tests
+and a generated handoff bundle. The native PostgreSQL schema and immutable publication
 rules from Phase 1.3 remain in use. OpenAPI is exported as a CI artifact.
 Ingestion, worker orchestration, scorer execution and chain adapters remain later
 modules. See the [implementation plan](FireWatchImplementationPlan.md),
 [Phase 1.4 acceptance](docs/phase-1.4-checklist.md),
 [Phase 1.5 acceptance](docs/phase-1.5-checklist.md), [operator API](docs/operator-api.md), and
-[frontend API handoff](docs/frontend-handoff.md). No real-data coverage,
+[frontend API handoff](docs/frontend-handoff.md),
+[Phase 1.6 acceptance](docs/phase-1.6-checklist.md) and [Swagger demo](docs/demo-walkthrough.md). No real-data coverage,
 trained-model accuracy or team sign-off is implied.
 
 ## Start locally on Windows
@@ -70,7 +72,8 @@ is disabled until source coverage is verified. See [schema and publication rules
 - `configs`: reviewed non-secret configuration; region selection is pending.
 - `data/sample`: small, sanitized, explicitly licensed fixtures only.
 - `models`: documentation only until trusted bundles are approved.
-- `tests/unit`, `integration`: bootstrap tests; contract/e2e suites expand in later phases.
+- `tests/unit`, `integration`, `contract`: foundation, security and API acceptance;
+  processing end-to-end suites remain later work.
 - `migrations`: Member 1 owns revision numbering and integration.
 
 ## Collaboration and validation

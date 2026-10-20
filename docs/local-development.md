@@ -72,7 +72,9 @@ Liveness checks the API process only. It remains successful during a database
 outage; use `firewatch db-check` separately. Invalid required configuration blocks
 startup with field names and no secret values. Settings load once per process;
 restart after changing `.env`. CORS uses explicit configured origins, without
-browser credentials. Public/operator APIs and readiness arrive in later phases.
+browser credentials. Readiness is available at `/health/ready`; the 15 read and three protected operator
+operations are implemented. See [synthetic Swagger walkthrough](demo-walkthrough.md)
+and [operator API](operator-api.md).
 
 ## Database lifecycle and backups
 

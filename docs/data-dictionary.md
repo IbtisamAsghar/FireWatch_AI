@@ -126,3 +126,16 @@ anchor adds outbox/alert IDs, configured chain/contract, network identity and or
 evidence digest. No key, token, RPC URL or source download URL is accepted/stored.
 The jobs `payload_hash` is the canonical request identity digest for idempotency,
 not an integrity signature or checksum of the enriched worker payload.
+
+## Committed public field dictionary
+
+[api-field-dictionary.json](api-field-dictionary.json) contains every OpenAPI
+request/response/enum component, required field, nullable type, constraint and
+description, with coordinate/time/unit notes. Local component references retain
+their OpenAPI paths under `components`. A pure contract test rejects drift between
+this committed snapshot and the generated schema on Linux and Windows.
+
+After an intentional API change, regenerate with
+`python scripts/export_openapi.py --field-dictionary docs/api-field-dictionary.json`,
+review and commit the dictionary with the source change. The frontend bundle uses
+the same generator and also includes human-readable contracts and examples.

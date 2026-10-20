@@ -16,7 +16,8 @@ strings, digests are lowercase 64-character SHA-256 hex, and identifiers are UUI
 `contracts-v1` is an enforced literal, not an arbitrary client-provided label.
 Run-bound processing/scoring outputs carry run ID, mode, cutoff, schema and
 feature versions. Source records created before a run use their own asset/batch
-lineage. API serializers and REST business endpoints are Phase 1.4 work.
+lineage. Phase 1.4 implements REST serializers in `schemas/api.py` as `api-v1`;
+see [frontend handoff](frontend-handoff.md) for endpoint, filter and error contracts.
 
 ## Member 2: satellite and source inputs
 
@@ -96,3 +97,20 @@ in Phases 1.4/1.5.
 connection, and `seed-regions --config configs/regions.yaml` creates/updates regions
 atomically with stable IDs. Invalid configuration exits 2; database failure exits
 1 without exposing credentials or driver details. CLI help needs no secrets.
+
+## Phase 1.4 producer metadata and public projections
+
+Completed outputs remain immutable. Before completion, a pipeline may save
+`input_asset_manifest.freshness.latest_weather_valid_at` and
+`latest_retrieved_at` as timezone-aware ISO strings for run-specific freshness.
+Missing metadata remains null, never substituted from unrelated weather rows.
+Replay scenarios expose completed runs only when the saved
+`replay_scenario` object contains a slug `id` and optional safe `name` and
+`description`. The API does not accept arbitrary replay imports or create runs.
+
+Shared read selection joins snapshots, the run's selected scorer, matching
+features and optional alert. Lists, GeoJSON and summary use the same predicates.
+Read sessions issue `SET TRANSACTION READ ONLY`; no GET publishes a run or job.
+Evidence API payloads are credential-safe projections, while SHA-256 verification
+always uses the immutable original canonical bytes. Source-file/artifact verification
+is explicitly not performed by the alert verification endpoint.

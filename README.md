@@ -6,14 +6,15 @@ and rank hotspot clusters for analyst review.
 
 ## Current status
 
-Phase 1.3 adds 19 SQLAlchemy tables, versioned DTOs, Alembic migrations,
-idempotent region seeding and atomic completed-run publication. PostgreSQL guards
-protect saved evidence, completed outputs and live/replay separation. The Python
-package, settings, CLI and liveness bootstrap from Phase 1.2 remain runnable.
-Ingestion, worker orchestration, business read APIs, ML and chain adapters remain
-later work. See the [implementation plan](FireWatchImplementationPlan.md) and
-[Phase 1.3 acceptance](docs/phase-1.3-checklist.md). DTOs are ready for team review;
-no team approval or source-coverage claim is implied.
+Phase 1.4 adds all 15 typed read APIs: run-scoped ranking, detail, summary,
+GeoJSON, source freshness, replay history, saved evidence verification and
+authenticated job progress. The native PostgreSQL schema and immutable publication
+rules from Phase 1.3 remain in use. OpenAPI is exported as a CI artifact.
+Ingestion, worker orchestration, scorer execution and chain adapters remain later
+modules. See the [implementation plan](FireWatchImplementationPlan.md),
+[Phase 1.4 acceptance](docs/phase-1.4-checklist.md), and
+[frontend API handoff](docs/frontend-handoff.md). No real-data coverage,
+trained-model accuracy or team sign-off is implied.
 
 ## Start locally on Windows
 
@@ -41,7 +42,11 @@ service registration is required. The database runs as a per-user background pro
 
 In another PowerShell window, call
 `Invoke-RestMethod http://127.0.0.1:8000/health/live`; expect `{"status":"ok"}`.
-Swagger is available at `http://127.0.0.1:8000/docs`. Liveness never queries the
+Readiness is at `http://127.0.0.1:8000/health/ready`, regions at
+`http://127.0.0.1:8000/api/v1/regions`, and Swagger at
+`http://127.0.0.1:8000/docs`. Business reads are deliberately public on this local
+prototype (`PUBLIC_READS_ENABLED=true`); set it to false for private deployments.
+Job details always require the operator bearer token; never ship it to a browser. Liveness never queries the
 database or providers. Required secrets are validated at application startup.
 
 See [native development instructions](docs/local-development.md) for lifecycle,

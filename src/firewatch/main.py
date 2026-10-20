@@ -2,12 +2,18 @@
 
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
+from datetime import UTC, datetime
+from typing import Any
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.openapi.utils import get_openapi
 from pydantic import BaseModel
 from starlette.types import ASGIApp, Receive, Scope, Send
 
+from firewatch.api.errors import install_errors
+from firewatch.api.presentation import ArtifactInspector
+from firewatch.api.routes.reads import health, operator, router
 from firewatch.config import Settings, get_settings
 from firewatch.db.session import Database
 
@@ -32,7 +38,7 @@ class ConfiguredCORS:
             allow_origins=settings.cors_origins,
             allow_credentials=False,
             allow_methods=["GET"],
-            allow_headers=["Content-Type"],
+            allow_headers=["Content-Type", "Authorization"],
         )
         await middleware(scope, receive, send)
 
@@ -42,6 +48,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     async def lifespan(application: FastAPI) -> AsyncIterator[None]:
         configured = settings if settings is not None else get_settings()
         application.state.settings = configured
+        application.state.clock = lambda: datetime.now(UTC)
+        application.state.artifacts = ArtifactInspector()
+        application.state.anchor_reader = None
         database = Database(configured)
         application.state.database = database
         try:
@@ -58,11 +67,36 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         lifespan=lifespan,
     )
     application.add_middleware(ConfiguredCORS)
+    install_errors(application)
+    application.include_router(health)
+    application.include_router(router)
+    application.include_router(operator)
 
     @application.get("/health/live", response_model=LivenessResponse, operation_id="health_live")
     def live() -> LivenessResponse:
         return LivenessResponse()
 
+    def openapi() -> dict[str, Any]:
+        if application.openapi_schema is None:
+            document = get_openapi(
+                title=application.title,
+                version=application.version,
+                description=application.description,
+                routes=application.routes,
+            )
+            for path, operations in document["paths"].items():
+                if path.startswith("/api/v1/") and not path.startswith("/api/v1/jobs/"):
+                    for operation in operations.values():
+                        if isinstance(operation, dict) and "operationId" in operation:
+                            operation["security"] = [{}, {"OperatorBearer": []}]
+                            operation["description"] = (
+                                "Public when PUBLIC_READS_ENABLED=true (local prototype default); "
+                                "otherwise requires the server operator bearer token."
+                            )
+            application.openapi_schema = document
+        return application.openapi_schema
+
+    application.openapi = openapi  # type: ignore[method-assign]
     return application
 
 

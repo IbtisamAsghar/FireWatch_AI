@@ -32,6 +32,7 @@ class Settings(BaseSettings):
     postgres_user: str = "firewatch"
     postgres_password: SecretStr | None = None
     firms_map_key: SecretStr | None = None
+    public_reads_enabled: bool = True
     cors_origins: list[str] = Field(default_factory=list)
     regions_config: Path = Path("configs/regions.yaml")
     raw_data_dir: Path = Path("data/raw")

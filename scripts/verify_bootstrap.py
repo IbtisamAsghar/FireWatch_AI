@@ -77,12 +77,21 @@ def main() -> int:
                 if process.poll() is not None or time.monotonic() > deadline:
                     raise RuntimeError("API did not become live within 20 seconds")
                 time.sleep(0.2)
-            for route in ("/docs", "/openapi.json"):
+            for route in (
+                "/health/ready",
+                "/api/v1/regions",
+                "/api/v1/status",
+                "/docs",
+                "/openapi.json",
+            ):
                 with urllib.request.urlopen(
                     f"http://127.0.0.1:{port}{route}", timeout=3
                 ) as response:
                     assert response.status == 200
-            print("HTTP smoke passed: liveness, Swagger, OpenAPI; app role is unprivileged.")
+            print(
+                "HTTP smoke passed: liveness, readiness, regions, status, Swagger, OpenAPI; "
+                "app role is unprivileged."
+            )
         finally:
             process.terminate()
             process.wait(timeout=10)

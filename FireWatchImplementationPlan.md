@@ -380,13 +380,16 @@ All routes use `/api/v1` except health routes. Implement typed responses and sta
 | `GET /api/v1/alerts/{alert_id}/verify` | Read-only hash/anchor verification; no new transaction |
 | `GET /api/v1/jobs/{job_id}` | Operator-authenticated progress and sanitized failure detail |
 
-- [ ] Default page size 50, maximum 200; cap GeoJSON features at 2,000 with explicit truncation metadata.
-- [ ] Sort by descending priority score, then snapshot UUID for stable pagination.
-- [ ] Return `total`, `limit`, `offset`, `run_id`, `mode`, `as_of`, and freshness metadata.
-- [ ] Return empty collections for a valid completed run with no detections.
-- [ ] Use 404 for unknown IDs, 422 for invalid filters, and 503 for required unavailable dependencies.
-- [ ] Do not fall back silently from requested replay to live data.
-- [ ] Export `/openapi.json` as a CI artifact for frontend integration.
+- [x] Default page size 50, maximum 200; cap GeoJSON features at 2,000 with explicit truncation metadata.
+- [x] Sort by descending priority score, then snapshot UUID for stable pagination.
+- [x] Return `total`, `limit`, `offset`, `run_id`, `mode`, `as_of`, and freshness metadata.
+- [x] Return empty collections for a valid completed run with no detections.
+- [x] Use 404 for unknown IDs, 422 for invalid filters, and 503 for required unavailable dependencies.
+- [x] Do not fall back silently from requested replay to live data.
+- [x] Export `/openapi.json` as a CI artifact for frontend integration.
+
+Implementation and native PostgreSQL acceptance are documented in
+`docs/phase-1.4-checklist.md` and `docs/frontend-handoff.md`.
 
 ### Phase 1.5: Operator endpoints and security
 

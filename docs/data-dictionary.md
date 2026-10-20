@@ -96,3 +96,21 @@ digest, confirmation status and local/testnet/mainnet network kind. Local chain
 identity does not imply independent notarization. Anchor failures do not mutate
 evidence or block backend results. No blockchain service is required for seeding
 or migration.
+
+## api-v1 read responses
+
+The generated OpenAPI schema is the exact response field dictionary.
+Run-bound responses contain `run_id`, `mode`, `as_of`, `data_completeness`,
+`freshness`, `schema_version=api-v1` and the required research notice.
+Freshness includes evaluation/reference UTC times, observation/weather/retrieval/
+scoring/completion times, age in hours, nullable stale flags and quality flags.
+Historical age uses the replay cutoff. A null age or stale flag means unknown.
+
+Snapshot coordinates are degrees; GeoJSON orders longitude before latitude.
+`frp_max_mw`/`frp_sum_mw` use MW; feature detail carries explicit units and
+missing flags. Scores remain ranking values; only `score_kind=probability`
+supports a non-null escalation probability. Page totals precede pagination;
+GeoJSON includes the bounded return count and explicit truncation boolean.
+Source status freshness uses retrieval age, so an empty valid fetch can be fresh.
+Alert hashes identify original canonical bytes, not their public payload projection.
+See [frontend handoff](frontend-handoff.md) for enums, errors and examples.

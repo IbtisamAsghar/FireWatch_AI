@@ -64,11 +64,18 @@ jobs:
           python -m pip check
       - name: Formatting, lint and types
         run: |
-          ruff check src tests migrations scripts/native_postgres.py scripts/verify_bootstrap.py scripts/check_locks.py
-          ruff format --check src tests migrations scripts/native_postgres.py scripts/verify_bootstrap.py scripts/check_locks.py
+          ruff check src tests migrations scripts/native_postgres.py scripts/verify_bootstrap.py scripts/check_locks.py scripts/export_openapi.py
+          ruff format --check src tests migrations scripts/native_postgres.py scripts/verify_bootstrap.py scripts/check_locks.py scripts/export_openapi.py
           mypy
       - name: Unit, PostgreSQL migration and integrity tests
         run: python -m pytest --cov=firewatch --cov-report=term-missing --junitxml=test-results.xml
+      - name: Export frontend OpenAPI contract
+        run: python scripts/export_openapi.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: firewatch-openapi
+          path: artifacts/openapi.json
+          if-no-files-found: error
       - name: Verify CLI and build distributions
         run: |
           firewatch --help

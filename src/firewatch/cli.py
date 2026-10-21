@@ -497,3 +497,87 @@ def refresh_firms_command(
         if database is not None:
             database.close()
         close()
+
+
+@app.command("import-weather")
+def import_weather_command(
+    latitude: Annotated[list[float], typer.Option("--latitude")],
+    longitude: Annotated[list[float], typer.Option("--longitude")],
+    start: Annotated[str, typer.Option("--start", help="Inclusive aware UTC hourly timestamp.")],
+    end: Annotated[str, typer.Option("--end", help="Inclusive aware UTC hourly timestamp.")],
+    product: Annotated[str, typer.Option("--product")] = "historical_forecast",
+    source_version: Annotated[str, typer.Option("--source-version")] = "weather-v1",
+    offline: Annotated[bool, typer.Option("--offline")] = False,
+) -> None:
+    """Cache up to eight cells/seven days; default historical mode never uses live weather."""
+    from firewatch.repositories.weather import get_weather
+    from firewatch.sources.open_meteo import OpenMeteoClient, WeatherRequest, weather_cell
+    from firewatch.sources.weather_budget import WeatherBudget, WeatherError
+
+    database = None
+    client = None
+    try:
+        if len(latitude) != len(longitude) or not 1 <= len(latitude) <= 8:
+            raise ValueError("Pair up to eight coordinates")
+        cells = {
+            cell.key: cell
+            for cell in (
+                weather_cell(lat, lon) for lat, lon in zip(latitude, longitude, strict=True)
+            )
+        }
+        request = WeatherRequest.model_validate(
+            dict(
+                cells=list(cells.values()),
+                start=start,
+                end=end,
+                product=product,
+                model="era5" if product == "reanalysis" else "gfs_seamless",
+                source_version=source_version,
+                mode="live" if product == "live" else "replay",
+            )
+        )
+        settings = get_settings()
+        if settings.weather_cache_grid_degrees != 0.1:
+            raise ValueError("This weather grid version requires 0.1 degrees")
+        database = Database(settings)
+        if not offline:
+            client = OpenMeteoClient(
+                settings.raw_data_dir / "weather",
+                WeatherBudget(settings.raw_data_dir.parent / "weather-budget.sqlite"),
+            )
+        series = get_weather(database.engine, request, client=client, offline=offline)
+        typer.echo(
+            json.dumps(
+                {
+                    "status": "cached",
+                    "product": product,
+                    "cells": len(cells),
+                    "records": len(series.records),
+                    "missing_hours": sum(
+                        "weather_hour_missing" in r.quality_flags for r in series.records
+                    ),
+                    "source_assets": sorted({str(r.asset_id) for r in series.records}),
+                }
+            )
+        )
+    except (
+        ValueError,
+        OSError,
+        KeyError,
+        TypeError,
+        sqlite3.Error,
+        WeatherError,
+        ConfigurationError,
+    ):
+        typer.echo(
+            "Weather import failed: check interval, product, cache, source or budget.", err=True
+        )
+        raise typer.Exit(1) from None
+    except SQLAlchemyError:
+        typer.echo("Weather database unavailable; run migrations and retry.", err=True)
+        raise typer.Exit(1) from None
+    finally:
+        if client is not None:
+            client.close()
+        if database is not None:
+            database.close()

@@ -507,17 +507,27 @@ Acceptance: [Phase 2.6 evidence](docs/phase-2.6-checklist.md) and [verified sour
 
 ### Phase 3.1: Weather clients and caching
 
-- [ ] Implement separate live, historical-forecast, and optional reanalysis adapters behind one weather DTO.
-- [ ] Request explicit UTC timestamps and m/s wind; validate returned unit metadata.
-- [ ] Fetch historical weather for historical hotspot dates. Never use live weather during replay.
-- [ ] Cache at documented cell centers, initially a 0.1-degree grid; store requested and returned coordinates and grid version.
-- [ ] Cache hourly series by provider/product/model, cell, time interval, and source version.
-- [ ] Batch cell requests when supported; use conservative concurrency and shared request budgets.
-- [ ] Select the last completed weather interval ending at or before T; define precipitation interval semantics from provider metadata.
-- [ ] Build rolling 24-hour precipitation only when all required hourly intervals exist.
-- [ ] Track stale, missing, fallback-product, and interpolated data explicitly.
+- [x] Implement separate live, historical-forecast, and optional reanalysis adapters behind one weather DTO.
+- [x] Request explicit UTC timestamps and m/s wind; validate returned unit metadata.
+- [x] Fetch historical weather for historical hotspot dates. Never use live weather during replay.
+- [x] Cache at documented cell centers, initially a 0.1-degree grid; store requested and returned coordinates and grid version.
+- [x] Cache hourly series by provider/product/model, cell, time interval, and source version.
+- [x] Batch cell requests when supported; use conservative concurrency and shared request budgets.
+- [x] Select the last completed weather interval ending at or before T; define precipitation interval semantics from provider metadata.
+- [x] Build rolling 24-hour precipitation only when all required hourly intervals exist.
+- [x] Track stale, missing, fallback-product, and interpolated data explicitly.
 
 Historical Forecast is preferred to reduce product differences from live model weather. Its stitched archive does not alone prove what was available at an exact historical issue time. Exact issue-time backtesting requires individual run/availability metadata and is outside the first retrospective MVP. [S5]
+
+Implementation: [weather clients and cache guide](docs/weather-cache.md),
+[Phase 3.1 acceptance](docs/phase-3.1-checklist.md), and
+[real historical cache evidence](docs/phase-3.1-smoke.json). Separate live,
+historical-forecast and explicit ERA5 reanalysis adapters share the weather DTO.
+Immutable PostgreSQL revisions, bounded batched requests, shared request budgets,
+past-only selection and complete-hour rainfall checks are implemented. Native
+provider interpolation is marked unknown; no local interpolation is performed.
+Climate context, clustering, features, worker execution and replay orchestration
+remain the following phases.
 
 ### Phase 3.2: Precompute climate context
 

@@ -1,0 +1,36 @@
+{
+  "schema_version": "weather-phase-3.1-smoke-v1",
+  "recorded_at": "2026-10-21T17:56:41.574860+00:00",
+  "synthetic": false,
+  "product": "historical_forecast",
+  "model": "gfs_seamless",
+  "cells": 2,
+  "records": 48,
+  "offline_cache_identical": true,
+  "precipitation_24h_mm_first_cell": 0.0,
+  "source_assets": [
+    "f233767d-1ed4-45d5-874c-47cb2ed626ff"
+  ],
+  "all_requested_units_verified": true,
+  "region_activated": false,
+  "pipeline_run_created": false,
+  "checks": {
+    "full_unit_contract_postgresql_suite_passed": 484,
+    "new_weather_tests": 72,
+    "http_health_api_auth_smoke": "passed",
+    "real_offline_cli": "passed",
+    "ruff_lint": "passed",
+    "ruff_format": "passed",
+    "strict_mypy_source_files": 64,
+    "scaffold_links_git_exclusions": "passed",
+    "dependency_lock_consistency": "passed",
+    "source_and_wheel_build": "passed",
+    "wheel_weather_modules": "passed",
+    "git_diff_check": "passed",
+    "configured_secret_scan_files": 188,
+    "hosted_ci": "not_run"
+  },
+  "warnings": [
+    "Existing Starlette TestClient/httpx deprecation warning."
+  ]
+}

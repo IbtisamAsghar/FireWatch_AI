@@ -15,8 +15,13 @@ and a generated handoff bundle. The native PostgreSQL schema and immutable publi
 rules from Phase 1.3 remain in use. OpenAPI is exported as a CI artifact.
 Phase 2.1 source reconnaissance is recorded: NOAA availability, a valid empty recent sample, two NOAA-20 SP historical samples, and ten complete historical-weather point checks. The candidate region remains disabled. Both seasonal NOAA-20 CSV archives (`828115` and `828116`) are delivered and imported: 17,862 distinct observations. Independent source review remains pending.
 Phase 2.2 adds the reusable bounded FIRMS client and `firewatch fetch-firms`, with retry/backoff, persistent quota guards, and raw evidence manifests. See [FIRMS client](docs/firms-client.md) and [Phase 2.2 acceptance](docs/phase-2.2-checklist.md).
-Ingestion, worker orchestration, scorer execution and chain adapters remain later
-modules. See the [implementation plan](FireWatchImplementationPlan.md),
+Phases 2.3–2.6 add normalization/revision selection, resumable seasonal imports,
+48-hour refresh and a verified source handoff. Phase 3.1 adds separate weather
+adapters, immutable PostgreSQL caching, offline reads and complete-hour rainfall
+selection. See [weather cache](docs/weather-cache.md) and
+[Phase 3.1 acceptance](docs/phase-3.1-checklist.md).
+Climate baselines, clustering, features, worker orchestration, scorer execution
+and chain adapters remain later modules. See the [implementation plan](FireWatchImplementationPlan.md),
 [Phase 1.4 acceptance](docs/phase-1.4-checklist.md),
 [Phase 1.5 acceptance](docs/phase-1.5-checklist.md), [operator API](docs/operator-api.md), and
 [frontend API handoff](docs/frontend-handoff.md),

@@ -13,7 +13,7 @@ refresh/replay/anchor job submission, atomic anchor outbox writes and log redact
 Phase 1.6 adds isolated synthetic Swagger fixtures, explicit frontend contract tests
 and a generated handoff bundle. The native PostgreSQL schema and immutable publication
 rules from Phase 1.3 remain in use. OpenAPI is exported as a CI artifact.
-Phase 2.1 source reconnaissance is recorded: NOAA availability, a valid empty recent sample, two NOAA-20 SP historical samples, and ten complete historical-weather point checks. The candidate region remains disabled. Both seasonal NOAA-20 CSV archive requests are submitted (`828115` and `828116`); delivery and independent source review are pending.
+Phase 2.1 source reconnaissance is recorded: NOAA availability, a valid empty recent sample, two NOAA-20 SP historical samples, and ten complete historical-weather point checks. The candidate region remains disabled. Both seasonal NOAA-20 CSV archives (`828115` and `828116`) are delivered and imported: 17,862 distinct observations. Independent source review remains pending.
 Phase 2.2 adds the reusable bounded FIRMS client and `firewatch fetch-firms`, with retry/backoff, persistent quota guards, and raw evidence manifests. See [FIRMS client](docs/firms-client.md) and [Phase 2.2 acceptance](docs/phase-2.2-checklist.md).
 Ingestion, worker orchestration, scorer execution and chain adapters remain later
 modules. See the [implementation plan](FireWatchImplementationPlan.md),
@@ -125,3 +125,12 @@ Add `--persist --region <name>` to upsert into an existing matching region.
 See the [normalization guide](docs/firms-normalization.md) for quality policies,
 revision selection and frozen run inputs, and the [acceptance checklist](docs/phase-2.3-checklist.md)
 for verification evidence.
+
+## Historical FIRMS import (Phase 2.4)
+
+`firewatch import-firms --path <local.csv> --manifest <provenance.json>` imports
+trusted local data with streaming validation, bounded commits, resumable database
+checkpoints and original-file preservation. Add `--dry-run` for offline inspection.
+See the [operator guide](docs/firms-archive-import.md),
+[acceptance checklist](docs/phase-2.4-checklist.md) and
+[real seasonal inventory](docs/historical-data-inventory.json).

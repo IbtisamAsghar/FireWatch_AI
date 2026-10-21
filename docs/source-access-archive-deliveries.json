@@ -1,0 +1,39 @@
+{
+  "schema_version": "archive-delivery-evidence-v1",
+  "verified_at": "2026-10-21T11:04:32.210115+00:00",
+  "deliveries": [
+    {
+      "request_id": "828115",
+      "source_url": "https://firms.modaps.eosdis.nasa.gov/data/download/DL_FIRE_J1V-C2_828115.zip",
+      "retrieved_at": "2026-10-21T10:57:22.529367+00:00",
+      "zip_sha256": "781a3a30c71e0f330db242f9ad7841a6bfeb1feaae6a97b1a376d016a9bf0cef",
+      "zip_bytes": 92986,
+      "csv_sha256": "1ac5d688796019d10341d12bc04fd22e4005f101727378ccc3ecb43c8020e08f",
+      "csv_member": "fire_archive_J1V-C2_828115.csv",
+      "status": "downloaded_and_imported",
+      "import_id": "dcef1731-e361-5a9e-b21b-386fa33741ef",
+      "accepted_count": 5496,
+      "rejected_count": 0,
+      "declared_calendar_days": 186,
+      "sample_overlap_rows": 1367,
+      "brightness_alias_mismatches_in_overlap": 0
+    },
+    {
+      "request_id": "828116",
+      "source_url": "https://firms.modaps.eosdis.nasa.gov/data/download/DL_FIRE_J1V-C2_828116.zip",
+      "retrieved_at": "2026-10-21T10:57:24.496800+00:00",
+      "zip_sha256": "49fcdac2f9d5cc39beb76476c9f968d7a4728b362884d53b3de8d48f149c2e94",
+      "zip_bytes": 199374,
+      "csv_sha256": "34f1ce6c4fb1f6b9b0553239fff977acabaab4aca65e3f3d70404cbc04fd7af3",
+      "csv_member": "fire_archive_J1V-C2_828116.csv",
+      "status": "downloaded_and_imported",
+      "import_id": "1e19cf50-bfdb-5035-9c0a-6cf41742bc1b",
+      "accepted_count": 12366,
+      "rejected_count": 0,
+      "declared_calendar_days": 186,
+      "sample_overlap_rows": 5037,
+      "brightness_alias_mismatches_in_overlap": 0
+    }
+  ],
+  "source": "User-provided NASA download links; HTTPS downloads verified as ZIP, original ZIP/CSV bytes preserved."
+}

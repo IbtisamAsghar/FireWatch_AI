@@ -31,11 +31,13 @@
     }
   ],
   "timestamp_note": "Submission times are copied exactly from the portal; its display does not label a timezone.",
-  "delivery_status": "pending",
+  "delivery_status": "delivered_and_imported",
   "limitations": [
     "Submission does not prove approval, completed processing, delivery, file contents or full-season data completeness.",
     "Check the delivered product designation, processing version, CSV schema and checksums before later archive import.",
     "The configured one-day margins support later feature and label windows; additional history may be needed.",
     "Account email, login information and credentials are omitted."
-  ]
+  ],
+  "delivery_evidence_report": "docs/source-access-archive-deliveries.json",
+  "portal_status_note": "Request portal_status values are historical observations from submission, not current delivery state."
 }

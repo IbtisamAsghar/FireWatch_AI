@@ -8,7 +8,7 @@ import random
 import re
 import sqlite3
 import time
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from contextlib import closing
 from dataclasses import dataclass
 from datetime import UTC, date, datetime, timedelta
@@ -514,13 +514,9 @@ def parse_firms_csv(
     try:
         reader = csv.DictReader(io.StringIO(body.decode("utf-8-sig")), strict=True)
         fields = reader.fieldnames
-        if (
-            not fields
-            or len(fields) != len(set(fields))
-            or not REQUIRED_COLUMNS <= set(fields)
-            or any(not x or len(x) > 100 for x in fields)
-        ):
+        if not valid_firms_columns(fields):
             raise ValueError("Invalid header")
+        assert fields is not None
         rows: list[dict[str, str]] = []
         for row in reader:
             if len(rows) >= max_rows:
@@ -531,3 +527,16 @@ def parse_firms_csv(
         return list(fields), rows
     except (UnicodeError, csv.Error, ValueError):
         raise FirmsError("MALFORMED_CSV", retryable=True) from None
+
+
+def valid_firms_columns(fields: Sequence[str] | None) -> bool:
+    if (
+        not fields
+        or len(fields) != len(set(fields))
+        or any(not name or len(name) > 100 for name in fields)
+    ):
+        return False
+    columns = set(fields)
+    base = REQUIRED_COLUMNS - {"bright_ti4", "bright_ti5"}
+    brightness_pairs = ({"bright_ti4", "bright_ti5"}, {"brightness", "bright_t31"})
+    return base <= columns and any(pair <= columns for pair in brightness_pairs)

@@ -438,7 +438,7 @@ real ingestion, scoring, replay execution and chain integration remain later mod
 - [x] Download and inspect one recent NOAA-20 NRT CSV (valid header-only response) and two three-day NOAA-20 SP historical samples; save sanitized metadata/checksums.
 - [x] Keep NOAA-20 consistent for the primary cohort; keep NOAA-21 as comparison-only until separate comparisons and human review.
 
-See [Phase 2.1 acceptance](docs/phase-2.1-checklist.md), [source-access study](docs/source-access.md), and [sanitized provider evidence](docs/source-access-firms.json). The candidate stays disabled. Both seasonal orders were observed as `Submitted`; [archive request evidence](docs/source-access-archive-requests.json) records the exact parameters. NASA delivery and independent human review remain outstanding; seasonal ingestion is Phase 2.4 work.
+See [Phase 2.1 acceptance](docs/phase-2.1-checklist.md), [source-access study](docs/source-access.md), and [sanitized provider evidence](docs/source-access-firms.json). The candidate stays disabled. Both seasonal orders were observed as `Submitted`; [archive request evidence](docs/source-access-archive-requests.json) records the exact parameters. Both seasonal archives were subsequently delivered and imported in Phase 2.4; independent human source review remains outstanding.
 
 ### Phase 2.2: Implement the FIRMS client
 
@@ -469,14 +469,16 @@ Implementation: [normalization and revision-selection guide](docs/firms-normaliz
 
 ### Phase 2.4: Build historical import
 
-- [ ] Request several months/seasons of archive data if available; keep an untouched original copy.
-- [ ] Implement `firewatch import-firms --path ... --manifest ...` for trusted local CSV input.
-- [ ] The manifest records source URL, product, sensor, date interval, region, checksum, retrieval time, and license/attribution reference.
-- [ ] Reuse the exact live normalizer; chunk large files and commit in bounded batches.
-- [ ] Detect missing date intervals, mixed products, duplicate revisions, and unexpectedly empty periods.
-- [ ] Import at least 24 hours before the earliest feature cutoff and 24 hours after the last label cutoff; add weather/baseline history separately.
-- [ ] Create a data inventory by month, sensor, class, region, and number of distinct fire periods.
-- [ ] Hand Member 4 a real-data manifest; never substitute invented labels for missing history.
+- [x] Request several months/seasons of archive data if available; keep an untouched original copy.
+- [x] Implement `firewatch import-firms --path ... --manifest ...` for trusted local CSV input.
+- [x] The manifest records source URL, product, sensor, date interval, region, checksum, retrieval time, and license/attribution reference.
+- [x] Reuse the exact live normalizer; chunk large files and commit in bounded batches.
+- [x] Detect missing date intervals, mixed products, duplicate revisions, and unexpectedly empty periods.
+- [x] Import at least 24 hours before the earliest feature cutoff and 24 hours after the last label cutoff; add weather/baseline history separately.
+- [x] Create a data inventory by month, sensor, class, region, and number of distinct fire periods.
+- [x] Hand Member 4 a real-data manifest; never substitute invented labels for missing history.
+
+Implementation: [historical import guide](docs/firms-archive-import.md), [Phase 2.4 acceptance](docs/phase-2.4-checklist.md), [real monthly inventory](docs/historical-data-inventory.json), and [seasonal delivery evidence](docs/source-access-archive-deliveries.json). Both full seasonal CSVs are imported: 17,862 distinct NOAA-20 SP observations across 372 calendar days, with untouched originals and zero repeat insertions. Training labels, event review and weather/baseline history remain their later phases.
 
 ### Phase 2.5: Make refresh idempotent and observable
 

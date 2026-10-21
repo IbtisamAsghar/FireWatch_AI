@@ -1,6 +1,7 @@
 """Operator entrypoint; --help/--version work before credentials are configured."""
 
 import json
+import sqlite3
 from importlib.metadata import version
 from pathlib import Path
 from typing import Annotated
@@ -333,6 +334,83 @@ def normalize_firms_command(
         raise typer.Exit(1) from None
     except SQLAlchemyError:
         typer.echo("Normalization database transaction failed and was rolled back.", err=True)
+        raise typer.Exit(1) from None
+    finally:
+        if database is not None:
+            database.close()
+        close()
+
+
+@app.command("import-firms")
+def import_firms_command(
+    path: Annotated[Path, typer.Option("--path")],
+    manifest: Annotated[Path, typer.Option("--manifest")],
+    output: Annotated[Path, typer.Option("--output")] = Path("data/archive-imports"),
+    chunk_rows: Annotated[int, typer.Option("--chunk-rows", min=1, max=5000)] = 1000,
+    dry_run: Annotated[bool, typer.Option("--dry-run")] = False,
+    invalid_frp: Annotated[str, typer.Option("--invalid-frp")] = "reject",
+    missing_frp: Annotated[str, typer.Option("--missing-frp")] = "allow",
+) -> None:
+    """Import a trusted local FIRMS CSV with explicit provenance and bounded commits."""
+    from firewatch.logging import install_redaction
+    from firewatch.repositories.archive import import_prepared
+    from firewatch.sources.archive_manifest import ArchiveError, load_archive_manifest
+    from firewatch.sources.archive_stage import prepare_archive
+    from firewatch.sources.firms_normalize import NormalizationPolicy
+
+    def close() -> None:
+        pass
+
+    database = None
+    try:
+        prepared = prepare_archive(
+            path,
+            load_archive_manifest(manifest),
+            output,
+            policy=NormalizationPolicy.model_validate(
+                {"invalid_frp": invalid_frp, "missing_frp": missing_frp}
+            ),
+            chunk_rows=chunk_rows,
+        )
+        if dry_run:
+            result = {
+                "status": "validated",
+                "import_id": str(prepared.import_id),
+                "quality": prepared.quality,
+                "evidence_directory": str(prepared.folder),
+                "database_modified": False,
+            }
+        else:
+            settings = get_settings()
+            close = install_redaction(settings)
+            database = Database(settings)
+            report = import_prepared(prepared, database.engine, chunk_rows=chunk_rows)
+            result = {
+                "status": report["status"],
+                "import_id": report["import_id"],
+                "database": report["database"],
+                "handoff_path": str(prepared.folder / "handoff.json"),
+                "observation_history_complete": report["inventory"]["observation_history_complete"],
+                "ready_for_supervised_training": False,
+            }
+        typer.echo(json.dumps(result, indent=2))
+    except ArchiveError as exc:
+        typer.echo(str(exc), err=True)
+        raise typer.Exit(1) from None
+    except (ValueError, TypeError, KeyError, OSError, OverflowError, ConfigurationError):
+        typer.echo(
+            "Invalid local archive, provenance manifest or normalization configuration.", err=True
+        )
+        raise typer.Exit(1) from None
+    except sqlite3.Error:
+        typer.echo("Archive staging index is unavailable. Check local storage and retry.", err=True)
+        raise typer.Exit(1) from None
+    except SQLAlchemyError:
+        typer.echo(
+            "Archive database write failed. Completed chunks are checkpointed; "
+            "rerun the same input to resume.",
+            err=True,
+        )
         raise typer.Exit(1) from None
     finally:
         if database is not None:

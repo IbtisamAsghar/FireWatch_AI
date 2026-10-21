@@ -148,3 +148,13 @@ untouched raw-file hashes; batches keep transactional counts.
 hashes. The completed-run immutability guard protects these pins.
 Canonical detection measurements are first-seen values; consumers use the
 [selected revision contract](firms-normalization.md) for current or replay inputs.
+
+## Phase 2.4 archive checkpoints
+
+No migration is needed. A parent source asset stores the archive manifest and
+transactional progress in request metadata. Daily source assets reference the
+parent and original checksum. One ingestion batch per complete calendar day
+prevents chunk replacement from dropping records. Revision upserts, lineage,
+counters and checkpoint advance commit together; interrupted days remain running
+and unavailable to selection. A PostgreSQL session advisory lock serializes import
+owners while commits remain bounded. See the [archive guide](firms-archive-import.md).

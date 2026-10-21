@@ -80,7 +80,7 @@ regions:
           start_date: '2024-07-25'
           days: 3
           incident_reference: https://www.fire.ca.gov/incidents/2024/7/24/park-fire
-      archive_status: requested
+      archive_status: delivered
       weather_model: gfs_seamless
       weather_product: historical_forecast
       evidence_report: docs/source-access-firms.json

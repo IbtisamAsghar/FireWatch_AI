@@ -148,3 +148,14 @@ revisions in the existing run manifest. Downstream processing uses returned
 `SelectedDetection.observation` values rather than canonical first-seen measurements.
 See the [full normalization contract](firms-normalization.md). Existing public REST
 contracts and shared detection/source DTOs remain compatible.
+
+## Phase 2.4 archive handoff
+
+`ArchiveManifest` records trusted local provenance, explicit delivered date coverage
+and mandatory 24-hour feature/label margins. `prepare_archive` streams the exact
+shared row normalizer into a disk-backed index; `import_prepared` commits bounded
+revision chunks with atomic database checkpoints. A day is selectable only after
+its entire source is published. `handoff.json` and the local Member 4 manifest carry
+real provenance and batch IDs. Month/sensor/region inventories distinguish raw
+provider/confidence classes from unknown supervised labels. See the
+[archive contract](firms-archive-import.md) and [JSON schema](firms-archive-manifest.schema.json).

@@ -191,8 +191,10 @@ def normalize_row(
         reasons.append(RejectReason.FRP)
     if not row.get("frp", "").strip() and policy.missing_frp == "reject":
         reasons.append(RejectReason.MISSING_FRP)
-    brightness, _, _ = optional_number(row, "bright_ti4", flags, positive=True)
-    brightness5, _, _ = optional_number(row, "bright_ti5", flags, positive=True)
+    primary_column = "bright_ti4" if "bright_ti4" in row else "brightness"
+    secondary_column = "bright_ti5" if "bright_ti5" in row else "bright_t31"
+    brightness, _, _ = optional_number(row, primary_column, flags, positive=True)
+    brightness5, _, _ = optional_number(row, secondary_column, flags, positive=True)
     scan, scan_key, _ = optional_number(row, "scan", flags, positive=True)
     track, track_key, _ = optional_number(row, "track", flags, positive=True)
     raw_confidence = row.get("confidence", "")
@@ -250,6 +252,14 @@ def normalize_row(
             },
         },
     }
+    if primary_column != "bright_ti4" or secondary_column != "bright_ti5":
+        # The provider's original column names remain untouched in provider_row.
+        metadata = raw_values["normalization"]
+        assert isinstance(metadata, dict)
+        metadata["brightness_source_columns"] = {
+            "primary": primary_column,
+            "secondary": secondary_column,
+        }
     return (
         DetectionInput(
             product=request.product,

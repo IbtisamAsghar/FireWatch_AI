@@ -1,0 +1,106 @@
+{
+  "schema_version": "phase-2.4-smoke-v1",
+  "recorded_at": "2026-10-21T11:04:32.220112+00:00",
+  "actual_application_database_import": true,
+  "region_enabled": false,
+  "counts_after_repeat": {
+    "detections": 17862,
+    "detection_sources": 24266,
+    "ingestion_batches": 378,
+    "source_assets": 382
+  },
+  "rows_selected_by_month": [
+    {
+      "month": "2022-04",
+      "selected_observations": 1,
+      "source_batches": 1
+    },
+    {
+      "month": "2022-05",
+      "selected_observations": 205,
+      "source_batches": 31
+    },
+    {
+      "month": "2022-06",
+      "selected_observations": 182,
+      "source_batches": 30
+    },
+    {
+      "month": "2022-07",
+      "selected_observations": 129,
+      "source_batches": 31
+    },
+    {
+      "month": "2022-08",
+      "selected_observations": 144,
+      "source_batches": 31
+    },
+    {
+      "month": "2022-09",
+      "selected_observations": 4217,
+      "source_batches": 30
+    },
+    {
+      "month": "2022-10",
+      "selected_observations": 603,
+      "source_batches": 31
+    },
+    {
+      "month": "2022-11",
+      "selected_observations": 15,
+      "source_batches": 1
+    },
+    {
+      "month": "2024-04",
+      "selected_observations": 31,
+      "source_batches": 1
+    },
+    {
+      "month": "2024-05",
+      "selected_observations": 349,
+      "source_batches": 31
+    },
+    {
+      "month": "2024-06",
+      "selected_observations": 595,
+      "source_batches": 30
+    },
+    {
+      "month": "2024-07",
+      "selected_observations": 8002,
+      "source_batches": 31
+    },
+    {
+      "month": "2024-08",
+      "selected_observations": 2362,
+      "source_batches": 31
+    },
+    {
+      "month": "2024-09",
+      "selected_observations": 393,
+      "source_batches": 30
+    },
+    {
+      "month": "2024-10",
+      "selected_observations": 629,
+      "source_batches": 31
+    },
+    {
+      "month": "2024-11",
+      "selected_observations": 5,
+      "source_batches": 1
+    }
+  ],
+  "total_selected_seasonal_observations": 17862,
+  "inserted_on_repeat": 0,
+  "original_checksums_verified": true,
+  "normalizer": "firms-normalizer-v1",
+  "original_import_chunk_rows": 500,
+  "repeat_chunk_rows": 1000,
+  "full_season_data_complete": true,
+  "download_http_requests": 2,
+  "full_season_observations": 17862,
+  "preexisting_sample_observations": 6404,
+  "new_observations_from_seasons": 11458,
+  "raw_rows_in_evidence": false
+}

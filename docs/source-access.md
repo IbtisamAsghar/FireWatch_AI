@@ -2,8 +2,8 @@
 
 Status: bounded FIRMS and weather reconnaissance succeeded on 21 October 2026.
 The local MAP_KEY was used without exposing it. Both seasonal NOAA-20 CSV archive
-requests were submitted through the authenticated portal. NASA delivery, full
-seasonal coverage and human source review remain pending.
+requests were submitted through the authenticated portal. Both were later delivered
+and fully imported in Phase 2.4; human source review remains pending.
 
 ## First region and product policy
 
@@ -180,3 +180,12 @@ Official protocol references, checked 21 October 2026:
 [Area API](https://firms.modaps.eosdis.nasa.gov/api/area/),
 [archive](https://firms.modaps.eosdis.nasa.gov/download/),
 [historical forecasts](https://open-meteo.com/en/docs/historical-forecast-api).
+
+## Phase 2.4 delivery follow-up
+
+Both requested NASA archives were subsequently delivered and imported. Current
+[delivery evidence](source-access-archive-deliveries.json) verifies the original
+ZIP/CSV hashes, and the [seasonal inventory](historical-data-inventory.json) records
+17,862 distinct observations. Earlier submission/pending statements above describe
+the Phase 2.1 snapshot. Independent source review and region activation remain
+separate; the candidate stays disabled.

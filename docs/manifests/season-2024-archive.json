@@ -1,0 +1,34 @@
+{
+  "schema_version": "firms-archive-manifest-v1",
+  "trusted_local_input": true,
+  "source_url": "https://firms.modaps.eosdis.nasa.gov/data/download/DL_FIRE_J1V-C2_828116.zip",
+  "source_kind": "archive_portal",
+  "archive_request_id": "828116",
+  "product": "VIIRS_NOAA20_SP",
+  "sensor": "NOAA-20",
+  "interval": {
+    "start_date": "2024-04-30",
+    "end_date": "2024-11-01"
+  },
+  "region": "northern-california",
+  "bbox": {
+    "west": -122.5,
+    "south": 38.5,
+    "east": -120.0,
+    "north": 40.5
+  },
+  "sha256": "34f1ce6c4fb1f6b9b0553239fff977acabaab4aca65e3f3d70404cbc04fd7af3",
+  "retrieved_at": "2026-10-21T10:57:24.496800Z",
+  "attribution_url": "https://www.earthdata.nasa.gov/data/tools/firms",
+  "earliest_feature_cutoff": "2024-05-01T00:00:00Z",
+  "last_label_cutoff": "2024-10-31T23:59:59Z",
+  "cutoff_purpose": "proposed",
+  "covered_intervals": [
+    {
+      "start_date": "2024-04-30",
+      "end_date": "2024-11-01"
+    }
+  ],
+  "expected_active_intervals": [],
+  "confirmed_empty_intervals": []
+}

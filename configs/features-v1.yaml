@@ -1,6 +1,7 @@
-# Climate fields are consumed by build-baselines; other feature settings remain draft.
+# Climate and clustering fields are consumed by their stage commands; features remain draft.
 schema_version: features-v1
 status: draft
+cluster_algorithm_version: dbscan-haversine-v1
 cluster_radius_km: 2
 snapshot_lookback_hours: 6
 activity_lookbacks_hours: [6, 12, 24]

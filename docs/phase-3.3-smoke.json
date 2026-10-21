@@ -1,0 +1,192 @@
+{
+  "schema_version": "clustering-phase-3.3-smoke-v1",
+  "recorded_at": "2026-10-21T18:38:42.391127+00:00",
+  "synthetic": false,
+  "data_origin": "real_imported_NOAA20_SP",
+  "region": "northern-california",
+  "region_enabled": false,
+  "run_id": "cef85e0d-2a9e-5343-b928-e473bb20683b",
+  "mode": "replay",
+  "as_of": "2024-07-25T22:00:00+00:00",
+  "pipeline_status": "running",
+  "pipeline_completed": false,
+  "latest_live_unchanged": true,
+  "candidate_detections": 832,
+  "history_detections": 1731,
+  "clusters": 6,
+  "candidate_members": 832,
+  "input_sha256": "c3ea83f57c97ea368fd1f19e00eead9f83880bfdbbe4a9cf43350e3070af104a",
+  "snapshot_manifest_sha256": "c2c104f7f68cfeae66da4f2a26990f8c8c1a580a8013d8861886362789f0ca6a",
+  "libraries": {
+    "numpy": "2.5.4",
+    "scikit_learn": "1.9.1"
+  },
+  "repeat_identical": true,
+  "before": [
+    6,
+    832
+  ],
+  "after": [
+    6,
+    832
+  ],
+  "source_requests_made": 0,
+  "representative_cases": [
+    {
+      "members": 687,
+      "max_centroid_radius_km": 13.877426914483173,
+      "activity_counts": {
+        "detections_6h": 21,
+        "detections_12h": 21,
+        "detections_24h": 21
+      },
+      "frp_sum_mw": 68172.1,
+      "sensor_counts": {
+        "NOAA-20": 687,
+        "NOAA-21": 0
+      },
+      "confidence_counts": {
+        "low": 228,
+        "high": 253,
+        "nominal": 206,
+        "unknown": 0
+      },
+      "quality_flags": [
+        "members_outside_centroid_radius"
+      ]
+    },
+    {
+      "members": 139,
+      "max_centroid_radius_km": 8.082304498714524,
+      "activity_counts": {
+        "detections_6h": 53,
+        "detections_12h": 54,
+        "detections_24h": 54
+      },
+      "frp_sum_mw": 27291.69,
+      "sensor_counts": {
+        "NOAA-20": 139,
+        "NOAA-21": 0
+      },
+      "confidence_counts": {
+        "low": 57,
+        "high": 56,
+        "nominal": 26,
+        "unknown": 0
+      },
+      "quality_flags": [
+        "members_outside_centroid_radius"
+      ]
+    },
+    {
+      "members": 2,
+      "max_centroid_radius_km": 0.13767353701933527,
+      "activity_counts": {
+        "detections_6h": 2,
+        "detections_12h": 2,
+        "detections_24h": 2
+      },
+      "frp_sum_mw": 17.31,
+      "sensor_counts": {
+        "NOAA-20": 2,
+        "NOAA-21": 0
+      },
+      "confidence_counts": {
+        "low": 0,
+        "high": 0,
+        "nominal": 2,
+        "unknown": 0
+      },
+      "quality_flags": []
+    },
+    {
+      "members": 2,
+      "max_centroid_radius_km": 0.3008787051028082,
+      "activity_counts": {
+        "detections_6h": 2,
+        "detections_12h": 26,
+        "detections_24h": 26
+      },
+      "frp_sum_mw": 13.54,
+      "sensor_counts": {
+        "NOAA-20": 2,
+        "NOAA-21": 0
+      },
+      "confidence_counts": {
+        "low": 2,
+        "high": 0,
+        "nominal": 0,
+        "unknown": 0
+      },
+      "quality_flags": []
+    },
+    {
+      "members": 1,
+      "max_centroid_radius_km": 0.0,
+      "activity_counts": {
+        "detections_6h": 1,
+        "detections_12h": 60,
+        "detections_24h": 60
+      },
+      "frp_sum_mw": 23.9,
+      "sensor_counts": {
+        "NOAA-20": 1,
+        "NOAA-21": 0
+      },
+      "confidence_counts": {
+        "low": 1,
+        "high": 0,
+        "nominal": 0,
+        "unknown": 0
+      },
+      "quality_flags": []
+    },
+    {
+      "members": 1,
+      "max_centroid_radius_km": 0.0,
+      "activity_counts": {
+        "detections_6h": 1,
+        "detections_12h": 1,
+        "detections_24h": 1
+      },
+      "frp_sum_mw": 11.86,
+      "sensor_counts": {
+        "NOAA-20": 1,
+        "NOAA-21": 0
+      },
+      "confidence_counts": {
+        "low": 0,
+        "high": 1,
+        "nominal": 0,
+        "unknown": 0
+      },
+      "quality_flags": []
+    }
+  ],
+  "checks": {
+    "full_unit_contract_postgresql_suite_passed": 587,
+    "new_clustering_tests": 39,
+    "unit_clustering_tests": 31,
+    "postgresql_clustering_tests": 8,
+    "http_health_auth_smoke": "passed",
+    "real_offline_cli_repeat": "passed",
+    "ruff_lint": "passed",
+    "ruff_format": "passed",
+    "strict_mypy_source_files": 66,
+    "scaffold_links_git_exclusions": "passed",
+    "dependency_lock_consistency": "passed",
+    "existing_dependency_pins_preserved": true,
+    "runtime_locked_packages": 43,
+    "development_locked_packages": 61,
+    "source_wheel_build": "passed",
+    "fresh_runtime_only_wheel_install": "passed",
+    "fresh_runtime_clustering_cli_smoke": "passed",
+    "pip_check": "passed",
+    "configured_secret_scan_files": 202,
+    "git_diff_check": "passed",
+    "hosted_ci": "not_run"
+  },
+  "warnings": [
+    "Existing Starlette TestClient/httpx deprecation warning."
+  ]
+}

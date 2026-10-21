@@ -684,3 +684,129 @@ def build_baselines_command(
             client.close()
         if database is not None:
             database.close()
+
+
+@app.command("build-snapshots")
+def build_snapshots_command(
+    region: Annotated[str, typer.Option("--region")],
+    as_of: Annotated[str, typer.Option("--as-of")],
+    products: Annotated[list[str] | None, typer.Option("--product")] = None,
+    retrieval_cutoff: Annotated[str | None, typer.Option("--retrieval-cutoff")] = None,
+    config: Annotated[Path, typer.Option("--config")] = Path("configs/features-v1.yaml"),
+    allow_disabled: Annotated[bool, typer.Option("--allow-disabled")] = False,
+) -> None:
+    """Build an idempotent replay snapshot stage from cached FIRMS data; no provider calls."""
+    from datetime import UTC, datetime
+    from uuid import NAMESPACE_URL, uuid5
+
+    from sqlalchemy import select
+    from sqlalchemy.dialects.postgresql import insert
+
+    from firewatch.db.models import Region, Run
+    from firewatch.processing.clusters import load_clustering_spec
+    from firewatch.repositories.snapshots import build_run_snapshots, policy_for_snapshots
+    from firewatch.schemas.common import Completeness, Product, RunMode, RunStatus, Sensor
+    from firewatch.schemas.contracts import RunContext
+    from firewatch.sources.firms_normalize import digest
+    from firewatch.sources.open_meteo import utc
+
+    database = None
+    try:
+        settings = get_settings()
+        specification = load_clustering_spec(config)
+        cutoff = RunContext.model_validate(
+            dict(
+                run_id="00000000-0000-4000-8000-000000000001",
+                mode="replay",
+                as_of=as_of,
+                feature_version=settings.feature_schema_version,
+            )
+        ).as_of
+        now = datetime.now(UTC)
+        if cutoff > now:
+            raise ValueError("Snapshot cutoff cannot be in the future")
+        available = utc(datetime.fromisoformat(retrieval_cutoff)) if retrieval_cutoff else now
+        if available > now:
+            raise ValueError("Source availability cutoff cannot be in the future")
+        choices = {}
+        for value in products or ["VIIRS_NOAA20_SP"]:
+            product = Product(value)
+            sensor = Sensor.NOAA20 if "NOAA20" in product else Sensor.NOAA21
+            if sensor in choices:
+                raise ValueError("Select one unique product per sensor")
+            choices[sensor] = product
+        database = Database(settings)
+        with database.transaction() as session:
+            area = session.scalar(select(Region).where(Region.name == region))
+            if area is None or (not area.enabled and not allow_disabled):
+                raise ValueError("Unknown or disabled study region")
+            policy = policy_for_snapshots(session, area.id, cutoff, choices, available)
+            # Equal selected batches share logical identity across availability cutoffs.
+            key = digest(
+                dict(
+                    region=str(area.id),
+                    as_of=cutoff.isoformat(),
+                    products={s.value: p.value for s, p in choices.items()},
+                    batches=sorted(str(i) for i in policy.batch_ids),
+                    config=specification.model_dump(mode="json"),
+                    feature_version=settings.feature_schema_version,
+                )
+            )
+            identifier = uuid5(NAMESPACE_URL, "firewatch-snapshots-v1:" + key)
+            session.execute(
+                insert(Run)
+                .values(
+                    id=identifier,
+                    region_id=area.id,
+                    mode=RunMode.REPLAY,
+                    as_of=cutoff,
+                    status=RunStatus.RUNNING,
+                    config_hash=digest(specification.model_dump(mode="json")),
+                    run_key="snapshot-stage:" + key,
+                    completeness=Completeness.PARTIAL,
+                    stage_status={},
+                    input_asset_manifest={},
+                    scorer_version=settings.active_scorer,
+                    feature_version=settings.feature_schema_version,
+                    started_at=now,
+                )
+                .on_conflict_do_nothing(index_elements=[Run.id])
+            )
+            saved = session.get(Run, identifier)
+            prior = saved.input_asset_manifest.get("firms") if saved else None
+            if prior is not None:
+                from firewatch.repositories.revisions import RevisionPolicy
+
+                policy = RevisionPolicy.model_validate(prior["policy"])
+            result = build_run_snapshots(session, identifier, policy, specification)
+        typer.echo(
+            json.dumps(
+                {
+                    "status": "snapshots_succeeded",
+                    "run_id": str(result.run_id),
+                    "mode": result.mode,
+                    "as_of": result.as_of.isoformat(),
+                    "snapshots": len(result.snapshots),
+                    "candidate_detections": result.candidate_count,
+                    "history_detections": result.history_count,
+                    "wide_clusters": sum(
+                        "members_outside_centroid_radius" in d.quality_flags
+                        for d in result.snapshots
+                    ),
+                    "snapshot_manifest_sha256": digest(result.model_dump(mode="json")),
+                    "pipeline_completed": False,
+                }
+            )
+        )
+    except (ValueError, OSError, KeyError, TypeError, ConfigurationError, yaml.YAMLError):
+        typer.echo(
+            "Snapshot stage failed: check config, source-day coverage, region and pinned inputs.",
+            err=True,
+        )
+        raise typer.Exit(1) from None
+    except SQLAlchemyError:
+        typer.echo("Snapshot database stage failed; its transaction was rolled back.", err=True)
+        raise typer.Exit(1) from None
+    finally:
+        if database is not None:
+            database.close()

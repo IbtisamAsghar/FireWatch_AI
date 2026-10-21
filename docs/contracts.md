@@ -67,7 +67,13 @@ the explicit NRT/science revision-selection policy before live/archive ingestion
 Use `complete_and_publish_run()` inside a caller-owned transaction after successful
 stages. Database checks additionally verify persisted members/features/scores and
 critical evidence. See [publication and concurrency rules](database-schema.md).
-The worker, clustering and feature calculations themselves remain Module 3 work.
+Weather/cache and climate context are implemented in Phases 3.1–3.2. Phase 3.3
+adds `build_snapshots(run_id, mode, as_of, selected_revisions, config)` and the
+transactional `build_run_snapshots(session, run_id, policy, config)` stage. The
+shared `ClusterSnapshot` DTO is unchanged; typed `ClusterDetails` and `SnapshotBatch`
+carry counts, diagnostics and version/hash metadata in the Run input manifest.
+See [cluster snapshot interfaces](cluster-snapshots.md). Worker orchestration and
+the complete feature builder remain later Module 3 work.
 
 ## Member 4: scoring
 

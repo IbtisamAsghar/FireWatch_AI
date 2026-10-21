@@ -555,16 +555,26 @@ remain Phase 3.3 onward.
 
 ### Phase 3.3: Build reproducible cluster snapshots
 
-- [ ] Define an analysis cutoff T in UTC; candidate detections come from `(T-6h, T]`.
-- [ ] Exclude future observations even if they are already present in the database for training/replay.
-- [ ] Initially use spatial DBSCAN: haversine, `eps = 2 / 6371.0088` radians, `min_samples=1`.
-- [ ] Restrict inputs to that six-hour window; this provides the initial temporal boundary.
-- [ ] Sort inputs deterministically; derive snapshot IDs from run ID and sorted member IDs or persist once per run.
-- [ ] Calculate centroid, FRP max/sum, latest observation, sensor distribution, and confidence counts.
-- [ ] For each centroid, calculate prior detections within 2 km for `(T-6h,T]`, `(T-12h,T]`, `(T-24h,T]`.
-- [ ] Keep clusters run-specific. Do not claim the same DBSCAN cluster ID tracks a physical fire across dates.
-- [ ] Document that nearby unrelated anomalies can merge; inspect representative cases and version any radius changes.
-- [ ] Use fixed spatial/time definitions in training and live processing.
+- [x] Define an analysis cutoff T in UTC; candidate detections come from `(T-6h, T]`.
+- [x] Exclude future observations even if they are already present in the database for training/replay.
+- [x] Initially use spatial DBSCAN: haversine, `eps = 2 / 6371.0088` radians, `min_samples=1`.
+- [x] Restrict inputs to that six-hour window; this provides the initial temporal boundary.
+- [x] Sort inputs deterministically; derive snapshot IDs from run ID and sorted member IDs or persist once per run.
+- [x] Calculate centroid, FRP max/sum, latest observation, sensor distribution, and confidence counts.
+- [x] For each centroid, calculate prior detections within 2 km for `(T-6h,T]`, `(T-12h,T]`, `(T-24h,T]`.
+- [x] Keep clusters run-specific. Do not claim the same DBSCAN cluster ID tracks a physical fire across dates.
+- [x] Document that nearby unrelated anomalies can merge; inspect representative cases and version any radius changes.
+- [x] Use fixed spatial/time definitions in training and live processing.
+
+Implementation: [cluster snapshot guide](docs/cluster-snapshots.md),
+[Phase 3.3 acceptance](docs/phase-3.3-checklist.md), and
+[real FIRMS snapshot evidence](docs/phase-3.3-smoke.json). Deterministic haversine
+DBSCAN uses frozen source revisions, spherical centroids, UUID-derived snapshot
+identities and independent centroid activity counts. The real July 2024 stage
+produced six clusters from 832 candidates and repeated without new rows. Chaining
+produced a 687-member cluster extending 13.88 km from its centroid; this limitation
+is flagged and documented, not interpreted as one confirmed fire. Only the snapshot
+stage completes; features, scoring and final Run publication remain later phases.
 
 ### Phase 3.4: Implement feature schema v1
 

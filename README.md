@@ -24,8 +24,11 @@ Phase 3.2 adds fixed-reference NASA POWER daily climate context, resumable annua
 source caching, immutable monthly baselines and `firewatch build-baselines`.
 See [climate baseline guide](docs/climate-baselines.md) and
 [Phase 3.2 acceptance](docs/phase-3.2-checklist.md).
-Clustering, features, worker orchestration, scorer execution and chain adapters
-remain later modules. See the [implementation plan](FireWatchImplementationPlan.md),
+Phase 3.3 adds deterministic haversine DBSCAN snapshots, frozen source revisions,
+spherical centroids, independent 6/12/24-hour activity counts and an offline
+`firewatch build-snapshots` stage. See [cluster snapshots](docs/cluster-snapshots.md)
+and [Phase 3.3 acceptance](docs/phase-3.3-checklist.md).
+Features, worker orchestration, scorer execution and chain adapters remain later modules. See the [implementation plan](FireWatchImplementationPlan.md),
 [Phase 1.4 acceptance](docs/phase-1.4-checklist.md),
 [Phase 1.5 acceptance](docs/phase-1.5-checklist.md), [operator API](docs/operator-api.md), and
 [frontend API handoff](docs/frontend-handoff.md),

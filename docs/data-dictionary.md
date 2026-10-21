@@ -75,6 +75,14 @@ members. Feature values, missing indicators, unit map, lineage, feature version
 and hash are saved separately. Features/scores cannot reference another run's
 snapshot. Future observations cannot become snapshot members.
 
+Phase 3.3 diagnostics in `runs.input_asset_manifest.clustering` include sensor and
+confidence category counts, centroid-near 6/12/24-hour counts, valid/missing FRP
+member counts and maximum centroid distance. FRP aggregates use known values;
+partial aggregates are flagged and all-missing aggregates are null. Centroid
+activity counts need not equal member count because DBSCAN can chain beyond the
+centroid radius. Snapshot IDs are run-specific and are not incident identities.
+See [cluster definitions and limitations](cluster-snapshots.md).
+
 Score kinds are baseline/model_score/probability; priorities are LOW/MEDIUM/HIGH/
 CRITICAL. `priority_score` is a finite nonnegative ranking index on its version's
 scale. `escalation_probability` is null for baselines/unvalidated scores and 0-1

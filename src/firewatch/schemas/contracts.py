@@ -2,6 +2,7 @@
 
 import hashlib
 import re
+from datetime import date
 from typing import Annotated, Literal, Self
 from uuid import UUID
 
@@ -43,11 +44,66 @@ class BoundingBox(DTO):
         return self
 
 
+class SourceSampleWindow(DTO):
+    name: Annotated[str, Field(pattern=r"^[a-z0-9]+(?:-[a-z0-9]+)*$", max_length=100)]
+    start_date: date
+    days: int = Field(ge=1, le=5)
+    incident_reference: Annotated[
+        str, Field(pattern=r"^https://www\.fire\.ca\.gov/incidents/[0-9/]+[a-z-]+/?$")
+    ]
+
+
+class RegionSourceAccess(DTO):
+    """Optional research metadata; never enables a region or asserts unverified coverage."""
+
+    schema_version: Literal["region-source-access-v1"] = "region-source-access-v1"
+    status: Literal["candidate", "probed", "reviewed"] = "candidate"
+    selection_reason: Annotated[str, Field(min_length=1, max_length=1000)]
+    live_product: Product = Product.NOAA20_NRT
+    historical_product: Product = Product.NOAA20_SP
+    comparison_products: list[Product] = Field(default_factory=list, max_length=2)
+    season_months: Annotated[
+        list[Annotated[int, Field(ge=1, le=12)]], Field(min_length=1, max_length=12)
+    ]
+    requested_months: Annotated[
+        list[Annotated[str, Field(pattern=r"^20[0-9]{2}-(?:0[1-9]|1[0-2])$")]],
+        Field(min_length=1, max_length=120),
+    ]
+    available_months: dict[
+        Product, list[Annotated[str, Field(pattern=r"^20[0-9]{2}-(?:0[1-9]|1[0-2])$")]]
+    ] = Field(default_factory=dict)
+    sample_windows: Annotated[list[SourceSampleWindow], Field(min_length=2, max_length=4)]
+    archive_status: Literal["not_requested", "requested", "delivered"] = "not_requested"
+    weather_model: Literal["gfs_seamless"] = "gfs_seamless"
+    weather_product: Literal["historical_forecast"] = "historical_forecast"
+    evidence_report: str | None = Field(default=None, max_length=1000)
+
+    @model_validator(mode="after")
+    def consistent(self) -> Self:
+        if self.live_product not in {Product.NOAA20_NRT, Product.NOAA21_NRT}:
+            raise ValueError("Live study product must be NRT")
+        if self.historical_product.value != self.live_product.value.replace("_NRT", "_SP"):
+            raise ValueError("Historical study product must be SP from the same sensor")
+        if len(set(self.season_months)) != len(self.season_months) or len(
+            set(self.requested_months)
+        ) != len(self.requested_months):
+            raise ValueError("Study months must be unique")
+        starts = [window.start_date for window in self.sample_windows]
+        if len(set(starts)) != len(starts):
+            raise ValueError("Sample windows must be distinct")
+        if any(start.strftime("%Y-%m") not in self.requested_months for start in starts):
+            raise ValueError("Sample windows must belong to requested months")
+        if self.status != "candidate" and not self.evidence_report:
+            raise ValueError("Probed/reviewed study requires an evidence report")
+        return self
+
+
 class RegionDefinition(DTO):
     name: Annotated[str, Field(pattern=r"^[a-z0-9]+(?:-[a-z0-9]+)*$", max_length=100)]
     bbox: BoundingBox
     enabled: bool = False
     description: Annotated[str, Field(max_length=500)] = ""
+    source_access: RegionSourceAccess | None = None
 
 
 class RegionConfig(DTO):

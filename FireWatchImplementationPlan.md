@@ -430,24 +430,28 @@ real ingestion, scoring, replay execution and chain integration remain later mod
 
 ### Phase 2.1: Prove source access and choose the first region
 
-- [ ] Request a free FIRMS MAP_KEY using the official form; keep it only in secrets/environment.
-- [ ] Arrange archive access early; historical requests can take longer than API coding.
-- [ ] Query product date availability for NOAA-20 and NOAA-21.
-- [ ] Select a manageable region with multiple historical events and adequate weather coverage.
-- [ ] Record bbox, season, available months, and source-product compatibility in `regions.yaml`.
-- [ ] Download one small recent sample and one historical sample; inspect actual columns/types.
-- [ ] Prefer a consistent sensor/product combination for initial training; introduce a second sensor only with documented comparisons.
+- [x] Use a valid FIRMS MAP_KEY stored only in the ignored local `.env`; the credential is never recorded in source or evidence.
+- [x] Request full seasonal archive access through the authenticated FIRMS portal: NOAA-20 CSV orders `828115` (2022) and `828116` (2024) are submitted, with delivery pending.
+- [x] Query actual NOAA-20/NOAA-21 NRT/SP date availability and record product intervals.
+- [x] Select the bounded northern California candidate from two official CAL FIRE incident records and complete ten historical-weather point probes.
+- [x] Record bbox, May–October study season, requested 2022/2024 months, actual full-month product availability and product policy in `configs/regions.yaml`.
+- [x] Download and inspect one recent NOAA-20 NRT CSV (valid header-only response) and two three-day NOAA-20 SP historical samples; save sanitized metadata/checksums.
+- [x] Keep NOAA-20 consistent for the primary cohort; keep NOAA-21 as comparison-only until separate comparisons and human review.
+
+See [Phase 2.1 acceptance](docs/phase-2.1-checklist.md), [source-access study](docs/source-access.md), and [sanitized provider evidence](docs/source-access-firms.json). The candidate stays disabled. Both seasonal orders were observed as `Submitted`; [archive request evidence](docs/source-access-archive-requests.json) records the exact parameters. NASA delivery and independent human review remain outstanding; seasonal ingestion is Phase 2.4 work.
 
 ### Phase 2.2: Implement the FIRMS client
 
-- [ ] Build requests only from allowlisted hosts/products and validated bbox/date inputs.
-- [ ] Implement connect/read timeouts, bounded retries with exponential backoff/jitter, and rate-limit handling.
-- [ ] Respect provider limits and `Retry-After`; count requests/transactions conservatively.
-- [ ] Detect HTML/provider error text even when the HTTP response is 200.
-- [ ] Distinguish an empty valid CSV from a malformed response or provider outage.
-- [ ] Save raw response bytes and a sanitized request manifest before normalization.
-- [ ] Never log the full FIRMS URL because the credential is in the URL path.
-- [ ] Return a typed batch plus retrieval and product metadata.
+- [x] Build requests only from allowlisted hosts/products and validated bbox/date inputs.
+- [x] Implement connect/read timeouts, bounded retries with exponential backoff/jitter, and rate-limit handling.
+- [x] Respect provider limits and `Retry-After`; count requests/transactions conservatively.
+- [x] Detect HTML/provider error text even when the HTTP response is 200.
+- [x] Distinguish an empty valid CSV from a malformed response or provider outage.
+- [x] Save raw response bytes and a sanitized request manifest before normalization.
+- [x] Never log the full FIRMS URL because the credential is in the URL path.
+- [x] Return a typed batch plus retrieval and product metadata.
+
+Implementation: [FIRMS client guide](docs/firms-client.md), [Phase 2.2 acceptance](docs/phase-2.2-checklist.md), and [real bounded fetch evidence](docs/phase-2.2-smoke.json). `fetch-firms` returns typed raw rows and source metadata; normalization, deduplication and database ingestion remain Phases 2.3–2.5. Quota reservations are conservative estimates supplemented by provider status, not an exact provider charging formula.
 
 ### Phase 2.3: Normalize and deduplicate
 

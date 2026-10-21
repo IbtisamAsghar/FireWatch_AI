@@ -8,3 +8,79 @@ regions:
       south: 33.0
       east: 74.0
       north: 36.0
+  - name: northern-california
+    description: "First source-access study: northern Sierra foothills and Butte/Tehama; bounded research subset, not a complete incident perimeter."
+    enabled: false
+    bbox:
+      west: -122.5
+      south: 38.5
+      east: -120.0
+      north: 40.5
+    source_access:
+      schema_version: region-source-access-v1
+      status: probed
+      selection_reason: >-
+        Manageable 5-square-degree bbox contains the documented Mosquito (2022)
+        and Park (2024) incident origins. NOAA-20 provides a consistent primary
+        sensor for both periods; historical forecast point/date coverage is
+        tested by probe-sources. Incidents are not satellite training labels.
+      live_product: VIIRS_NOAA20_NRT
+      historical_product: VIIRS_NOAA20_SP
+      comparison_products: [VIIRS_NOAA21_NRT, VIIRS_NOAA21_SP]
+      season_months: [5, 6, 7, 8, 9, 10]
+      requested_months:
+        - '2022-05'
+        - '2022-06'
+        - '2022-07'
+        - '2022-08'
+        - '2022-09'
+        - '2022-10'
+        - '2024-05'
+        - '2024-06'
+        - '2024-07'
+        - '2024-08'
+        - '2024-09'
+        - '2024-10'
+      # Filled only from dated provider evidence, never inferred from incident dates.
+      available_months:
+        VIIRS_NOAA20_NRT: []
+        VIIRS_NOAA20_SP:
+          - '2022-05'
+          - '2022-06'
+          - '2022-07'
+          - '2022-08'
+          - '2022-09'
+          - '2022-10'
+          - '2024-05'
+          - '2024-06'
+          - '2024-07'
+          - '2024-08'
+          - '2024-09'
+          - '2024-10'
+        VIIRS_NOAA21_NRT:
+          - '2024-05'
+          - '2024-06'
+          - '2024-07'
+          - '2024-08'
+          - '2024-09'
+          - '2024-10'
+        VIIRS_NOAA21_SP:
+          - '2024-05'
+          - '2024-06'
+          - '2024-07'
+          - '2024-08'
+          - '2024-09'
+          - '2024-10'
+      sample_windows:
+        - name: mosquito-2022
+          start_date: '2022-09-07'
+          days: 3
+          incident_reference: https://www.fire.ca.gov/incidents/2022/9/6/mosquito-fire
+        - name: park-2024
+          start_date: '2024-07-25'
+          days: 3
+          incident_reference: https://www.fire.ca.gov/incidents/2024/7/24/park-fire
+      archive_status: requested
+      weather_model: gfs_seamless
+      weather_product: historical_forecast
+      evidence_report: docs/source-access-firms.json

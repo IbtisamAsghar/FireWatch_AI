@@ -1,0 +1,76 @@
+{
+  "schema_version": "firms-client-smoke-v1",
+  "client_schema_version": "firms-raw-batch-v1",
+  "verified_on": "2026-10-21",
+  "batch_id": "b0c52d61-215b-470c-9310-4460826c0127",
+  "request": {
+    "product": "VIIRS_NOAA20_SP",
+    "bbox": {
+      "west": -122.5,
+      "south": 38.5,
+      "east": -120.0,
+      "north": 40.5
+    },
+    "start_date": "2022-09-07",
+    "days": 1
+  },
+  "status": "succeeded",
+  "retrieved_at": "2026-10-21T09:54:04.209243+00:00",
+  "row_count": 323,
+  "columns": [
+    "latitude",
+    "longitude",
+    "bright_ti4",
+    "scan",
+    "track",
+    "acq_date",
+    "acq_time",
+    "satellite",
+    "instrument",
+    "confidence",
+    "version",
+    "bright_ti5",
+    "frp",
+    "daynight",
+    "type"
+  ],
+  "processing_versions": [
+    "2"
+  ],
+  "responses": [
+    {
+      "kind": "quota",
+      "retrieved_at": "2026-10-21T09:54:03.540040+00:00",
+      "http_status": 200,
+      "reserved_transaction_units": 100,
+      "complete": true,
+      "filename": "response-01.bin",
+      "sha256": "c7ff129aee318cf1de2ee49518541ce329b04dfe6c4d63e4f169c6329eef2001",
+      "byte_count": 96
+    },
+    {
+      "kind": "area",
+      "retrieved_at": "2026-10-21T09:54:04.206240+00:00",
+      "http_status": 200,
+      "reserved_transaction_units": 1000,
+      "complete": true,
+      "filename": "response-02.bin",
+      "sha256": "addabe774c9217cef7ec82e1a91b5b7faaee4e5f8173d8998eb3d6f5e0677476",
+      "byte_count": 26696
+    }
+  ],
+  "attempts": 1,
+  "provider_quota_before": {
+    "limit": 5000,
+    "used": 0
+  },
+  "transaction_accounting": "Estimated reservations; provider charges may differ.",
+  "endpoint": "/api/area/csv/{MAP_KEY}/{PRODUCT}/{BBOX}/{DAYS}/{DATE}",
+  "attribution_reference": "https://www.earthdata.nasa.gov/data/tools/firms",
+  "raw_directory": "data/raw/firms/b0c52d61-215b-470c-9310-4460826c0127",
+  "limitations": [
+    "Raw rows and credentials are excluded.",
+    "Raw CSV is not normalized or imported into the application database.",
+    "One day is a protocol smoke check, not full-season coverage."
+  ]
+}

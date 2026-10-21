@@ -1,0 +1,41 @@
+{
+  "schema_version": "archive-request-evidence-v1",
+  "recorded_at": "2026-10-21T09:39:04.778223+00:00",
+  "portal": "https://firms.modaps.eosdis.nasa.gov/download/list.php",
+  "verification": "Observed both requests in the authenticated FIRMS archive request list after submission.",
+  "region": "northern-california",
+  "bbox": {
+    "west": -122.5,
+    "south": 38.5,
+    "east": -120.0,
+    "north": 40.5
+  },
+  "requested_sensor": "VIIRS NOAA-20",
+  "portal_source_label": "J1 VIIRS C2",
+  "requested_format": "csv",
+  "confirmation_email_requested": true,
+  "requests": [
+    {
+      "request_id": "828115",
+      "start_date": "2022-04-30",
+      "end_date": "2022-11-01",
+      "portal_status": "Submitted",
+      "submitted_at_displayed": "2026-10-21 09:36:24"
+    },
+    {
+      "request_id": "828116",
+      "start_date": "2024-04-30",
+      "end_date": "2024-11-01",
+      "portal_status": "Submitted",
+      "submitted_at_displayed": "2026-10-21 09:37:17"
+    }
+  ],
+  "timestamp_note": "Submission times are copied exactly from the portal; its display does not label a timezone.",
+  "delivery_status": "pending",
+  "limitations": [
+    "Submission does not prove approval, completed processing, delivery, file contents or full-season data completeness.",
+    "Check the delivered product designation, processing version, CSV schema and checksums before later archive import.",
+    "The configured one-day margins support later feature and label windows; additional history may be needed.",
+    "Account email, login information and credentials are omitted."
+  ]
+}

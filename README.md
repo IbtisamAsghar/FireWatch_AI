@@ -13,12 +13,14 @@ refresh/replay/anchor job submission, atomic anchor outbox writes and log redact
 Phase 1.6 adds isolated synthetic Swagger fixtures, explicit frontend contract tests
 and a generated handoff bundle. The native PostgreSQL schema and immutable publication
 rules from Phase 1.3 remain in use. OpenAPI is exported as a CI artifact.
+Phase 2.1 source reconnaissance is recorded: NOAA availability, a valid empty recent sample, two NOAA-20 SP historical samples, and ten complete historical-weather point checks. The candidate region remains disabled. Both seasonal NOAA-20 CSV archive requests are submitted (`828115` and `828116`); delivery and independent source review are pending.
+Phase 2.2 adds the reusable bounded FIRMS client and `firewatch fetch-firms`, with retry/backoff, persistent quota guards, and raw evidence manifests. See [FIRMS client](docs/firms-client.md) and [Phase 2.2 acceptance](docs/phase-2.2-checklist.md).
 Ingestion, worker orchestration, scorer execution and chain adapters remain later
 modules. See the [implementation plan](FireWatchImplementationPlan.md),
 [Phase 1.4 acceptance](docs/phase-1.4-checklist.md),
 [Phase 1.5 acceptance](docs/phase-1.5-checklist.md), [operator API](docs/operator-api.md), and
 [frontend API handoff](docs/frontend-handoff.md),
-[Phase 1.6 acceptance](docs/phase-1.6-checklist.md) and [Swagger demo](docs/demo-walkthrough.md). No real-data coverage,
+[Phase 1.6 acceptance](docs/phase-1.6-checklist.md), [Phase 2.1 acceptance](docs/phase-2.1-checklist.md), [source-access study](docs/source-access.md), and [Swagger demo](docs/demo-walkthrough.md). No real-data coverage,
 trained-model accuracy or team sign-off is implied.
 
 ## Start locally on Windows

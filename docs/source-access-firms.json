@@ -1,0 +1,706 @@
+{
+  "advertised_requested_months": {
+    "VIIRS_NOAA20_NRT": [],
+    "VIIRS_NOAA20_SP": [
+      "2022-05",
+      "2022-06",
+      "2022-07",
+      "2022-08",
+      "2022-09",
+      "2022-10",
+      "2024-05",
+      "2024-06",
+      "2024-07",
+      "2024-08",
+      "2024-09",
+      "2024-10"
+    ],
+    "VIIRS_NOAA21_NRT": [
+      "2024-05",
+      "2024-06",
+      "2024-07",
+      "2024-08",
+      "2024-09",
+      "2024-10"
+    ],
+    "VIIRS_NOAA21_SP": [
+      "2024-05",
+      "2024-06",
+      "2024-07",
+      "2024-08",
+      "2024-09",
+      "2024-10"
+    ]
+  },
+  "bbox": {
+    "east": -120.0,
+    "north": 40.5,
+    "south": 38.5,
+    "west": -122.5
+  },
+  "firms_availability": [
+    {
+      "max_date": "2026-10-21",
+      "min_date": "2026-07-01",
+      "product": "VIIRS_NOAA20_NRT"
+    },
+    {
+      "max_date": "2026-06-30",
+      "min_date": "2018-04-01",
+      "product": "VIIRS_NOAA20_SP"
+    },
+    {
+      "max_date": "2026-10-20",
+      "min_date": "2024-01-17",
+      "product": "VIIRS_NOAA21_NRT"
+    },
+    {
+      "max_date": "2026-06-30",
+      "min_date": "2023-03-01",
+      "product": "VIIRS_NOAA21_SP"
+    }
+  ],
+  "limitations": [
+    "Point/day weather probes do not establish full-season or every-cell completeness.",
+    "Documented incidents support region selection; they are not training labels.",
+    "NOAA-21 is comparison-only; it is not pooled into the NOAA-20 training cohort.",
+    "No observations, regions or jobs are written to the application database.",
+    "Advertised months describe full calendar months within provider date ranges; they do not prove daily completeness or regional detections.",
+    "At least one sample has no detections; it does not prove source outage.",
+    "Archive account/request confirmation and human source review remain required."
+  ],
+  "raw_file_sha256": {
+    "availability.csv": "842ce195e8cd0a8a617017724585440cd64a9aeb624c18f538120f640f390ad7",
+    "historical-1.csv": "141186a2e958f3d611f0a394613431ea35524ca75f57476fd774658ff6cd7e49",
+    "historical-2.csv": "97751af6a5170bae15811a1fe34af18d3ebda7a8d98a68f9258268619ee3b1ef",
+    "recent.csv": "2b11a44667d05367ecf77651b95fd3d34c545c7ec154856094b91245e41ae697",
+    "weather-1-1.json": "8b54c7047f5a9f02376903463164542a05966e07074cd14ec15cc2e6a3135a25",
+    "weather-1-2.json": "f2566348357e75c6b433f722c833b078914fb75d63bdc6f3273815ca5ad69721",
+    "weather-1-3.json": "22a6b7ba8419218c67a3b838b1c134ba3e96dece312316e59bb57ca03f4427ec",
+    "weather-1-4.json": "029bb50a4e886de53c900066f1a98ba739220fcdecaee7db9dd2954a2ae7b447",
+    "weather-1-5.json": "709b7ced33884e8f1abc58a4ee184dcaf0f08cfd0976f7f54ef916b1badb513f",
+    "weather-2-1.json": "1c8551d86a0b3bc9ad7dbdfe109d79fb05060b8ae1ae4065d3488e5c6c613151",
+    "weather-2-2.json": "b38ba6ed670fb45156eb461877d96121cf8bc6eb69e2a8e4af01ffcbade0369b",
+    "weather-2-3.json": "079683040f3d2e6d11c186c889bfebddf86e4da7ea3c213e4c2ab5057174664b",
+    "weather-2-4.json": "4d24da296ab8df5e5e64fcf51561f22e52956d96710f202d0b57f644e691f0a1",
+    "weather-2-5.json": "d05f729e2db0d696ea84e0ab546cb6382921443a89a5782af74a376b6ce2e973"
+  },
+  "region": "northern-california",
+  "request_manifests": {
+    "historical-1": {
+      "attribution_reference": "https://www.earthdata.nasa.gov/data/tools/firms",
+      "bbox": {
+        "east": -120.0,
+        "north": 40.5,
+        "south": 38.5,
+        "west": -122.5
+      },
+      "days": 3,
+      "endpoint": "/api/area/csv/{MAP_KEY}/{PRODUCT}/{BBOX}/{DAYS}/{DATE}",
+      "product": "VIIRS_NOAA20_SP",
+      "provider": "firms",
+      "retrieved_at": "2026-10-21T09:27:35.555554+00:00",
+      "start_date": "2022-09-07"
+    },
+    "historical-2": {
+      "attribution_reference": "https://www.earthdata.nasa.gov/data/tools/firms",
+      "bbox": {
+        "east": -120.0,
+        "north": 40.5,
+        "south": 38.5,
+        "west": -122.5
+      },
+      "days": 3,
+      "endpoint": "/api/area/csv/{MAP_KEY}/{PRODUCT}/{BBOX}/{DAYS}/{DATE}",
+      "product": "VIIRS_NOAA20_SP",
+      "provider": "firms",
+      "retrieved_at": "2026-10-21T09:27:36.440289+00:00",
+      "start_date": "2024-07-25"
+    },
+    "recent": {
+      "attribution_reference": "https://www.earthdata.nasa.gov/data/tools/firms",
+      "bbox": {
+        "east": -120.0,
+        "north": 40.5,
+        "south": 38.5,
+        "west": -122.5
+      },
+      "days": 1,
+      "endpoint": "/api/area/csv/{MAP_KEY}/{PRODUCT}/{BBOX}/{DAYS}/{DATE}",
+      "product": "VIIRS_NOAA20_NRT",
+      "provider": "firms",
+      "retrieved_at": "2026-10-21T09:27:34.404092+00:00",
+      "start_date": "2026-10-21"
+    }
+  },
+  "retrieved_at": "2026-10-21T09:27:32.853791Z",
+  "sample_inspections": {
+    "historical-1": {
+      "byte_count": 111958,
+      "column_types": {
+        "acq_date": [
+          "text"
+        ],
+        "acq_time": [
+          "integer_text"
+        ],
+        "bright_ti4": [
+          "integer_text",
+          "number_text"
+        ],
+        "bright_ti5": [
+          "integer_text",
+          "number_text"
+        ],
+        "confidence": [
+          "text"
+        ],
+        "daynight": [
+          "text"
+        ],
+        "frp": [
+          "integer_text",
+          "number_text"
+        ],
+        "instrument": [
+          "text"
+        ],
+        "latitude": [
+          "number_text"
+        ],
+        "longitude": [
+          "number_text"
+        ],
+        "satellite": [
+          "text"
+        ],
+        "scan": [
+          "number_text"
+        ],
+        "track": [
+          "number_text"
+        ],
+        "type": [
+          "integer_text"
+        ],
+        "version": [
+          "integer_text"
+        ]
+      },
+      "columns": [
+        "latitude",
+        "longitude",
+        "bright_ti4",
+        "scan",
+        "track",
+        "acq_date",
+        "acq_time",
+        "satellite",
+        "instrument",
+        "confidence",
+        "version",
+        "bright_ti5",
+        "frp",
+        "daynight",
+        "type"
+      ],
+      "empty": false,
+      "first_acquisition": "2022-09-07T08:46:00Z",
+      "last_acquisition": "2022-09-09T21:11:00Z",
+      "missing_values": {
+        "acq_date": 0,
+        "acq_time": 0,
+        "bright_ti4": 0,
+        "bright_ti5": 0,
+        "confidence": 0,
+        "daynight": 0,
+        "frp": 0,
+        "instrument": 0,
+        "latitude": 0,
+        "longitude": 0,
+        "satellite": 0,
+        "scan": 0,
+        "track": 0,
+        "type": 0,
+        "version": 0
+      },
+      "observed_confidence": [
+        "h",
+        "l",
+        "n"
+      ],
+      "observed_months": [
+        "2022-09"
+      ],
+      "observed_satellites": [
+        "N20"
+      ],
+      "observed_versions": [
+        "2"
+      ],
+      "product": "VIIRS_NOAA20_SP",
+      "requested_end": "2022-09-09",
+      "requested_start": "2022-09-07",
+      "row_count": 1367,
+      "rows_by_date": {
+        "2022-09-07": 323,
+        "2022-09-08": 339,
+        "2022-09-09": 705
+      },
+      "sha256": "141186a2e958f3d611f0a394613431ea35524ca75f57476fd774658ff6cd7e49"
+    },
+    "historical-2": {
+      "byte_count": 411523,
+      "column_types": {
+        "acq_date": [
+          "text"
+        ],
+        "acq_time": [
+          "integer_text"
+        ],
+        "bright_ti4": [
+          "integer_text",
+          "number_text"
+        ],
+        "bright_ti5": [
+          "integer_text",
+          "number_text"
+        ],
+        "confidence": [
+          "text"
+        ],
+        "daynight": [
+          "text"
+        ],
+        "frp": [
+          "integer_text",
+          "number_text"
+        ],
+        "instrument": [
+          "text"
+        ],
+        "latitude": [
+          "number_text"
+        ],
+        "longitude": [
+          "number_text"
+        ],
+        "satellite": [
+          "text"
+        ],
+        "scan": [
+          "number_text"
+        ],
+        "track": [
+          "number_text"
+        ],
+        "type": [
+          "integer_text"
+        ],
+        "version": [
+          "integer_text"
+        ]
+      },
+      "columns": [
+        "latitude",
+        "longitude",
+        "bright_ti4",
+        "scan",
+        "track",
+        "acq_date",
+        "acq_time",
+        "satellite",
+        "instrument",
+        "confidence",
+        "version",
+        "bright_ti5",
+        "frp",
+        "daynight",
+        "type"
+      ],
+      "empty": false,
+      "first_acquisition": "2024-07-25T10:20:00Z",
+      "last_acquisition": "2024-07-27T21:04:00Z",
+      "missing_values": {
+        "acq_date": 0,
+        "acq_time": 0,
+        "bright_ti4": 0,
+        "bright_ti5": 0,
+        "confidence": 0,
+        "daynight": 0,
+        "frp": 0,
+        "instrument": 0,
+        "latitude": 0,
+        "longitude": 0,
+        "satellite": 0,
+        "scan": 0,
+        "track": 0,
+        "type": 0,
+        "version": 0
+      },
+      "observed_confidence": [
+        "h",
+        "l",
+        "n"
+      ],
+      "observed_months": [
+        "2024-07"
+      ],
+      "observed_satellites": [
+        "N20"
+      ],
+      "observed_versions": [
+        "2"
+      ],
+      "product": "VIIRS_NOAA20_SP",
+      "requested_end": "2024-07-27",
+      "requested_start": "2024-07-25",
+      "row_count": 5037,
+      "rows_by_date": {
+        "2024-07-25": 1723,
+        "2024-07-26": 1667,
+        "2024-07-27": 1647
+      },
+      "sha256": "97751af6a5170bae15811a1fe34af18d3ebda7a8d98a68f9258268619ee3b1ef"
+    },
+    "recent": {
+      "byte_count": 122,
+      "column_types": {
+        "acq_date": [],
+        "acq_time": [],
+        "bright_ti4": [],
+        "bright_ti5": [],
+        "confidence": [],
+        "daynight": [],
+        "frp": [],
+        "instrument": [],
+        "latitude": [],
+        "longitude": [],
+        "satellite": [],
+        "scan": [],
+        "track": [],
+        "version": []
+      },
+      "columns": [
+        "latitude",
+        "longitude",
+        "bright_ti4",
+        "scan",
+        "track",
+        "acq_date",
+        "acq_time",
+        "satellite",
+        "instrument",
+        "confidence",
+        "version",
+        "bright_ti5",
+        "frp",
+        "daynight"
+      ],
+      "empty": true,
+      "first_acquisition": null,
+      "last_acquisition": null,
+      "missing_values": {
+        "acq_date": 0,
+        "acq_time": 0,
+        "bright_ti4": 0,
+        "bright_ti5": 0,
+        "confidence": 0,
+        "daynight": 0,
+        "frp": 0,
+        "instrument": 0,
+        "latitude": 0,
+        "longitude": 0,
+        "satellite": 0,
+        "scan": 0,
+        "track": 0,
+        "version": 0
+      },
+      "observed_confidence": [],
+      "observed_months": [],
+      "observed_satellites": [],
+      "observed_versions": [],
+      "product": "VIIRS_NOAA20_NRT",
+      "requested_end": "2026-10-21",
+      "requested_start": "2026-10-21",
+      "row_count": 0,
+      "rows_by_date": {},
+      "sha256": "2b11a44667d05367ecf77651b95fd3d34c545c7ec154856094b91245e41ae697"
+    }
+  },
+  "schema_version": "source-access-evidence-v1",
+  "status": "probed",
+  "unavailable_products": [],
+  "weather_inspections": [
+    {
+      "complete": true,
+      "end_date": "2022-09-09",
+      "expected_hours": 72,
+      "model": "gfs_seamless",
+      "product": "historical_forecast",
+      "requested_latitude": 39.5,
+      "requested_longitude": -121.25,
+      "returned_latitude": 39.488903,
+      "returned_longitude": -121.257835,
+      "sha256": "8b54c7047f5a9f02376903463164542a05966e07074cd14ec15cc2e6a3135a25",
+      "start_date": "2022-09-07",
+      "units": {
+        "precipitation": "mm",
+        "relative_humidity_2m": "%",
+        "temperature_2m": "°C",
+        "wind_gusts_10m": "m/s",
+        "wind_speed_10m": "m/s"
+      },
+      "valid_hours": {
+        "precipitation": 72,
+        "relative_humidity_2m": 72,
+        "temperature_2m": 72,
+        "wind_gusts_10m": 72,
+        "wind_speed_10m": 72
+      }
+    },
+    {
+      "complete": true,
+      "end_date": "2022-09-09",
+      "expected_hours": 72,
+      "model": "gfs_seamless",
+      "product": "historical_forecast",
+      "requested_latitude": 38.5,
+      "requested_longitude": -122.5,
+      "returned_latitude": 38.501217,
+      "returned_longitude": -122.49565,
+      "sha256": "f2566348357e75c6b433f722c833b078914fb75d63bdc6f3273815ca5ad69721",
+      "start_date": "2022-09-07",
+      "units": {
+        "precipitation": "mm",
+        "relative_humidity_2m": "%",
+        "temperature_2m": "°C",
+        "wind_gusts_10m": "m/s",
+        "wind_speed_10m": "m/s"
+      },
+      "valid_hours": {
+        "precipitation": 72,
+        "relative_humidity_2m": 72,
+        "temperature_2m": 72,
+        "wind_gusts_10m": 72,
+        "wind_speed_10m": 72
+      }
+    },
+    {
+      "complete": true,
+      "end_date": "2022-09-09",
+      "expected_hours": 72,
+      "model": "gfs_seamless",
+      "product": "historical_forecast",
+      "requested_latitude": 38.5,
+      "requested_longitude": -120.0,
+      "returned_latitude": 38.487423,
+      "returned_longitude": -119.99543,
+      "sha256": "22a6b7ba8419218c67a3b838b1c134ba3e96dece312316e59bb57ca03f4427ec",
+      "start_date": "2022-09-07",
+      "units": {
+        "precipitation": "mm",
+        "relative_humidity_2m": "%",
+        "temperature_2m": "°C",
+        "wind_gusts_10m": "m/s",
+        "wind_speed_10m": "m/s"
+      },
+      "valid_hours": {
+        "precipitation": 72,
+        "relative_humidity_2m": 72,
+        "temperature_2m": 72,
+        "wind_gusts_10m": 72,
+        "wind_speed_10m": 72
+      }
+    },
+    {
+      "complete": true,
+      "end_date": "2022-09-09",
+      "expected_hours": 72,
+      "model": "gfs_seamless",
+      "product": "historical_forecast",
+      "requested_latitude": 40.5,
+      "requested_longitude": -122.5,
+      "returned_latitude": 40.49084,
+      "returned_longitude": -122.487816,
+      "sha256": "029bb50a4e886de53c900066f1a98ba739220fcdecaee7db9dd2954a2ae7b447",
+      "start_date": "2022-09-07",
+      "units": {
+        "precipitation": "mm",
+        "relative_humidity_2m": "%",
+        "temperature_2m": "°C",
+        "wind_gusts_10m": "m/s",
+        "wind_speed_10m": "m/s"
+      },
+      "valid_hours": {
+        "precipitation": 72,
+        "relative_humidity_2m": 72,
+        "temperature_2m": 72,
+        "wind_gusts_10m": 72,
+        "wind_speed_10m": 72
+      }
+    },
+    {
+      "complete": true,
+      "end_date": "2022-09-09",
+      "expected_hours": 72,
+      "model": "gfs_seamless",
+      "product": "historical_forecast",
+      "requested_latitude": 40.5,
+      "requested_longitude": -120.0,
+      "returned_latitude": 40.48927,
+      "returned_longitude": -119.99394,
+      "sha256": "709b7ced33884e8f1abc58a4ee184dcaf0f08cfd0976f7f54ef916b1badb513f",
+      "start_date": "2022-09-07",
+      "units": {
+        "precipitation": "mm",
+        "relative_humidity_2m": "%",
+        "temperature_2m": "°C",
+        "wind_gusts_10m": "m/s",
+        "wind_speed_10m": "m/s"
+      },
+      "valid_hours": {
+        "precipitation": 72,
+        "relative_humidity_2m": 72,
+        "temperature_2m": 72,
+        "wind_gusts_10m": 72,
+        "wind_speed_10m": 72
+      }
+    },
+    {
+      "complete": true,
+      "end_date": "2024-07-27",
+      "expected_hours": 72,
+      "model": "gfs_seamless",
+      "product": "historical_forecast",
+      "requested_latitude": 39.5,
+      "requested_longitude": -121.25,
+      "returned_latitude": 39.488903,
+      "returned_longitude": -121.257835,
+      "sha256": "1c8551d86a0b3bc9ad7dbdfe109d79fb05060b8ae1ae4065d3488e5c6c613151",
+      "start_date": "2024-07-25",
+      "units": {
+        "precipitation": "mm",
+        "relative_humidity_2m": "%",
+        "temperature_2m": "°C",
+        "wind_gusts_10m": "m/s",
+        "wind_speed_10m": "m/s"
+      },
+      "valid_hours": {
+        "precipitation": 72,
+        "relative_humidity_2m": 72,
+        "temperature_2m": 72,
+        "wind_gusts_10m": 72,
+        "wind_speed_10m": 72
+      }
+    },
+    {
+      "complete": true,
+      "end_date": "2024-07-27",
+      "expected_hours": 72,
+      "model": "gfs_seamless",
+      "product": "historical_forecast",
+      "requested_latitude": 38.5,
+      "requested_longitude": -122.5,
+      "returned_latitude": 38.501217,
+      "returned_longitude": -122.49565,
+      "sha256": "b38ba6ed670fb45156eb461877d96121cf8bc6eb69e2a8e4af01ffcbade0369b",
+      "start_date": "2024-07-25",
+      "units": {
+        "precipitation": "mm",
+        "relative_humidity_2m": "%",
+        "temperature_2m": "°C",
+        "wind_gusts_10m": "m/s",
+        "wind_speed_10m": "m/s"
+      },
+      "valid_hours": {
+        "precipitation": 72,
+        "relative_humidity_2m": 72,
+        "temperature_2m": 72,
+        "wind_gusts_10m": 72,
+        "wind_speed_10m": 72
+      }
+    },
+    {
+      "complete": true,
+      "end_date": "2024-07-27",
+      "expected_hours": 72,
+      "model": "gfs_seamless",
+      "product": "historical_forecast",
+      "requested_latitude": 38.5,
+      "requested_longitude": -120.0,
+      "returned_latitude": 38.487423,
+      "returned_longitude": -119.99543,
+      "sha256": "079683040f3d2e6d11c186c889bfebddf86e4da7ea3c213e4c2ab5057174664b",
+      "start_date": "2024-07-25",
+      "units": {
+        "precipitation": "mm",
+        "relative_humidity_2m": "%",
+        "temperature_2m": "°C",
+        "wind_gusts_10m": "m/s",
+        "wind_speed_10m": "m/s"
+      },
+      "valid_hours": {
+        "precipitation": 72,
+        "relative_humidity_2m": 72,
+        "temperature_2m": 72,
+        "wind_gusts_10m": 72,
+        "wind_speed_10m": 72
+      }
+    },
+    {
+      "complete": true,
+      "end_date": "2024-07-27",
+      "expected_hours": 72,
+      "model": "gfs_seamless",
+      "product": "historical_forecast",
+      "requested_latitude": 40.5,
+      "requested_longitude": -122.5,
+      "returned_latitude": 40.49084,
+      "returned_longitude": -122.487816,
+      "sha256": "4d24da296ab8df5e5e64fcf51561f22e52956d96710f202d0b57f644e691f0a1",
+      "start_date": "2024-07-25",
+      "units": {
+        "precipitation": "mm",
+        "relative_humidity_2m": "%",
+        "temperature_2m": "°C",
+        "wind_gusts_10m": "m/s",
+        "wind_speed_10m": "m/s"
+      },
+      "valid_hours": {
+        "precipitation": 72,
+        "relative_humidity_2m": 72,
+        "temperature_2m": 72,
+        "wind_gusts_10m": 72,
+        "wind_speed_10m": 72
+      }
+    },
+    {
+      "complete": true,
+      "end_date": "2024-07-27",
+      "expected_hours": 72,
+      "model": "gfs_seamless",
+      "product": "historical_forecast",
+      "requested_latitude": 40.5,
+      "requested_longitude": -120.0,
+      "returned_latitude": 40.48927,
+      "returned_longitude": -119.99394,
+      "sha256": "d05f729e2db0d696ea84e0ab546cb6382921443a89a5782af74a376b6ce2e973",
+      "start_date": "2024-07-25",
+      "units": {
+        "precipitation": "mm",
+        "relative_humidity_2m": "%",
+        "temperature_2m": "°C",
+        "wind_gusts_10m": "m/s",
+        "wind_speed_10m": "m/s"
+      },
+      "valid_hours": {
+        "precipitation": 72,
+        "relative_humidity_2m": 72,
+        "temperature_2m": 72,
+        "wind_gusts_10m": 72,
+        "wind_speed_10m": 72
+      }
+    }
+  ]
+}

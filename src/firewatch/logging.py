@@ -77,6 +77,12 @@ def install_redaction(settings: Settings) -> Callable[[], None]:
     if settings.chain_private_key is not None:
         key = settings.chain_private_key.get_secret_value().removeprefix("0x").removeprefix("0X")
         raw.extend([key.lower(), key.upper(), "0x" + key.lower(), "0X" + key.upper()])
+    return install_secret_redaction(tuple(raw))
+
+
+def install_secret_redaction(raw: tuple[str, ...]) -> Callable[[], None]:
+    """Protect standalone provider clients without requiring DB/operator settings."""
+    global _previous
     values = tuple(
         {
             variant

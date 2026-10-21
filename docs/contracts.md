@@ -33,6 +33,12 @@ see [frontend handoff](frontend-handoff.md) for endpoint, filter and error contr
   values go in `raw_values`, with the normalized value null and explicit flags.
   The future normalizer owns conversion decisions and dedup-key construction.
 - `DetectionBatch` checks product consistency and the ordered UTC import window.
+- Phase 2.2 adds `FirmsAreaRequest` and `FirmsBatch` (`firms-raw-batch-v1`) in
+  `sources/firms.py`. `FirmsClient.fetch(request)` returns lexical CSV rows plus
+  `SourceAssetInput`, columns, row count, empty status, observed processing versions
+  and manifest path. See the [FIRMS client guide](firms-client.md). The later
+  `fetch_detections` normalization service still returns `DetectionBatch`; raw
+  transport rows are not yet `DetectionInput` observations.
 
 `save_detection(session, batch_id, region_id, observation)` is the shared
 persistence boundary. It validates the batch/region/product/time/bbox, inserts

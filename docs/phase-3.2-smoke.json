@@ -1,0 +1,121 @@
+{
+  "schema_version": "climate-phase-3.2-smoke-v1",
+  "recorded_at": "2026-10-21T18:16:23.939873+00:00",
+  "synthetic": false,
+  "reference_years": [
+    2010,
+    2019
+  ],
+  "climate_cells": 1,
+  "monthly_baselines": 12,
+  "offline_identical": true,
+  "july": {
+    "schema_version": "contracts-v1",
+    "cell_key": "power-grid-0p5x0p625-v1-258-93",
+    "latitude": 39.25,
+    "longitude": -121.5625,
+    "source": "nasa_power",
+    "reference_start_year": 2010,
+    "reference_end_year": 2019,
+    "month": 7,
+    "temperature_mean_c": 25.473096774193547,
+    "precipitation_mean_mm": 0.02903225806451613,
+    "sample_counts": {
+      "expected_days": 310,
+      "temperature_c": 310,
+      "temperature_c_years": 10,
+      "precipitation_mm": 310,
+      "precipitation_mm_years": 10
+    },
+    "statistics": {
+      "processor": "power-monthly-v1",
+      "grid_version": "power-grid-0p5x0p625-v1",
+      "coarse_resolution_degrees": [
+        0.5,
+        0.625
+      ],
+      "grid_meaning": "application coarse request bins; API point coordinates echo request",
+      "time_standard": "UTC",
+      "daily_interval": "[00:00Z,next-day 00:00Z)",
+      "aggregation": "arithmetic mean of valid daily values pooled by UTC calendar month",
+      "temperature_definition": "monthly mean daily temperature; not hourly z-score",
+      "precipitation_definition": "monthly reference mean daily precipitation in mm/day",
+      "min_valid_fraction": 0.9,
+      "quality_flags": [],
+      "units": {
+        "temperature_mean_c": "C",
+        "precipitation_mean_mm": "mm/day"
+      },
+      "earliest_snapshot": "2022-05-01T00:00:00+00:00",
+      "source_assets": [
+        "96832274-3b96-450b-b05b-ae5d3950cdc5",
+        "b69ab858-7911-4e76-9799-ee72d45fdd81",
+        "35e34bd5-8467-475a-ad82-13aa17a33bbd",
+        "ca982ba9-5686-438f-ba47-8edd3fb7d989",
+        "169e5306-c946-4c4f-9e00-2b40ca609ee0",
+        "b41affe8-5cce-4eb6-8b49-f69b7616ebbe",
+        "30050a72-d2c6-4168-807f-1d325b04d62e",
+        "b098249b-4feb-467b-95d5-d2a37af110c0",
+        "ad7e0cb2-2b10-4152-927e-1343d1f88512",
+        "769b8f82-9d06-4846-a3a0-49d3932a76a9"
+      ],
+      "source_hashes": [
+        "9a87622922e707ce75c34a947836da946e16d6dc13ff2f51460717d03d47242c",
+        "899bec448ca96bad994598a036b17278d17dc943ce2b91c0dc82818d0e8ac3c7",
+        "0714e0369d0cd04e89843c8f016509c74a9ed425e6961024474a75e05960f48c",
+        "8802f9fe1f997e4fb980eed71e1e79ccf04d0f3df4a7a3e158c9099468e08181",
+        "d880f95567a196ca7e42b3a1eb1c8d2cc1b9fc52a2a960f58c76011919f94dd9",
+        "fe247ced85fda2ddfdff4d7ce9e56f9baf321a2d2a376af1452c905d4e29169b",
+        "e91ae51d83c007ca79cca519562f81baf8737b356063f484cf5e508c8ad831c6",
+        "e4d6b82b97f2e862256e3061eb722ca68aac91e8f5b293d13f9c3017f6f9306e",
+        "53f4e05bf59259ffbc2efe7199e0e06e4a51e78ffb82abaf5023e94fc0d02e01",
+        "e54cf5f4684a72d5aca13c5d375360070730e02915b69cab37f6db9af3d5d49e"
+      ]
+    },
+    "version": "power-monthly-v1",
+    "asset_id": "a63a2875-e4fe-53e9-8521-5d50b70e9f82"
+  },
+  "context": {
+    "as_of": "2024-07-25T00:00:00Z",
+    "temperature_departure_c": 13.226903225806456,
+    "rainfall_deficit_24h_mm": 0.02903225806451613,
+    "baseline_version": "power-monthly-v1",
+    "baseline_asset_id": "a63a2875-e4fe-53e9-8521-5d50b70e9f82",
+    "precipitation_interval_end": "2024-07-25T00:00:00Z",
+    "temperature_definition": "departure from monthly mean daily climate reference; not hourly z-score",
+    "quality_flags": [
+      "hourly_model_values",
+      "precipitation_24h_ends_at_completed_hour",
+      "precipitation_preceding_hour",
+      "provider_interpolation_unknown",
+      "retrospective_weather"
+    ]
+  },
+  "region_activated": false,
+  "pipeline_run_created": false,
+  "baseline_manifest_sha256": "068cd2933401416ecc59e27205cb29ae7abc05382ee89cf2af6f8def4d860803",
+  "reference_calendar_days": 3652,
+  "raw_annual_chunks": 10,
+  "checks": {
+    "full_unit_contract_postgresql_suite_passed": 548,
+    "new_climate_tests": 64,
+    "climate_unit_tests": 57,
+    "climate_postgresql_tests": 7,
+    "http_health_auth_smoke": "passed",
+    "real_offline_cli": "passed",
+    "ruff": "passed",
+    "format": "passed",
+    "strict_mypy_source_files": 65,
+    "scaffold_links_git_exclusions": "passed",
+    "dependency_locks": "passed",
+    "source_wheel_build": "passed",
+    "packaged_climate_modules": "passed",
+    "cli_help": "passed",
+    "configured_secret_scan_files": 195,
+    "git_diff_check": "passed",
+    "hosted_ci": "not_run"
+  },
+  "warnings": [
+    "Existing Starlette TestClient/httpx deprecation warning."
+  ]
+}

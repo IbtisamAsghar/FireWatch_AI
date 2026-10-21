@@ -20,8 +20,12 @@ Phases 2.3–2.6 add normalization/revision selection, resumable seasonal import
 adapters, immutable PostgreSQL caching, offline reads and complete-hour rainfall
 selection. See [weather cache](docs/weather-cache.md) and
 [Phase 3.1 acceptance](docs/phase-3.1-checklist.md).
-Climate baselines, clustering, features, worker orchestration, scorer execution
-and chain adapters remain later modules. See the [implementation plan](FireWatchImplementationPlan.md),
+Phase 3.2 adds fixed-reference NASA POWER daily climate context, resumable annual
+source caching, immutable monthly baselines and `firewatch build-baselines`.
+See [climate baseline guide](docs/climate-baselines.md) and
+[Phase 3.2 acceptance](docs/phase-3.2-checklist.md).
+Clustering, features, worker orchestration, scorer execution and chain adapters
+remain later modules. See the [implementation plan](FireWatchImplementationPlan.md),
 [Phase 1.4 acceptance](docs/phase-1.4-checklist.md),
 [Phase 1.5 acceptance](docs/phase-1.5-checklist.md), [operator API](docs/operator-api.md), and
 [frontend API handoff](docs/frontend-handoff.md),

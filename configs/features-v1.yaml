@@ -1,4 +1,4 @@
-# Design metadata only; not yet consumed by code.
+# Climate fields are consumed by build-baselines; other feature settings remain draft.
 schema_version: features-v1
 status: draft
 cluster_radius_km: 2
@@ -6,5 +6,8 @@ snapshot_lookback_hours: 6
 activity_lookbacks_hours: [6, 12, 24]
 weather_cache_grid_degrees: 0.1
 weather_max_age_hours: 3
-climate_reference_years: null # Select before training; at least ten complete years preferred.
+climate_reference_years: {start: 2010, end: 2019}
+climate_earliest_snapshot: '2022-05-01T00:00:00Z'
+climate_baseline_version: power-monthly-v1
+climate_min_valid_fraction: 0.9
 missing_value_policy: null_with_quality_flags

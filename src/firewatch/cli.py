@@ -581,3 +581,106 @@ def import_weather_command(
             client.close()
         if database is not None:
             database.close()
+
+
+@app.command("build-baselines")
+def build_baselines_command(
+    latitude: Annotated[list[float] | None, typer.Option("--latitude")] = None,
+    longitude: Annotated[list[float] | None, typer.Option("--longitude")] = None,
+    region: Annotated[str | None, typer.Option("--region")] = None,
+    config: Annotated[Path, typer.Option("--config")] = Path("configs/features-v1.yaml"),
+    offline: Annotated[bool, typer.Option("--offline")] = False,
+) -> None:
+    """Precompute fixed-reference monthly POWER context; annual cache checkpoints allow resume."""
+    from firewatch.processing.baselines import load_baseline_spec
+    from firewatch.repositories.baselines import build_baselines
+    from firewatch.repositories.regions import load_regions
+    from firewatch.sources.power import PowerClient, climate_cell
+    from firewatch.sources.weather_budget import WeatherBudget, WeatherError
+
+    database = None
+    client = None
+    try:
+        spec = load_baseline_spec(config)
+        settings = get_settings()
+        if region is not None:
+            if latitude is not None or longitude is not None:
+                raise ValueError("Use a region or explicit coordinates")
+            regions = load_regions(settings.regions_config)
+            area = next((r for r in regions.regions if r.name == region), None)
+            if area is None:
+                raise ValueError("Unknown configured region")
+            box = area.bbox
+            first = climate_cell(box.south, box.west)
+            last = climate_cell(box.north - 1e-9, box.east - 1e-9)
+            ny = round((last.latitude - first.latitude) / 0.5) + 1
+            nx = round((last.longitude - first.longitude) / 0.625) + 1
+            if nx * ny > 64:
+                raise ValueError("Region exceeds 64 climate cells; use explicit cell chunks")
+            cells = [
+                climate_cell(first.latitude + y * 0.5, first.longitude + x * 0.625)
+                for y in range(ny)
+                for x in range(nx)
+            ]
+        else:
+            if (
+                not latitude
+                or not longitude
+                or len(latitude) != len(longitude)
+                or len(latitude) > 64
+            ):
+                raise ValueError("Pair one to sixty-four coordinates")
+            cells = [climate_cell(lat, lon) for lat, lon in zip(latitude, longitude, strict=True)]
+        database = Database(settings)
+        if not offline:
+            client = PowerClient(
+                settings.raw_data_dir / "power",
+                WeatherBudget(settings.raw_data_dir.parent / "power-budget.sqlite"),
+            )
+        rows = build_baselines(
+            database.engine,
+            cells,
+            spec,
+            settings.raw_data_dir.parent / "climate-baselines",
+            client=client,
+            offline=offline,
+        )
+        typer.echo(
+            json.dumps(
+                {
+                    "status": "cached",
+                    "climate_cells": len({r.cell_key for r in rows}),
+                    "monthly_baselines": len(rows),
+                    "version": spec.version,
+                    "reference_years": [spec.reference_start_year, spec.reference_end_year],
+                    "missing_temperature_months": sum(r.temperature_mean_c is None for r in rows),
+                    "missing_precipitation_months": sum(
+                        r.precipitation_mean_mm is None for r in rows
+                    ),
+                }
+            )
+        )
+    except (
+        ValueError,
+        OSError,
+        KeyError,
+        TypeError,
+        sqlite3.Error,
+        WeatherError,
+        ConfigurationError,
+        yaml.YAMLError,
+    ):
+        typer.echo(
+            "Climate baseline build failed: check config, cache, source or budget. "
+            "Committed annual source chunks are retained; rerun to resume.",
+            err=True,
+        )
+        raise typer.Exit(1) from None
+    except SQLAlchemyError:
+        typer.echo("Climate database unavailable; committed annual chunks are retained.", err=True)
+        raise typer.Exit(1) from None
+    finally:
+        if client is not None:
+            client.close()
+        if database is not None:
+            database.close()

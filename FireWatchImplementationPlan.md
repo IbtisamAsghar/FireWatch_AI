@@ -531,17 +531,27 @@ remain the following phases.
 
 ### Phase 3.2: Precompute climate context
 
-- [ ] Use NASA POWER T2M and PRECTOTCORR first; add parameters only after checking availability.
-- [ ] Choose a fixed reference period ending before the earliest evaluation/training snapshot, preferably at least 10 complete years if available.
-- [ ] Fetch by unique weather/climate cells and bounded year intervals, not once per hotspot.
-- [ ] Read provider fill values and units; convert fill sentinels to null before statistics.
-- [ ] Compute monthly reference mean daily temperature and mean daily precipitation, with sample counts.
-- [ ] Compute `temperature_departure_c = temperature_at_T - monthly_mean_daily_temperature`.
-- [ ] Label that value as a departure from a daily climate reference, not a standardized hourly heat anomaly.
-- [ ] Compute `rainfall_deficit_24h_mm = max(0, monthly_mean_daily_precip_mm - observed_prior_24h_precip_mm)` only with a complete preceding-day weather series.
-- [ ] Record reference period, UTC daily convention, coarse grid resolution, statistic definitions, and baseline version.
-- [ ] Do not use a daily weather value covering hours after T as an input at T.
-- [ ] If a baseline is missing, record the missing flag; do not invent a climate value.
+- [x] Use NASA POWER T2M and PRECTOTCORR first; add parameters only after checking availability.
+- [x] Choose a fixed reference period ending before the earliest evaluation/training snapshot, preferably at least 10 complete years if available.
+- [x] Fetch by unique weather/climate cells and bounded year intervals, not once per hotspot.
+- [x] Read provider fill values and units; convert fill sentinels to null before statistics.
+- [x] Compute monthly reference mean daily temperature and mean daily precipitation, with sample counts.
+- [x] Compute `temperature_departure_c = temperature_at_T - monthly_mean_daily_temperature`.
+- [x] Label that value as a departure from a daily climate reference, not a standardized hourly heat anomaly.
+- [x] Compute `rainfall_deficit_24h_mm = max(0, monthly_mean_daily_precip_mm - observed_prior_24h_precip_mm)` only with a complete preceding-day weather series.
+- [x] Record reference period, UTC daily convention, coarse grid resolution, statistic definitions, and baseline version.
+- [x] Do not use a daily weather value covering hours after T as an input at T.
+- [x] If a baseline is missing, record the missing flag; do not invent a climate value.
+
+Implementation: [climate baseline guide](docs/climate-baselines.md),
+[Phase 3.2 acceptance](docs/phase-3.2-checklist.md), and
+[real POWER baseline evidence](docs/phase-3.2-smoke.json). The fixed 2010–2019
+reference precedes the earliest planned 2022 snapshot. Unique coarse climate cells,
+annual checkpoints, fill-aware monthly daily means, per-variable sample counts,
+immutable provenance manifests and past-only climate departures are implemented.
+The real acceptance cache covers one cell; region-wide preparation is available
+through the bounded, resumable build command. Clustering and feature orchestration
+remain Phase 3.3 onward.
 
 ### Phase 3.3: Build reproducible cluster snapshots
 

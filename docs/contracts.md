@@ -136,3 +136,15 @@ results. Future workers must honor frozen inputs, validate coverage/files/models
 recheck chain policy, and implement leases/retries before marking success. Future
 producers must use the same advisory-lock/capacity admission protocol. Full endpoint
 contracts and bounds are in [operator API](operator-api.md).
+
+## Phase 2.3 normalized FIRMS handoff
+
+`normalize_firms_batch(FirmsBatch, NormalizationPolicy)` returns a versioned
+`NormalizedFirmsBatch` containing validated snapshots, exact observation/revision
+keys, rejections and a bounded quality summary. `persist_normalized` owns no commit;
+call it inside the caller's write transaction. `RevisionPolicy` selects one product
+per sensor and explicit source batches. `freeze_firms_inputs` pins exact source
+revisions in the existing run manifest. Downstream processing uses returned
+`SelectedDetection.observation` values rather than canonical first-seen measurements.
+See the [full normalization contract](firms-normalization.md). Existing public REST
+contracts and shared detection/source DTOs remain compatible.

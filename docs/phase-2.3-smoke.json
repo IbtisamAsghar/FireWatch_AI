@@ -1,0 +1,45 @@
+{
+  "schema_version": "phase-2.3-smoke-v1",
+  "executed_at": "2026-10-21T10:27:05.549253+00:00",
+  "source_sha256": "addabe774c9217cef7ec82e1a91b5b7faaee4e5f8173d8998eb3d6f5e0677476",
+  "source_batch_id": "b0c52d61-215b-470c-9310-4460826c0127",
+  "product": "VIIRS_NOAA20_SP",
+  "source_date": "2022-09-07",
+  "quality": {
+    "schema_version": "firms-quality-v1",
+    "normalizer_version": "firms-normalizer-v1",
+    "observation_key_version": "firms-observation-v1",
+    "policy": {
+      "invalid_frp": "reject",
+      "missing_frp": "allow",
+      "rejection_samples": 20
+    },
+    "policy_hash": "5df315a3fbca5e4917cdedb647ab1f3f6f7347af0f89ff5d9e45f0c4f5e31dc2",
+    "source_batch_id": "b0c52d61-215b-470c-9310-4460826c0127",
+    "source_sha256": "addabe774c9217cef7ec82e1a91b5b7faaee4e5f8173d8998eb3d6f5e0677476",
+    "product": "VIIRS_NOAA20_SP",
+    "fetched_count": 323,
+    "accepted_count": 323,
+    "rejected_count": 0,
+    "duplicate_count": 0,
+    "revised_count": 0,
+    "rejection_counts": {},
+    "quality_flag_counts": {}
+  },
+  "postgresql": {
+    "isolated_schema": true,
+    "counts_after_repeat": {
+      "detections": 323,
+      "detection_sources": 323,
+      "ingestion_batches": 1,
+      "source_assets": 1
+    },
+    "first_inserted": 323,
+    "repeat_inserted": 0,
+    "selected_run_inputs": 323,
+    "repeat_pin_unchanged": true
+  },
+  "network_requests": 0,
+  "application_schema_data_modified": false,
+  "raw_rows_in_evidence": false
+}

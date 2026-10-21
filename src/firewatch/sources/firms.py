@@ -394,26 +394,7 @@ class FirmsClient:
             raise FirmsError("RATE_LIMITED", retryable=True, retry_after_seconds=600)
 
     def _csv(self, body: bytes) -> tuple[list[str], list[dict[str, str]]]:
-        try:
-            reader = csv.DictReader(io.StringIO(body.decode("utf-8-sig")), strict=True)
-            fields = reader.fieldnames
-            if (
-                not fields
-                or len(fields) != len(set(fields))
-                or not REQUIRED_COLUMNS <= set(fields)
-                or any(not x or len(x) > 100 for x in fields)
-            ):
-                raise ValueError("Invalid header")
-            rows: list[dict[str, str]] = []
-            for row in reader:
-                if len(rows) >= self.policy.max_rows:
-                    raise FirmsError("RESPONSE_LIMIT")
-                if None in row or any(value is None for value in row.values()):
-                    raise ValueError("Invalid row width")
-                rows.append({str(key): str(value) for key, value in row.items()})
-            return list(fields), rows
-        except (UnicodeError, csv.Error, ValueError):
-            raise FirmsError("MALFORMED_CSV", retryable=True) from None
+        return parse_firms_csv(body, max_rows=self.policy.max_rows)
 
     def fetch(self, request: FirmsAreaRequest) -> FirmsBatch:
         if self._closed:
@@ -525,3 +506,28 @@ class FirmsClient:
         except (OSError, sqlite3.Error):
             raise FirmsError("STORAGE") from None
         raise AssertionError("Bounded attempts always return or raise")
+
+
+def parse_firms_csv(
+    body: bytes, *, max_rows: int = 50000
+) -> tuple[list[str], list[dict[str, str]]]:
+    try:
+        reader = csv.DictReader(io.StringIO(body.decode("utf-8-sig")), strict=True)
+        fields = reader.fieldnames
+        if (
+            not fields
+            or len(fields) != len(set(fields))
+            or not REQUIRED_COLUMNS <= set(fields)
+            or any(not x or len(x) > 100 for x in fields)
+        ):
+            raise ValueError("Invalid header")
+        rows: list[dict[str, str]] = []
+        for row in reader:
+            if len(rows) >= max_rows:
+                raise FirmsError("RESPONSE_LIMIT")
+            if None in row or any(value is None for value in row.values()):
+                raise ValueError("Invalid row width")
+            rows.append({str(key): str(value) for key, value in row.items()})
+        return list(fields), rows
+    except (UnicodeError, csv.Error, ValueError):
+        raise FirmsError("MALFORMED_CSV", retryable=True) from None

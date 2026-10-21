@@ -455,15 +455,17 @@ Implementation: [FIRMS client guide](docs/firms-client.md), [Phase 2.2 acceptanc
 
 ### Phase 2.3: Normalize and deduplicate
 
-- [ ] Parse `acq_date` + zero-padded `acq_time` as UTC, including values like `0037`.
-- [ ] Validate lat/lon; reject impossible coordinates and negative/invalid FRP as configured.
-- [ ] Preserve raw confidence values; map valid classes consistently without fabricating percentages.
-- [ ] Preserve sensor/product/processing status and optional brightness, scan, track, day/night.
-- [ ] Define a versioned deterministic observation key from product, satellite, acquisition time, source coordinate precision, and scan/track where provided.
-- [ ] Do not merge NOAA-20 and NOAA-21 observations simply because coordinates match.
-- [ ] For corrected NRT/science records, preserve revision lineage and decide which product is selected for each run. Do not count revisions as separate activity.
-- [ ] Persist rejected rows and reasons in a small quality report.
-- [ ] Upsert using database uniqueness constraints, not only in-memory deduplication.
+- [x] Parse `acq_date` + zero-padded `acq_time` as UTC, including values like `0037`.
+- [x] Validate lat/lon; reject impossible coordinates and negative/invalid FRP as configured.
+- [x] Preserve raw confidence values; map valid classes consistently without fabricating percentages.
+- [x] Preserve sensor/product/processing status and optional brightness, scan, track, day/night.
+- [x] Define a versioned deterministic observation key from product, satellite, acquisition time, source coordinate precision, and scan/track where provided.
+- [x] Do not merge NOAA-20 and NOAA-21 observations simply because coordinates match.
+- [x] For corrected NRT/science records, preserve revision lineage and decide which product is selected for each run. Do not count revisions as separate activity.
+- [x] Persist rejected rows and reasons in a small quality report.
+- [x] Upsert using database uniqueness constraints, not only in-memory deduplication.
+
+Implementation: [normalization and revision-selection guide](docs/firms-normalization.md), [Phase 2.3 acceptance](docs/phase-2.3-checklist.md), and [aggregate real-source verification](docs/phase-2.3-smoke.json). The existing source lineage and run manifest schema carry versioned corrections and frozen selection; archive import and scheduling remain the following phases.
 
 ### Phase 2.4: Build historical import
 

@@ -137,3 +137,14 @@ They create/drop only generated `fw_test_<UUID>` schemas, including upgrade from
 empty, upgrade from a populated `0001`, downgrade/re-upgrade, metadata drift,
 concurrent publishers, and direct-SQL bypass attempts. See
 [local validation commands](local-development.md).
+
+## Phase 2.3 revision storage
+
+No migration is added. `detections.dedup_key` enforces global identity uniqueness
+with PostgreSQL upserts. `detection_sources.raw_values` stores versioned normalized
+revision lists and row provenance (`firms-source-revisions-v1`). Source assets keep
+untouched raw-file hashes; batches keep transactional counts.
+`runs.input_asset_manifest.firms` pins explicit selection policy and exact revision
+hashes. The completed-run immutability guard protects these pins.
+Canonical detection measurements are first-seen values; consumers use the
+[selected revision contract](firms-normalization.md) for current or replay inputs.

@@ -12,6 +12,13 @@ from firewatch.schemas.contracts import DetectionInput
 def save_detection(
     session: Session, batch_id: UUID, region_id: UUID, observation: DetectionInput
 ) -> Detection:
+    return save_detection_result(session, batch_id, region_id, observation)[0]
+
+
+def save_detection_result(
+    session: Session, batch_id: UUID, region_id: UUID, observation: DetectionInput
+) -> tuple[Detection, bool]:
+    """Return the DB-resolved identity and whether this transaction inserted it."""
     batch = session.get(IngestionBatch, batch_id)
     region = session.get(Region, region_id)
     if batch is None or region is None or batch.region_id != region_id:
@@ -59,4 +66,4 @@ def save_detection(
         .values(detection_id=detection.id, region_id=region_id, acquired_at=detection.acquired_at)
         .on_conflict_do_nothing()
     )
-    return detection
+    return detection, identifier is not None

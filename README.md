@@ -117,3 +117,11 @@ for emergency response, preservation of life, or protection of property.
 Confirm important events with official authorities and operational fire services.
 
 Licensed under the [MIT License](LICENSE).
+
+## FIRMS normalization (Phase 2.3)
+
+Normalize a completed saved fetch with `firewatch normalize-firms --manifest <manifest.json>`.
+Add `--persist --region <name>` to upsert into an existing matching region.
+See the [normalization guide](docs/firms-normalization.md) for quality policies,
+revision selection and frozen run inputs, and the [acceptance checklist](docs/phase-2.3-checklist.md)
+for verification evidence.

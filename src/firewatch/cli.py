@@ -268,3 +268,73 @@ def fetch_firms_command(
         raise typer.Exit(1) from None
     finally:
         close()
+
+
+@app.command("normalize-firms")
+def normalize_firms_command(
+    manifest: Annotated[Path, typer.Option("--manifest")],
+    invalid_frp: Annotated[str, typer.Option("--invalid-frp")] = "reject",
+    missing_frp: Annotated[str, typer.Option("--missing-frp")] = "allow",
+    persist: Annotated[bool, typer.Option("--persist")] = False,
+    region: Annotated[str | None, typer.Option("--region")] = None,
+) -> None:
+    """Normalize saved bounded CSV; optionally upsert into an existing region."""
+    from sqlalchemy import select
+
+    from firewatch.db.models import Region
+    from firewatch.logging import install_redaction
+    from firewatch.repositories.ingestion import persist_normalized
+    from firewatch.sources.firms import FirmsError
+    from firewatch.sources.firms_normalize import (
+        NormalizationPolicy,
+        load_saved_firms_batch,
+        normalize_firms_batch,
+        write_quality_reports,
+    )
+
+    def close() -> None:
+        pass
+
+    database = None
+    try:
+        if persist and region is None:
+            raise ValueError("Persistence requires an explicit region")
+        if region is not None and not persist:
+            raise ValueError("Region selection requires persistence")
+        normalized = normalize_firms_batch(
+            load_saved_firms_batch(manifest),
+            NormalizationPolicy.model_validate(
+                {"invalid_frp": invalid_frp, "missing_frp": missing_frp}
+            ),
+        )
+        summary, rejected = write_quality_reports(normalized, manifest.resolve().parent)
+        result = {
+            "quality": normalized.report.model_dump(mode="json", exclude={"rejection_samples"}),
+            "quality_report": str(summary),
+            "rejected_rows": str(rejected),
+            "persisted": False,
+        }
+        if persist:
+            settings = get_settings()
+            close = install_redaction(settings)
+            database = Database(settings)
+            with database.transaction() as session:
+                area = session.scalar(select(Region).where(Region.name == region))
+                if area is None:
+                    raise ValueError("Unknown region")
+                saved = persist_normalized(session, normalized, area.id)
+                result["ingestion"] = saved.model_dump(mode="json")
+                result["persisted"] = True
+        typer.echo(json.dumps(result, indent=2))
+    except (ValueError, KeyError, IndexError, TypeError, OSError, FirmsError, ConfigurationError):
+        typer.echo(
+            "Invalid source evidence, normalization policy or region configuration.", err=True
+        )
+        raise typer.Exit(1) from None
+    except SQLAlchemyError:
+        typer.echo("Normalization database transaction failed and was rolled back.", err=True)
+        raise typer.Exit(1) from None
+    finally:
+        if database is not None:
+            database.close()
+        close()

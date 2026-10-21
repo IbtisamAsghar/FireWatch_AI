@@ -810,3 +810,72 @@ def build_snapshots_command(
     finally:
         if database is not None:
             database.close()
+
+
+@app.command("build-features")
+def build_features_command(
+    run_id: Annotated[str, typer.Option("--run-id")],
+    config: Annotated[Path, typer.Option("--config")] = Path("configs/features-v1.yaml"),
+    retrieval_cutoff: Annotated[str | None, typer.Option("--retrieval-cutoff")] = None,
+    fork_run: Annotated[bool, typer.Option("--fork")] = False,
+) -> None:
+    """Build immutable features from a saved snapshot Run and cached enrichment; no HTTP."""
+    from datetime import UTC, datetime
+    from uuid import UUID
+
+    from firewatch.processing.features import load_feature_spec
+    from firewatch.repositories.features import build_run_features, fork_feature_run
+    from firewatch.sources.open_meteo import utc
+    from firewatch.sources.weather_budget import WeatherError
+
+    database = None
+    try:
+        identifier = UUID(run_id)
+        specification = load_feature_spec(config)
+        available = utc(datetime.fromisoformat(retrieval_cutoff)) if retrieval_cutoff else None
+        if available is not None and available > datetime.now(UTC):
+            raise ValueError("Feature availability cannot be in the future")
+        settings = get_settings()
+        database = Database(settings)
+        with database.transaction() as session:
+            if fork_run:
+                identifier = fork_feature_run(session, identifier, specification)
+            result = build_run_features(
+                session, identifier, specification, retrieval_cutoff=available
+            )
+        typer.echo(
+            json.dumps(
+                {
+                    "status": "features_succeeded",
+                    "run_id": str(identifier),
+                    "feature_sets": len(result),
+                    "feature_version": specification.feature_version,
+                    "missing_weather_sets": sum(f.values["temperature_c"] is None for f in result),
+                    "missing_climate_sets": sum(
+                        f.values["temperature_departure_c"] is None for f in result
+                    ),
+                    "feature_hashes": {str(f.snapshot_id): f.feature_hash for f in result},
+                    "pipeline_completed": False,
+                }
+            )
+        )
+    except (
+        ValueError,
+        OSError,
+        KeyError,
+        TypeError,
+        ConfigurationError,
+        WeatherError,
+        yaml.YAMLError,
+    ):
+        typer.echo(
+            "Feature build failed: check run, frozen sources, config and cached enrichment.",
+            err=True,
+        )
+        raise typer.Exit(1) from None
+    except SQLAlchemyError:
+        typer.echo("Feature database stage failed; its transaction was rolled back.", err=True)
+        raise typer.Exit(1) from None
+    finally:
+        if database is not None:
+            database.close()

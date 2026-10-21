@@ -72,8 +72,13 @@ adds `build_snapshots(run_id, mode, as_of, selected_revisions, config)` and the
 transactional `build_run_snapshots(session, run_id, policy, config)` stage. The
 shared `ClusterSnapshot` DTO is unchanged; typed `ClusterDetails` and `SnapshotBatch`
 carry counts, diagnostics and version/hash metadata in the Run input manifest.
-See [cluster snapshot interfaces](cluster-snapshots.md). Worker orchestration and
-the complete feature builder remain later Module 3 work.
+See [cluster snapshot interfaces](cluster-snapshots.md). Phase 3.4 adds the pure
+`build_features(...)`, transactional `build_run_features(...)`, strict 17-value/
+14-indicator schema and validated `model_inputs(...)` whitelist. The existing
+`FeatureSet` DTO is unchanged; its lineage and the Run feature-stage manifest bind
+source revisions, units, cutoff and frozen enrichment. See
+[feature definitions and interfaces](features-v1.md). Worker orchestration and
+completed pipeline publication remain later Module 3 work.
 
 ## Member 4: scoring
 

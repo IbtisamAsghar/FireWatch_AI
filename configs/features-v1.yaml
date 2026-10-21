@@ -1,6 +1,6 @@
-# Climate and clustering fields are consumed by their stage commands; features remain draft.
+# Implemented features-v1 configuration; training/evaluation readiness is separate.
 schema_version: features-v1
-status: draft
+status: implemented
 cluster_algorithm_version: dbscan-haversine-v1
 cluster_radius_km: 2
 snapshot_lookback_hours: 6
@@ -12,3 +12,6 @@ climate_earliest_snapshot: '2022-05-01T00:00:00Z'
 climate_baseline_version: power-monthly-v1
 climate_min_valid_fraction: 0.9
 missing_value_policy: null_with_quality_flags
+feature_weather_product: historical_forecast
+feature_weather_model: gfs_seamless
+feature_weather_namespace: weather-v1

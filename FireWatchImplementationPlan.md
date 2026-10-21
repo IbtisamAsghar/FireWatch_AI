@@ -594,11 +594,21 @@ stage completes; features, scoring and final Run publication remain later phases
 | `weather_age_hours` | T minus weather valid time |
 | Missing indicators | One per nullable model input where appropriate |
 
-- [ ] Keep IDs, future labels, risk labels, future sensor counts, and anchored status out of model inputs.
-- [ ] Exclude absolute coordinates initially to reduce location memorization; retain them for maps and grouping.
-- [ ] Store feature values, unit map, source asset IDs, feature hash, feature version, and cutoff.
-- [ ] Use one shared feature builder for training, replay, and live scoring.
-- [ ] Add boundary tests proving later database records cannot change a previously saved snapshot.
+- [x] Keep IDs, future labels, risk labels, future sensor counts, and anchored status out of model inputs.
+- [x] Exclude absolute coordinates initially to reduce location memorization; retain them for maps and grouping.
+- [x] Store feature values, unit map, source asset IDs, feature hash, feature version, and cutoff.
+- [x] Use one shared feature builder for training, replay, and live scoring.
+- [x] Add boundary tests proving later database records cannot change a previously saved snapshot.
+
+Implementation: [feature definitions and guide](docs/features-v1.md),
+[feature schema](docs/features-v1.schema.json), and
+[Phase 3.4 acceptance](docs/phase-3.4-checklist.md). One shared typed builder
+produces 17 numeric/nullable features plus 14 boolean missing indicators. Frozen
+satellite revisions, weather/baseline pins, cutoff, units, source hashes and quality
+flags bind immutable feature records. Confidence fractions exclude unknown classes;
+daytime fraction is null if any member's day/night is unknown. Late data requires
+an explicit new feature Run instead of rewriting existing inputs. Worker execution,
+scoring and final Run publication remain Phase 3.5 onward.
 
 ### Phase 3.5: Implement durable jobs and run orchestration
 

@@ -83,6 +83,17 @@ activity counts need not equal member count because DBSCAN can chain beyond the
 centroid radius. Snapshot IDs are run-specific and are not incident identities.
 See [cluster definitions and limitations](cluster-snapshots.md).
 
+Phase 3.4 fixes 17 model values and 14 boolean missing indicators. Model values
+exclude coordinates, UUIDs, timestamps, labels and score/status metadata. Counts
+refer to centroid-near satellite observations, first-seen age is bounded to the
+preceding 24-hour lookup, and unknown day/night never counts as nighttime.
+`confidence_high_fraction` excludes unknown categories; it is not a probability.
+Weather values use the last completed UTC hour, precipitation requires all 24
+preceding hourly sums, and climate departures use the fixed daily reference.
+`feature_hash` binds the canonical FeatureSet payload excluding itself, including
+context, units and lineage. See [full definitions](features-v1.md) and the
+[machine-readable input schema](features-v1.schema.json).
+
 Score kinds are baseline/model_score/probability; priorities are LOW/MEDIUM/HIGH/
 CRITICAL. `priority_score` is a finite nonnegative ranking index on its version's
 scale. `escalation_probability` is null for baselines/unvalidated scores and 0-1

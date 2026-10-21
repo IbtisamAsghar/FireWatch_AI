@@ -1,0 +1,346 @@
+{
+  "schema_version": "features-v1",
+  "values_schema": {
+    "additionalProperties": false,
+    "properties": {
+      "frp_max_mw": {
+        "anyOf": [
+          {
+            "minimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Frp Max Mw"
+      },
+      "frp_sum_mw": {
+        "anyOf": [
+          {
+            "minimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Frp Sum Mw"
+      },
+      "brightness_max_k": {
+        "anyOf": [
+          {
+            "exclusiveMinimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Brightness Max K"
+      },
+      "detections_6h": {
+        "minimum": 0,
+        "title": "Detections 6H",
+        "type": "integer"
+      },
+      "detections_12h": {
+        "minimum": 0,
+        "title": "Detections 12H",
+        "type": "integer"
+      },
+      "detections_24h": {
+        "minimum": 0,
+        "title": "Detections 24H",
+        "type": "integer"
+      },
+      "hours_since_first_seen_24h": {
+        "anyOf": [
+          {
+            "exclusiveMaximum": 24,
+            "minimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Hours Since First Seen 24H"
+      },
+      "confidence_high_fraction": {
+        "anyOf": [
+          {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Confidence High Fraction"
+      },
+      "day_fraction": {
+        "anyOf": [
+          {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Day Fraction"
+      },
+      "temperature_c": {
+        "anyOf": [
+          {
+            "minimum": -273.15,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Temperature C"
+      },
+      "humidity_pct": {
+        "anyOf": [
+          {
+            "maximum": 100,
+            "minimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Humidity Pct"
+      },
+      "wind_ms": {
+        "anyOf": [
+          {
+            "minimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Wind Ms"
+      },
+      "gust_ms": {
+        "anyOf": [
+          {
+            "minimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Gust Ms"
+      },
+      "precipitation_24h_mm": {
+        "anyOf": [
+          {
+            "minimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Precipitation 24H Mm"
+      },
+      "temperature_departure_c": {
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Temperature Departure C"
+      },
+      "rainfall_deficit_24h_mm": {
+        "anyOf": [
+          {
+            "minimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Rainfall Deficit 24H Mm"
+      },
+      "weather_age_hours": {
+        "anyOf": [
+          {
+            "minimum": 0,
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Weather Age Hours"
+      }
+    },
+    "required": [
+      "frp_max_mw",
+      "frp_sum_mw",
+      "brightness_max_k",
+      "detections_6h",
+      "detections_12h",
+      "detections_24h",
+      "hours_since_first_seen_24h",
+      "confidence_high_fraction",
+      "day_fraction",
+      "temperature_c",
+      "humidity_pct",
+      "wind_ms",
+      "gust_ms",
+      "precipitation_24h_mm",
+      "temperature_departure_c",
+      "rainfall_deficit_24h_mm",
+      "weather_age_hours"
+    ],
+    "title": "FeatureValues",
+    "type": "object"
+  },
+  "ordered_feature_names": [
+    "frp_max_mw",
+    "frp_sum_mw",
+    "brightness_max_k",
+    "detections_6h",
+    "detections_12h",
+    "detections_24h",
+    "hours_since_first_seen_24h",
+    "confidence_high_fraction",
+    "day_fraction",
+    "temperature_c",
+    "humidity_pct",
+    "wind_ms",
+    "gust_ms",
+    "precipitation_24h_mm",
+    "temperature_departure_c",
+    "rainfall_deficit_24h_mm",
+    "weather_age_hours"
+  ],
+  "units": {
+    "frp_max_mw": "MW",
+    "frp_sum_mw": "MW",
+    "brightness_max_k": "K",
+    "detections_6h": "count",
+    "detections_12h": "count",
+    "detections_24h": "count",
+    "hours_since_first_seen_24h": "h",
+    "confidence_high_fraction": "fraction",
+    "day_fraction": "fraction",
+    "temperature_c": "C",
+    "humidity_pct": "%",
+    "wind_ms": "m/s",
+    "gust_ms": "m/s",
+    "precipitation_24h_mm": "mm",
+    "temperature_departure_c": "C",
+    "rainfall_deficit_24h_mm": "mm",
+    "weather_age_hours": "h"
+  },
+  "missing_indicators": {
+    "frp_max_mw_missing": {
+      "source_feature": "frp_max_mw",
+      "type": "boolean"
+    },
+    "frp_sum_mw_missing": {
+      "source_feature": "frp_sum_mw",
+      "type": "boolean"
+    },
+    "brightness_max_k_missing": {
+      "source_feature": "brightness_max_k",
+      "type": "boolean"
+    },
+    "hours_since_first_seen_24h_missing": {
+      "source_feature": "hours_since_first_seen_24h",
+      "type": "boolean"
+    },
+    "confidence_high_fraction_missing": {
+      "source_feature": "confidence_high_fraction",
+      "type": "boolean"
+    },
+    "day_fraction_missing": {
+      "source_feature": "day_fraction",
+      "type": "boolean"
+    },
+    "temperature_c_missing": {
+      "source_feature": "temperature_c",
+      "type": "boolean"
+    },
+    "humidity_pct_missing": {
+      "source_feature": "humidity_pct",
+      "type": "boolean"
+    },
+    "wind_ms_missing": {
+      "source_feature": "wind_ms",
+      "type": "boolean"
+    },
+    "gust_ms_missing": {
+      "source_feature": "gust_ms",
+      "type": "boolean"
+    },
+    "precipitation_24h_mm_missing": {
+      "source_feature": "precipitation_24h_mm",
+      "type": "boolean"
+    },
+    "temperature_departure_c_missing": {
+      "source_feature": "temperature_departure_c",
+      "type": "boolean"
+    },
+    "rainfall_deficit_24h_mm_missing": {
+      "source_feature": "rainfall_deficit_24h_mm",
+      "type": "boolean"
+    },
+    "weather_age_hours_missing": {
+      "source_feature": "weather_age_hours",
+      "type": "boolean"
+    }
+  },
+  "ordered_model_input_names": [
+    "frp_max_mw",
+    "frp_sum_mw",
+    "brightness_max_k",
+    "detections_6h",
+    "detections_12h",
+    "detections_24h",
+    "hours_since_first_seen_24h",
+    "confidence_high_fraction",
+    "day_fraction",
+    "temperature_c",
+    "humidity_pct",
+    "wind_ms",
+    "gust_ms",
+    "precipitation_24h_mm",
+    "temperature_departure_c",
+    "rainfall_deficit_24h_mm",
+    "weather_age_hours",
+    "frp_max_mw_missing",
+    "frp_sum_mw_missing",
+    "brightness_max_k_missing",
+    "hours_since_first_seen_24h_missing",
+    "confidence_high_fraction_missing",
+    "day_fraction_missing",
+    "temperature_c_missing",
+    "humidity_pct_missing",
+    "wind_ms_missing",
+    "gust_ms_missing",
+    "precipitation_24h_mm_missing",
+    "temperature_departure_c_missing",
+    "rainfall_deficit_24h_mm_missing",
+    "weather_age_hours_missing"
+  ],
+  "model_input_policy": "Only these 17 values and 14 boolean missing indicators; no identifiers, coordinates, labels or status.",
+  "feature_hash_policy": "SHA-256 canonical FeatureSet payload excluding feature_hash; includes run context, cutoff, units and lineage."
+}

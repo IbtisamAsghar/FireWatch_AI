@@ -1,0 +1,84 @@
+{
+  "schema_version": "firms-phase-2.6-smoke-v1",
+  "recorded_at": "2026-10-21T17:35:55.357926+00:00",
+  "phase_complete": true,
+  "synthetic": false,
+  "data_origin": "real_nasa_firms",
+  "normalizer_version": "firms-normalizer-v1",
+  "observation_key_version": "firms-observation-v1",
+  "archive_totals": {
+    "fetched": 17862,
+    "accepted": 17862,
+    "rejected": 0,
+    "duplicates": 0,
+    "revisions": 17862
+  },
+  "real_reimport_evidence": {
+    "before": {
+      "detections": 17947,
+      "detection_sources": 24351,
+      "ingestion_batches": 380,
+      "source_assets": 387
+    },
+    "after": {
+      "detections": 17947,
+      "detection_sources": 24351,
+      "ingestion_batches": 380,
+      "source_assets": 387
+    },
+    "reimports": [
+      {
+        "import_id": "dcef1731-e361-5a9e-b21b-386fa33741ef",
+        "inserted_this_run": 0,
+        "reused": true
+      },
+      {
+        "import_id": "1e19cf50-bfdb-5035-9c0a-6cf41742bc1b",
+        "inserted_this_run": 0,
+        "reused": true
+      }
+    ],
+    "no_new_observations_or_sources": true
+  },
+  "archive_calendar_days": 372,
+  "activity_periods_proxy_sum": 43,
+  "independent_event_count": null,
+  "evaluation": {
+    "independent_event_count": null,
+    "ready_for_event_separated_evaluation": false,
+    "ready_for_supervised_training": false,
+    "limitations": [
+      "Activity periods are temporal proxies, not reviewed independent fire events.",
+      "Labels and event-group assignments have not been supplied or verified.",
+      "Historical weather and baseline context are outside this source handoff.",
+      "Counts sum source imports; overlapping imports are not a unique dataset count."
+    ]
+  },
+  "live_refresh_records": 85,
+  "bundle_manifest_sha256": "7b2c87453b24e5669297128232d30e8f2ca6a76a5fe3efd65452c5d2f4eafe0f",
+  "files_sha256": {
+    "archive-revisions.jsonl": "4bef1728413e40f2a73e63f2f9bb924d2a99f92cfbeb5787227195d5818c2936",
+    "observation.schema.json": "1ff9fcc47edf5f01143d1907f89879a81eb44bce8d59ed744e449ed7e7f5ea99",
+    "ingestion-quality.json": "2fbea995f6f848bb625321cbcdb5beb00affb2f601a6b97dfde5c15f7ec33f75",
+    "refresh-f6e1d4f1-6ac0-5b7b-8d03-918c65961f47.jsonl": "9c2964a96d76c05078258a7ffb4808f410e1927e3a39eb2f6bd09feeec8d8dab"
+  },
+  "checks": {
+    "all_unit_and_postgresql_tests_passed": 412,
+    "http_smoke": "passed",
+    "new_handoff_tests": 20,
+    "configured_secret_scan": "passed",
+    "output_checksums": "passed",
+    "repository_files_scanned": 179,
+    "built_distributions_scanned": 2,
+    "scaffold": "passed",
+    "locks": "passed",
+    "ruff": "passed",
+    "mypy": "passed",
+    "build": "passed",
+    "git_diff_check": "passed"
+  },
+  "warnings": [
+    "Existing Starlette TestClient httpx deprecation warning."
+  ],
+  "pipeline_run_completed": false
+}

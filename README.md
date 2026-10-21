@@ -134,3 +134,19 @@ checkpoints and original-file preservation. Add `--dry-run` for offline inspecti
 See the [operator guide](docs/firms-archive-import.md),
 [acceptance checklist](docs/phase-2.4-checklist.md) and
 [real seasonal inventory](docs/historical-data-inventory.json).
+
+
+## FIRMS source refresh (Phase 2.5)
+
+Run an overlapping 48-hour source stage with
+`firewatch refresh-firms --region <enabled-region>`, or resume a saved refresh
+using `firewatch refresh-firms --resume <refresh-id>`. The
+[refresh guide](docs/firms-refresh.md) explains quota-aware checkpoints,
+independent product coverage and the Member 3 normalized-record handoff.
+The existing status API reports nullable source counts and source completeness.
+See [acceptance](docs/phase-2.5-checklist.md) and [real smoke evidence](docs/phase-2.5-smoke.json).
+
+FIRMS Module 2 acceptance and the offline normalized-data bundle are documented in
+[the source handoff guide](docs/firms-handoff.md) and
+[Phase 2.6 acceptance](docs/phase-2.6-checklist.md). Historical event groups and labels
+remain unverified; source ingestion completion does not imply training readiness.

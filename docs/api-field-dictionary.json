@@ -1722,6 +1722,66 @@
       "SourceStatus": {
         "additionalProperties": false,
         "properties": {
+          "accepted_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Accepted Count"
+          },
+          "completed_chunks": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completed Chunks"
+          },
+          "coverage": {
+            "anyOf": [
+              {
+                "enum": [
+                  "complete",
+                  "partial",
+                  "unavailable"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coverage"
+          },
+          "duplicate_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duplicate Count"
+          },
+          "fetched_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fetched Count"
+          },
           "last_attempt_at": {
             "anyOf": [
               {
@@ -1769,13 +1829,48 @@
             ],
             "title": "Latest Detection At"
           },
+          "next_retry_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Retry At"
+          },
           "product": {
             "$ref": "#/components/schemas/Product"
+          },
+          "refresh_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Refresh Id"
           },
           "region_id": {
             "format": "uuid",
             "title": "Region Id",
             "type": "string"
+          },
+          "rejected_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rejected Count"
           },
           "status": {
             "enum": [
@@ -1787,6 +1882,17 @@
             ],
             "title": "Status",
             "type": "string"
+          },
+          "total_chunks": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Total Chunks"
           }
         },
         "required": [

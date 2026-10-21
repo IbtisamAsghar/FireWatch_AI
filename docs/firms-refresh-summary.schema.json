@@ -1,0 +1,201 @@
+{
+  "$defs": {
+    "Product": {
+      "enum": [
+        "VIIRS_NOAA20_NRT",
+        "VIIRS_NOAA21_NRT",
+        "VIIRS_NOAA20_SP",
+        "VIIRS_NOAA21_SP"
+      ],
+      "title": "Product",
+      "type": "string"
+    },
+    "RefreshCounts": {
+      "additionalProperties": false,
+      "properties": {
+        "fetched": {
+          "minimum": 0,
+          "title": "Fetched",
+          "type": "integer"
+        },
+        "accepted": {
+          "minimum": 0,
+          "title": "Accepted",
+          "type": "integer"
+        },
+        "rejected": {
+          "minimum": 0,
+          "title": "Rejected",
+          "type": "integer"
+        },
+        "duplicate": {
+          "minimum": 0,
+          "title": "Duplicate",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "fetched",
+        "accepted",
+        "rejected",
+        "duplicate"
+      ],
+      "title": "RefreshCounts",
+      "type": "object"
+    },
+    "RefreshProductStatus": {
+      "additionalProperties": false,
+      "properties": {
+        "product": {
+          "$ref": "#/$defs/Product"
+        },
+        "coverage": {
+          "enum": [
+            "complete",
+            "partial",
+            "unavailable"
+          ],
+          "title": "Coverage",
+          "type": "string"
+        },
+        "completed_chunks": {
+          "title": "Completed Chunks",
+          "type": "integer"
+        },
+        "total_chunks": {
+          "title": "Total Chunks",
+          "type": "integer"
+        },
+        "counts": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RefreshCounts"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "known_successful_counts": {
+          "$ref": "#/$defs/RefreshCounts"
+        },
+        "latest_acquisition_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Latest Acquisition At"
+        },
+        "last_successful_retrieval_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Last Successful Retrieval At"
+        },
+        "retry_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Retry At"
+        }
+      },
+      "required": [
+        "product",
+        "coverage",
+        "completed_chunks",
+        "total_chunks",
+        "counts",
+        "known_successful_counts",
+        "latest_acquisition_at",
+        "last_successful_retrieval_at",
+        "retry_at"
+      ],
+      "title": "RefreshProductStatus",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "firms-refresh-summary-v1",
+      "default": "firms-refresh-summary-v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "refresh_id": {
+      "format": "uuid",
+      "title": "Refresh Id",
+      "type": "string"
+    },
+    "region_id": {
+      "format": "uuid",
+      "title": "Region Id",
+      "type": "string"
+    },
+    "as_of": {
+      "format": "date-time",
+      "title": "As Of",
+      "type": "string"
+    },
+    "window_start": {
+      "format": "date-time",
+      "title": "Window Start",
+      "type": "string"
+    },
+    "window_end": {
+      "format": "date-time",
+      "title": "Window End",
+      "type": "string"
+    },
+    "evaluated_at": {
+      "format": "date-time",
+      "title": "Evaluated At",
+      "type": "string"
+    },
+    "coverage": {
+      "enum": [
+        "complete",
+        "partial",
+        "unavailable"
+      ],
+      "title": "Coverage",
+      "type": "string"
+    },
+    "products": {
+      "items": {
+        "$ref": "#/$defs/RefreshProductStatus"
+      },
+      "title": "Products",
+      "type": "array"
+    }
+  },
+  "required": [
+    "refresh_id",
+    "region_id",
+    "as_of",
+    "window_start",
+    "window_end",
+    "evaluated_at",
+    "coverage",
+    "products"
+  ],
+  "title": "RefreshSummary",
+  "type": "object"
+}

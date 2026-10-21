@@ -416,3 +416,84 @@ def import_firms_command(
         if database is not None:
             database.close()
         close()
+
+
+@app.command("refresh-firms")
+def refresh_firms_command(
+    region: Annotated[str | None, typer.Option("--region")] = None,
+    as_of: Annotated[str | None, typer.Option("--as-of")] = None,
+    products: Annotated[list[str] | None, typer.Option("--product")] = None,
+    chunk_days: Annotated[int, typer.Option("--chunk-days", min=1, max=5)] = 5,
+    request_key: Annotated[str | None, typer.Option("--request-key")] = None,
+    resume: Annotated[str | None, typer.Option("--resume")] = None,
+    allow_disabled: Annotated[bool, typer.Option("--allow-disabled")] = False,
+) -> None:
+    """Run/resume the 48-hour FIRMS source stage; no pipeline or scoring run is completed."""
+    from datetime import UTC, datetime
+    from uuid import UUID
+
+    from firewatch.logging import install_redaction
+    from firewatch.pipeline.firms_refresh import refresh_firms
+    from firewatch.schemas.firms_refresh import RefreshSpec
+    from firewatch.sources.firms import FirmsClient
+
+    def close() -> None:
+        pass
+
+    database = None
+    client = None
+    try:
+        if resume and (
+            region is not None or as_of is not None or products or request_key or chunk_days != 5
+        ):
+            raise ValueError("Resume uses its saved immutable specification")
+        settings = get_settings()
+        close = install_redaction(settings)
+        database = Database(settings)
+        if settings.firms_map_key is not None:
+            client = FirmsClient(settings.firms_map_key, output_dir=settings.raw_data_dir / "firms")
+        spec = (
+            None
+            if resume
+            else RefreshSpec.model_validate(
+                dict(
+                    region=region or "northern-california",
+                    as_of=as_of or datetime.now(UTC),
+                    products=products or ["VIIRS_NOAA20_NRT", "VIIRS_NOAA21_NRT"],
+                    chunk_days=chunk_days,
+                    request_key=request_key,
+                )
+            )
+        )
+        result = refresh_firms(
+            database.engine,
+            client,
+            spec,
+            resume=UUID(resume) if resume else None,
+            output=settings.raw_data_dir.parent / "firms-refresh",
+            allow_disabled=allow_disabled,
+            max_age_hours=settings.max_refresh_age_hours,
+        )
+        typer.echo(result.model_dump_json(indent=2))
+        if result.coverage != "complete":
+            raise typer.Exit(2)
+    except (ValueError, OSError, KeyError, TypeError, OverflowError, ConfigurationError):
+        typer.echo(
+            "Invalid refresh configuration, disabled/missing region, unavailable source key, "
+            "or conflicting saved request.",
+            err=True,
+        )
+        raise typer.Exit(1) from None
+    except SQLAlchemyError:
+        typer.echo(
+            "Refresh database unavailable. Committed chunks remain saved; "
+            "resume using the refresh ID.",
+            err=True,
+        )
+        raise typer.Exit(1) from None
+    finally:
+        if client is not None:
+            client.close()
+        if database is not None:
+            database.close()
+        close()

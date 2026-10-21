@@ -396,14 +396,14 @@ class FirmsClient:
     def _csv(self, body: bytes) -> tuple[list[str], list[dict[str, str]]]:
         return parse_firms_csv(body, max_rows=self.policy.max_rows)
 
-    def fetch(self, request: FirmsAreaRequest) -> FirmsBatch:
+    def fetch(self, request: FirmsAreaRequest, *, batch_id: UUID | None = None) -> FirmsBatch:
         if self._closed:
             raise FirmsError("CLOSED")
         # Revalidate nested models even if a caller used model_construct/model_copy.
         request = FirmsAreaRequest.model_validate(request.model_dump(mode="json"))
         if request.start_date + timedelta(days=request.days - 1) > self._now().date():
             raise ValueError("FIRMS date windows must not extend into the future")
-        identifier = uuid4()
+        identifier = batch_id or uuid4()
         folder = self.output_dir / str(identifier)
         manifest: dict[str, Any] = {
             "schema_version": "firms-request-manifest-v1",

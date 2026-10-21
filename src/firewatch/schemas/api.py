@@ -235,6 +235,15 @@ class SourceStatus(DTO):
     last_successful_retrieval_at: UTCDateTime | None
     latest_detection_at: UTCDateTime | None
     latest_attempt_succeeded: bool | None
+    refresh_id: UUID | None = None
+    coverage: Literal["complete", "partial", "unavailable"] | None = None
+    fetched_count: int | None = None
+    accepted_count: int | None = None
+    rejected_count: int | None = None
+    duplicate_count: int | None = None
+    completed_chunks: int | None = None
+    total_chunks: int | None = None
+    next_retry_at: UTCDateTime | None = None
 
 
 class RegionRefresh(DTO):

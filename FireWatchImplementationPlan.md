@@ -482,22 +482,26 @@ Implementation: [historical import guide](docs/firms-archive-import.md), [Phase 
 
 ### Phase 2.5: Make refresh idempotent and observable
 
-- [ ] Ingest an overlapping 48-hour window at each refresh to catch delayed records and updates.
-- [ ] Chunk requests inside provider limits and keep progress per chunk.
-- [ ] Maintain separate batch states for each sensor/product.
-- [ ] Report fetched/accepted/rejected/duplicate counts, latest acquisition, and last successful retrieval.
-- [ ] A failed sensor request marks partial source coverage; it does not imply zero fires.
-- [ ] Publish source status to Member 1 and normalized records to Member 3.
+- [x] Ingest an overlapping 48-hour window at each refresh to catch delayed records and updates.
+- [x] Chunk requests inside provider limits and keep progress per chunk.
+- [x] Maintain separate batch states for each sensor/product.
+- [x] Report fetched/accepted/rejected/duplicate counts, latest acquisition, and last successful retrieval.
+- [x] A failed sensor request marks partial source coverage; it does not imply zero fires.
+- [x] Publish source status to Member 1 and normalized records to Member 3.
+
+Implementation: [48-hour source refresh guide](docs/firms-refresh.md), [Phase 2.5 acceptance](docs/phase-2.5-checklist.md), and [real source/status evidence](docs/phase-2.5-smoke.json). Durable per-chunk progress, independent product coverage and the normalized-record handoff are callable from the later job worker. The source stage does not complete a pipeline Run or activate the study region.
 
 ### Phase 2.6: Acceptance and handoff
 
-- [ ] Reimporting the same file creates no duplicate observations.
-- [ ] Leading-zero times, no-fire responses, malformed CSV, timeout, rate limit, and corrected records are tested.
-- [ ] Live and archive data use identical normalized schemas and unit conventions.
-- [ ] Historical inventory includes enough distinct periods to attempt event-separated evaluation; otherwise flag the dataset limitation early.
-- [ ] No source secrets appear in logs, fixtures, manifests, or exceptions.
+- [x] Reimporting the same file creates no duplicate observations.
+- [x] Leading-zero times, no-fire responses, malformed CSV, timeout, rate limit, and corrected records are tested.
+- [x] Live and archive data use identical normalized schemas and unit conventions.
+- [x] Historical inventory includes enough distinct periods to attempt event-separated evaluation; otherwise flag the dataset limitation early.
+- [x] No source secrets appear in logs, fixtures, manifests, or exceptions.
 
 Deliverable: FIRMS adapter, archive importer, normalized data, provenance manifests, and ingestion-quality report.
+
+Acceptance: [Phase 2.6 evidence](docs/phase-2.6-checklist.md) and [verified source handoff](docs/firms-handoff.md). Both real seasonal reimports inserted zero observations. The historical event/label limitation is explicitly flagged; ingestion acceptance does not claim evaluation or training readiness.
 
 ## 8. Module 3 / Member 3: Weather, climate, clustering, jobs, and replay
 

@@ -45,6 +45,7 @@ from firewatch.repositories.reads import (
     run_selection,
     source_attempts,
 )
+from firewatch.repositories.refresh import latest_refreshes
 from firewatch.schemas.api import (
     AlertView,
     ErrorEnvelope,
@@ -82,6 +83,7 @@ from firewatch.schemas.common import (
     ScoreKind,
 )
 from firewatch.schemas.contracts import BoundingBox
+from firewatch.schemas.firms_refresh import summarize_refresh
 
 ERRORS: dict[int | str, dict[str, Any]] = {
     code: {"model": ErrorEnvelope} for code in (401, 404, 422, 503)
@@ -384,6 +386,7 @@ def status(request: Request, session: ReadSession) -> StatusView:
     settings = api_settings(request)
     regions = region_rows(session)
     attempts, successes = source_attempts(session)
+    refresh_states = latest_refreshes(session, clock)
     latest = {(batch.region_id, batch.product): (batch, retrieved) for batch, retrieved in attempts}
     successful = {(region, product): retrieved for region, product, retrieved in successes}
     acquisitions = {
@@ -421,17 +424,89 @@ def status(request: Request, session: ReadSession) -> StatusView:
                     source_state = "stale"
                 else:
                     source_state = "ok"
+            progress = refresh_states.get((region.id, product))
+            source_progress = (
+                next(
+                    (
+                        item
+                        for item in summarize_refresh(progress).products
+                        if item.product == product
+                    ),
+                    None,
+                )
+                if progress
+                else None
+            )
+            counters = None
+            if source_progress is not None:
+                counters = source_progress.counts
+                if source_progress.coverage != "complete":
+                    source_state = "degraded" if success else "unavailable"
+                elif progress is not None:
+                    source_state = (
+                        "stale"
+                        if (
+                            clock
+                            - (source_progress.last_successful_retrieval_at or progress.updated_at)
+                        ).total_seconds()
+                        > 24 * 3600
+                        else "ok"
+                    )
+            elif attempt and attempt[0].status == JobStatus.SUCCEEDED:
+                if attempt[0].rejected_count:
+                    source_state = "degraded"
             sources.append(
                 SourceStatus(
                     region_id=region.id,
                     product=product,
                     status=source_state,
+                    refresh_id=progress.refresh_id if source_progress and progress else None,
+                    coverage=source_progress.coverage if source_progress else None,
+                    fetched_count=counters.fetched
+                    if counters
+                    else (
+                        attempt[0].fetched_count
+                        if attempt
+                        and attempt[0].status == JobStatus.SUCCEEDED
+                        and not source_progress
+                        else None
+                    ),
+                    accepted_count=counters.accepted
+                    if counters
+                    else (
+                        attempt[0].accepted_count
+                        if attempt
+                        and attempt[0].status == JobStatus.SUCCEEDED
+                        and not source_progress
+                        else None
+                    ),
+                    rejected_count=counters.rejected
+                    if counters
+                    else (
+                        attempt[0].rejected_count
+                        if attempt
+                        and attempt[0].status == JobStatus.SUCCEEDED
+                        and not source_progress
+                        else None
+                    ),
+                    duplicate_count=counters.duplicate
+                    if counters
+                    else (
+                        attempt[0].duplicate_count
+                        if attempt
+                        and attempt[0].status == JobStatus.SUCCEEDED
+                        and not source_progress
+                        else None
+                    ),
+                    completed_chunks=source_progress.completed_chunks if source_progress else None,
+                    total_chunks=source_progress.total_chunks if source_progress else None,
+                    next_retry_at=source_progress.retry_at if source_progress else None,
                     last_attempt_at=attempt[1] if attempt else None,
                     last_successful_retrieval_at=success,
                     latest_detection_at=acquisition,
-                    latest_attempt_succeeded=attempt[0].status == JobStatus.SUCCEEDED
-                    if attempt
-                    else None,
+                    latest_attempt_succeeded=(source_progress.coverage == "complete")
+                    if source_progress
+                    else (attempt[0].status == JobStatus.SUCCEEDED if attempt else None),
                 )
             )
     weather_time = session.scalar(

@@ -1,0 +1,119 @@
+{
+  "schema_version": "phase-2.5-smoke-v1",
+  "verified_at": "2026-10-21T16:55:36.517838+00:00",
+  "summary": {
+    "schema_version": "firms-refresh-summary-v1",
+    "refresh_id": "f6e1d4f1-6ac0-5b7b-8d03-918c65961f47",
+    "region_id": "b0a0805f-cdec-4659-a1b0-05f495b99cb5",
+    "as_of": "2026-10-21T16:54:56.571484Z",
+    "window_start": "2026-10-19T16:54:56.571484Z",
+    "window_end": "2026-10-21T16:54:56.571484Z",
+    "evaluated_at": "2026-10-21T16:54:59.232245Z",
+    "coverage": "complete",
+    "products": [
+      {
+        "product": "VIIRS_NOAA20_NRT",
+        "coverage": "complete",
+        "completed_chunks": 1,
+        "total_chunks": 1,
+        "counts": {
+          "fetched": 45,
+          "accepted": 45,
+          "rejected": 0,
+          "duplicate": 0
+        },
+        "known_successful_counts": {
+          "fetched": 45,
+          "accepted": 45,
+          "rejected": 0,
+          "duplicate": 0
+        },
+        "latest_acquisition_at": "2026-10-21T09:49:00Z",
+        "last_successful_retrieval_at": "2026-10-21T16:54:58.156680Z",
+        "retry_at": null
+      },
+      {
+        "product": "VIIRS_NOAA21_NRT",
+        "coverage": "complete",
+        "completed_chunks": 1,
+        "total_chunks": 1,
+        "counts": {
+          "fetched": 40,
+          "accepted": 40,
+          "rejected": 0,
+          "duplicate": 0
+        },
+        "known_successful_counts": {
+          "fetched": 40,
+          "accepted": 40,
+          "rejected": 0,
+          "duplicate": 0
+        },
+        "latest_acquisition_at": "2026-10-20T20:34:00Z",
+        "last_successful_retrieval_at": "2026-10-21T16:54:59.231245Z",
+        "retry_at": null
+      }
+    ]
+  },
+  "real_provider_inputs": true,
+  "raw_rows_in_evidence": false,
+  "normalized_records": 85,
+  "normalized_records_sha256": "9c2964a96d76c05078258a7ffb4808f410e1927e3a39eb2f6bd09feeec8d8dab",
+  "exact_48_hour_filter_verified": true,
+  "source_batch_ids": [
+    "14357177-0645-5bb9-88d6-854b4da39f52",
+    "30ce8245-97ed-5ec2-a822-28b7ddf35d92"
+  ],
+  "database_counts_before_and_after_cached_retry": {
+    "detections": 17947,
+    "detection_sources": 24351,
+    "ingestion_batches": 380,
+    "source_assets": 387,
+    "runs": 0
+  },
+  "retry_used_no_client": true,
+  "retry_inserted_rows": 0,
+  "status_api": {
+    "http_status": 200,
+    "sources": [
+      {
+        "region_id": "b0a0805f-cdec-4659-a1b0-05f495b99cb5",
+        "product": "VIIRS_NOAA20_NRT",
+        "status": "ok",
+        "last_attempt_at": "2026-10-21T16:54:58.156680Z",
+        "last_successful_retrieval_at": "2026-10-21T16:54:58.156680Z",
+        "latest_detection_at": "2026-10-21T09:49:00Z",
+        "latest_attempt_succeeded": true,
+        "refresh_id": "f6e1d4f1-6ac0-5b7b-8d03-918c65961f47",
+        "coverage": "complete",
+        "fetched_count": 45,
+        "accepted_count": 45,
+        "rejected_count": 0,
+        "duplicate_count": 0,
+        "completed_chunks": 1,
+        "total_chunks": 1,
+        "next_retry_at": null
+      },
+      {
+        "region_id": "b0a0805f-cdec-4659-a1b0-05f495b99cb5",
+        "product": "VIIRS_NOAA21_NRT",
+        "status": "ok",
+        "last_attempt_at": "2026-10-21T16:54:59.231245Z",
+        "last_successful_retrieval_at": "2026-10-21T16:54:59.231245Z",
+        "latest_detection_at": "2026-10-20T20:34:00Z",
+        "latest_attempt_succeeded": true,
+        "refresh_id": "f6e1d4f1-6ac0-5b7b-8d03-918c65961f47",
+        "coverage": "complete",
+        "fetched_count": 40,
+        "accepted_count": 40,
+        "rejected_count": 0,
+        "duplicate_count": 0,
+        "completed_chunks": 1,
+        "total_chunks": 1,
+        "next_retry_at": null
+      }
+    ]
+  },
+  "region_enabled": false,
+  "pipeline_run_completed": false
+}

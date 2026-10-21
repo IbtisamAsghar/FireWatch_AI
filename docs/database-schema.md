@@ -158,3 +158,15 @@ prevents chunk replacement from dropping records. Revision upserts, lineage,
 counters and checkpoint advance commit together; interrupted days remain running
 and unavailable to selection. A PostgreSQL session advisory lock serializes import
 owners while commits remain bounded. See the [archive guide](firms-archive-import.md).
+
+
+## Phase 2.5 refresh checkpoints
+
+No migration is added. A firms-refresh-v1 parent source asset stores the pinned
+request and durable per-chunk state. Each HTTP attempt has a running batch
+reservation; success atomically replaces the empty reservation with canonical
+normalized asset/batch rows and advances the checkpoint. Failed reservations
+remain failed with unknown counts. Existing source uniqueness and revision
+lineage guards apply. Region-scoped session advisory locking serializes source
+owners while short transactions share the same connection. See the
+[refresh persistence contract](firms-refresh.md).

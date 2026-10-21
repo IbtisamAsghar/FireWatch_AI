@@ -159,3 +159,14 @@ its entire source is published. `handoff.json` and the local Member 4 manifest c
 real provenance and batch IDs. Month/sensor/region inventories distinguish raw
 provider/confidence classes from unknown supervised labels. See the
 [archive contract](firms-archive-import.md) and [JSON schema](firms-archive-manifest.schema.json).
+
+
+## Phase 2.5 refresh handoff
+
+RefreshSpec pins the 48-hour cutoff, NRT products, normalizer/key versions and
+policy. RefreshSummary reports independent product coverage and nullable
+counts. A failed sensor is unknown/partial, never a known zero. SelectedDetection
+JSONL records and handoff.json retain exact source batch/revision identities
+and a verified payload hash. Existing API-v1 status fields are extended additively
+for Member 1; the public dictionary is regenerated. See the
+[refresh contract](firms-refresh.md). No completed Run is created by ingestion.

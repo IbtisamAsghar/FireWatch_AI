@@ -1,0 +1,116 @@
+{
+  "$defs": {
+    "NormalizationPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "invalid_frp": {
+          "default": "reject",
+          "enum": [
+            "reject",
+            "null"
+          ],
+          "title": "Invalid Frp",
+          "type": "string"
+        },
+        "missing_frp": {
+          "default": "allow",
+          "enum": [
+            "allow",
+            "reject"
+          ],
+          "title": "Missing Frp",
+          "type": "string"
+        },
+        "rejection_samples": {
+          "default": 20,
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Rejection Samples",
+          "type": "integer"
+        }
+      },
+      "title": "NormalizationPolicy",
+      "type": "object"
+    },
+    "Product": {
+      "enum": [
+        "VIIRS_NOAA20_NRT",
+        "VIIRS_NOAA21_NRT",
+        "VIIRS_NOAA20_SP",
+        "VIIRS_NOAA21_SP"
+      ],
+      "title": "Product",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "firms-refresh-v1",
+      "default": "firms-refresh-v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "normalizer_version": {
+      "const": "firms-normalizer-v1",
+      "default": "firms-normalizer-v1",
+      "title": "Normalizer Version",
+      "type": "string"
+    },
+    "observation_key_version": {
+      "const": "firms-observation-v1",
+      "default": "firms-observation-v1",
+      "title": "Observation Key Version",
+      "type": "string"
+    },
+    "region": {
+      "maxLength": 100,
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Region",
+      "type": "string"
+    },
+    "as_of": {
+      "format": "date-time",
+      "title": "As Of",
+      "type": "string"
+    },
+    "products": {
+      "items": {
+        "$ref": "#/$defs/Product"
+      },
+      "maxItems": 2,
+      "minItems": 1,
+      "title": "Products",
+      "type": "array"
+    },
+    "chunk_days": {
+      "default": 5,
+      "maximum": 5,
+      "minimum": 1,
+      "title": "Chunk Days",
+      "type": "integer"
+    },
+    "normalization_policy": {
+      "$ref": "#/$defs/NormalizationPolicy"
+    },
+    "request_key": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9_-]{1,100}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Request Key"
+    }
+  },
+  "required": [
+    "region",
+    "as_of"
+  ],
+  "title": "RefreshSpec",
+  "type": "object"
+}

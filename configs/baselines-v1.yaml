@@ -1,0 +1,36 @@
+schema_version: baseline-policies-v1
+feature_version: features-v1
+probability_supported: false
+threshold_policy: provisional-display-only
+frp:
+  scorer_version: baseline-v1
+  input: frp_max_mw
+  units: MW
+  missing_floor: 0.0
+  thresholds:
+  - 10.0
+  - 50.0
+  - 100.0
+weighted:
+  scorer_version: weighted-baseline-v1
+  units: index_0_100
+  thresholds:
+  - 35.0
+  - 55.0
+  - 75.0
+  policy:
+    schema_version: weighted-index-v1
+    weights:
+    - 0.4
+    - 0.25
+    - 0.2
+    - 0.15
+    frp_reference_mw: 100.0
+    wind_reference_ms: 15.0
+    previous_reference: 20.0
+    freeze_basis: prespecified_prototype
+    dataset_sha256: null
+    fit_row_ids: []
+  policy_sha256: ef37a40cd0694558c066097a6dce608f3a4623b70dd271d3fcb914c83f8cf779
+  weights_status: prespecified_prototype_not_optimized
+  previous_activity_window: (T-24h,T-6h]

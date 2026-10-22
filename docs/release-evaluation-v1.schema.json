@@ -1,0 +1,79 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "release-evaluation-v1",
+      "default": "release-evaluation-v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "bootstrap_repetitions": {
+      "default": 200,
+      "maximum": 500,
+      "minimum": 20,
+      "title": "Bootstrap Repetitions",
+      "type": "integer"
+    },
+    "bootstrap_seed": {
+      "const": 42,
+      "default": 42,
+      "title": "Bootstrap Seed",
+      "type": "integer"
+    },
+    "min_bootstrap_events": {
+      "default": 5,
+      "maximum": 100,
+      "minimum": 5,
+      "title": "Min Bootstrap Events",
+      "type": "integer"
+    },
+    "min_threshold_events": {
+      "default": 2,
+      "maximum": 100,
+      "minimum": 2,
+      "title": "Min Threshold Events",
+      "type": "integer"
+    },
+    "min_threshold_rows_per_class": {
+      "default": 5,
+      "maximum": 1000,
+      "minimum": 5,
+      "title": "Min Threshold Rows Per Class",
+      "type": "integer"
+    },
+    "min_final_events": {
+      "default": 5,
+      "maximum": 100,
+      "minimum": 5,
+      "title": "Min Final Events",
+      "type": "integer"
+    },
+    "min_final_rows_per_class": {
+      "default": 10,
+      "maximum": 1000,
+      "minimum": 10,
+      "title": "Min Final Rows Per Class",
+      "type": "integer"
+    },
+    "threshold_objectives": {
+      "const": "F2_F1_F0.5",
+      "default": "F2_F1_F0.5",
+      "title": "Threshold Objectives",
+      "type": "string"
+    },
+    "confidence_level": {
+      "const": 95,
+      "default": 95,
+      "title": "Confidence Level",
+      "type": "integer"
+    },
+    "promotion_gate": {
+      "const": "paired_event_bootstrap_ap_improvement_over_both_baselines",
+      "default": "paired_event_bootstrap_ap_improvement_over_both_baselines",
+      "title": "Promotion Gate",
+      "type": "string"
+    }
+  },
+  "title": "EvaluationSpec",
+  "type": "object"
+}

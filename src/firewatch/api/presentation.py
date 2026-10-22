@@ -15,6 +15,7 @@ from sqlalchemy.orm import Session
 
 from firewatch.config import Settings
 from firewatch.db.models import Alert, Anchor, AnchorOutbox, ModelVersion, Run
+from firewatch.ml.baselines import BASELINE_VERSIONS
 from firewatch.repositories.reads import run_times
 from firewatch.schemas.api import (
     AnchorView,
@@ -250,11 +251,11 @@ def model_metadata(
 ) -> ModelMetadata:
     limitations = [
         "Satellite-observed strengthening is a research proxy, not physical fire severity.",
-        "FRP-only baseline thresholds are prototype research policies; ML evaluation is pending.",
+        "Baseline thresholds and index weights are provisional; ML evaluation is pending.",
     ]
-    if settings.active_scorer == "baseline-v1":
+    if settings.active_scorer in BASELINE_VERSIONS:
         return ModelMetadata(
-            scorer_version="baseline-v1",
+            scorer_version=settings.active_scorer,
             score_kind=ScoreKind.BASELINE,
             feature_version=settings.feature_schema_version,
             model_id=None,

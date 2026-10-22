@@ -1,0 +1,64 @@
+{
+  "schema_version": "phase-4.4-local-acceptance-v1",
+  "verified": true,
+  "manifest_sha256": "07596df56cbc16e2567ec35ff54f6ef5a82263c3a61d1c0d31d0a728d5f0189d",
+  "status": "insufficient_data",
+  "model_available": false,
+  "probability_supported": false,
+  "calibration_status": "insufficient_data",
+  "final_test_status": "sealed",
+  "source_split_manifest_sha256": "cca85bb36cc4a207a152b38686f685de961a8b6ebb9c9ddaa807547d17d08264",
+  "diagnostic_snapshots": 12,
+  "partition_counts": {
+    "calibration": {
+      "events": 0,
+      "negative": 0,
+      "positive": 0,
+      "rows": 0
+    },
+    "final_test": {
+      "events": 0,
+      "negative": 0,
+      "positive": 0,
+      "rows": 0
+    },
+    "threshold": {
+      "events": 0,
+      "negative": 0,
+      "positive": 0,
+      "rows": 0
+    },
+    "train": {
+      "events": 0,
+      "negative": 0,
+      "positive": 0,
+      "rows": 0
+    },
+    "validation": {
+      "events": 0,
+      "negative": 0,
+      "positive": 0,
+      "rows": 0
+    }
+  },
+  "exclusion_counts": {
+    "members_outside_target_radius": 4,
+    "off_six_hour_cadence": 12,
+    "unknown_target": 4
+  },
+  "configured_candidate_count": 16,
+  "fitted_candidate_count": 0,
+  "model_fitted": false,
+  "calibrator_fitted": false,
+  "final_test_evaluated": false,
+  "model_promoted": false,
+  "executable_serialization": false,
+  "held_out_metrics": null,
+  "release_recommendation": "baseline_only",
+  "limitations": [
+    "All twelve current snapshots are off the frozen six-hour cadence",
+    "No eligible real Random Forest or calibration fit is supported",
+    "Synthetic tests exercise training and calibration without claiming real performance",
+    "Development calibration gates do not establish operational validity or release approval"
+  ]
+}

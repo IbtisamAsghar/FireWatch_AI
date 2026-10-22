@@ -1,0 +1,11 @@
+schema_version: release-evaluation-v1
+bootstrap_repetitions: 200
+bootstrap_seed: 42
+min_bootstrap_events: 5
+min_threshold_events: 2
+min_threshold_rows_per_class: 5
+min_final_events: 5
+min_final_rows_per_class: 10
+threshold_objectives: F2_F1_F0.5
+confidence_level: 95
+promotion_gate: paired_event_bootstrap_ap_improvement_over_both_baselines

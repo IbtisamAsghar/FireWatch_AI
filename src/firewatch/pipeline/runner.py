@@ -22,6 +22,7 @@ from firewatch.db.models import (
     SourceAsset,
 )
 from firewatch.evidence.canonical import canonical_bytes, evidence_hash
+from firewatch.ml.baselines import BASELINE_VERSIONS
 from firewatch.ml.predict import score_features
 from firewatch.pipeline.jobs import Lease, fence
 from firewatch.pipeline.replay_bundle import import_bundle, load_bundle
@@ -75,7 +76,7 @@ class PipelineRequest(DTO):
             raise ValueError("Invalid pipeline window")
         if self.mode == RunMode.REPLAY and not self.asset_ids:
             raise ValueError("Replay requires explicitly pinned assets")
-        if self.feature_version != "features-v1" or self.scorer_version != "baseline-v1":
+        if self.feature_version != "features-v1" or self.scorer_version not in BASELINE_VERSIONS:
             raise ValueError("Unsupported scorer or feature version")
         return self
 

@@ -1,0 +1,68 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "priority-thresholds-v1",
+      "default": "priority-thresholds-v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "method": {
+      "title": "Method",
+      "type": "string"
+    },
+    "score_units": {
+      "title": "Score Units",
+      "type": "string"
+    },
+    "medium": {
+      "title": "Medium",
+      "type": "number"
+    },
+    "high": {
+      "title": "High",
+      "type": "number"
+    },
+    "critical": {
+      "title": "Critical",
+      "type": "number"
+    },
+    "provisional": {
+      "default": true,
+      "title": "Provisional",
+      "type": "boolean"
+    },
+    "basis": {
+      "enum": [
+        "development_fbeta",
+        "prespecified_baseline"
+      ],
+      "title": "Basis",
+      "type": "string"
+    },
+    "fit_row_ids": {
+      "items": {
+        "pattern": "^[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "maxItems": 10000,
+      "title": "Fit Row Ids",
+      "type": "array"
+    },
+    "degenerate_bands": {
+      "title": "Degenerate Bands",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "method",
+    "score_units",
+    "medium",
+    "high",
+    "critical",
+    "basis",
+    "degenerate_bands"
+  ],
+  "title": "PriorityThresholds",
+  "type": "object"
+}

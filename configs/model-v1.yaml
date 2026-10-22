@@ -26,3 +26,9 @@ target_dataset_design: configs/target-dataset-v1.yaml
 # Phase 4.2 policy is frozen; supervised release remains unavailable.
 event_group_spec: configs/event-groups-v1.yaml
 split_spec: configs/splits-v1.yaml
+
+# Phase 4.3 artifact-free policies; thresholds and weights remain provisional.
+baseline_policies: configs/baselines-v1.yaml
+
+# Phase 4.4 offline candidate policy; no trained or approved artifact is active.
+forest_training_spec: configs/forest-v1.yaml

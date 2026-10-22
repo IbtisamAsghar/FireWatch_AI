@@ -1,0 +1,129 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "forest-training-v1",
+      "default": "forest-training-v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "tree_counts": {
+      "items": {
+        "type": "integer"
+      },
+      "maxItems": 2,
+      "minItems": 1,
+      "title": "Tree Counts",
+      "type": "array"
+    },
+    "depths": {
+      "items": {
+        "type": "integer"
+      },
+      "maxItems": 2,
+      "minItems": 1,
+      "title": "Depths",
+      "type": "array"
+    },
+    "leaf_sizes": {
+      "items": {
+        "type": "integer"
+      },
+      "maxItems": 2,
+      "minItems": 1,
+      "title": "Leaf Sizes",
+      "type": "array"
+    },
+    "class_weights": {
+      "items": {
+        "anyOf": [
+          {
+            "const": "balanced",
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "maxItems": 2,
+      "minItems": 2,
+      "title": "Class Weights",
+      "type": "array"
+    },
+    "random_seed": {
+      "const": 42,
+      "default": 42,
+      "title": "Random Seed",
+      "type": "integer"
+    },
+    "n_jobs": {
+      "const": 1,
+      "default": 1,
+      "title": "N Jobs",
+      "type": "integer"
+    },
+    "max_features": {
+      "const": "sqrt",
+      "default": "sqrt",
+      "title": "Max Features",
+      "type": "string"
+    },
+    "calibration_purge_hours": {
+      "default": 48,
+      "maximum": 168,
+      "minimum": 48,
+      "title": "Calibration Purge Hours",
+      "type": "integer"
+    },
+    "min_calibration_events": {
+      "default": 4,
+      "maximum": 100,
+      "minimum": 4,
+      "title": "Min Calibration Events",
+      "type": "integer"
+    },
+    "min_calibration_rows_per_class": {
+      "default": 10,
+      "maximum": 1000,
+      "minimum": 10,
+      "title": "Min Calibration Rows Per Class",
+      "type": "integer"
+    },
+    "min_audit_events": {
+      "default": 4,
+      "maximum": 100,
+      "minimum": 4,
+      "title": "Min Audit Events",
+      "type": "integer"
+    },
+    "min_audit_rows_per_class": {
+      "default": 10,
+      "maximum": 1000,
+      "minimum": 10,
+      "title": "Min Audit Rows Per Class",
+      "type": "integer"
+    },
+    "calibration_split_fraction": {
+      "default": 0.5,
+      "maximum": 0.5,
+      "minimum": 0.5,
+      "title": "Calibration Split Fraction",
+      "type": "number"
+    },
+    "selection_policy": {
+      "const": "mean_validation_ap_then_brier_then_complexity",
+      "default": "mean_validation_ap_then_brier_then_complexity",
+      "title": "Selection Policy",
+      "type": "string"
+    },
+    "calibration_acceptance": {
+      "const": "nondegrading_audit_brier_and_log_loss",
+      "default": "nondegrading_audit_brier_and_log_loss",
+      "title": "Calibration Acceptance",
+      "type": "string"
+    }
+  },
+  "title": "ForestSpec",
+  "type": "object"
+}

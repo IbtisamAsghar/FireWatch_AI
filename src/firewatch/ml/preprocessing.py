@@ -65,19 +65,15 @@ def _matrix(rows: list[SplitSample]) -> Any:
     )
 
 
-def fit_preprocessor(
-    samples: list[SplitSample], result: SplitResult, *, fold_id: str | None = None
-) -> FittedPreprocessor:
-    rows = development_rows(samples, result, role="fit", fold_id=fold_id)
-    # Missing flags already exist in the frozen whitelist. All-missing measurements
-    # use the imputer's documented zero floor while their missing flags remain true.
+def make_preprocessor() -> Any:
+    """Fresh unfitted 31-column transform shared by regression and development tools."""
     numeric = Pipeline(
         [
             ("impute", SimpleImputer(strategy="median", keep_empty_features=True)),
             ("scale", StandardScaler()),
         ]
     )
-    transformer = ColumnTransformer(
+    return ColumnTransformer(
         [
             ("numeric", numeric, list(range(len(FEATURE_NAMES)))),
             (
@@ -87,6 +83,13 @@ def fit_preprocessor(
             ),
         ]
     )
+
+
+def fit_preprocessor(
+    samples: list[SplitSample], result: SplitResult, *, fold_id: str | None = None
+) -> FittedPreprocessor:
+    rows = development_rows(samples, result, role="fit", fold_id=fold_id)
+    transformer = make_preprocessor()
     transformer.fit(_matrix(rows))
     return FittedPreprocessor(transformer, tuple(row.row_id for row in rows), result.dataset_sha256)
 

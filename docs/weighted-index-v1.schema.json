@@ -1,0 +1,90 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "weighted-index-v1",
+      "default": "weighted-index-v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "weights": {
+      "default": [
+        0.4,
+        0.25,
+        0.2,
+        0.15
+      ],
+      "maxItems": 4,
+      "minItems": 4,
+      "prefixItems": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        }
+      ],
+      "title": "Weights",
+      "type": "array"
+    },
+    "frp_reference_mw": {
+      "default": 100,
+      "exclusiveMinimum": 0,
+      "maximum": 1e+308,
+      "title": "Frp Reference Mw",
+      "type": "number"
+    },
+    "wind_reference_ms": {
+      "default": 15,
+      "exclusiveMinimum": 0,
+      "maximum": 1e+308,
+      "title": "Wind Reference Ms",
+      "type": "number"
+    },
+    "previous_reference": {
+      "default": 20,
+      "exclusiveMinimum": 0,
+      "maximum": 1e+308,
+      "title": "Previous Reference",
+      "type": "number"
+    },
+    "freeze_basis": {
+      "default": "prespecified_prototype",
+      "enum": [
+        "prespecified_prototype",
+        "training_feature_quantiles"
+      ],
+      "title": "Freeze Basis",
+      "type": "string"
+    },
+    "dataset_sha256": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Dataset Sha256"
+    },
+    "fit_row_ids": {
+      "items": {
+        "pattern": "^[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "title": "Fit Row Ids",
+      "type": "array"
+    }
+  },
+  "title": "WeightedPolicy",
+  "type": "object"
+}

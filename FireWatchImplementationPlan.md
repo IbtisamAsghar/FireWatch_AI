@@ -709,38 +709,56 @@ readiness or an evaluated final holdout.
 
 ### Phase 4.3: Implement baselines first
 
-- [ ] Baseline A: rank clusters by FRP maximum only.
-- [ ] Baseline B: implement a documented weighted index using intensity, humidity, wind, and previous detections; freeze transformations/weights using development data.
-- [ ] Call rule output `priority_score`, never `escalation_probability`.
-- [ ] Train a logistic-regression pipeline as a simple supervised comparison if sample size allows.
-- [ ] Evaluate all methods on identical held-out snapshots and labels.
-- [ ] Make baseline scoring runnable before ML artifact availability so the API/pipeline can integrate immediately.
+- [x] Baseline A: rank clusters by FRP maximum only.
+- [x] Baseline B: implement a documented weighted index using intensity, humidity, wind, and previous detections; freeze transformations/weights using development data.
+- [x] Call rule output `priority_score`, never `escalation_probability`.
+- [x] Train a logistic-regression pipeline as a simple supervised comparison if sample size allows.
+- [x] Evaluate all methods on identical held-out snapshots and labels.
+- [x] Make baseline scoring runnable before ML artifact availability so the API/pipeline can integrate immediately.
+
+Implementation and local acceptance: [Phase 4.3 checklist](docs/phase-4.3-checklist.md),
+[baseline policies and workflow](docs/baselines-and-comparison.md), and
+[real receipt](docs/phase-4.3-smoke.json). Logistic fitting is conditional on
+sufficient development data. The current real cohort skips fitting; prototype
+weights/thresholds remain provisional, and the final test stays sealed for Phase 4.5.
 
 ### Phase 4.4: Train Random Forest and calibrate
 
-- [ ] Build a scikit-learn Pipeline including deterministic preprocessing and missing indicators.
-- [ ] Start with a small bounded search over tree count, maximum depth, and minimum leaf size; set random seeds.
-- [ ] Choose class weighting from development data and compare effects on ranking/calibration.
-- [ ] Use validation results to choose model settings, not the final test set.
-- [ ] If supported by sufficient held-out samples/classes, fit sigmoid calibration on a disjoint calibration partition; verify calibration performance. [S9]
-- [ ] Keep a separate validation portion or cross-fitted development procedure for threshold selection when possible; document any small-data compromise.
-- [ ] Save estimator, preprocessing, calibrator, ordered feature names, dependency versions, configuration, and checksums.
-- [ ] If calibration evidence is insufficient, expose the output as `model_score`; leave `escalation_probability=null`.
-- [ ] Do not train in the deployed API or load untrusted joblib/pickle files.
+- [x] Build a scikit-learn Pipeline including deterministic preprocessing and missing indicators.
+- [x] Start with a small bounded search over tree count, maximum depth, and minimum leaf size; set random seeds.
+- [x] Choose class weighting from development data and compare effects on ranking/calibration.
+- [x] Use validation results to choose model settings, not the final test set.
+- [x] If supported by sufficient held-out samples/classes, fit sigmoid calibration on a disjoint calibration partition; verify calibration performance. [S9]
+- [x] Keep a separate validation portion or cross-fitted development procedure for threshold selection when possible; document any small-data compromise.
+- [x] Save estimator, preprocessing, calibrator, ordered feature names, dependency versions, configuration, and checksums.
+- [x] If calibration evidence is insufficient, expose the output as `model_score`; leave `escalation_probability=null`.
+- [x] Do not train in the deployed API or load untrusted joblib/pickle files.
+
+Implementation and local acceptance: [Phase 4.4 checklist](docs/phase-4.4-checklist.md),
+[forest training/calibration policy](docs/forest-training-and-calibration.md), and
+[real receipt](docs/phase-4.4-smoke.json). Training/calibration are conditional on
+source-bound data sufficiency. The current real cohort yields no fitted estimator;
+the final test remains sealed and neither promotion nor release thresholds are selected.
 
 ### Phase 4.5: Evaluate and choose priority thresholds
 
-- [ ] Report precision, recall, F1, PR-AUC, class prevalence, and confusion matrix.
-- [ ] Report precision@10 and recall@10 for per-run ranking; use `k=min(10,n)` and exclude runs without positives from recall aggregation with counts reported.
-- [ ] Report Brier score/reliability plots for any claimed probability output.
-- [ ] Break results down by event, month, sensor/product, weather completeness, and unobserved-followup flag.
-- [ ] Use event-level resampling for uncertainty estimates when feasible; do not treat repeated snapshots as independent fires.
-- [ ] Compare ML and both baselines; document whether weather/climate features improve results through an ablation comparison.
-- [ ] Choose Low/Medium/High/Critical thresholds on development data; store them in scorer metadata.
-- [ ] The original 0.35/0.55/0.75 boundaries may be an initial display convention, never a validated claim by default.
-- [ ] If using baseline scores, thresholds belong to the baseline scale and must be explicitly labeled provisional.
-- [ ] Open the final test once for release evaluation; save a model card with failures and generalization limits.
-- [ ] Promote ML only if held-out ranking quality and limitations justify it. Never invent a target accuracy or achieved metric.
+- [x] Report precision, recall, F1, PR-AUC, class prevalence, and confusion matrix.
+- [x] Report precision@10 and recall@10 for per-run ranking; use `k=min(10,n)` and exclude runs without positives from recall aggregation with counts reported.
+- [x] Report Brier score/reliability plots for any claimed probability output.
+- [x] Break results down by event, month, sensor/product, weather completeness, and unobserved-followup flag.
+- [x] Use event-level resampling for uncertainty estimates when feasible; do not treat repeated snapshots as independent fires.
+- [x] Compare ML and both baselines; document whether weather/climate features improve results through an ablation comparison.
+- [x] Choose Low/Medium/High/Critical thresholds on development data; store them in scorer metadata.
+- [x] The original 0.35/0.55/0.75 boundaries may be an initial display convention, never a validated claim by default.
+- [x] If using baseline scores, thresholds belong to the baseline scale and must be explicitly labeled provisional.
+- [x] Open the final test once for release evaluation; save a model card with failures and generalization limits.
+- [x] Promote ML only if held-out ranking quality and limitations justify it. Never invent a target accuracy or achieved metric.
+
+Implementation and synthetic acceptance are complete. The real cohort has no
+eligible on-cadence snapshots: no real metrics or ML thresholds are claimed,
+the final test remains sealed, and promotion is withheld. The one-shot release
+path is implemented and tested for adequate cohorts; empirical release evaluation
+requires additional eligible data. See [Phase 4.5 evidence](docs/phase-4.5-checklist.md).
 
 ### Phase 4.6: Implement inference and explanation contract
 

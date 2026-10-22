@@ -1,0 +1,36 @@
+{
+  "schema_version": "phase-4.3-local-acceptance-v1",
+  "verified": true,
+  "manifest_sha256": "2d50d21aa2d7ab4585a512f7a1e080f7e496ea65526dfc4eb5550da77e4ec180",
+  "status": "insufficient_data",
+  "cohort_count": 0,
+  "logistic_status": "skipped_insufficient_data",
+  "final_test_status": "sealed",
+  "source_split_manifest_sha256": "cca85bb36cc4a207a152b38686f685de961a8b6ebb9c9ddaa807547d17d08264",
+  "diagnostic_snapshots": 12,
+  "diagnostic_only": true,
+  "diagnostic_priority_counts": {
+    "frp": {
+      "LOW": 2,
+      "MEDIUM": 6,
+      "CRITICAL": 4
+    },
+    "weighted": {
+      "HIGH": 8,
+      "MEDIUM": 4
+    }
+  },
+  "weighted_missing_component_counts": {},
+  "weighted_prototype_sha256": "ef37a40cd0694558c066097a6dce608f3a4623b70dd271d3fcb914c83f8cf779",
+  "weights_status": "prespecified_prototype_not_optimized",
+  "feature_bytes_unchanged": true,
+  "probability_supported": false,
+  "final_test_evaluated": false,
+  "model_promoted": false,
+  "held_out_metrics": null,
+  "limitations": [
+    "All twelve real snapshots are off cadence; no eligible validation cohort",
+    "Diagnostic priorities are provisional rankings, not severity or probability",
+    "No real logistic fit or supervised performance is asserted"
+  ]
+}

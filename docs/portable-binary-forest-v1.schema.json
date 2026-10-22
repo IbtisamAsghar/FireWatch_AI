@@ -1,0 +1,353 @@
+{
+  "$defs": {
+    "ForestNode": {
+      "additionalProperties": false,
+      "properties": {
+        "left": {
+          "title": "Left",
+          "type": "integer"
+        },
+        "right": {
+          "title": "Right",
+          "type": "integer"
+        },
+        "feature": {
+          "title": "Feature",
+          "type": "integer"
+        },
+        "threshold": {
+          "title": "Threshold",
+          "type": "number"
+        },
+        "class_values": {
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Class Values",
+          "type": "array"
+        },
+        "impurity": {
+          "minimum": 0,
+          "title": "Impurity",
+          "type": "number"
+        },
+        "samples": {
+          "minimum": 1,
+          "title": "Samples",
+          "type": "integer"
+        },
+        "weighted_samples": {
+          "exclusiveMinimum": 0,
+          "title": "Weighted Samples",
+          "type": "number"
+        }
+      },
+      "required": [
+        "left",
+        "right",
+        "feature",
+        "threshold",
+        "class_values",
+        "impurity",
+        "samples",
+        "weighted_samples"
+      ],
+      "title": "ForestNode",
+      "type": "object"
+    },
+    "ForestParameters": {
+      "additionalProperties": false,
+      "properties": {
+        "n_estimators": {
+          "maximum": 128,
+          "minimum": 8,
+          "title": "N Estimators",
+          "type": "integer"
+        },
+        "max_depth": {
+          "maximum": 12,
+          "minimum": 2,
+          "title": "Max Depth",
+          "type": "integer"
+        },
+        "min_samples_leaf": {
+          "maximum": 20,
+          "minimum": 1,
+          "title": "Min Samples Leaf",
+          "type": "integer"
+        },
+        "class_weight": {
+          "anyOf": [
+            {
+              "const": "balanced",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Class Weight"
+        }
+      },
+      "required": [
+        "n_estimators",
+        "max_depth",
+        "min_samples_leaf",
+        "class_weight"
+      ],
+      "title": "ForestParameters",
+      "type": "object"
+    },
+    "ForestTree": {
+      "additionalProperties": false,
+      "properties": {
+        "nodes": {
+          "items": {
+            "$ref": "#/$defs/ForestNode"
+          },
+          "maxItems": 8191,
+          "minItems": 1,
+          "title": "Nodes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "nodes"
+      ],
+      "title": "ForestTree",
+      "type": "object"
+    },
+    "NumericTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "medians": {
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 17,
+          "minItems": 17,
+          "title": "Medians",
+          "type": "array"
+        },
+        "means": {
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 17,
+          "minItems": 17,
+          "title": "Means",
+          "type": "array"
+        },
+        "scales": {
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 17,
+          "minItems": 17,
+          "title": "Scales",
+          "type": "array"
+        }
+      },
+      "required": [
+        "medians",
+        "means",
+        "scales"
+      ],
+      "title": "NumericTransform",
+      "type": "object"
+    },
+    "Sigmoid": {
+      "additionalProperties": false,
+      "properties": {
+        "a": {
+          "exclusiveMaximum": 0,
+          "minimum": -1000000.0,
+          "title": "A",
+          "type": "number"
+        },
+        "b": {
+          "maximum": 1000000.0,
+          "minimum": -1000000.0,
+          "title": "B",
+          "type": "number"
+        }
+      },
+      "required": [
+        "a",
+        "b"
+      ],
+      "title": "Sigmoid",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "portable-binary-forest-v1",
+      "default": "portable-binary-forest-v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "class_order": {
+      "default": [
+        0,
+        1
+      ],
+      "maxItems": 2,
+      "minItems": 2,
+      "prefixItems": [
+        {
+          "const": 0,
+          "type": "integer"
+        },
+        {
+          "const": 1,
+          "type": "integer"
+        }
+      ],
+      "title": "Class Order",
+      "type": "array"
+    },
+    "preprocessing_algorithm": {
+      "const": "median_scale_17_passthrough_14",
+      "default": "median_scale_17_passthrough_14",
+      "title": "Preprocessing Algorithm",
+      "type": "string"
+    },
+    "feature_names": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Feature Names",
+      "type": "array"
+    },
+    "feature_spec_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Feature Spec Sha256",
+      "type": "string"
+    },
+    "target_spec_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Target Spec Sha256",
+      "type": "string"
+    },
+    "dataset_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Dataset Sha256",
+      "type": "string"
+    },
+    "split_spec_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Split Spec Sha256",
+      "type": "string"
+    },
+    "training_spec_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Training Spec Sha256",
+      "type": "string"
+    },
+    "parameters": {
+      "$ref": "#/$defs/ForestParameters"
+    },
+    "fit_row_ids": {
+      "items": {
+        "pattern": "^[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "maxItems": 10000,
+      "minItems": 1,
+      "title": "Fit Row Ids",
+      "type": "array"
+    },
+    "fold_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Fold Id"
+    },
+    "numeric": {
+      "$ref": "#/$defs/NumericTransform"
+    },
+    "trees": {
+      "items": {
+        "$ref": "#/$defs/ForestTree"
+      },
+      "maxItems": 128,
+      "minItems": 8,
+      "title": "Trees",
+      "type": "array"
+    },
+    "sigmoid": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Sigmoid"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "calibration_status": {
+      "enum": [
+        "accepted",
+        "rejected",
+        "insufficient_data",
+        "cv_uncalibrated"
+      ],
+      "title": "Calibration Status",
+      "type": "string"
+    },
+    "calibration_fit_ids": {
+      "items": {
+        "pattern": "^[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "maxItems": 10000,
+      "title": "Calibration Fit Ids",
+      "type": "array"
+    },
+    "calibration_audit_ids": {
+      "items": {
+        "pattern": "^[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "maxItems": 10000,
+      "title": "Calibration Audit Ids",
+      "type": "array"
+    },
+    "probability_supported": {
+      "title": "Probability Supported",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "feature_names",
+    "feature_spec_sha256",
+    "target_spec_sha256",
+    "dataset_sha256",
+    "split_spec_sha256",
+    "training_spec_sha256",
+    "parameters",
+    "fit_row_ids",
+    "fold_id",
+    "numeric",
+    "trees",
+    "calibration_status",
+    "probability_supported"
+  ],
+  "title": "PortableForest",
+  "type": "object"
+}

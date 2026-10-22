@@ -1,0 +1,25 @@
+{
+  "schema_version": "phase-4.5-local-acceptance-v1",
+  "verified": true,
+  "manifest_sha256": "4e002768fc7a1b73e0331587e6c44ae3eb70890840e6883a60072473166aa12a",
+  "stage": "development",
+  "status": "insufficient_data",
+  "final_test_status": "sealed",
+  "promotion_performed": false,
+  "source_training_manifest_sha256": "07596df56cbc16e2567ec35ff54f6ef5a82263c3a61d1c0d31d0a728d5f0189d",
+  "diagnostic_snapshots": 12,
+  "eligible_evaluation_rows": 0,
+  "selected_ml_thresholds": false,
+  "held_out_metrics": null,
+  "ablations_evaluated": false,
+  "reliability_plot_produced": false,
+  "final_test_evaluated": false,
+  "authoritative_ledger_exists": false,
+  "release_recommendation": "baseline_only",
+  "limitations": [
+    "All twelve current snapshots are off the frozen six-hour cadence",
+    "No supported real held-out metrics or priority-threshold validation",
+    "Whole-event synthetic tests validate implementation, not real performance",
+    "Final-test ledger must remain authoritative across operators and machines"
+  ]
+}

@@ -1236,3 +1236,161 @@ def verify_splits_command(
             "Split verification failed; check checksums, provenance and membership.", err=True
         )
         raise typer.Exit(1) from None
+
+
+@app.command("compare-baselines")
+def compare_baselines_command(
+    splits: Annotated[Path, typer.Option(help="Verified Phase 4.2 split package")],
+    manifest_sha256: Annotated[str, typer.Option(help="Trusted split manifest hash")],
+    output: Annotated[Path, typer.Option(help="New private comparison directory")],
+) -> None:
+    """Compare FRP, weighted index and eligible logistic fits on identical development holdouts."""
+    from firewatch.ml.comparison_package import export_comparison
+
+    try:
+        report = export_comparison(splits, output, manifest_sha256)
+        typer.echo(
+            json.dumps(
+                {
+                    key: report[key]
+                    for key in (
+                        "status",
+                        "strategy",
+                        "cohort_count",
+                        "logistic_status",
+                        "final_test_status",
+                        "release_recommendation",
+                    )
+                }
+            )
+        )
+    except (ValueError, OSError, KeyError, TypeError, OverflowError):
+        typer.echo(
+            "Baseline comparison failed; verify split package, data sufficiency and output.",
+            err=True,
+        )
+        raise typer.Exit(1) from None
+
+
+@app.command("verify-baseline-comparison")
+def verify_baseline_comparison_command(
+    path: Annotated[Path, typer.Option(help="Portable baseline comparison directory")],
+    manifest_sha256: Annotated[str | None, typer.Option()] = None,
+) -> None:
+    """Recompute paired development comparisons offline without opening the final test."""
+    from firewatch.ml.comparison_package import verify_comparison
+
+    try:
+        typer.echo(json.dumps(verify_comparison(path, manifest_sha256)))
+    except (ValueError, OSError, OverflowError):
+        typer.echo(
+            "Baseline comparison verification failed; check inputs and dependencies.", err=True
+        )
+        raise typer.Exit(1) from None
+
+
+@app.command("train-forest")
+def train_forest_command(
+    splits: Annotated[Path, typer.Option(help="Verified event-disjoint split package")],
+    manifest_sha256: Annotated[str, typer.Option(help="Trusted source split manifest hash")],
+    output: Annotated[Path, typer.Option(help="New private forest training package")],
+    spec: Annotated[Path, typer.Option()] = Path("configs/forest-v1.yaml"),
+) -> None:
+    """Offline bounded forest search and sigmoid audit; final test remains sealed."""
+    from firewatch.ml.forest_package import export_forest
+
+    try:
+        report = export_forest(splits, output, manifest_sha256, spec)
+        typer.echo(
+            json.dumps(
+                dict(
+                    status=report["status"],
+                    probability_supported=report["probability_supported"],
+                    calibration_status=report["calibration"]["status"],
+                    final_test_status=report["final_test_status"],
+                    release_recommendation=report["release_recommendation"],
+                )
+            )
+        )
+    except (ValueError, OSError, KeyError, TypeError, OverflowError, yaml.YAMLError):
+        typer.echo(
+            "Forest training failed; verify frozen inputs, sample sufficiency, bounds and output.",
+            err=True,
+        )
+        raise typer.Exit(1) from None
+
+
+@app.command("verify-forest")
+def verify_forest_command(
+    path: Annotated[Path, typer.Option(help="Private forest training package")],
+    manifest_sha256: Annotated[str | None, typer.Option()] = None,
+) -> None:
+    """Verify and recompute non-executable JSON estimator, preprocessing and calibration."""
+    from firewatch.ml.forest_package import verify_forest
+
+    try:
+        typer.echo(json.dumps(verify_forest(path, manifest_sha256)))
+    except (ValueError, OSError, OverflowError):
+        typer.echo(
+            "Forest verification failed; check provenance, dependencies and estimator data.",
+            err=True,
+        )
+        raise typer.Exit(1) from None
+
+
+@app.command("prepare-evaluation")
+def prepare_evaluation_command(
+    training: Annotated[Path, typer.Option(help="Verified Phase 4.4 training package")],
+    manifest_sha256: Annotated[str, typer.Option(help="Trusted training manifest SHA256")],
+    output: Annotated[Path, typer.Option(help="New private development evaluation directory")],
+    spec: Annotated[Path, typer.Option()] = Path("configs/evaluation-v1.yaml"),
+) -> None:
+    """Freeze development thresholds and comparisons while keeping final test sealed."""
+    from firewatch.ml.evaluation_package import export_development
+
+    try:
+        result = export_development(training, output, manifest_sha256, spec)
+        typer.echo(
+            json.dumps(
+                {k: result[k] for k in ("status", "final_test_status", "release_recommendation")}
+            )
+        )
+    except (ValueError, OSError, KeyError, TypeError, OverflowError, yaml.YAMLError):
+        typer.echo("Evaluation preparation failed; verify source, policy and output.", err=True)
+        raise typer.Exit(1) from None
+
+
+@app.command("evaluate-final")
+def evaluate_final_command(
+    prepared: Annotated[Path, typer.Option(help="Frozen development evaluation package")],
+    manifest_sha256: Annotated[str, typer.Option(help="Trusted prepared manifest SHA256")],
+    output: Annotated[Path, typer.Option(help="New private final evaluation directory")],
+) -> None:
+    """Consume the final holdout once using the durable project ledger and frozen policy."""
+    import sqlite3
+
+    from firewatch.ml.evaluation_package import export_final
+
+    try:
+        result = export_final(prepared, output, manifest_sha256)
+        typer.echo(
+            json.dumps({k: result[k] for k in ("final_test_status", "release_recommendation")})
+        )
+    except (ValueError, OSError, KeyError, TypeError, OverflowError, sqlite3.Error):
+        typer.echo("Final evaluation refused or failed; check data and durable ledger.", err=True)
+        raise typer.Exit(1) from None
+
+
+@app.command("verify-evaluation")
+def verify_evaluation_command(
+    path: Annotated[Path, typer.Option(help="Portable development or final evaluation package")],
+    manifest_sha256: Annotated[str | None, typer.Option()] = None,
+) -> None:
+    """Replay the same frozen evaluation for integrity; never select a new experiment."""
+    from firewatch.ml.evaluation_package import verify_evaluation
+
+    try:
+        typer.echo(json.dumps(verify_evaluation(path, manifest_sha256)))
+    except (ValueError, OSError, KeyError, TypeError, OverflowError):
+        typer.echo("Evaluation verification failed; check provenance and frozen results.", err=True)
+        raise typer.Exit(1) from None

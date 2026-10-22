@@ -190,3 +190,30 @@ Use `firewatch group-split-events`, `firewatch build-splits`, and
 See [partition policy and workflow](docs/leakage-resistant-splits.md) and
 [acceptance evidence](docs/phase-4.2-checklist.md). The current real cohort
 correctly remains baseline-only: its twelve snapshots are all off cadence.
+
+## Baselines and simple comparison (Phase 4.3)
+
+Both `baseline-v1` (maximum FRP) and opt-in `weighted-baseline-v1` run without
+a model artifact. `firewatch compare-baselines` evaluates paired development
+holdouts and conditionally fits logistic regression; the final test stays sealed.
+See [scoring/comparison workflow](docs/baselines-and-comparison.md) and
+[acceptance](docs/phase-4.3-checklist.md). The real sparse cohort correctly skips
+supervised fitting and reports no held-out performance.
+
+## Random Forest training and calibration (Phase 4.4)
+
+`firewatch train-forest` performs bounded development-only search and independently
+audited sigmoid calibration when data permits. `firewatch verify-forest` recomputes
+the source-bound JSON artifact without executable object loading. See the
+[training guide](docs/forest-training-and-calibration.md) and
+[acceptance checklist](docs/phase-4.4-checklist.md). The current real cohort
+correctly yields no fitted estimator; final test and model promotion remain gated.
+
+## Evaluation and priority thresholds (Phase 4.5)
+
+`firewatch prepare-evaluation` freezes paired comparisons and development-only
+score-scale thresholds. `firewatch evaluate-final` uses a durable one-shot ledger;
+`firewatch verify-evaluation` audits the same frozen artifact offline. See the
+[evaluation guide](docs/evaluation-and-thresholds.md) and
+[acceptance evidence](docs/phase-4.5-checklist.md). The current off-cadence cohort
+reports insufficient data, no achieved metrics and a sealed final test.

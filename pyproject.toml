@@ -24,6 +24,7 @@ dependencies = [
   "numpy>=2,<3",
   "pyarrow==21.0.0",
   "scikit-learn>=1.6,<2",
+  "matplotlib>=3.10,<4",
 ]
 
 [dependency-groups]

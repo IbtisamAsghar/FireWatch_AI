@@ -991,5 +991,66 @@ def replay_command(
             database.close()
 
 
+@app.command("export-pipeline-handoff")
+def export_pipeline_command(
+    run_id: Annotated[
+        list[str], typer.Option("--run-id", help="Repeat for each completed run UUID")
+    ],
+    output: Annotated[
+        Path, typer.Option(help="New handoff directory; existing output is never replaced")
+    ],
+    data_kind: Annotated[
+        str, typer.Option(help="real, synthetic, or unclassified")
+    ] = "unclassified",
+) -> None:
+    """Export verified Parquet features and API run/status data for Members 4 and 1."""
+    from uuid import UUID
+
+    from firewatch.pipeline.handoff import export_handoff
+
+    database = None
+    try:
+        if data_kind not in {"real", "synthetic", "unclassified"}:
+            raise ValueError("Invalid declared data kind")
+        settings = get_settings()
+        database = Database(settings)
+        from typing import Literal, cast
+
+        result = export_handoff(
+            database.engine,
+            settings,
+            [UUID(i) for i in run_id],
+            output,
+            data_kind=cast(Literal["real", "synthetic", "unclassified"], data_kind),
+        )
+        typer.echo(json.dumps(result))
+    except (ConfigurationError, ValueError, OSError, KeyError, SQLAlchemyError):
+        typer.echo(
+            "Pipeline export failed; verify completed run inputs and choose a new output path.",
+            err=True,
+        )
+        raise typer.Exit(1) from None
+    finally:
+        if database is not None:
+            database.close()
+
+
+@app.command("verify-pipeline-handoff")
+def verify_pipeline_command(
+    path: Annotated[Path, typer.Option(help="Existing handoff directory")],
+    manifest_sha256: Annotated[
+        str | None, typer.Option(help="Expected trusted manifest SHA-256")
+    ] = None,
+) -> None:
+    """Verify checksums, Parquet schemas, feature hashes, joins and run/status DTOs offline."""
+    from firewatch.pipeline.handoff import verify_handoff
+
+    try:
+        typer.echo(json.dumps(verify_handoff(path, manifest_sha256)))
+    except (ValueError, OSError, KeyError, TypeError):
+        typer.echo("Pipeline handoff verification failed.", err=True)
+        raise typer.Exit(1) from None
+
+
 if __name__ == "__main__":
     app()

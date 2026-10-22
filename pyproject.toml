@@ -22,6 +22,7 @@ dependencies = [
   "typer>=0.15,<1",
   "pyyaml>=6,<7",
   "numpy>=2,<3",
+  "pyarrow==21.0.0",
   "scikit-learn>=1.6,<2",
 ]
 
@@ -70,3 +71,8 @@ branch = true
 # Frozen migration SQL can exceed the Python source line width.
 [tool.ruff.lint.per-file-ignores]
 "migrations/versions/*.py" = ["E501"]
+
+# PyArrow exposes its native API without bundled static typing declarations.
+[[tool.mypy.overrides]]
+module = ["pyarrow", "pyarrow.*"]
+ignore_missing_imports = true

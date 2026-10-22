@@ -1,0 +1,356 @@
+{
+  "feature_version": "features-v1",
+  "fields": [
+    {
+      "name": "run_id",
+      "nullable": false,
+      "role": "metadata",
+      "type": "string"
+    },
+    {
+      "name": "snapshot_id",
+      "nullable": false,
+      "role": "metadata",
+      "type": "string"
+    },
+    {
+      "name": "region_id",
+      "nullable": false,
+      "role": "metadata",
+      "type": "string"
+    },
+    {
+      "name": "mode",
+      "nullable": false,
+      "role": "metadata",
+      "type": "string"
+    },
+    {
+      "name": "feature_version",
+      "nullable": false,
+      "role": "metadata",
+      "type": "string"
+    },
+    {
+      "name": "feature_hash",
+      "nullable": false,
+      "role": "metadata",
+      "type": "string"
+    },
+    {
+      "name": "as_of",
+      "nullable": false,
+      "role": "metadata",
+      "type": "timestamp[us, tz=UTC]"
+    },
+    {
+      "name": "latest_detection_at",
+      "nullable": false,
+      "role": "metadata",
+      "type": "timestamp[us, tz=UTC]"
+    },
+    {
+      "name": "processed_at",
+      "nullable": false,
+      "role": "metadata",
+      "type": "timestamp[us, tz=UTC]"
+    },
+    {
+      "name": "latitude",
+      "nullable": false,
+      "role": "metadata",
+      "type": "double"
+    },
+    {
+      "name": "longitude",
+      "nullable": false,
+      "role": "metadata",
+      "type": "double"
+    },
+    {
+      "name": "member_count",
+      "nullable": false,
+      "role": "metadata",
+      "type": "int64"
+    },
+    {
+      "name": "lineage_json",
+      "nullable": false,
+      "role": "metadata",
+      "type": "string"
+    },
+    {
+      "name": "frp_max_mw",
+      "nullable": true,
+      "role": "model_input",
+      "type": "double"
+    },
+    {
+      "name": "frp_sum_mw",
+      "nullable": true,
+      "role": "model_input",
+      "type": "double"
+    },
+    {
+      "name": "brightness_max_k",
+      "nullable": true,
+      "role": "model_input",
+      "type": "double"
+    },
+    {
+      "name": "detections_6h",
+      "nullable": false,
+      "role": "model_input",
+      "type": "int64"
+    },
+    {
+      "name": "detections_12h",
+      "nullable": false,
+      "role": "model_input",
+      "type": "int64"
+    },
+    {
+      "name": "detections_24h",
+      "nullable": false,
+      "role": "model_input",
+      "type": "int64"
+    },
+    {
+      "name": "hours_since_first_seen_24h",
+      "nullable": true,
+      "role": "model_input",
+      "type": "double"
+    },
+    {
+      "name": "confidence_high_fraction",
+      "nullable": true,
+      "role": "model_input",
+      "type": "double"
+    },
+    {
+      "name": "day_fraction",
+      "nullable": true,
+      "role": "model_input",
+      "type": "double"
+    },
+    {
+      "name": "temperature_c",
+      "nullable": true,
+      "role": "model_input",
+      "type": "double"
+    },
+    {
+      "name": "humidity_pct",
+      "nullable": true,
+      "role": "model_input",
+      "type": "double"
+    },
+    {
+      "name": "wind_ms",
+      "nullable": true,
+      "role": "model_input",
+      "type": "double"
+    },
+    {
+      "name": "gust_ms",
+      "nullable": true,
+      "role": "model_input",
+      "type": "double"
+    },
+    {
+      "name": "precipitation_24h_mm",
+      "nullable": true,
+      "role": "model_input",
+      "type": "double"
+    },
+    {
+      "name": "temperature_departure_c",
+      "nullable": true,
+      "role": "model_input",
+      "type": "double"
+    },
+    {
+      "name": "rainfall_deficit_24h_mm",
+      "nullable": true,
+      "role": "model_input",
+      "type": "double"
+    },
+    {
+      "name": "weather_age_hours",
+      "nullable": true,
+      "role": "model_input",
+      "type": "double"
+    },
+    {
+      "name": "frp_max_mw_missing",
+      "nullable": false,
+      "role": "model_input",
+      "type": "bool"
+    },
+    {
+      "name": "frp_sum_mw_missing",
+      "nullable": false,
+      "role": "model_input",
+      "type": "bool"
+    },
+    {
+      "name": "brightness_max_k_missing",
+      "nullable": false,
+      "role": "model_input",
+      "type": "bool"
+    },
+    {
+      "name": "hours_since_first_seen_24h_missing",
+      "nullable": false,
+      "role": "model_input",
+      "type": "bool"
+    },
+    {
+      "name": "confidence_high_fraction_missing",
+      "nullable": false,
+      "role": "model_input",
+      "type": "bool"
+    },
+    {
+      "name": "day_fraction_missing",
+      "nullable": false,
+      "role": "model_input",
+      "type": "bool"
+    },
+    {
+      "name": "temperature_c_missing",
+      "nullable": false,
+      "role": "model_input",
+      "type": "bool"
+    },
+    {
+      "name": "humidity_pct_missing",
+      "nullable": false,
+      "role": "model_input",
+      "type": "bool"
+    },
+    {
+      "name": "wind_ms_missing",
+      "nullable": false,
+      "role": "model_input",
+      "type": "bool"
+    },
+    {
+      "name": "gust_ms_missing",
+      "nullable": false,
+      "role": "model_input",
+      "type": "bool"
+    },
+    {
+      "name": "precipitation_24h_mm_missing",
+      "nullable": false,
+      "role": "model_input",
+      "type": "bool"
+    },
+    {
+      "name": "temperature_departure_c_missing",
+      "nullable": false,
+      "role": "model_input",
+      "type": "bool"
+    },
+    {
+      "name": "rainfall_deficit_24h_mm_missing",
+      "nullable": false,
+      "role": "model_input",
+      "type": "bool"
+    },
+    {
+      "name": "weather_age_hours_missing",
+      "nullable": false,
+      "role": "model_input",
+      "type": "bool"
+    }
+  ],
+  "label_policy": "No labels, predictions, event groups or split assignments in feature columns.",
+  "membership_fields": [
+    {
+      "name": "run_id",
+      "nullable": false,
+      "type": "string"
+    },
+    {
+      "name": "snapshot_id",
+      "nullable": false,
+      "type": "string"
+    },
+    {
+      "name": "detection_id",
+      "nullable": false,
+      "type": "string"
+    },
+    {
+      "name": "batch_id",
+      "nullable": false,
+      "type": "string"
+    },
+    {
+      "name": "revision_hash",
+      "nullable": false,
+      "type": "string"
+    },
+    {
+      "name": "acquired_at",
+      "nullable": false,
+      "type": "timestamp[us, tz=UTC]"
+    }
+  ],
+  "model_input_names": [
+    "frp_max_mw",
+    "frp_sum_mw",
+    "brightness_max_k",
+    "detections_6h",
+    "detections_12h",
+    "detections_24h",
+    "hours_since_first_seen_24h",
+    "confidence_high_fraction",
+    "day_fraction",
+    "temperature_c",
+    "humidity_pct",
+    "wind_ms",
+    "gust_ms",
+    "precipitation_24h_mm",
+    "temperature_departure_c",
+    "rainfall_deficit_24h_mm",
+    "weather_age_hours",
+    "frp_max_mw_missing",
+    "frp_sum_mw_missing",
+    "brightness_max_k_missing",
+    "hours_since_first_seen_24h_missing",
+    "confidence_high_fraction_missing",
+    "day_fraction_missing",
+    "temperature_c_missing",
+    "humidity_pct_missing",
+    "wind_ms_missing",
+    "gust_ms_missing",
+    "precipitation_24h_mm_missing",
+    "temperature_departure_c_missing",
+    "rainfall_deficit_24h_mm_missing",
+    "weather_age_hours_missing"
+  ],
+  "schema_version": "pipeline-handoff-schema-v1",
+  "timestamp_policy": "UTC microsecond timestamps; acquisition/cutoff separate from processing.",
+  "units": {
+    "brightness_max_k": "K",
+    "confidence_high_fraction": "fraction",
+    "day_fraction": "fraction",
+    "detections_12h": "count",
+    "detections_24h": "count",
+    "detections_6h": "count",
+    "frp_max_mw": "MW",
+    "frp_sum_mw": "MW",
+    "gust_ms": "m/s",
+    "hours_since_first_seen_24h": "h",
+    "humidity_pct": "%",
+    "precipitation_24h_mm": "mm",
+    "rainfall_deficit_24h_mm": "mm",
+    "temperature_c": "C",
+    "temperature_departure_c": "C",
+    "weather_age_hours": "h",
+    "wind_ms": "m/s"
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "schema_version": "phase-3.7-smoke-v1",
+  "recovered_attempts": 2,
+  "network_attempts": 0,
+  "network_policy": "Python DNS/socket DB-only; provider HTTP transports denied",
+  "handoff": {
+    "manifest_sha256": "0033d4aa3493e6938b8b95bb658857f3e82a1ff8c88bffba3912bea38e4cd70a",
+    "features": 12,
+    "jobs": 4,
+    "memberships": 1664,
+    "runs": 3,
+    "verified": true,
+    "feature_hashes": [
+      "1fb28c64114c32839ead6ae259ff332da6e9fd5c6b1c56ffd27cfa6e2959e624",
+      "f452fe2cff3b390e0a3bc07a17d845590a495bf4b0643a6a65a7910d07dcc42e",
+      "d6b8db3243fed6967ae3d8685de4a79e6c02726ce8253339e2e59a919fe1757e",
+      "93323694d2e0ffc9cd1a3c4aa96c201e267877c56061a32db4ca0f77145015ac",
+      "c6a0be57dc42a4291832eca7c36a75b5d8ad87c057046ef6586dd241e1e4d38f",
+      "3915381883a94aa7f20cec8f8f91dd17ca639c7545bda786f104205185935a89",
+      "31eaa1ca5ee31e78790fb54b770d2e09a40870c017a23b9615df9a6823543577",
+      "d24207f7d23b53e6254dec77de3df23ced4d7359a0c88ccf2fb2bea97fddeb6a",
+      "3484b4e01d7290fc1fc2721522f497b2a1146667deeab4fef8bab7b48948ed23",
+      "58f3f3f6aec5a8ee08b7e49c21d18a9784ff420f57bf4df0154f798665d9fc58",
+      "95bd784bd9b4f35c2c0f73ca2a4bec2d8920e01a04aed11735687860ceabf384",
+      "db54aae62ee9aeb7f397ec7a90f280cc0eeee20184690cb7ac24a9cfb328ebb6"
+    ]
+  },
+  "scenarios": [
+    {
+      "scenario_id": "norcal-active-v1",
+      "run_id": "3ef7cac1-0500-5374-8351-9a089ec4d477",
+      "mode": "replay",
+      "status": "completed",
+      "as_of": "2024-07-25T22:00:00+00:00",
+      "processed_at": "2026-10-22T05:47:13.052819+00:00",
+      "completeness": "partial",
+      "alerts": 2
+    },
+    {
+      "scenario_id": "norcal-quiet-v1",
+      "run_id": "3b73aaba-5a5b-5984-911e-d3870df0aa1d",
+      "mode": "replay",
+      "status": "completed",
+      "as_of": "2024-05-06T12:00:00+00:00",
+      "processed_at": "2026-10-22T05:47:18.515169+00:00",
+      "completeness": "complete",
+      "alerts": 0
+    },
+    {
+      "scenario_id": "norcal-degraded-v1",
+      "run_id": "a89fe64e-bbf2-528a-a643-9ae5a5fc14a6",
+      "mode": "replay",
+      "status": "completed",
+      "as_of": "2024-07-25T23:00:00+00:00",
+      "processed_at": "2026-10-22T05:47:26.704007+00:00",
+      "completeness": "partial",
+      "alerts": 2
+    }
+  ],
+  "duplicate_alerts": false,
+  "live_pointer_unchanged": true,
+  "regions_remain_disabled": true,
+  "data_kind": "real-cached-historical",
+  "actual_process_termination_exit": 23,
+  "database_scope": "disposable schema in firewatch_test",
+  "note": "Lease expiry accelerated only in the disposable acceptance schema."
+}

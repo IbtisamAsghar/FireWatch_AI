@@ -180,3 +180,14 @@ Canonical input UUIDs, raw source hashes/retrieval times, explicit satellite pol
 EnrichmentPins and feature configuration are retained. as_of is the historical
 cutoff; processed_at/scored_at record actual later execution. See
 [replay catalog](replay-catalog.json) and [definitions](deterministic-replay.md).
+
+
+## Phase 3.7 Parquet/status handoff
+
+feature-handoff-v1 stores the 17 features-v1 values plus 14 missing indicators and
+13 metadata columns. Nullable floats stay null; counts are int64 and missing flags
+are boolean. as_of/latest_detection_at/processed_at are UTC microsecond timestamps.
+Membership rows bind run/snapshot/detection to source batch/revision and acquired_at.
+Run and job snapshots retain api-v1 DTOs. The manifest includes checksums, declared
+data kind, package/Python/Arrow versions, run IDs and row counts. labels_included
+and training_ready are false. See [schema](pipeline-handoff.schema.json).

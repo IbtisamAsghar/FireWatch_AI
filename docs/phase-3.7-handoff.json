@@ -1,0 +1,125 @@
+{
+  "schema_version": "phase-3.7-handoff-receipt-v1",
+  "artifact_directory": "data/handoffs/module-3-v1",
+  "data_kind": "real-cached-historical",
+  "manifest": {
+    "created_at": "2026-10-22T05:43:34.391232+00:00",
+    "data_kind": "real",
+    "feature_version": "features-v1",
+    "files": {
+      "README.md": {
+        "sha256": "a983d2ead181497bae877358874811d4da0d6e7e8538da4af37a4b13224fc25a",
+        "size": 540
+      },
+      "features.parquet": {
+        "sha256": "572e1b5cc78a1eb99c2c96f607121cffbea47376bcc36f4f849b8977bd0cfe49",
+        "size": 75499
+      },
+      "jobs.json": {
+        "sha256": "0435c8f9fe17bf270308d72141872070cdb212f35bd9734ab2f240be4f0adc67",
+        "size": 2345
+      },
+      "memberships.parquet": {
+        "sha256": "2add7d9fdb6bfcd892af518fa896e05e8526d431fa811ea76c07c12dadf24187",
+        "size": 51766
+      },
+      "provenance.json": {
+        "sha256": "51862b215530e6354633f5ce2d4db10cbeb106f249b735ffc671d1e5884be244",
+        "size": 964753
+      },
+      "runs.json": {
+        "sha256": "d7d89e83499aec5ac96fecb6b6305209f14424a6f9daae5a771a5368e92cab9d",
+        "size": 4416
+      },
+      "schema.json": {
+        "sha256": "b511320669e984bb5b6c1e79710e41657a6913e4117c82c0bb96fb65e2704420",
+        "size": 5371
+      }
+    },
+    "labels_included": false,
+    "model_input_names": [
+      "frp_max_mw",
+      "frp_sum_mw",
+      "brightness_max_k",
+      "detections_6h",
+      "detections_12h",
+      "detections_24h",
+      "hours_since_first_seen_24h",
+      "confidence_high_fraction",
+      "day_fraction",
+      "temperature_c",
+      "humidity_pct",
+      "wind_ms",
+      "gust_ms",
+      "precipitation_24h_mm",
+      "temperature_departure_c",
+      "rainfall_deficit_24h_mm",
+      "weather_age_hours",
+      "frp_max_mw_missing",
+      "frp_sum_mw_missing",
+      "brightness_max_k_missing",
+      "hours_since_first_seen_24h_missing",
+      "confidence_high_fraction_missing",
+      "day_fraction_missing",
+      "temperature_c_missing",
+      "humidity_pct_missing",
+      "wind_ms_missing",
+      "gust_ms_missing",
+      "precipitation_24h_mm_missing",
+      "temperature_departure_c_missing",
+      "rainfall_deficit_24h_mm_missing",
+      "weather_age_hours_missing"
+    ],
+    "package_version": "0.1.0",
+    "pyarrow_version": "21.0.0",
+    "python_version": "3.12.10",
+    "row_counts": {
+      "features": 12,
+      "jobs": 3,
+      "memberships": 1664,
+      "runs": 3
+    },
+    "run_ids": [
+      "3b73aaba-5a5b-5984-911e-d3870df0aa1d",
+      "3ef7cac1-0500-5374-8351-9a089ec4d477",
+      "a89fe64e-bbf2-528a-a643-9ae5a5fc14a6"
+    ],
+    "schema_version": "pipeline-handoff-v1",
+    "training_ready": false
+  },
+  "verification": {
+    "manifest_sha256": "6395e9ff7177c1a4c1eec3bbc708f84bbe90c293838b0ccb841a66a0865ce5c7",
+    "features": 12,
+    "jobs": 3,
+    "memberships": 1664,
+    "runs": 3,
+    "verified": true,
+    "feature_hashes": [
+      "1fb28c64114c32839ead6ae259ff332da6e9fd5c6b1c56ffd27cfa6e2959e624",
+      "f452fe2cff3b390e0a3bc07a17d845590a495bf4b0643a6a65a7910d07dcc42e",
+      "d6b8db3243fed6967ae3d8685de4a79e6c02726ce8253339e2e59a919fe1757e",
+      "93323694d2e0ffc9cd1a3c4aa96c201e267877c56061a32db4ca0f77145015ac",
+      "c6a0be57dc42a4291832eca7c36a75b5d8ad87c057046ef6586dd241e1e4d38f",
+      "3915381883a94aa7f20cec8f8f91dd17ca639c7545bda786f104205185935a89",
+      "31eaa1ca5ee31e78790fb54b770d2e09a40870c017a23b9615df9a6823543577",
+      "d24207f7d23b53e6254dec77de3df23ced4d7359a0c88ccf2fb2bea97fddeb6a",
+      "3484b4e01d7290fc1fc2721522f497b2a1146667deeab4fef8bab7b48948ed23",
+      "58f3f3f6aec5a8ee08b7e49c21d18a9784ff420f57bf4df0154f798665d9fc58",
+      "95bd784bd9b4f35c2c0f73ca2a4bec2d8920e01a04aed11735687860ceabf384",
+      "db54aae62ee9aeb7f397ec7a90f280cc0eeee20184690cb7ac24a9cfb328ebb6"
+    ]
+  },
+  "member_4_files": [
+    "features.parquet",
+    "memberships.parquet",
+    "schema.json",
+    "provenance.json"
+  ],
+  "member_1_files": [
+    "runs.json",
+    "jobs.json"
+  ],
+  "downloaded_data_committed": false,
+  "labels_included": false,
+  "training_ready": false
+}

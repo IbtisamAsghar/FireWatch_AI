@@ -37,3 +37,15 @@ tampered bundle, restore the exact reviewed directory/catalog pair before retryi
 do not replace its checksum to bypass verification. Existing UUID/data conflicts
 require an isolated fresh database or an explicit data investigation. See
 [replay operating guide](deterministic-replay.md).
+
+
+## Pipeline acceptance and handoff (Phase 3.7)
+
+Run `python scripts/verify_pipeline.py` for real cached replay with dedicated-child
+network isolation, abrupt termination/recovery and Parquet readback in a disposable
+test schema. Run `python scripts/verify_bootstrap.py` for the full regression suite.
+Export selected completed runs with `firewatch export-pipeline-handoff --run-id UUID
+--output data/handoffs/new-package --data-kind real`; repeat --run-id as needed.
+Use `firewatch verify-pipeline-handoff --path DIRECTORY --manifest-sha256 DIGEST`
+before transfer/use. Preserve immutable handoff and replay directories separately.
+See [Member 3 handoff](pipeline-handoff.md) for the reviewed local package receipt.

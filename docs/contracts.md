@@ -195,3 +195,14 @@ Disabled regions are eligible for verified historical bundles without enabling l
 scheduling. `build_run_features` accepts typed EnrichmentPins so replay never
 reselects cache revisions. `claim(..., job_id=...)` supports targeted CLI execution.
 See [replay interfaces and portability](deterministic-replay.md).
+
+
+## Phase 3.7 pipeline handoff
+
+`export-pipeline-handoff` exports completed runs only; `verify-pipeline-handoff`
+checks file hashes, Arrow schemas, original feature hashes, missing flags, units,
+source memberships and API DTOs without a database. pipeline-handoff-v1 binds
+features.parquet, memberships.parquet, schema/provenance JSON and runs/jobs JSON.
+The 31 model_input_names are the only training inputs; metadata is explicitly
+separated and no target/split/prediction columns are supplied. See
+[handoff contract](pipeline-handoff.md) and [schema](pipeline-handoff.schema.json).

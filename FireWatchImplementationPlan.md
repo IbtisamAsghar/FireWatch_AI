@@ -647,11 +647,18 @@ are local ignored data artifacts with checksums pinned in configs/replays.yaml.
 
 ### Phase 3.7: Acceptance and handoff
 
-- [ ] Verify joins, time boundaries, distance calculation, missing values, units, and empty runs.
-- [ ] Test rainfall interval completeness and provider fill values.
-- [ ] Simulate process termination mid-run and demonstrate safe retry/recovery.
-- [ ] Run a cached replay with network access disabled.
-- [ ] Hand Member 4 Parquet feature snapshots plus schema/manifests; hand Member 1 run/status data.
+- [x] Verify joins, time boundaries, distance calculation, missing values, units, and empty runs.
+- [x] Test rainfall interval completeness and provider fill values.
+- [x] Simulate process termination mid-run and demonstrate safe retry/recovery.
+- [x] Run a cached replay with network access disabled.
+- [x] Hand Member 4 Parquet feature snapshots plus schema/manifests; hand Member 1 run/status data.
+
+Implementation/acceptance: [Member 3 handoff](docs/pipeline-handoff.md),
+[Phase 3.7 checklist](docs/phase-3.7-checklist.md),
+[real recovery/offline smoke](docs/phase-3.7-smoke.json) and
+[Parquet/status handoff receipt](docs/phase-3.7-handoff.json).
+The local package is an unlabeled feature handoff; Module 4 retains labels/splits
+and evaluated model training. Raw handoff/replay data stays Git-ignored.
 
 Deliverable: time-matched feature pipeline, cache, climate baselines, durable worker, and offline replay scenarios.
 

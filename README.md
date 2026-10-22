@@ -39,6 +39,9 @@ Phase 3.6 adds three real historical replay scenarios, portable checksummed inpu
 bundles, exact enrichment pins and `firewatch replay --scenario <id>`.
 See [deterministic replay](docs/deterministic-replay.md) and
 [Phase 3.6 acceptance](docs/phase-3.6-checklist.md).
+Phase 3.7 closes pipeline acceptance and exports verified Parquet features/source
+memberships plus typed run/status handoff data. See
+[Member 3 handoff](docs/pipeline-handoff.md) and [Phase 3.7 acceptance](docs/phase-3.7-checklist.md).
 Evaluated ML and chain submission remain later modules. See the [implementation plan](FireWatchImplementationPlan.md),
 [Phase 1.4 acceptance](docs/phase-1.4-checklist.md),
 [Phase 1.5 acceptance](docs/phase-1.5-checklist.md), [operator API](docs/operator-api.md), and

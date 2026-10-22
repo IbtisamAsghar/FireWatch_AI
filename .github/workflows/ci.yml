@@ -64,8 +64,8 @@ jobs:
           python -m pip check
       - name: Formatting, lint and types
         run: |
-          ruff check src tests migrations scripts/native_postgres.py scripts/verify_bootstrap.py scripts/check_locks.py scripts/export_openapi.py scripts/demo_api.py scripts/demo_data.py scripts/export_handoff.py scripts/verify_demo.py scripts/verify_firms_handoff.py scripts/verify_worker.py scripts/prepare_replays.py scripts/verify_replays.py scripts/verify_pipeline.py scripts/verify_target_labels.py scripts/verify_splits.py scripts/verify_baselines.py scripts/verify_forest.py scripts/verify_evaluation.py
-          ruff format --check src tests migrations scripts/native_postgres.py scripts/verify_bootstrap.py scripts/check_locks.py scripts/export_openapi.py scripts/demo_api.py scripts/demo_data.py scripts/export_handoff.py scripts/verify_demo.py scripts/verify_firms_handoff.py scripts/verify_worker.py scripts/prepare_replays.py scripts/verify_replays.py scripts/verify_pipeline.py scripts/verify_target_labels.py scripts/verify_splits.py scripts/verify_baselines.py scripts/verify_forest.py scripts/verify_evaluation.py
+          ruff check src tests migrations scripts/native_postgres.py scripts/verify_bootstrap.py scripts/check_locks.py scripts/export_openapi.py scripts/demo_api.py scripts/demo_data.py scripts/export_handoff.py scripts/verify_demo.py scripts/verify_firms_handoff.py scripts/verify_worker.py scripts/prepare_replays.py scripts/verify_replays.py scripts/verify_pipeline.py scripts/verify_target_labels.py scripts/verify_splits.py scripts/verify_baselines.py scripts/verify_forest.py scripts/verify_evaluation.py scripts/verify_inference.py
+          ruff format --check src tests migrations scripts/native_postgres.py scripts/verify_bootstrap.py scripts/check_locks.py scripts/export_openapi.py scripts/demo_api.py scripts/demo_data.py scripts/export_handoff.py scripts/verify_demo.py scripts/verify_firms_handoff.py scripts/verify_worker.py scripts/prepare_replays.py scripts/verify_replays.py scripts/verify_pipeline.py scripts/verify_target_labels.py scripts/verify_splits.py scripts/verify_baselines.py scripts/verify_forest.py scripts/verify_evaluation.py scripts/verify_inference.py
           mypy
       - name: Unit, PostgreSQL migration and integrity tests
         run: python -m pytest --cov=firewatch --cov-report=term-missing --junitxml=test-results.xml
@@ -106,6 +106,8 @@ jobs:
           /tmp/firewatch-runtime/bin/firewatch prepare-evaluation --help
           /tmp/firewatch-runtime/bin/firewatch evaluate-final --help
           /tmp/firewatch-runtime/bin/firewatch verify-evaluation --help
+          /tmp/firewatch-runtime/bin/firewatch build-inference-bundle --help
+          /tmp/firewatch-runtime/bin/firewatch verify-inference-bundle --help
           /tmp/firewatch-runtime/bin/python -c "import pyarrow; from firewatch.pipeline.handoff import feature_schema; assert len(feature_schema()) == 44"
   backend-windows:
     runs-on: windows-latest

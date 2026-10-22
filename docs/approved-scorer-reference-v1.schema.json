@@ -1,0 +1,48 @@
+{
+  "additionalProperties": false,
+  "description": "Provided by a trusted approval authority, never inferred from bundle metadata.",
+  "properties": {
+    "model_id": {
+      "format": "uuid",
+      "title": "Model Id",
+      "type": "string"
+    },
+    "scorer_version": {
+      "maxLength": 100,
+      "minLength": 1,
+      "title": "Scorer Version",
+      "type": "string"
+    },
+    "artifact_path": {
+      "format": "path",
+      "title": "Artifact Path",
+      "type": "string"
+    },
+    "manifest_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Manifest Sha256",
+      "type": "string"
+    },
+    "approval_status": {
+      "const": "approved",
+      "title": "Approval Status",
+      "type": "string"
+    },
+    "approval_reference": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Approval Reference",
+      "type": "string"
+    }
+  },
+  "required": [
+    "model_id",
+    "scorer_version",
+    "artifact_path",
+    "manifest_sha256",
+    "approval_status",
+    "approval_reference"
+  ],
+  "title": "ApprovedScorer",
+  "type": "object"
+}

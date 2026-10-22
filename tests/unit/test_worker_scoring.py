@@ -25,7 +25,7 @@ def test_baseline_thresholds_and_missing_values(frp, priority):
 
 
 def test_no_silent_model_fallback():
-    with pytest.raises(ValueError, match="Only baseline"):
+    with pytest.raises(ValueError, match="approved trusted artifact reference"):
         score_features([], "unknown-model-v1")
 
 

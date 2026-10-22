@@ -439,7 +439,14 @@ def execute_run(
         assert run is not None
         scoring_done = run.stage_status.get(Stage.SCORING.value) == "succeeded"
     if not scoring_done:
-        scores = score_features(features, request.scorer_version, scored_at=now())
+        scoring_time = now()
+        scores = [
+            score
+            for start in range(0, len(features), 256)
+            for score in score_features(
+                features[start : start + 256], request.scorer_version, scored_at=scoring_time
+            )
+        ]
         with Session(engine) as session, session.begin():
             fence(session, lease, now())
             run = _run(session, identifier)

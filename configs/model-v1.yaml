@@ -32,3 +32,9 @@ baseline_policies: configs/baselines-v1.yaml
 
 # Phase 4.4 offline candidate policy; no trained or approved artifact is active.
 forest_training_spec: configs/forest-v1.yaml
+
+# Phase 4.6 runtime contract; this does not activate or approve any ML model.
+inference_bundle_schema: inference-bundle-v1
+inference_contract: docs/inference-feature-contract-v1.json
+explanation_method: exact-tree-path-dependent-shap-v1
+approved_inference_bundle: null

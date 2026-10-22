@@ -1,0 +1,157 @@
+{
+  "$defs": {
+    "JsonValue": {},
+    "Priority": {
+      "enum": [
+        "LOW",
+        "MEDIUM",
+        "HIGH",
+        "CRITICAL"
+      ],
+      "title": "Priority",
+      "type": "string"
+    },
+    "RunMode": {
+      "enum": [
+        "live",
+        "replay"
+      ],
+      "title": "RunMode",
+      "type": "string"
+    },
+    "ScoreKind": {
+      "enum": [
+        "baseline",
+        "model_score",
+        "probability"
+      ],
+      "title": "ScoreKind",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "contracts-v1",
+      "default": "contracts-v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "run_id": {
+      "format": "uuid",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "mode": {
+      "$ref": "#/$defs/RunMode"
+    },
+    "as_of": {
+      "format": "date-time",
+      "title": "As Of",
+      "type": "string"
+    },
+    "feature_version": {
+      "maxLength": 100,
+      "minLength": 1,
+      "title": "Feature Version",
+      "type": "string"
+    },
+    "snapshot_id": {
+      "format": "uuid",
+      "title": "Snapshot Id",
+      "type": "string"
+    },
+    "scorer_version": {
+      "maxLength": 100,
+      "minLength": 1,
+      "title": "Scorer Version",
+      "type": "string"
+    },
+    "model_id": {
+      "anyOf": [
+        {
+          "format": "uuid",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Model Id"
+    },
+    "score_kind": {
+      "$ref": "#/$defs/ScoreKind"
+    },
+    "priority_score": {
+      "minimum": 0,
+      "title": "Priority Score",
+      "type": "number"
+    },
+    "escalation_probability": {
+      "anyOf": [
+        {
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Escalation Probability"
+    },
+    "priority": {
+      "$ref": "#/$defs/Priority"
+    },
+    "reasons": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Reasons",
+      "type": "array"
+    },
+    "explanation": {
+      "additionalProperties": {
+        "$ref": "#/$defs/JsonValue"
+      },
+      "title": "Explanation",
+      "type": "object"
+    },
+    "quality_flags": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Quality Flags",
+      "type": "array"
+    },
+    "warnings": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Warnings",
+      "type": "array"
+    },
+    "scored_at": {
+      "format": "date-time",
+      "title": "Scored At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "run_id",
+    "mode",
+    "as_of",
+    "feature_version",
+    "snapshot_id",
+    "scorer_version",
+    "score_kind",
+    "priority_score",
+    "priority",
+    "reasons",
+    "scored_at"
+  ],
+  "title": "ScoreResult",
+  "type": "object"
+}

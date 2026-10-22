@@ -154,23 +154,7 @@ class PortableForest(DTO):
         model = PortableForest.model_validate(self.model_dump())
         result = []
         for feature in features:
-            if digest(feature.lineage.get("config")) != model.feature_spec_sha256:
-                raise ValueError("Forest inference feature configuration mismatch")
-            values = model_inputs(feature)
-            raw = [values[name] for name in MODEL_INPUT_NAMES]
-            numeric = [
-                (
-                    (float(value) if value is not None else model.numeric.medians[i])
-                    - model.numeric.means[i]
-                )
-                / model.numeric.scales[i]
-                for i, value in enumerate(raw[: len(FEATURE_NAMES)])
-            ]
-            vector = np.asarray(
-                numeric + [float(bool(v)) for v in raw[len(FEATURE_NAMES) :]], dtype=np.float32
-            )
-            if not np.all(np.isfinite(vector)):
-                raise ValueError("Nonfinite transformed model inputs")
+            vector = transformed_inputs(feature, model)
             total = 0.0
             for tree in model.trees:
                 index = 0
@@ -191,3 +175,22 @@ class PortableForest(DTO):
                 )
             )
         return result
+
+
+def transformed_inputs(feature: FeatureSet, model: PortableForest) -> np.ndarray:
+    """Canonical ordered float32 vector shared by prediction and SHAP."""
+    if digest(feature.lineage.get("config")) != model.feature_spec_sha256:
+        raise ValueError("Forest inference feature configuration mismatch")
+    values = model_inputs(feature)
+    raw = [values[name] for name in MODEL_INPUT_NAMES]
+    numeric = [
+        ((float(value) if value is not None else model.numeric.medians[i]) - model.numeric.means[i])
+        / model.numeric.scales[i]
+        for i, value in enumerate(raw[: len(FEATURE_NAMES)])
+    ]
+    vector = np.asarray(
+        numeric + [float(bool(v)) for v in raw[len(FEATURE_NAMES) :]], dtype=np.float32
+    )
+    if not np.all(np.isfinite(vector)):
+        raise ValueError("Nonfinite transformed model inputs")
+    return vector

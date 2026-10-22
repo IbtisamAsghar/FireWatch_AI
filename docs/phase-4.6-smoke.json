@@ -1,0 +1,22 @@
+{
+  "schema_version": "phase-4.6-local-acceptance-v1",
+  "source_evaluation_manifest_sha256": "4e002768fc7a1b73e0331587e6c44ae3eb70890840e6883a60072473166aa12a",
+  "diagnostic_snapshots": 12,
+  "baseline_scored_counts": {
+    "baseline-v1": 12,
+    "weighted-baseline-v1": 12
+  },
+  "real_supervised_artifact_available": false,
+  "candidate_export_refused": true,
+  "approved_model_activated": false,
+  "final_test_status": "sealed",
+  "real_ml_metrics": null,
+  "actual_baseline_terms_verified": true,
+  "warnings_preserved": true,
+  "limitations": [
+    "All current snapshots are off the supervised six-hour cadence",
+    "No real fitted forest, ML thresholds or approved model exists",
+    "Synthetic SHAP tests establish implementation behavior, not operational validity",
+    "Registry promotion and worker approval resolution remain Phase 4.7"
+  ]
+}

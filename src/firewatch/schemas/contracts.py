@@ -311,6 +311,7 @@ class ScoreResult(RunContext):
     reasons: list[str]
     explanation: dict[str, JsonValue] = Field(default_factory=dict)
     quality_flags: list[str] = Field(default_factory=list)
+    warnings: list[str] = Field(default_factory=list)
     scored_at: UTCDateTime
 
     @model_validator(mode="after")

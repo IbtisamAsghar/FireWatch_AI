@@ -40,6 +40,11 @@ def test_frp_baseline_preserves_frozen_explanation_and_scores():
         feature_hash=row.feature_hash,
         method="frp-maximum-only-v1",
         frp_missing=False,
+        base_value=0.0,
+        contributions={"frp_max_mw": 75.0},
+        contribution_units="MW",
+        threshold_policy="provisional-display-only",
+        warnings=scored.warnings,
     )
     assert scored.escalation_probability is None
 
@@ -66,7 +71,9 @@ def test_index_hand_calculated_all_maxima_and_missing_floor():
     assert missing == ["intensity", "dryness", "wind"]
     score = score_features([empty], "weighted-baseline-v1")[0]
     assert score.priority_score == 0 and score.escalation_probability is None
-    assert score.score_kind == "baseline" and len(score.quality_flags) == 3
+    assert score.score_kind == "baseline"
+    assert len([f for f in score.quality_flags if f.startswith("weighted_index_missing_")]) == 3
+    assert score.warnings == score.quality_flags
     assert score.explanation["threshold_policy"] == "provisional-display-only"
     assert score.explanation["missing_components"] == missing
     assert weighted_index(feature(frp_max_mw=1e308, wind_ms=1e308)) <= 100

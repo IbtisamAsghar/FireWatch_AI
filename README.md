@@ -217,3 +217,12 @@ score-scale thresholds. `firewatch evaluate-final` uses a durable one-shot ledge
 [evaluation guide](docs/evaluation-and-thresholds.md) and
 [acceptance evidence](docs/phase-4.5-checklist.md). The current off-cadence cohort
 reports insufficient data, no achieved metrics and a sealed final test.
+
+## Batch inference and explanations (Phase 4.6)
+
+`score_features()` supports explicit approved-model references, compact verified
+JSON bundles, exact signed path-dependent SHAP and deterministic top-three reasons.
+Both baselines expose actual score terms and missing/provisional warnings.
+See [runtime contract](docs/inference-and-explanations.md) and
+[acceptance evidence](docs/phase-4.6-checklist.md). No real ML artifact is approved;
+registry activation remains Phase 4.7.

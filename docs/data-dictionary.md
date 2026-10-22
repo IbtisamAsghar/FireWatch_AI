@@ -191,3 +191,15 @@ Membership rows bind run/snapshot/detection to source batch/revision and acquire
 Run and job snapshots retain api-v1 DTOs. The manifest includes checksums, declared
 data kind, package/Python/Arrow versions, run IDs and row counts. labels_included
 and training_ready are false. See [schema](pipeline-handoff.schema.json).
+
+## Phase 4.6 saved scoring explanations
+
+Baseline explanation `contributions` contain actual FRP MW or weighted index-point
+terms. Supervised explanation `contributions` contain 31 feature entries with signed
+raw forest-vote contribution, observed value, imputed state and training median
+where used. `base_value` plus all contributions equals `raw_model_score`, not the
+calibrated probability. The method, background, feature order, threshold metadata,
+feature hash, inference digest and approval reference are explicit. `warnings`
+inside explanation JSON survive existing score persistence and are exposed in
+hotspot `quality_flags`; no database column or migration is needed for this
+additive DTO field. See [inference protocol](inference-and-explanations.md).

@@ -1,6 +1,7 @@
-"""Artifact-free FRP and weighted baselines for the worker and public read API."""
+"""Atomic batch scoring with explicit approved ML and artifact-free baseline policies."""
 
 from datetime import UTC, datetime
+from threading import Lock
 from typing import Any
 
 from firewatch.ml.baselines import (
@@ -11,18 +12,118 @@ from firewatch.ml.baselines import (
     components,
     weighted_index,
 )
+from firewatch.ml.explain import weighted_reasons
+from firewatch.ml.inference_bundle import ApprovedScorer, RuntimeForest, load_bundle
 from firewatch.processing.features import FeatureValues, validate_feature_set
 from firewatch.schemas.common import Priority, ScoreKind
 from firewatch.schemas.contracts import FeatureSet, ScoreResult
 
+_MODEL_CACHE: dict[tuple[str, str, str], RuntimeForest] = {}
+_MODEL_LOCK = Lock()
+
+
+def _approved_runtime(reference: ApprovedScorer) -> RuntimeForest:
+    key = (
+        str(reference.artifact_path.resolve()),
+        reference.manifest_sha256,
+        reference.scorer_version,
+    )
+    # Unlike lru_cache, this lock prevents concurrent first calls loading twice.
+    with _MODEL_LOCK:
+        if key not in _MODEL_CACHE:
+            if len(_MODEL_CACHE) >= 8:
+                raise ValueError(
+                    "Process scorer cache is full; restart with reviewed active versions"
+                )
+            _MODEL_CACHE[key] = load_bundle(
+                reference.artifact_path, reference.manifest_sha256, reference.scorer_version
+            )
+        return _MODEL_CACHE[key]
+
+
+def _warnings(feature: FeatureSet) -> list[str]:
+    flags = feature.lineage.get("quality_flags", [])
+    return sorted(
+        set(
+            ([v for v in flags if isinstance(v, str)] if isinstance(flags, list) else [])
+            + [name + "_missing" for name, missing in feature.missing_flags.items() if missing]
+            + ["priority_thresholds_provisional", "research_proxy_not_physical_fire_severity"]
+        )
+    )
+
 
 def score_features(
-    feature_sets: list[FeatureSet], scorer_version: str, *, scored_at: datetime | None = None
+    feature_sets: list[FeatureSet],
+    scorer_version: str,
+    *,
+    scored_at: datetime | None = None,
+    approved: ApprovedScorer | None = None,
 ) -> list[ScoreResult]:
+    """Validate the complete batch, then score in input order without silent fallback.
+
+    ML requires an approval reference from a trusted authority. Candidate packages
+    and environment variables cannot approve themselves. Worker registry resolution
+    is introduced separately in Phase 4.7; baseline workers remain explicitly gated.
+    """
+    if len(feature_sets) > 256:
+        raise ValueError("Scoring batch exceeds the 256-snapshot limit")
+    features = [validate_feature_set(feature) for feature in feature_sets]
+    timestamp = scored_at or datetime.now(UTC)
     if scorer_version not in BASELINE_VERSIONS:
-        raise ValueError(
-            "Only baseline-v1 and weighted-baseline-v1 are supported by this worker release"
-        )
+        if approved is None:
+            raise ValueError("Supervised scoring requires an approved trusted artifact reference")
+        reference = ApprovedScorer.model_validate(approved.model_dump())
+        if reference.scorer_version != scorer_version:
+            raise ValueError("Requested scorer differs from the approved version")
+        if not features:
+            return []
+        runtime = _approved_runtime(reference)
+        results = []
+        for feature in features:
+            ranking, probability, priority, explanation = runtime.score(feature)
+            warnings = _warnings(feature) + (
+                ["uncalibrated_model_score_probability_unavailable"]
+                if probability is None
+                else ["shap_explains_raw_model_score_not_calibrated_probability"]
+            )
+            explanation.update(
+                warnings=warnings,
+                inference_manifest_sha256=reference.manifest_sha256,
+                approval_reference=reference.approval_reference,
+            )
+            results.append(
+                ScoreResult(
+                    run_id=feature.run_id,
+                    mode=feature.mode,
+                    as_of=feature.as_of,
+                    feature_version=feature.feature_version,
+                    snapshot_id=feature.snapshot_id,
+                    scorer_version=scorer_version,
+                    model_id=reference.model_id,
+                    priority_score=ranking,
+                    escalation_probability=probability,
+                    score_kind=ScoreKind.PROBABILITY
+                    if probability is not None
+                    else ScoreKind.MODEL,
+                    priority=Priority(priority),
+                    reasons=explanation["reasons"],
+                    explanation=explanation,
+                    warnings=warnings,
+                    quality_flags=warnings,
+                    scored_at=timestamp,
+                )
+            )
+        return results
+    if approved is not None:
+        raise ValueError("Baseline scoring must not attach a supervised approval reference")
+    return _score_baselines(features, scorer_version, timestamp)
+
+
+def _score_baselines(
+    feature_sets: list[FeatureSet],
+    scorer_version: str,
+    timestamp: datetime,
+) -> list[ScoreResult]:
     results = []
     for feature in feature_sets:
         feature = validate_feature_set(feature)
@@ -47,6 +148,10 @@ def score_features(
             "feature_hash": feature.feature_hash,
             "method": "frp-maximum-only-v1",
             "frp_missing": frp is None,
+            "base_value": 0.0,
+            "contributions": {"frp_max_mw": value},
+            "contribution_units": "MW",
+            "threshold_policy": "provisional-display-only",
         }
         missing_flags = []
         if scorer_version == "weighted-baseline-v1":
@@ -84,7 +189,16 @@ def score_features(
                 "threshold_policy": "provisional-display-only",
                 "thresholds": [35.0, 55.0, 75.0],
                 "score_units": "index_0_100",
+                "contribution_units": "index_points",
+                "base_value": 0.0,
             }
+        reasons = (
+            weighted_reasons(contributions, missing)
+            if scorer_version == "weighted-baseline-v1"
+            else [reason]
+        )
+        warnings = sorted(set(_warnings(feature) + missing_flags))
+        explanation.update(reasons=reasons, warnings=warnings)
         results.append(
             ScoreResult(
                 run_id=feature.run_id,
@@ -97,10 +211,11 @@ def score_features(
                 score_kind=ScoreKind.BASELINE,
                 escalation_probability=None,
                 priority=priority,
-                reasons=[reason],
-                scored_at=scored_at or datetime.now(UTC),
+                reasons=reasons,
+                scored_at=timestamp,
                 explanation=explanation,
-                quality_flags=missing_flags,
+                quality_flags=warnings,
+                warnings=warnings,
             )
         )
     return results

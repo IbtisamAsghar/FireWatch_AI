@@ -206,3 +206,17 @@ features.parquet, memberships.parquet, schema/provenance JSON and runs/jobs JSON
 The 31 model_input_names are the only training inputs; metadata is explicitly
 separated and no target/split/prediction columns are supplied. See
 [handoff contract](pipeline-handoff.md) and [schema](pipeline-handoff.schema.json).
+
+## Phase 4.6 inference contract
+
+`ScoreResult.warnings` is an additive field; the shared batch scorer also persists
+these warnings inside explanation JSON and mirrors them in quality flags. Existing
+hotspot responses expose saved warnings through `quality_flags`. Supervised
+inference requires an externally issued `ApprovedScorer` reference and a compact
+digest-pinned `inference-bundle-v1`; candidate verification grants no approval.
+All 31 signed SHAP contributions explain the raw underlying forest-vote fraction,
+with base value, additivity target, units and missing/imputed states. Calibrated
+probability remains separate. Baselines expose actual terms instead of SHAP.
+See [inference protocol](inference-and-explanations.md) and
+[score schema](inference-score-v1.schema.json). Registry resolution/promotion is
+Phase 4.7; the current worker and real dataset remain baseline-only.

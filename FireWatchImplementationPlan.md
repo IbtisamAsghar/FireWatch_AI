@@ -762,15 +762,21 @@ requires additional eligible data. See [Phase 4.5 evidence](docs/phase-4.5-check
 
 ### Phase 4.6: Implement inference and explanation contract
 
-- [ ] Implement `score_features()` as a batch interface; load the approved trusted artifact once per process.
-- [ ] Validate feature schema/version/order and finite numeric values before inference.
-- [ ] Return `scorer_version`, `score_kind`, `priority_score`, nullable `escalation_probability`, `priority`, and warnings.
-- [ ] Return actual SHAP contributions for the underlying tree output, with contribution units clearly stated.
-- [ ] If probability calibration follows the tree, explain the base model's ranking drivers; do not claim SHAP values sum to the calibrated probability.
-- [ ] Produce top-three text reasons from deterministic templates tied to valid feature contributions.
-- [ ] Handle negative contributions and missing/imputed features honestly; never label a missing weather value as observed dry/windy conditions.
-- [ ] Baseline explanations must expose actual weighted terms; no fabricated SHAP values.
-- [ ] No LLM is needed for numeric scoring or explanatory text in this build.
+- [x] Implement `score_features()` as a batch interface; load the approved trusted artifact once per process.
+- [x] Validate feature schema/version/order and finite numeric values before inference.
+- [x] Return `scorer_version`, `score_kind`, `priority_score`, nullable `escalation_probability`, `priority`, and warnings.
+- [x] Return actual SHAP contributions for the underlying tree output, with contribution units clearly stated.
+- [x] If probability calibration follows the tree, explain the base model's ranking drivers; do not claim SHAP values sum to the calibrated probability.
+- [x] Produce top-three text reasons from deterministic templates tied to valid feature contributions.
+- [x] Handle negative contributions and missing/imputed features honestly; never label a missing weather value as observed dry/windy conditions.
+- [x] Baseline explanations must expose actual weighted terms; no fabricated SHAP values.
+- [x] No LLM is needed for numeric scoring or explanatory text in this build.
+
+Phase 4.6 runtime and synthetic acceptance are implemented. Compact candidates
+cannot self-approve: supervised scoring requires an explicit trusted approval
+reference. The current real data has no fitted/approved ML model; worker requests
+remain baseline-only pending Phase 4.7 registry approval and resolution. The final
+test remains sealed. See [Phase 4.6 evidence](docs/phase-4.6-checklist.md).
 
 ### Phase 4.7: Registry, promotion, and safe failure
 

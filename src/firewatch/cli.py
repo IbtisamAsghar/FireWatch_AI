@@ -1394,3 +1394,40 @@ def verify_evaluation_command(
     except (ValueError, OSError, KeyError, TypeError, OverflowError):
         typer.echo("Evaluation verification failed; check provenance and frozen results.", err=True)
         raise typer.Exit(1) from None
+
+
+@app.command("build-inference-bundle")
+def build_inference_bundle_command(
+    evaluation: Annotated[Path, typer.Option(help="Verified frozen evaluation package")],
+    manifest_sha256: Annotated[str, typer.Option(help="Trusted evaluation manifest SHA256")],
+    scorer_version: Annotated[str, typer.Option(help="New supervised candidate version")],
+    output: Annotated[Path, typer.Option(help="New compact inference bundle directory")],
+) -> None:
+    """Export portable forest and frozen thresholds; never approve or activate the model."""
+    from firewatch.ml.inference_bundle import export_inference_bundle
+
+    try:
+        typer.echo(
+            json.dumps(export_inference_bundle(evaluation, output, manifest_sha256, scorer_version))
+        )
+    except (ValueError, OSError, KeyError, TypeError, OverflowError):
+        typer.echo("Inference export failed; verify source, eligible model and output.", err=True)
+        raise typer.Exit(1) from None
+
+
+@app.command("verify-inference-bundle")
+def verify_inference_bundle_command(
+    path: Annotated[Path, typer.Option(help="Compact candidate inference bundle")],
+    manifest_sha256: Annotated[str, typer.Option(help="Trusted inference manifest SHA256")],
+) -> None:
+    """Verify and compile a bounded inference bundle; verification does not grant approval."""
+    from firewatch.ml.inference_bundle import load_bundle
+
+    try:
+        load_bundle(path, manifest_sha256)
+        typer.echo(json.dumps(dict(verified=True, approval_granted=False)))
+    except (ValueError, OSError, KeyError, TypeError, OverflowError):
+        typer.echo(
+            "Inference verification failed; check trusted digest and frozen contract.", err=True
+        )
+        raise typer.Exit(1) from None

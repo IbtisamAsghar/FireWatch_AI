@@ -193,6 +193,9 @@ def hotspot(row: Any) -> HotspotView:
     flags.extend(
         name + "_missing" for name, missing in features.missing_flags.items() if missing is True
     )
+    warnings = explanation.get("warnings", [])
+    if isinstance(warnings, list):
+        flags.extend(safe_text(item) for item in warnings if isinstance(item, str))
     return HotspotView(
         snapshot_id=snapshot.id,
         latitude=snapshot.latitude,

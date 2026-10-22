@@ -13,3 +13,14 @@ Phase 1.3 migration, seed and publication guidance is now implemented in
 [database operations](database-schema.md). Back up before upgrades. Revision
 0002 protects saved evidence and completed outputs; tests downgrade only their
 own disposable schemas. Production role separation and restore drills remain Module 5.
+
+
+## Local worker (Phase 3.5)
+
+Start the existing PostgreSQL cluster with `python scripts/native_postgres.py start`.
+Run `python -m firewatch.worker` separately from Uvicorn, or use `--once --no-schedule`
+to process one admitted job. Stop with Ctrl+C. Inspect authenticated job status;
+expired leases are reclaimed automatically, committed stages are retained, and
+failed refreshes keep the previous live head. See [worker operating guide](durable-worker.md)
+for queue bounds, retry codes, source policies and crash acceptance commands.
+Production service installation and monitoring remain delivery work.

@@ -420,7 +420,7 @@ def status(request: Request, session: ReadSession) -> StatusView:
             if attempt:
                 if attempt[0].status != JobStatus.SUCCEEDED:
                     source_state = "degraded" if success else "unavailable"
-                elif (clock - attempt[1]).total_seconds() > 24 * 3600:
+                elif (clock - attempt[1]).total_seconds() > settings.detection_max_age_hours * 3600:
                     source_state = "stale"
                 else:
                     source_state = "ok"
@@ -449,12 +449,18 @@ def status(request: Request, session: ReadSession) -> StatusView:
                             clock
                             - (source_progress.last_successful_retrieval_at or progress.updated_at)
                         ).total_seconds()
-                        > 24 * 3600
+                        > settings.detection_max_age_hours * 3600
                         else "ok"
                     )
             elif attempt and attempt[0].status == JobStatus.SUCCEEDED:
                 if attempt[0].rejected_count:
                     source_state = "degraded"
+            if (
+                source_state == "ok"
+                and acquisition is not None
+                and (clock - acquisition).total_seconds() > settings.detection_max_age_hours * 3600
+            ):
+                source_state = "stale"
             sources.append(
                 SourceStatus(
                     region_id=region.id,

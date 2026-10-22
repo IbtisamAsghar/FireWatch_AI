@@ -130,7 +130,8 @@ Snapshot coordinates are degrees; GeoJSON orders longitude before latitude.
 missing flags. Scores remain ranking values; only `score_kind=probability`
 supports a non-null escalation probability. Page totals precede pagination;
 GeoJSON includes the bounded return count and explicit truncation boolean.
-Source status freshness uses retrieval age, so an empty valid fetch can be fresh.
+Source status uses retrieval age and, when detections exist, acquisition age;
+an empty valid fetch can be fresh. DETECTION_MAX_AGE_HOURS defaults to 24.
 Alert hashes identify original canonical bytes, not their public payload projection.
 See [frontend handoff](frontend-handoff.md) for enums, errors and examples.
 
@@ -158,3 +159,13 @@ After an intentional API change, regenerate with
 `python scripts/export_openapi.py --field-dictionary docs/api-field-dictionary.json`,
 review and commit the dictionary with the source change. The frontend bundle uses
 the same generator and also includes human-readable contracts and examples.
+
+
+## Phase 3.5 durable execution
+
+Job attempts are monotonic lease fencing tokens. Queued retries retain attempts,
+available_at, fixed safe error code, result_run_id and completed checkpoints.
+Worker payload_hash remains an admission identity hash. Run config_hash covers the
+frozen orchestration request/config/bbox/evidence policy. coverage_warnings are
+separate from stage_status; freshness uses actual pinned retrieval and valid times.
+See [worker contracts and baseline thresholds](durable-worker.md).

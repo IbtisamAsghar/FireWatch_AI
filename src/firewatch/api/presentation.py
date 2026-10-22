@@ -140,7 +140,9 @@ def context(session: Session, run: Run, now: datetime, settings: Settings) -> Ru
             completed_at=run.completed_at,
             observation_age_hours=observation_age,
             weather_age_hours=weather_age,
-            observations_stale=observation_age > 24 if observation_age is not None else None,
+            observations_stale=observation_age > settings.detection_max_age_hours
+            if observation_age is not None
+            else None,
             weather_stale=weather_age > settings.weather_max_age_hours
             if weather_age is not None
             else None,
@@ -248,7 +250,7 @@ def model_metadata(
 ) -> ModelMetadata:
     limitations = [
         "Satellite-observed strengthening is a research proxy, not physical fire severity.",
-        "Scoring and model loading are implemented in later modules.",
+        "FRP-only baseline thresholds are prototype research policies; ML evaluation is pending.",
     ]
     if settings.active_scorer == "baseline-v1":
         return ModelMetadata(
@@ -256,10 +258,10 @@ def model_metadata(
             score_kind=ScoreKind.BASELINE,
             feature_version=settings.feature_schema_version,
             model_id=None,
-            status="not_implemented",
+            status="ready",
             artifact_required=False,
             artifact_ready=True,
-            scoring_available=False,
+            scoring_available=True,
             probability_supported=False,
             limitations=limitations,
         )

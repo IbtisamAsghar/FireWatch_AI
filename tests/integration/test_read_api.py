@@ -205,7 +205,7 @@ def test_status_empty_success_and_failed_retry(api):
         next(row for row in result["sources"] if row["product"] == Product.NOAA21_NRT)["status"]
         == "never_fetched"
     )
-    assert result["scorer"]["scoring_available"] is False
+    assert result["scorer"]["scoring_available"] is True
     with Session(engine) as session:
         original = session.get(IngestionBatch, source_id)
         failed = batch(session, session.get(Region, original.region_id))

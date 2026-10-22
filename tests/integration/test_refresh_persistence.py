@@ -3,7 +3,7 @@
 import hashlib
 import json
 from concurrent.futures import ThreadPoolExecutor
-from datetime import timedelta
+from datetime import datetime, timedelta
 from pathlib import Path
 from threading import Event
 
@@ -344,7 +344,16 @@ def test_retrying_one_sensor_does_not_make_old_other_sensor_retrieval_fresh(api,
     assert result.status_code == 200
     sources = {row["product"]: row for row in result.json()["sources"]}
     assert sources[Product.NOAA20_NRT]["status"] == "stale"
-    assert sources[Product.NOAA21_NRT]["status"] == "ok"
+    # Phase 3.5 also marks observed acquisitions older than 24h stale,
+    # even when that sensor was just successfully retrieved.
+    assert sources[Product.NOAA21_NRT]["status"] == "stale"
+
+    def retrieved(product):
+        value = sources[product]["last_successful_retrieval_at"]
+        return datetime.fromisoformat(value.replace("Z", "+00:00"))
+
+    assert retrieved(Product.NOAA20_NRT) == NOW
+    assert retrieved(Product.NOAA21_NRT) == later
 
 
 def test_recovery_normalization_failure_is_failed_unknown_not_forever_running(

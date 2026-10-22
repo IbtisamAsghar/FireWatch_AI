@@ -879,3 +879,84 @@ def build_features_command(
     finally:
         if database is not None:
             database.close()
+
+
+@app.command("refresh")
+def refresh_command(
+    region: Annotated[str, typer.Option(help="Enabled configured region name")],
+    idempotency_key: Annotated[str | None, typer.Option()] = None,
+) -> None:
+    """Queue one durable live refresh; run python -m firewatch.worker separately."""
+    from datetime import UTC, datetime, timedelta
+    from uuid import uuid4
+
+    from sqlalchemy import select
+
+    from firewatch.api.errors import APIError
+    from firewatch.db.models import Region
+    from firewatch.repositories.jobs import enqueue, refresh_payload
+    from firewatch.schemas.common import JobType
+    from firewatch.schemas.operator import RefreshRequest
+
+    database = None
+    try:
+        settings = get_settings()
+        database = Database(settings)
+        now = datetime.now(UTC)
+        key = idempotency_key or str(uuid4())
+        if not 8 <= len(key) <= 100 or not all(c.isalnum() or c in "_-" for c in key):
+            raise ValueError("Use an 8-100 character alphanumeric idempotency key")
+        with database.session() as session:
+            area = session.scalar(select(Region).where(Region.name == region))
+            if area is None:
+                raise ValueError("Unknown configured region")
+            area_id = area.id
+        with database.session() as session:
+            # A stable key resolves to its original request/cutoff on CLI retry.
+            from firewatch.db.models import Job
+
+            existing = session.scalar(select(Job).where(Job.idempotency_key == "operator:" + key))
+            if existing is not None:
+                if existing.type != JobType.REFRESH or existing.payload.get("region_id") != str(
+                    area_id
+                ):
+                    raise ValueError("Idempotency key belongs to another request")
+                body = RefreshRequest.model_validate(
+                    {k: existing.payload[k] for k in ("region_id", "window_start", "window_end")}
+                )
+            else:
+                body = RefreshRequest(
+                    region_id=area_id, window_start=now - timedelta(hours=48), window_end=now
+                )
+        with database.session() as session:
+            job, reused = enqueue(
+                session,
+                settings,
+                JobType.REFRESH,
+                key,
+                body.model_dump(mode="json"),
+                now,
+                lambda: refresh_payload(session, settings, body, now),
+            )
+        typer.echo(
+            json.dumps(
+                {
+                    "job_id": str(job.id),
+                    "status": job.status.value,
+                    "idempotency_key": key,
+                    "reused": reused,
+                }
+            )
+        )
+    except (ConfigurationError, ValueError, OSError, SQLAlchemyError, APIError):
+        typer.echo(
+            "Refresh enqueue failed; verify configuration, region and idempotency key.", err=True
+        )
+        raise typer.Exit(1) from None
+    finally:
+        if database is not None:
+            database.close()
+
+
+if __name__ == "__main__":
+    app()

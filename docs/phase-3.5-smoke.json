@@ -1,0 +1,43 @@
+{
+  "schema_version": "phase-3.5-smoke-v1",
+  "data_kind": "real-cached-historical",
+  "source_run_id": "cef85e0d-2a9e-5343-b928-e473bb20683b",
+  "run_id": "35999eab-9e0a-5ee7-9b02-b2dafe7981d4",
+  "mode": "replay",
+  "as_of": "2024-07-25T22:00:00+00:00",
+  "status": "completed",
+  "completeness": "partial",
+  "stages": {
+    "ingest": "succeeded",
+    "scoring": "succeeded",
+    "evidence": "succeeded",
+    "features": "succeeded",
+    "snapshots": "succeeded",
+    "enrichment": "succeeded"
+  },
+  "actual_process_termination_exit": 23,
+  "recovered_attempts": 2,
+  "feature_sets": 6,
+  "scores": 6,
+  "alerts": 2,
+  "probabilities_all_null": true,
+  "feature_hashes": [
+    "153e61dfcdee7bb050822e33c0a4cb867b4799391840223474fcae0e22936c89",
+    "34c7b1501b491feea0eb15ff9180976be23d3e8753cfc2ee59440420f49ac5f9",
+    "87602e383c12c20cc4dc23df5a1552260c05983850d5e04650c8b1df9e0e31b7",
+    "e76bd01250ec3e1858f0cbd44e887056f8be7f9a8b1dbcdb109af474ce4c1cc2",
+    "f22a0a28c48ca2439b252a5c634fb2829940313187c8c557cc652e1612ae1a34",
+    "f469b3b71f69415bc1da0c5e1a0ba60601b712449025c5ab770e491bd31245eb"
+  ],
+  "repeated_counts_identical": true,
+  "repeated_feature_hashes_identical": true,
+  "evidence_hashes_verified": true,
+  "provider_calls": 0,
+  "live_pointer_unchanged": true,
+  "application_region_settings_unchanged": true,
+  "database_scope": "disposable schema in firewatch_test",
+  "coverage_warnings": [
+    "members_outside_centroid_radius"
+  ],
+  "recorded_at": "2026-10-22T05:08:48.258281+00:00"
+}

@@ -612,17 +612,23 @@ scoring and final Run publication remain Phase 3.5 onward.
 
 ### Phase 3.5: Implement durable jobs and run orchestration
 
-- [ ] Add a dedicated `python -m firewatch.worker` process; do not run the scheduler inside Uvicorn workers.
-- [ ] Scheduler creates one refresh job per configured region/15-minute slot using a unique slot key.
-- [ ] Worker claims due jobs transactionally with row locking; use a lease and heartbeat for crash recovery.
-- [ ] Persist `queued`, `running`, `succeeded`, `failed`, and retry state with bounded attempts.
-- [ ] Pipeline stages: ingest -> snapshot -> weather/baseline -> features -> score -> evidence/outbox -> publish.
-- [ ] Use short transactions per stage, idempotent writes, and recorded checkpoints.
-- [ ] Do not hold database locks during provider network calls or ML inference.
-- [ ] A crashed job can resume safely; an expired lease can be reclaimed without duplicate alerts.
-- [ ] Prevent overlapping jobs for the same region/mode/cutoff using a unique run key or advisory lock.
-- [ ] Publish a run only after required stages succeed; store partial-coverage warnings separately.
-- [ ] Prefer `weather age > 3h` as an initial stale flag and detections older than 24h as stale source status; these are configurable prototype policies, not provider guarantees.
+- [x] Add a dedicated `python -m firewatch.worker` process; do not run the scheduler inside Uvicorn workers.
+- [x] Scheduler creates one refresh job per configured region/15-minute slot using a unique slot key.
+- [x] Worker claims due jobs transactionally with row locking; use a lease and heartbeat for crash recovery.
+- [x] Persist `queued`, `running`, `succeeded`, `failed`, and retry state with bounded attempts.
+- [x] Pipeline stages: ingest -> snapshot -> weather/baseline -> features -> score -> evidence/outbox -> publish.
+- [x] Use short transactions per stage, idempotent writes, and recorded checkpoints.
+- [x] Do not hold database locks during provider network calls or ML inference.
+- [x] A crashed job can resume safely; an expired lease can be reclaimed without duplicate alerts.
+- [x] Prevent overlapping jobs for the same region/mode/cutoff using a unique run key or advisory lock.
+- [x] Publish a run only after required stages succeed; store partial-coverage warnings separately.
+- [x] Prefer `weather age > 3h` as an initial stale flag and detections older than 24h as stale source status; these are configurable prototype policies, not provider guarantees.
+
+Implementation/acceptance: [durable worker guide](docs/durable-worker.md),
+[Phase 3.5 checklist](docs/phase-3.5-checklist.md), and
+[real cached-data crash recovery](docs/phase-3.5-smoke.json). The worker uses the
+FRP-only baseline and local immutable evidence required for this vertical slice;
+evaluated ML, scenario packaging and chain submission remain later phases.
 
 ### Phase 3.6: Create deterministic replay
 

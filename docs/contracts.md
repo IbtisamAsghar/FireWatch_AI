@@ -143,8 +143,10 @@ All fields reject client-supplied credentials/paths/override extras by construct
 
 The worker payload `schema_version` is `jobs-v1`, distinct from the public api-v1
 response and internal contracts-v1 DTOs. Jobs are admission records, not execution
-results. Future workers must honor frozen inputs, validate coverage/files/models,
-recheck chain policy, and implement leases/retries before marking success. Future
+results. Phase 3.5 implements fenced leases, bounded retries and frozen stage
+checkpoints before marking refresh/replay success. Scorer execution currently supports
+only the documented baseline-v1; anchor execution remains Module 5. See
+[durable worker](durable-worker.md). Future
 producers must use the same advisory-lock/capacity admission protocol. Full endpoint
 contracts and bounds are in [operator API](operator-api.md).
 

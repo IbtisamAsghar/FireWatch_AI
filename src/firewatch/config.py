@@ -48,6 +48,12 @@ class Settings(BaseSettings):
     max_region_area_degrees2: float = Field(default=100, gt=0, le=1000)
     active_scorer: str = "baseline-v1"
     refresh_interval_minutes: int = Field(default=15, ge=1, le=1440)
+    worker_max_attempts: int = Field(default=5, ge=1, le=20)
+    worker_lease_seconds: int = Field(default=120, ge=15, le=3600)
+    worker_poll_seconds: float = Field(default=2, ge=0.1, le=60)
+    worker_retry_seconds: int = Field(default=30, ge=1, le=3600)
+    detection_max_age_hours: float = Field(default=24, gt=0, le=168)
+    features_config: Path = Path("configs/features-v1.yaml")
     weather_cache_grid_degrees: float = Field(default=0.1, gt=0, le=5)
     weather_max_age_hours: float = Field(default=3, gt=0, le=168)
     cluster_radius_km: float = Field(default=2, gt=0, le=100)

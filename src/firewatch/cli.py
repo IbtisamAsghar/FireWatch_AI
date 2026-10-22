@@ -1054,3 +1054,185 @@ def verify_pipeline_command(
 
 if __name__ == "__main__":
     app()
+
+
+@app.command("assess-pipeline-handoff")
+def assess_pipeline_command(
+    path: Annotated[Path, typer.Option(help="Existing verified handoff directory")],
+    manifest_sha256: Annotated[
+        str | None, typer.Option(help="Expected trusted manifest SHA-256")
+    ] = None,
+) -> None:
+    """Assess compact-target inputs and overlap offline; does not label or train."""
+    from firewatch.pipeline.handoff import assess_handoff
+
+    try:
+        typer.echo(json.dumps(assess_handoff(path, manifest_sha256)))
+    except (ValueError, OSError):
+        typer.echo("Pipeline input assessment failed; verify the handoff package.", err=True)
+        raise typer.Exit(1) from None
+
+
+@app.command("plan-target-dataset")
+def plan_target_command(
+    target: Annotated[Path, typer.Option()] = Path("configs/target-v1.yaml"),
+    design: Annotated[Path, typer.Option()] = Path("configs/target-dataset-v1.yaml"),
+) -> None:
+    """Show the frozen six-hour seasonal cadence without generating data or training."""
+    from firewatch.ml.dataset import load_design, plan_design
+    from firewatch.ml.labels import load_target_spec
+
+    try:
+        typer.echo(json.dumps(plan_design(load_design(design), load_target_spec(target))))
+    except (OSError, ValueError, yaml.YAMLError):
+        typer.echo("Target dataset plan failed; verify the frozen configuration.", err=True)
+        raise typer.Exit(1) from None
+
+
+@app.command("label-targets")
+def label_targets_command(
+    handoff: Annotated[Path, typer.Option(help="Verified pipeline handoff directory")],
+    handoff_sha256: Annotated[str, typer.Option(help="Reviewed pipeline manifest SHA-256")],
+    output: Annotated[Path, typer.Option(help="New private label package directory")],
+    target: Annotated[Path, typer.Option()] = Path("configs/target-v1.yaml"),
+    design: Annotated[Path, typer.Option()] = Path("configs/target-dataset-v1.yaml"),
+    outages: Annotated[Path, typer.Option()] = Path("configs/label-outages.yaml"),
+    retrieval_cutoff: Annotated[str | None, typer.Option()] = None,
+) -> None:
+    """Label saved snapshots against cached historical follow-up; never train or fetch."""
+    from datetime import datetime
+
+    from firewatch.ml.dataset import export_labels
+
+    database = None
+    try:
+        available = datetime.fromisoformat(retrieval_cutoff) if retrieval_cutoff else None
+        database = Database(get_settings())
+        report = export_labels(
+            database.engine,
+            handoff,
+            output,
+            handoff_sha256=handoff_sha256,
+            spec_path=target,
+            design_path=design,
+            outages_path=outages,
+            retrieval_cutoff=available,
+        )
+        typer.echo(json.dumps(report))
+    except (ConfigurationError, ValueError, OSError, SQLAlchemyError, yaml.YAMLError):
+        typer.echo(
+            "Target labeling failed; verify frozen inputs, archive coverage and output path.",
+            err=True,
+        )
+        raise typer.Exit(1) from None
+    finally:
+        if database is not None:
+            database.close()
+
+
+@app.command("verify-target-labels")
+def verify_target_labels_command(
+    path: Annotated[Path, typer.Option(help="Portable target label package")],
+    manifest_sha256: Annotated[str | None, typer.Option()] = None,
+) -> None:
+    """Recompute labels from checksummed evidence offline, without settings or a database."""
+    from firewatch.ml.dataset import verify_label_package
+
+    try:
+        typer.echo(json.dumps(verify_label_package(path, manifest_sha256)))
+    except (ValueError, OSError):
+        typer.echo(
+            "Target label verification failed; check checksums and frozen evidence.", err=True
+        )
+        raise typer.Exit(1) from None
+
+
+@app.command("group-split-events")
+def group_split_events_command(
+    sources: Annotated[Path, typer.Option(help="Verified seasonal FIRMS handoff directory")],
+    source_sha256: Annotated[str, typer.Option(help="Reviewed FIRMS handoff manifest hash")],
+    output: Annotated[Path, typer.Option(help="New private event catalog JSON")],
+    spec: Annotated[Path, typer.Option()] = Path("configs/event-groups-v1.yaml"),
+) -> None:
+    """Group full seasonal observations for partitioning and inspect potential merges/splits."""
+    from firewatch.evidence.canonical import canonical_bytes
+    from firewatch.ml.events import build_event_catalog
+    from firewatch.ml.split_package import inspection, load_event_spec, load_source_observations
+
+    try:
+        catalog = build_event_catalog(
+            load_source_observations(sources, source_sha256), source_sha256, load_event_spec(spec)
+        )
+        output.parent.mkdir(parents=True, exist_ok=True)
+        with output.open("xb") as stream:
+            stream.write(canonical_bytes(catalog.model_dump(mode="json")) + b"\n")
+        typer.echo(json.dumps(inspection(catalog)))
+    except (ValueError, OSError, KeyError, TypeError, yaml.YAMLError):
+        typer.echo(
+            "Event grouping failed; verify source checksums, coverage, bounds and output.", err=True
+        )
+        raise typer.Exit(1) from None
+
+
+@app.command("build-splits")
+def build_splits_command(
+    labels: Annotated[Path, typer.Option(help="Verified Phase 4.1 label package")],
+    label_sha256: Annotated[str, typer.Option(help="Reviewed label manifest SHA-256")],
+    sources: Annotated[Path, typer.Option(help="Verified seasonal FIRMS source handoff")],
+    source_sha256: Annotated[str, typer.Option(help="Reviewed source manifest SHA-256")],
+    output: Annotated[Path, typer.Option(help="New private split package directory")],
+    spec: Annotated[Path, typer.Option()] = Path("configs/splits-v1.yaml"),
+    events: Annotated[Path, typer.Option()] = Path("configs/event-groups-v1.yaml"),
+    review: Annotated[
+        Path | None, typer.Option(help="Catalog-bound merge/separation review")
+    ] = None,
+) -> None:
+    """Build event-disjoint chronological splits or a documented sparse-data fallback offline."""
+    from firewatch.ml.split_package import export_splits
+
+    try:
+        result = export_splits(
+            labels,
+            output,
+            label_sha256=label_sha256,
+            sources=sources,
+            source_sha256=source_sha256,
+            spec_path=spec,
+            review_path=review,
+            event_spec_path=events,
+        )
+        typer.echo(
+            json.dumps(
+                dict(
+                    strategy=result.strategy,
+                    training_ready=result.training_ready,
+                    release_recommendation=result.release_recommendation,
+                    partition_counts=result.partition_counts,
+                    exclusion_counts=result.exclusion_counts,
+                    final_test_status=result.final_test_status,
+                )
+            )
+        )
+    except (ValueError, OSError, KeyError, TypeError, yaml.YAMLError):
+        typer.echo(
+            "Split construction failed; verify frozen inputs, event review and output path.",
+            err=True,
+        )
+        raise typer.Exit(1) from None
+
+
+@app.command("verify-splits")
+def verify_splits_command(
+    path: Annotated[Path, typer.Option(help="Portable split package directory")],
+    manifest_sha256: Annotated[str | None, typer.Option()] = None,
+) -> None:
+    """Recompute events, labels and split membership offline; keep final test sealed."""
+    from firewatch.ml.split_package import verify_split_package
+
+    try:
+        typer.echo(json.dumps(verify_split_package(path, manifest_sha256)))
+    except (ValueError, OSError):
+        typer.echo(
+            "Split verification failed; check checksums, provenance and membership.", err=True
+        )
+        raise typer.Exit(1) from None

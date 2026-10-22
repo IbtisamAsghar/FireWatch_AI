@@ -101,6 +101,7 @@ def claim(
     due = list(
         session.scalars(
             select(Job)
+            .where(Job.type.in_([JobType.REFRESH, JobType.REPLAY]))
             .where(
                 or_(
                     (Job.status == JobStatus.QUEUED) & (Job.available_at <= now),

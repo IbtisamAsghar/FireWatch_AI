@@ -29,7 +29,10 @@ with operator submissions. Regions must be explicitly enabled before live use;
 this phase does not enable the candidate region or install an unattended service.
 
 Claims use PostgreSQL row locks with `SKIP LOCKED` and a short shared admission
-lock. Due queued jobs and expired running jobs are eligible. Active work for the
+lock. Due queued refresh/replay jobs and expired running refresh/replay jobs are
+eligible. Anchor jobs belong to the separate optional chain executor; this pipeline
+worker leaves their status, attempts and leases untouched. An anchor-only queue is
+idle for this worker, rather than consuming and permanently failing those jobs. Active work for the
 same region/mode/normalized UTC cutoff prevents an overlapping claim. Run UUID/key
 also derive from those three values. A second request with changed versions,
 window, scenario or assets conflicts instead of replacing the run's frozen inputs.

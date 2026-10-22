@@ -1,0 +1,71 @@
+{
+  "schema_version": "phase-4.2-local-acceptance-v1",
+  "verified": true,
+  "manifest_sha256": "cca85bb36cc4a207a152b38686f685de961a8b6ebb9c9ddaa807547d17d08264",
+  "rows": 12,
+  "events": 1070,
+  "strategy": "baseline_only",
+  "training_ready": false,
+  "final_test_status": "sealed",
+  "observations": 17862,
+  "raw_partition_groups": 1070,
+  "reviewed_partition_groups": 772,
+  "near_miss_pairs": 340,
+  "conservative_merge_sets": 148,
+  "near_misses_truncated": false,
+  "catalog_sha256": "51889ebe7b6cb98ec6e01525c9b49d6289af338befc88b2611aa6512dc586519",
+  "source_manifest_sha256": "7b2c87453b24e5669297128232d30e8f2ca6a76a5fe3efd65452c5d2f4eafe0f",
+  "dataset_sha256": "ae27aa7480ebaf17caa68cf705bdfa6cef274c4ed6e01706c38255910e0eb245",
+  "split_spec_sha256": "2c48efb16d92e846a8f3744a1df26e59058b027b44bb506dc8e5d252286f22b6",
+  "review_sha256": "a2a20fa4bbe03bff62002735889a5a198657f22741b3778934403c220554cccc",
+  "event_review_complete": true,
+  "partition_counts": {
+    "calibration": {
+      "events": 0,
+      "negative": 0,
+      "positive": 0,
+      "rows": 0
+    },
+    "final_test": {
+      "events": 0,
+      "negative": 0,
+      "positive": 0,
+      "rows": 0
+    },
+    "threshold": {
+      "events": 0,
+      "negative": 0,
+      "positive": 0,
+      "rows": 0
+    },
+    "train": {
+      "events": 0,
+      "negative": 0,
+      "positive": 0,
+      "rows": 0
+    },
+    "validation": {
+      "events": 0,
+      "negative": 0,
+      "positive": 0,
+      "rows": 0
+    }
+  },
+  "exclusion_counts": {
+    "members_outside_target_radius": 4,
+    "off_six_hour_cadence": 12,
+    "unknown_target": 4
+  },
+  "final_holdout_usable": false,
+  "development_cv_ready": false,
+  "release_recommendation": "baseline_only",
+  "review_scope": "Local conservative partition review; no independent incident verification",
+  "scientific_limitations": [
+    "Thermal-activity proxies are not verified independent wildfire incidents",
+    "All twelve current snapshots are off the frozen six-hour cadence",
+    "No usable positive/negative supervised partition or final holdout",
+    "Seasonal cadence-aligned feature snapshots and labels are still required"
+  ],
+  "model_fitted": false,
+  "final_test_evaluated": false
+}

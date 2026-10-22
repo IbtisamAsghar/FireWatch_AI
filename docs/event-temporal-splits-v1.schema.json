@@ -1,0 +1,126 @@
+{
+  "$defs": {
+    "TimeBlock": {
+      "additionalProperties": false,
+      "properties": {
+        "partition": {
+          "enum": [
+            "train",
+            "validation",
+            "calibration",
+            "threshold",
+            "final_test"
+          ],
+          "title": "Partition",
+          "type": "string"
+        },
+        "start": {
+          "format": "date-time",
+          "title": "Start",
+          "type": "string"
+        },
+        "end": {
+          "format": "date-time",
+          "title": "End",
+          "type": "string"
+        }
+      },
+      "required": [
+        "partition",
+        "start",
+        "end"
+      ],
+      "title": "TimeBlock",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "event-temporal-split-v1",
+      "default": "event-temporal-split-v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "target_spec_sha256": {
+      "default": "30e9f3b1ea4c12b7af465c959c4c97140aeb0de171ce6c9b894ef69c3c23393f",
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Target Spec Sha256",
+      "type": "string"
+    },
+    "feature_spec_sha256": {
+      "default": "f224b488f22d5324c5d857fadf4826a2512c9a68001696194832c7086c269218",
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Feature Spec Sha256",
+      "type": "string"
+    },
+    "feature_lookback_hours": {
+      "const": 24,
+      "default": 24,
+      "title": "Feature Lookback Hours",
+      "type": "integer"
+    },
+    "label_horizon_hours": {
+      "const": 24,
+      "default": 24,
+      "title": "Label Horizon Hours",
+      "type": "integer"
+    },
+    "purge_hours_each_side": {
+      "default": 48,
+      "maximum": 168,
+      "minimum": 48,
+      "title": "Purge Hours Each Side",
+      "type": "integer"
+    },
+    "min_train_events": {
+      "default": 3,
+      "maximum": 1000,
+      "minimum": 3,
+      "title": "Min Train Events",
+      "type": "integer"
+    },
+    "min_eval_events": {
+      "default": 2,
+      "maximum": 1000,
+      "minimum": 2,
+      "title": "Min Eval Events",
+      "type": "integer"
+    },
+    "min_rows_per_class": {
+      "default": 5,
+      "maximum": 1000,
+      "minimum": 1,
+      "title": "Min Rows Per Class",
+      "type": "integer"
+    },
+    "min_cv_folds": {
+      "default": 2,
+      "maximum": 3,
+      "minimum": 2,
+      "title": "Min Cv Folds",
+      "type": "integer"
+    },
+    "blocks": {
+      "items": {
+        "$ref": "#/$defs/TimeBlock"
+      },
+      "title": "Blocks",
+      "type": "array"
+    },
+    "cv_boundaries": {
+      "items": {
+        "format": "date-time",
+        "type": "string"
+      },
+      "title": "Cv Boundaries",
+      "type": "array"
+    }
+  },
+  "required": [
+    "blocks",
+    "cv_boundaries"
+  ],
+  "title": "SplitSpec",
+  "type": "object"
+}

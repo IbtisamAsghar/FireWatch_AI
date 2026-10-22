@@ -42,6 +42,12 @@ See [deterministic replay](docs/deterministic-replay.md) and
 Phase 3.7 closes pipeline acceptance and exports verified Parquet features/source
 memberships plus typed run/status handoff data. See
 [Member 3 handoff](docs/pipeline-handoff.md) and [Phase 3.7 acceptance](docs/phase-3.7-checklist.md).
+Phase 4.1 freezes the observed-FRP target and six-hour seasonal dataset design,
+implements read-only historical labeling and portable offline recomputation, and
+records sensor/product/overpass diagnostics. See
+[target and dataset contract](docs/target-and-dataset-v1.md) and
+[Phase 4.1 acceptance](docs/phase-4.1-checklist.md). The current real diagnostic
+labels are excluded from training; event grouping, splits and training remain later work.
 Evaluated ML and chain submission remain later modules. See the [implementation plan](FireWatchImplementationPlan.md),
 [Phase 1.4 acceptance](docs/phase-1.4-checklist.md),
 [Phase 1.5 acceptance](docs/phase-1.5-checklist.md), [operator API](docs/operator-api.md), and
@@ -176,3 +182,11 @@ FIRMS Module 2 acceptance and the offline normalized-data bundle are documented 
 [the source handoff guide](docs/firms-handoff.md) and
 [Phase 2.6 acceptance](docs/phase-2.6-checklist.md). Historical event groups and labels
 remain unverified; source ingestion completion does not imply training readiness.
+
+## Leakage-resistant splits (Phase 4.2)
+
+Use `firewatch group-split-events`, `firewatch build-splits`, and
+`firewatch verify-splits` for source-bound whole-event temporal partitioning.
+See [partition policy and workflow](docs/leakage-resistant-splits.md) and
+[acceptance evidence](docs/phase-4.2-checklist.md). The current real cohort
+correctly remains baseline-only: its twelve snapshots are all off cadence.

@@ -666,27 +666,46 @@ Deliverable: time-matched feature pipeline, cache, climate baselines, durable wo
 
 ### Phase 4.1: Freeze target and dataset design
 
-- [ ] Write the target specification before training: “Will a later detection within 2 km of the current snapshot centroid show stronger FRP during `(T,T+24h]`?”
-- [ ] Initial positive: a valid later detection has FRP greater than `current_frp_max + max(5 MW, 0.20 * current_frp_max)`.
-- [ ] Initial negative: no qualifying stronger detection is observed in the complete follow-up archive window.
-- [ ] Mark negatives with no later detections as `unobserved_followup=true`. They mean “not observed to strengthen,” not “confirmed extinguished.”
-- [ ] Exclude incomplete end-of-dataset windows, known provider outages, and invalid FRP baselines as unknown labels.
-- [ ] A full downloaded archive window is not proof of cloud-free satellite coverage. State remaining observation bias and evaluate sensitivity separately for negatives with/without later detections.
-- [ ] Use a six-hour snapshot cadence for training initially; avoid thousands of near-identical minute-by-minute rows.
-- [ ] Treat 2 km, 24 hours, 5 MW, and 20% as versioned prototype settings. Change them using development/validation only, never the final test set.
-- [ ] Evaluate sensor/product differences and overpass effects. The target is a satellite-observation proxy, not physical severity ground truth.
+Pre-implementation compatibility policy: `compact-centroid-inputs-v1` excludes
+clusters with any current member beyond 2 km of their centroid and missing/partial
+current FRP baselines. Keep existing features-v1 semantics unchanged. Use the
+[verified input assessment](docs/pipeline-handoff.md#pre-phase-4-input-gate) before
+constructing labels; compact-input eligibility alone does not establish training
+readiness. Seasonal cadence, labels, event groups and splits remain Phase 4 work.
+
+- [x] Write the target specification before training: “Will a later detection within 2 km of the current snapshot centroid show stronger FRP during `(T,T+24h]`?”
+- [x] Initial positive: a valid later detection has FRP greater than `current_frp_max + max(5 MW, 0.20 * current_frp_max)`.
+- [x] Initial negative: no qualifying stronger detection is observed in the complete follow-up archive window.
+- [x] Mark negatives with no later detections as `unobserved_followup=true`. They mean “not observed to strengthen,” not “confirmed extinguished.”
+- [x] Exclude incomplete end-of-dataset windows, known provider outages, and invalid FRP baselines as unknown labels.
+- [x] A full downloaded archive window is not proof of cloud-free satellite coverage. State remaining observation bias and evaluate sensitivity separately for negatives with/without later detections.
+- [x] Use a six-hour snapshot cadence for training initially; avoid thousands of near-identical minute-by-minute rows.
+- [x] Treat 2 km, 24 hours, 5 MW, and 20% as versioned prototype settings. Change them using development/validation only, never the final test set.
+- [x] Evaluate sensor/product differences and overpass effects. The target is a satellite-observation proxy, not physical severity ground truth.
+
+Implementation and acceptance: [Phase 4.1 checklist](docs/phase-4.1-checklist.md),
+[target and dataset contract](docs/target-and-dataset-v1.md), and
+[real diagnostic receipt](docs/phase-4.1-smoke.json). Completion freezes target/design
+and implements labeling; it does not assert seasonal training or Phase 4.2 readiness.
 
 ### Phase 4.2: Create leakage-resistant splits
 
-- [ ] Assign whole fire periods to event groups using documented spatial/temporal matching; inspect merges/splits.
-- [ ] Keep event grouping for partitioning separate from past-only feature construction; event IDs are never model features.
-- [ ] Create chronological train, validation, calibration/threshold selection, and final-test blocks when data volume permits.
-- [ ] Purge at least 48 hours around partition boundaries to separate 24-hour lookback and 24-hour label windows.
-- [ ] Remove or assign cross-boundary event groups so the same event cannot appear in multiple partitions.
-- [ ] Fit imputers, encoders, scaling, and model hyperparameters using training/development partitions only.
-- [ ] Freeze baseline reference dates and feature definitions before evaluating the final holdout.
-- [ ] Save split membership, excluded rows/reasons, row/event counts, class balance, and dataset checksum.
-- [ ] If there are too few independent events/classes, use grouped temporal cross-validation within development data and retain a final holdout where possible. Otherwise release an honest baseline-only MVP.
+- [x] Assign whole fire periods to event groups using documented spatial/temporal matching; inspect merges/splits.
+- [x] Keep event grouping for partitioning separate from past-only feature construction; event IDs are never model features.
+- [x] Create chronological train, validation, calibration/threshold selection, and final-test blocks when data volume permits.
+- [x] Purge at least 48 hours around partition boundaries to separate 24-hour lookback and 24-hour label windows.
+- [x] Remove or assign cross-boundary event groups so the same event cannot appear in multiple partitions.
+- [x] Fit imputers, encoders, scaling, and model hyperparameters using training/development partitions only.
+- [x] Freeze baseline reference dates and feature definitions before evaluating the final holdout.
+- [x] Save split membership, excluded rows/reasons, row/event counts, class balance, and dataset checksum.
+- [x] If there are too few independent events/classes, use grouped temporal cross-validation within development data and retain a final holdout where possible. Otherwise release an honest baseline-only MVP.
+
+Implementation and local acceptance are documented in
+[Phase 4.2 checklist](docs/phase-4.2-checklist.md),
+[partition policy](docs/leakage-resistant-splits.md), and
+[real receipt](docs/phase-4.2-smoke.json). The current real cohort selects the
+specified baseline-only fallback; completion does not assert supervised training
+readiness or an evaluated final holdout.
 
 ### Phase 4.3: Implement baselines first
 

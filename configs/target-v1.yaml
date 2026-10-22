@@ -1,0 +1,14 @@
+schema_version: target-spec-v1
+target_version: observed-frp-strengthening-v1
+radius_km: 2.0
+horizon_hours: 24
+frp_increase_min_mw: 5.0
+frp_increase_fraction: 0.2
+cadence_hours: 6
+cadence_anchor: '2022-01-01T00:00:00Z'
+feature_version: features-v1
+target_input_policy: compact-centroid-inputs-v1
+product: VIIRS_NOAA20_SP
+comparison_policy: separate_sensor_product_cohorts
+window: (T,T+24h]
+evaluation_kind: retrospective_observation_proxy

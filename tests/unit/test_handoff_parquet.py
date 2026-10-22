@@ -75,3 +75,44 @@ print('guard_verified')
     )
     assert result.returncode == 0, result.stderr
     assert result.stdout.strip() == "guard_verified"
+
+
+@pytest.mark.parametrize(
+    "raw",
+    [
+        '{"a":1,"a":2}',
+        '{"a":NaN}',
+        '{"a":Infinity}',
+        '{"a":-Infinity}',
+    ],
+)
+def test_handoff_json_refuses_ambiguous_or_nonfinite_values(raw):
+    from firewatch.pipeline.handoff import _decode_json
+
+    with pytest.raises(ValueError):
+        _decode_json(raw)
+
+
+def test_parquet_required_nulls_are_rejected(tmp_path):
+    from firewatch.pipeline.handoff import _table
+
+    schema = pa.schema([pa.field("required", pa.string(), nullable=False)])
+    path = tmp_path / "invalid.parquet"
+    # Arrow's table constructor permits this despite the declared nullability.
+    table = pa.Table.from_pylist([{"required": None}], schema=schema)
+    # Some Arrow versions reject writing nonnullable nulls before the verifier runs.
+    try:
+        pq.write_table(table, path)
+    except pa.ArrowException:
+        return
+    with pytest.raises(ValueError, match="required"):
+        _table(path, schema, 1)
+
+
+@pytest.mark.parametrize("body", [[], None, {}, {"schema_version": "pipeline-handoff-v1"}])
+def test_malformed_handoff_reports_validation_error(tmp_path, body):
+    from firewatch.pipeline.handoff import verify_handoff
+
+    (tmp_path / "manifest.json").write_text(json.dumps(body))
+    with pytest.raises(ValueError):
+        verify_handoff(tmp_path)

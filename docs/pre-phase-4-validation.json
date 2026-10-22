@@ -1,0 +1,45 @@
+{
+  "schema_version": "pre-phase-4-validation-v1",
+  "review_date": "2026-10-22",
+  "implementation_scope": "Existing phases 1-3 fixes and conservative target-input compatibility gate",
+  "phase_4_labels_or_training_implemented": false,
+  "original_regressions_reproduced": 7,
+  "validation": {
+    "tests_passed": 735,
+    "new_regression_cases": 29,
+    "http_bootstrap_and_auth": "passed",
+    "ruff": "passed",
+    "format_files": 138,
+    "mypy_source_files": 72,
+    "scaffold": "passed",
+    "locks": {
+      "runtime": 44,
+      "development": 62
+    },
+    "pip_check": "passed",
+    "sdist_and_wheel_build": "passed",
+    "installed_wheel_offline_assessment_and_cli": "passed",
+    "configured_secret_scan_files": 241,
+    "git_diff_check": "passed"
+  },
+  "real_handoff": {
+    "manifest_sha256": "6395e9ff7177c1a4c1eec3bbc708f84bbe90c293838b0ccb841a66a0865ce5c7",
+    "unchanged": true,
+    "verified": true,
+    "features": 12,
+    "memberships": 1664,
+    "runs": 3,
+    "jobs": 3,
+    "policy": "compact-centroid-inputs-v1",
+    "target_input_eligible_rows": 8,
+    "excluded_wide_rows": 4,
+    "unique_member_observations": 832,
+    "observations_reused_across_snapshots": 832,
+    "training_ready": false
+  },
+  "limitations": [
+    "Remaining seasonal feature construction, labels, event groups and leakage-resistant splits are Phase 4 work.",
+    "Hosted CI and independent human sign-off are not verified by local checks.",
+    "Existing upstream Starlette/httpx TestClient deprecation warning is nonblocking."
+  ]
+}

@@ -255,10 +255,35 @@ def _table(path: Path, schema: Any, max_rows: int) -> Any:
         raise ValueError("Parquet uncompressed size bound exceeded")
     table = file.read()
     table.validate(full=True)
+    if any(not field.nullable and table.column(field.name).null_count for field in schema):
+        raise ValueError("Null in a required Parquet field")
     return table
 
 
+def _decode_json(raw: str | bytes) -> Any:
+    def unique(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+        result: dict[str, Any] = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError("Duplicate JSON key in handoff")
+            result[key] = value
+        return result
+
+    def invalid(value: str) -> Any:
+        raise ValueError("Nonfinite JSON value in handoff")
+
+    return json.loads(raw, object_pairs_hook=unique, parse_constant=invalid)
+
+
 def verify_handoff(root: Path, expected_hash: str | None = None) -> dict[str, Any]:
+    """Reject malformed packages consistently as validation errors, without credentials."""
+    try:
+        return _verify_handoff(root, expected_hash)
+    except (KeyError, TypeError, AttributeError, OverflowError, RecursionError, pa.ArrowException):
+        raise ValueError("Malformed pipeline handoff") from None
+
+
+def _verify_handoff(root: Path, expected_hash: str | None = None) -> dict[str, Any]:
     """Verify file inventory, Arrow types, feature hashes, memberships and public DTOs."""
     path = root / "manifest.json"
     if path.is_symlink() or path.stat().st_size > 1024 * 1024:
@@ -267,7 +292,7 @@ def verify_handoff(root: Path, expected_hash: str | None = None) -> dict[str, An
     manifest_hash = hashlib.sha256(raw).hexdigest()
     if expected_hash is not None and manifest_hash != expected_hash:
         raise ValueError("Handoff manifest checksum mismatch")
-    manifest = json.loads(raw)
+    manifest = _decode_json(raw)
     if (
         manifest.get("schema_version") != "pipeline-handoff-v1"
         or set(manifest["files"]) != FILES
@@ -285,17 +310,19 @@ def verify_handoff(root: Path, expected_hash: str | None = None) -> dict[str, An
         content = item.read_bytes()
         if len(content) != entry["size"] or hashlib.sha256(content).hexdigest() != entry["sha256"]:
             raise ValueError("Handoff file checksum mismatch")
-    schema = json.loads((root / "schema.json").read_bytes())
+    schema = _decode_json((root / "schema.json").read_bytes())
     if schema != schema_document():
         raise ValueError("Handoff schema/model whitelist changed")
     feature_rows = _table(root / "features.parquet", feature_schema(), MAX_ROWS).to_pylist()
     member_rows = _table(root / "memberships.parquet", membership_schema(), MAX_MEMBERS).to_pylist()
-    run_rows = [RunView.model_validate(r) for r in json.loads((root / "runs.json").read_bytes())]
-    job_rows = [JobView.model_validate(r) for r in json.loads((root / "jobs.json").read_bytes())]
+    run_rows = [RunView.model_validate(r) for r in _decode_json((root / "runs.json").read_bytes())]
+    job_rows = [JobView.model_validate(r) for r in _decode_json((root / "jobs.json").read_bytes())]
     run_lookup = {str(r.run_id): r for r in run_rows}
     if (
         len(run_lookup) != len(run_rows)
         or set(run_lookup) != set(manifest["run_ids"])
+        or len(manifest["run_ids"]) != len(run_lookup)
+        or len({j.job_id for j in job_rows}) != len(job_rows)
         or any(r.status != RunStatus.COMPLETED for r in run_rows)
         or any(
             any(r.stages.get(stage) != StageStatus.SUCCEEDED for stage in Stage) for r in run_rows
@@ -303,17 +330,23 @@ def verify_handoff(root: Path, expected_hash: str | None = None) -> dict[str, An
         or any(str(j.result_run_id) not in run_lookup for j in job_rows)
     ):
         raise ValueError("Handoff run/status linkage mismatch")
-    provenance = json.loads((root / "provenance.json").read_bytes())
+    provenance = _decode_json((root / "provenance.json").read_bytes())
     if len(provenance) != len(run_lookup) or {entry["run_id"] for entry in provenance} != set(
         run_lookup
     ):
         raise ValueError("Handoff provenance must cover every run exactly once")
     snapshot_lookup = {}
     revision_lookup = {}
+    batch_lookup = {}
+    config_lookup = {}
     expected_hashes: dict[tuple[str, str], str] = {}
     for entry in provenance:
         run_id = entry["run_id"]
-        if run_id not in run_lookup or entry["config_hash"] != run_lookup[run_id].config_hash:
+        if (
+            run_id not in run_lookup
+            or entry["config_hash"] != run_lookup[run_id].config_hash
+            or entry["region_id"] != str(run_lookup[run_id].region_id)
+        ):
             raise ValueError("Handoff provenance/run mismatch")
         clustering = entry["stage_manifests"]["clustering"]
         if digest(clustering["batch"]) != clustering["sha256"]:
@@ -325,17 +358,37 @@ def verify_handoff(root: Path, expected_hash: str | None = None) -> dict[str, An
             or batch.mode != run_lookup[run_id].mode
         ):
             raise ValueError("Handoff snapshot/run identity mismatch")
+        batch_lookup[run_id] = batch
+        snapshot_ids = {str(d.snapshot.snapshot_id) for d in batch.snapshots}
+        if len(snapshot_ids) != len(batch.snapshots):
+            raise ValueError("Duplicate handoff snapshot")
+        for detail in batch.snapshots:
+            snapshot = detail.snapshot
+            if (
+                snapshot.run_id != batch.run_id
+                or snapshot.mode != batch.mode
+                or snapshot.as_of != batch.as_of
+                or snapshot.feature_version != batch.feature_version
+                or snapshot.algorithm_version != batch.config.algorithm_version
+            ):
+                raise ValueError("Handoff snapshot context mismatch")
         feature_stage = entry["stage_manifests"]["features"]
         if (
             digest({k: v for k, v in feature_stage.items() if k != "sha256"})
             != feature_stage["sha256"]
+            or feature_stage["snapshot_sha256"] != clustering["sha256"]
+            or set(feature_stage["feature_hashes"]) != snapshot_ids
         ):
             raise ValueError("Handoff feature manifest mismatch")
+        config_lookup[run_id] = FeatureSpec.model_validate(feature_stage["config"])
         expected_hashes.update(
             {(run_id, key): value for key, value in feature_stage["feature_hashes"].items()}
         )
         for detail in batch.snapshots:
             snapshot_lookup[(run_id, str(detail.snapshot.snapshot_id))] = detail.snapshot
+        revisions = entry["stage_manifests"]["firms"]["selected"]
+        if len({r["detection_id"] for r in revisions}) != len(revisions):
+            raise ValueError("Duplicate handoff source revision")
         revision_lookup[run_id] = {
             r["detection_id"]: r for r in entry["stage_manifests"]["firms"]["selected"]
         }
@@ -362,7 +415,7 @@ def verify_handoff(root: Path, expected_hash: str | None = None) -> dict[str, An
             or row["member_count"] != len(snapshot.member_ids)
         ):
             raise ValueError("Handoff feature metadata mismatch")
-        validate_feature_set(
+        feature = validate_feature_set(
             FeatureSet(
                 run_id=row["run_id"],
                 snapshot_id=row["snapshot_id"],
@@ -372,10 +425,21 @@ def verify_handoff(root: Path, expected_hash: str | None = None) -> dict[str, An
                 values={n: row[n] for n in FEATURE_NAMES},
                 missing_flags={n: row[n + "_missing"] for n in MISSING_NAMES},
                 units=UNITS,
-                lineage=json.loads(row["lineage_json"]),
+                lineage=_decode_json(row["lineage_json"]),
                 feature_hash=row["feature_hash"],
             )
         )
+        if (
+            feature.lineage.get("snapshot_input_hash") != batch_lookup[row["run_id"]].input_hash
+            or feature.lineage.get("snapshot_algorithm_version") != snapshot.algorithm_version
+            or feature.lineage.get("config") != config_lookup[row["run_id"]].model_dump(mode="json")
+            or feature.lineage.get("member_revisions")
+            != [
+                revision_lookup[row["run_id"]][str(i)]
+                for i in sorted(snapshot.member_ids, key=lambda i: i.hex)
+            ]
+        ):
+            raise ValueError("Handoff feature/source lineage mismatch")
     if seen != set(snapshot_lookup):
         raise ValueError("Handoff snapshot/feature cardinality mismatch")
     actual = set()
@@ -506,3 +570,70 @@ def export_handoff(
             if staging.parent != target.parent or not staging.name.startswith(".pipeline-handoff-"):
                 raise ValueError("Refusing cleanup outside handoff staging directory")
             shutil.rmtree(staging)
+
+
+def assess_handoff(root: Path, expected_hash: str | None = None) -> dict[str, Any]:
+    """Report target-input exclusions and shared observations, without making labels."""
+    from collections import Counter
+
+    from firewatch.processing.suitability import POLICY, centroid_target_exclusions
+
+    verified = verify_handoff(root, expected_hash)
+    provenance = _decode_json((root / "provenance.json").read_bytes())
+    details = {
+        (entry["run_id"], str(detail.snapshot.snapshot_id)): detail
+        for entry in provenance
+        for detail in SnapshotBatch.model_validate(
+            entry["stage_manifests"]["clustering"]["batch"]
+        ).snapshots
+    }
+    decisions = []
+    reasons: Counter[str] = Counter()
+    member_uses: Counter[str] = Counter()
+    for row in _table(root / "features.parquet", feature_schema(), MAX_ROWS).to_pylist():
+        detail = details[(row["run_id"], row["snapshot_id"])]
+        feature = FeatureSet(
+            run_id=row["run_id"],
+            snapshot_id=row["snapshot_id"],
+            mode=row["mode"],
+            as_of=row["as_of"],
+            feature_version=row["feature_version"],
+            values={n: row[n] for n in FEATURE_NAMES},
+            missing_flags={n: row[n + "_missing"] for n in MISSING_NAMES},
+            units=UNITS,
+            lineage=_decode_json(row["lineage_json"]),
+            feature_hash=row["feature_hash"],
+        )
+        exclusions = centroid_target_exclusions(detail, feature)
+        reasons.update(exclusions)
+        member_uses.update(str(i) for i in detail.snapshot.member_ids)
+        decisions.append(
+            dict(
+                run_id=row["run_id"],
+                snapshot_id=row["snapshot_id"],
+                target_input_eligible=not exclusions,
+                exclusion_reasons=exclusions,
+                max_member_radius_km=detail.member_radius_max_km,
+            )
+        )
+    return dict(
+        schema_version="pipeline-input-assessment-v1",
+        policy=POLICY,
+        manifest_sha256=verified["manifest_sha256"],
+        verified=True,
+        feature_rows=len(decisions),
+        target_input_eligible_rows=sum(d["target_input_eligible"] for d in decisions),
+        excluded_rows=sum(not d["target_input_eligible"] for d in decisions),
+        exclusion_counts=dict(sorted(reasons.items())),
+        unique_member_observations=len(member_uses),
+        observations_reused_across_snapshots=sum(n > 1 for n in member_uses.values()),
+        labels_included=False,
+        training_ready=False,
+        remaining_requirements=[
+            "Seasonal snapshots on the frozen training cadence with matching enrichment",
+            "Future labels with complete follow-up and explicit unknown exclusions",
+            "Reviewed event groups and measured class balance",
+            "Event-disjoint chronological splits and boundary purging",
+        ],
+        rows=decisions,
+    )

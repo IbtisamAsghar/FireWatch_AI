@@ -289,14 +289,14 @@ def test_empty_pipeline_is_successful(empty_engine, tmp_path):
         assert session.scalar(select(func.count()).select_from(Score)) == 0
 
 
-def test_unsupported_job_fails_without_retry(work):
+def test_anchor_only_queue_is_left_for_anchor_executor(work):
     engine, config, identifier, _ = work
     with Session(engine) as session, session.begin():
         session.execute(update(Job).where(Job.id == identifier).values(type=JobType.ANCHOR))
-    assert process_one(engine, config, now=lambda: CLOCK)
+    assert not process_one(engine, config, now=lambda: CLOCK)
     with Session(engine) as session:
         job = session.get(Job, identifier)
-        assert job.status == JobStatus.FAILED and job.attempts == 1
+        assert job.status == JobStatus.QUEUED and job.attempts == 0 and job.error is None
 
 
 @pytest.mark.parametrize("degraded", [False, True])
@@ -463,3 +463,28 @@ def test_reclaimed_lease_cannot_commit_inflight_provider_result(empty_engine, tm
     with Session(empty_engine) as session:
         assert session.scalar(select(func.count()).select_from(IngestionBatch)) == 0
         assert session.scalar(select(func.count()).select_from(Alert)) == 0
+
+
+@pytest.mark.parametrize("status", [JobStatus.QUEUED, JobStatus.RUNNING])
+def test_pipeline_worker_leaves_anchor_jobs_for_their_own_executor(work, status):
+    engine, config, pipeline_id, _ = work
+    anchor_id = uuid4()
+    with Session(engine) as session, session.begin():
+        session.add(
+            Job(
+                id=anchor_id,
+                type=JobType.ANCHOR,
+                payload={"alert_id": str(uuid4())},
+                payload_hash="0" * 64,
+                idempotency_key=str(anchor_id),
+                status=status,
+                attempts=0,
+                available_at=CLOCK - timedelta(days=1),
+                lease_until=CLOCK - timedelta(seconds=1) if status == JobStatus.RUNNING else None,
+            )
+        )
+    lease = take(engine, config)
+    assert lease.job_id == pipeline_id
+    with Session(engine) as session:
+        anchor = session.get(Job, anchor_id)
+        assert anchor.status == status and anchor.attempts == 0 and anchor.error is None

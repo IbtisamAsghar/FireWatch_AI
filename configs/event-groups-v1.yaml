@@ -1,0 +1,7 @@
+schema_version: partition-event-spec-v1
+radius_km: 4.0
+gap_hours: 48
+review_radius_km: 8.0
+review_gap_hours: 72
+max_observations: 100000
+max_neighbor_links: 50000000

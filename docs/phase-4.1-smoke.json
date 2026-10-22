@@ -1,0 +1,187 @@
+{
+  "schema_version": "phase-4.1-smoke-v1",
+  "data_kind": "real-cached-historical",
+  "label_package": {
+    "verified": true,
+    "manifest_sha256": "15e7bf0aa34e2521e89b84fc0a3bf460753ccf47b84229594ad48719611cbdae",
+    "rows": 12,
+    "training_ready": false
+  },
+  "report": {
+    "acquisition_hour_counts_utc": {
+      "10": 10
+    },
+    "cloud_free_coverage_established": false,
+    "dataset_exclusions": {
+      "off_six_hour_cadence": 12
+    },
+    "hour_count_meaning": "Detection counts across label windows; not independent overpass counts",
+    "labels": {
+      "negative": 8,
+      "unknown": 4
+    },
+    "labels_are_observation_proxy": true,
+    "model_trained": false,
+    "negatives_with_later_detections": 0,
+    "negatives_without_later_detections": 8,
+    "on_cadence_known_label_rows": 0,
+    "pending": [
+      "Seasonal feature materialization",
+      "Reviewed event groups and class sufficiency",
+      "Phase 4.2 chronological event-disjoint partitions and purge checks",
+      "Negative-follow-up sensitivity and sensor/product evaluation at release"
+    ],
+    "rows": 12,
+    "schema_version": "target-label-report-v1",
+    "sensor_product_policy": "NOAA-20 SP only; NOAA-21 and NRT require separate cohorts",
+    "splits_created": false,
+    "target_spec_sha256": "30e9f3b1ea4c12b7af465c959c4c97140aeb0de171ce6c9b894ef69c3c23393f",
+    "training_ready": false,
+    "unknown_reasons": {
+      "members_outside_target_radius": 4
+    }
+  },
+  "sensor_product_diagnostics": {
+    "source_manifest_sha256": "7b2c87453b24e5669297128232d30e8f2ca6a76a5fe3efd65452c5d2f4eafe0f",
+    "cohorts": [
+      {
+        "sensor": "NOAA-20",
+        "product": "VIIRS_NOAA20_NRT",
+        "year": 2026,
+        "observations": 45,
+        "frp_mw": {
+          "valid": 45,
+          "mean": 10.818444444444445,
+          "median": 7.46,
+          "maximum": 96.01
+        },
+        "confidence": {
+          "nominal": 39,
+          "high": 2,
+          "low": 4
+        },
+        "daynight": {
+          "D": 41,
+          "N": 4
+        },
+        "acquisition_hours_utc": {
+          "09": 1,
+          "10": 3,
+          "20": 18,
+          "21": 23
+        },
+        "distinct_positive_acquisition_times": 5
+      },
+      {
+        "sensor": "NOAA-20",
+        "product": "VIIRS_NOAA20_SP",
+        "year": 2022,
+        "observations": 5496,
+        "frp_mw": {
+          "valid": 5496,
+          "mean": 17.466704876273653,
+          "median": 6.28,
+          "maximum": 1105.6
+        },
+        "confidence": {
+          "nominal": 4780,
+          "high": 394,
+          "low": 322
+        },
+        "daynight": {
+          "D": 2869,
+          "N": 2627
+        },
+        "acquisition_hours_utc": {
+          "08": 91,
+          "09": 1770,
+          "10": 755,
+          "11": 11,
+          "19": 140,
+          "20": 1347,
+          "21": 1256,
+          "22": 126
+        },
+        "distinct_positive_acquisition_times": 363
+      },
+      {
+        "sensor": "NOAA-20",
+        "product": "VIIRS_NOAA20_SP",
+        "year": 2024,
+        "observations": 12366,
+        "frp_mw": {
+          "valid": 12366,
+          "mean": 26.520265243409348,
+          "median": 5.5,
+          "maximum": 1564.68
+        },
+        "confidence": {
+          "nominal": 10162,
+          "high": 1239,
+          "low": 965
+        },
+        "daynight": {
+          "D": 4670,
+          "N": 7696
+        },
+        "acquisition_hours_utc": {
+          "08": 99,
+          "09": 3367,
+          "10": 3940,
+          "11": 290,
+          "19": 154,
+          "20": 1749,
+          "21": 2520,
+          "22": 247
+        },
+        "distinct_positive_acquisition_times": 410
+      },
+      {
+        "sensor": "NOAA-21",
+        "product": "VIIRS_NOAA21_NRT",
+        "year": 2026,
+        "observations": 40,
+        "frp_mw": {
+          "valid": 40,
+          "mean": 12.16325,
+          "median": 9.535,
+          "maximum": 32.45
+        },
+        "confidence": {
+          "nominal": 36,
+          "low": 3,
+          "high": 1
+        },
+        "daynight": {
+          "D": 40
+        },
+        "acquisition_hours_utc": {
+          "20": 40
+        },
+        "distinct_positive_acquisition_times": 3
+      }
+    ],
+    "nrt_comparison": {
+      "radius_km": 2,
+      "time_tolerance_minutes": 30,
+      "noaa20_observations": 45,
+      "noaa21_observations": 40,
+      "noaa20_with_nearby_noaa21": 0,
+      "noaa21_with_nearby_noaa20": 0
+    },
+    "pooling_approved": false,
+    "limitations": [
+      "Counts select one revision per source identity; they are not fire-event counts.",
+      "Positive acquisition times and hourly histograms are not complete overpass inventories.",
+      "NRT overlap is descriptive and is not an SP/NRT equivalence or calibration test.",
+      "NOAA-21 SP seasonal comparison is unavailable in these imported inputs.",
+      "Raw cohort differences confound time, region and observation conditions."
+    ]
+  },
+  "provider_requests": 0,
+  "application_database_writes": 0,
+  "saved_features_unchanged": true,
+  "labels_are_retrospective": true,
+  "model_trained": false,
+  "splits_created": false
+}

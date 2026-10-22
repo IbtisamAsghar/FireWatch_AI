@@ -1,6 +1,6 @@
-# Design metadata only; no training data, thresholds, or model exists yet.
+# Target/dataset design frozen in Phase 4.1; no trained model or release thresholds.
 schema_version: model-v1
-status: draft
+status: target_design_frozen
 active_scorer: baseline-v1
 feature_schema_version: features-v1
 label_horizon_hours: 24
@@ -13,3 +13,16 @@ split_manifest: null
 calibration_policy: null
 priority_thresholds: null
 # Member 4 freezes dataset paths, splits, and policies before training.
+
+# Conservative compatibility gate for existing whole-cluster features-v1 inputs.
+# Eligibility is necessary but never sufficient for labels, splits or training.
+target_input_policy: compact-centroid-inputs-v1
+wide_cluster_policy: exclude
+incomplete_current_frp_policy: exclude
+
+target_spec: configs/target-v1.yaml
+target_dataset_design: configs/target-dataset-v1.yaml
+
+# Phase 4.2 policy is frozen; supervised release remains unavailable.
+event_group_spec: configs/event-groups-v1.yaml
+split_spec: configs/splits-v1.yaml

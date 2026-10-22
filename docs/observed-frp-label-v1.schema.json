@@ -1,0 +1,195 @@
+{
+  "$defs": {
+    "Product": {
+      "enum": [
+        "VIIRS_NOAA20_NRT",
+        "VIIRS_NOAA21_NRT",
+        "VIIRS_NOAA20_SP",
+        "VIIRS_NOAA21_SP"
+      ],
+      "title": "Product",
+      "type": "string"
+    },
+    "Sensor": {
+      "enum": [
+        "NOAA-20",
+        "NOAA-21"
+      ],
+      "title": "Sensor",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "observed-frp-label-v1",
+      "default": "observed-frp-label-v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "target_version": {
+      "const": "observed-frp-strengthening-v1",
+      "default": "observed-frp-strengthening-v1",
+      "title": "Target Version",
+      "type": "string"
+    },
+    "target_spec_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Target Spec Sha256",
+      "type": "string"
+    },
+    "run_id": {
+      "format": "uuid",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "snapshot_id": {
+      "format": "uuid",
+      "title": "Snapshot Id",
+      "type": "string"
+    },
+    "as_of": {
+      "format": "date-time",
+      "title": "As Of",
+      "type": "string"
+    },
+    "feature_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Feature Hash",
+      "type": "string"
+    },
+    "followup_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Followup Sha256",
+      "type": "string"
+    },
+    "baseline_products": {
+      "additionalProperties": {
+        "$ref": "#/$defs/Product"
+      },
+      "propertyNames": {
+        "$ref": "#/$defs/Sensor"
+      },
+      "title": "Baseline Products",
+      "type": "object"
+    },
+    "label": {
+      "enum": [
+        "positive",
+        "negative",
+        "unknown"
+      ],
+      "title": "Label",
+      "type": "string"
+    },
+    "target_value": {
+      "anyOf": [
+        {
+          "enum": [
+            0,
+            1
+          ],
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Target Value"
+    },
+    "threshold_mw": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Threshold Mw"
+    },
+    "unobserved_followup": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Unobserved Followup"
+    },
+    "unknown_reasons": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Unknown Reasons",
+      "type": "array"
+    },
+    "dataset_exclusions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Dataset Exclusions",
+      "type": "array"
+    },
+    "later_detection_count": {
+      "minimum": 0,
+      "title": "Later Detection Count",
+      "type": "integer"
+    },
+    "valid_later_frp_count": {
+      "minimum": 0,
+      "title": "Valid Later Frp Count",
+      "type": "integer"
+    },
+    "max_later_frp_mw": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Max Later Frp Mw"
+    },
+    "stronger_detection_ids": {
+      "items": {
+        "format": "uuid",
+        "type": "string"
+      },
+      "title": "Stronger Detection Ids",
+      "type": "array"
+    },
+    "acquisition_hours_utc": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Acquisition Hours Utc",
+      "type": "object"
+    }
+  },
+  "required": [
+    "target_spec_sha256",
+    "run_id",
+    "snapshot_id",
+    "as_of",
+    "feature_hash",
+    "followup_sha256",
+    "baseline_products",
+    "label",
+    "target_value",
+    "threshold_mw",
+    "unobserved_followup",
+    "unknown_reasons",
+    "dataset_exclusions",
+    "later_detection_count",
+    "valid_later_frp_count",
+    "max_later_frp_mw",
+    "stronger_detection_ids",
+    "acquisition_hours_utc"
+  ],
+  "title": "LabelResult",
+  "type": "object"
+}

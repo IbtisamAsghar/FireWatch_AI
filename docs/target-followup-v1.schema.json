@@ -1,0 +1,489 @@
+{
+  "$defs": {
+    "BoundingBox": {
+      "additionalProperties": false,
+      "properties": {
+        "west": {
+          "maximum": 180,
+          "minimum": -180,
+          "title": "West",
+          "type": "number"
+        },
+        "south": {
+          "maximum": 90,
+          "minimum": -90,
+          "title": "South",
+          "type": "number"
+        },
+        "east": {
+          "maximum": 180,
+          "minimum": -180,
+          "title": "East",
+          "type": "number"
+        },
+        "north": {
+          "maximum": 90,
+          "minimum": -90,
+          "title": "North",
+          "type": "number"
+        }
+      },
+      "required": [
+        "west",
+        "south",
+        "east",
+        "north"
+      ],
+      "title": "BoundingBox",
+      "type": "object"
+    },
+    "Confidence": {
+      "enum": [
+        "low",
+        "nominal",
+        "high",
+        "unknown"
+      ],
+      "title": "Confidence",
+      "type": "string"
+    },
+    "DayNight": {
+      "enum": [
+        "D",
+        "N"
+      ],
+      "title": "DayNight",
+      "type": "string"
+    },
+    "DaySource": {
+      "additionalProperties": false,
+      "properties": {
+        "day": {
+          "format": "date",
+          "title": "Day",
+          "type": "string"
+        },
+        "product": {
+          "$ref": "#/$defs/Product"
+        },
+        "batch_id": {
+          "format": "uuid",
+          "title": "Batch Id",
+          "type": "string"
+        },
+        "asset_id": {
+          "format": "uuid",
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "source_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Source Sha256",
+          "type": "string"
+        },
+        "retrieved_at": {
+          "format": "date-time",
+          "title": "Retrieved At",
+          "type": "string"
+        },
+        "window_start": {
+          "format": "date-time",
+          "title": "Window Start",
+          "type": "string"
+        },
+        "window_end": {
+          "format": "date-time",
+          "title": "Window End",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/JobStatus"
+        },
+        "rejected_count": {
+          "minimum": 0,
+          "title": "Rejected Count",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "day",
+        "product",
+        "batch_id",
+        "asset_id",
+        "source_sha256",
+        "retrieved_at",
+        "window_start",
+        "window_end",
+        "status",
+        "rejected_count"
+      ],
+      "title": "DaySource",
+      "type": "object"
+    },
+    "DetectionInput": {
+      "additionalProperties": false,
+      "properties": {
+        "product": {
+          "$ref": "#/$defs/Product"
+        },
+        "sensor": {
+          "$ref": "#/$defs/Sensor"
+        },
+        "latitude": {
+          "maximum": 90,
+          "minimum": -90,
+          "title": "Latitude",
+          "type": "number"
+        },
+        "longitude": {
+          "maximum": 180,
+          "minimum": -180,
+          "title": "Longitude",
+          "type": "number"
+        },
+        "acquired_at": {
+          "format": "date-time",
+          "title": "Acquired At",
+          "type": "string"
+        },
+        "frp_mw": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Frp Mw"
+        },
+        "brightness_k": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Brightness K"
+        },
+        "confidence_raw": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confidence Raw"
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence",
+          "default": "unknown"
+        },
+        "daynight": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DayNight"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "scan": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scan"
+        },
+        "track": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Track"
+        },
+        "raw_values": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Raw Values",
+          "type": "object"
+        },
+        "quality_flags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Quality Flags",
+          "type": "array"
+        },
+        "dedup_key": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Dedup Key",
+          "type": "string"
+        }
+      },
+      "required": [
+        "product",
+        "sensor",
+        "latitude",
+        "longitude",
+        "acquired_at",
+        "dedup_key"
+      ],
+      "title": "DetectionInput",
+      "type": "object"
+    },
+    "JobStatus": {
+      "enum": [
+        "queued",
+        "running",
+        "succeeded",
+        "failed"
+      ],
+      "title": "JobStatus",
+      "type": "string"
+    },
+    "JsonValue": {},
+    "Outage": {
+      "additionalProperties": false,
+      "properties": {
+        "product": {
+          "$ref": "#/$defs/Product"
+        },
+        "start": {
+          "format": "date-time",
+          "title": "Start",
+          "type": "string"
+        },
+        "end": {
+          "format": "date-time",
+          "title": "End",
+          "type": "string"
+        },
+        "evidence_reference": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Evidence Reference",
+          "type": "string"
+        }
+      },
+      "required": [
+        "product",
+        "start",
+        "end",
+        "evidence_reference"
+      ],
+      "title": "Outage",
+      "type": "object"
+    },
+    "Product": {
+      "enum": [
+        "VIIRS_NOAA20_NRT",
+        "VIIRS_NOAA21_NRT",
+        "VIIRS_NOAA20_SP",
+        "VIIRS_NOAA21_SP"
+      ],
+      "title": "Product",
+      "type": "string"
+    },
+    "RevisionPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "firms-selection-v1",
+          "default": "firms-selection-v1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "products": {
+          "additionalProperties": {
+            "$ref": "#/$defs/Product"
+          },
+          "propertyNames": {
+            "$ref": "#/$defs/Sensor"
+          },
+          "title": "Products",
+          "type": "object"
+        },
+        "batch_ids": {
+          "items": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "minItems": 1,
+          "title": "Batch Ids",
+          "type": "array"
+        },
+        "retrieval_cutoff": {
+          "format": "date-time",
+          "title": "Retrieval Cutoff",
+          "type": "string"
+        },
+        "allow_rejected_batches": {
+          "default": false,
+          "title": "Allow Rejected Batches",
+          "type": "boolean"
+        },
+        "max_observations": {
+          "default": 100000,
+          "maximum": 500000,
+          "minimum": 1,
+          "title": "Max Observations",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "products",
+        "batch_ids",
+        "retrieval_cutoff"
+      ],
+      "title": "RevisionPolicy",
+      "type": "object"
+    },
+    "SelectedDetection": {
+      "additionalProperties": false,
+      "properties": {
+        "detection_id": {
+          "format": "uuid",
+          "title": "Detection Id",
+          "type": "string"
+        },
+        "batch_id": {
+          "format": "uuid",
+          "title": "Batch Id",
+          "type": "string"
+        },
+        "revision_hash": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Revision Hash",
+          "type": "string"
+        },
+        "physical_key": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Physical Key",
+          "type": "string"
+        },
+        "observation": {
+          "$ref": "#/$defs/DetectionInput"
+        }
+      },
+      "required": [
+        "detection_id",
+        "batch_id",
+        "revision_hash",
+        "physical_key",
+        "observation"
+      ],
+      "title": "SelectedDetection",
+      "type": "object"
+    },
+    "Sensor": {
+      "enum": [
+        "NOAA-20",
+        "NOAA-21"
+      ],
+      "title": "Sensor",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "target-followup-v1",
+      "default": "target-followup-v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "region_id": {
+      "format": "uuid",
+      "title": "Region Id",
+      "type": "string"
+    },
+    "bbox": {
+      "$ref": "#/$defs/BoundingBox"
+    },
+    "as_of": {
+      "format": "date-time",
+      "title": "As Of",
+      "type": "string"
+    },
+    "end": {
+      "format": "date-time",
+      "title": "End",
+      "type": "string"
+    },
+    "retrieval_cutoff": {
+      "format": "date-time",
+      "title": "Retrieval Cutoff",
+      "type": "string"
+    },
+    "source_days": {
+      "items": {
+        "$ref": "#/$defs/DaySource"
+      },
+      "maxItems": 16,
+      "title": "Source Days",
+      "type": "array"
+    },
+    "policy": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RevisionPolicy"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "observations": {
+      "items": {
+        "$ref": "#/$defs/SelectedDetection"
+      },
+      "maxItems": 100000,
+      "title": "Observations",
+      "type": "array"
+    },
+    "outages": {
+      "items": {
+        "$ref": "#/$defs/Outage"
+      },
+      "maxItems": 1000,
+      "title": "Outages",
+      "type": "array"
+    }
+  },
+  "required": [
+    "region_id",
+    "bbox",
+    "as_of",
+    "end",
+    "retrieval_cutoff"
+  ],
+  "title": "FollowupEvidence",
+  "type": "object"
+}

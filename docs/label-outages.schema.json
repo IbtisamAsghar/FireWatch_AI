@@ -1,0 +1,65 @@
+{
+  "$defs": {
+    "Outage": {
+      "additionalProperties": false,
+      "properties": {
+        "product": {
+          "$ref": "#/$defs/Product"
+        },
+        "start": {
+          "format": "date-time",
+          "title": "Start",
+          "type": "string"
+        },
+        "end": {
+          "format": "date-time",
+          "title": "End",
+          "type": "string"
+        },
+        "evidence_reference": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Evidence Reference",
+          "type": "string"
+        }
+      },
+      "required": [
+        "product",
+        "start",
+        "end",
+        "evidence_reference"
+      ],
+      "title": "Outage",
+      "type": "object"
+    },
+    "Product": {
+      "enum": [
+        "VIIRS_NOAA20_NRT",
+        "VIIRS_NOAA21_NRT",
+        "VIIRS_NOAA20_SP",
+        "VIIRS_NOAA21_SP"
+      ],
+      "title": "Product",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "label-outages-v1",
+      "default": "label-outages-v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "outages": {
+      "items": {
+        "$ref": "#/$defs/Outage"
+      },
+      "maxItems": 1000,
+      "title": "Outages",
+      "type": "array"
+    }
+  },
+  "title": "OutageCatalog",
+  "type": "object"
+}

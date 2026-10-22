@@ -1,0 +1,260 @@
+{
+  "$defs": {
+    "EventGroup": {
+      "additionalProperties": false,
+      "properties": {
+        "event_id": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Event Id",
+          "type": "string"
+        },
+        "physical_keys": {
+          "items": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "title": "Physical Keys",
+          "type": "array"
+        },
+        "start": {
+          "format": "date-time",
+          "title": "Start",
+          "type": "string"
+        },
+        "end": {
+          "format": "date-time",
+          "title": "End",
+          "type": "string"
+        },
+        "latitude": {
+          "maximum": 90,
+          "minimum": -90,
+          "title": "Latitude",
+          "type": "number"
+        },
+        "longitude": {
+          "maximum": 180,
+          "minimum": -180,
+          "title": "Longitude",
+          "type": "number"
+        },
+        "max_centroid_radius_km": {
+          "minimum": 0,
+          "title": "Max Centroid Radius Km",
+          "type": "number"
+        },
+        "review_flags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Review Flags",
+          "type": "array"
+        }
+      },
+      "required": [
+        "event_id",
+        "physical_keys",
+        "start",
+        "end",
+        "latitude",
+        "longitude",
+        "max_centroid_radius_km",
+        "review_flags"
+      ],
+      "title": "EventGroup",
+      "type": "object"
+    },
+    "EventObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "physical_key": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Physical Key",
+          "type": "string"
+        },
+        "acquired_at": {
+          "format": "date-time",
+          "title": "Acquired At",
+          "type": "string"
+        },
+        "latitude": {
+          "maximum": 90,
+          "minimum": -90,
+          "title": "Latitude",
+          "type": "number"
+        },
+        "longitude": {
+          "maximum": 180,
+          "minimum": -180,
+          "title": "Longitude",
+          "type": "number"
+        },
+        "revision_hashes": {
+          "items": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "minItems": 1,
+          "title": "Revision Hashes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "physical_key",
+        "acquired_at",
+        "latitude",
+        "longitude",
+        "revision_hashes"
+      ],
+      "title": "EventObservation",
+      "type": "object"
+    },
+    "EventSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "partition-event-spec-v1",
+          "default": "partition-event-spec-v1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "radius_km": {
+          "default": 4.0,
+          "exclusiveMinimum": 0,
+          "title": "Radius Km",
+          "type": "number"
+        },
+        "gap_hours": {
+          "default": 48,
+          "exclusiveMinimum": 0,
+          "title": "Gap Hours",
+          "type": "integer"
+        },
+        "review_radius_km": {
+          "default": 8.0,
+          "exclusiveMinimum": 0,
+          "title": "Review Radius Km",
+          "type": "number"
+        },
+        "review_gap_hours": {
+          "default": 72,
+          "exclusiveMinimum": 0,
+          "title": "Review Gap Hours",
+          "type": "integer"
+        },
+        "max_observations": {
+          "default": 100000,
+          "maximum": 100000,
+          "minimum": 1,
+          "title": "Max Observations",
+          "type": "integer"
+        },
+        "max_neighbor_links": {
+          "default": 50000000,
+          "maximum": 50000000,
+          "minimum": 1,
+          "title": "Max Neighbor Links",
+          "type": "integer"
+        }
+      },
+      "title": "EventSpec",
+      "type": "object"
+    },
+    "NearMiss": {
+      "additionalProperties": false,
+      "properties": {
+        "left": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Left",
+          "type": "string"
+        },
+        "right": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Right",
+          "type": "string"
+        },
+        "distance_km": {
+          "minimum": 0,
+          "title": "Distance Km",
+          "type": "number"
+        },
+        "gap_hours": {
+          "minimum": 0,
+          "title": "Gap Hours",
+          "type": "number"
+        }
+      },
+      "required": [
+        "left",
+        "right",
+        "distance_km",
+        "gap_hours"
+      ],
+      "title": "NearMiss",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "partition-event-catalog-v1",
+      "default": "partition-event-catalog-v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "spec": {
+      "$ref": "#/$defs/EventSpec"
+    },
+    "source_manifest_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Source Manifest Sha256",
+      "type": "string"
+    },
+    "observations": {
+      "items": {
+        "$ref": "#/$defs/EventObservation"
+      },
+      "title": "Observations",
+      "type": "array"
+    },
+    "groups": {
+      "items": {
+        "$ref": "#/$defs/EventGroup"
+      },
+      "title": "Groups",
+      "type": "array"
+    },
+    "candidate_links": {
+      "title": "Candidate Links",
+      "type": "integer"
+    },
+    "matched_links": {
+      "title": "Matched Links",
+      "type": "integer"
+    },
+    "near_misses": {
+      "items": {
+        "$ref": "#/$defs/NearMiss"
+      },
+      "title": "Near Misses",
+      "type": "array"
+    },
+    "near_misses_truncated": {
+      "title": "Near Misses Truncated",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "spec",
+    "source_manifest_sha256",
+    "observations",
+    "groups",
+    "candidate_links",
+    "matched_links",
+    "near_misses",
+    "near_misses_truncated"
+  ],
+  "title": "EventCatalog",
+  "type": "object"
+}

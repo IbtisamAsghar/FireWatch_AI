@@ -1,0 +1,268 @@
+{
+  "$defs": {
+    "ForwardFold": {
+      "additionalProperties": false,
+      "properties": {
+        "fold_id": {
+          "title": "Fold Id",
+          "type": "string"
+        },
+        "boundary": {
+          "format": "date-time",
+          "title": "Boundary",
+          "type": "string"
+        },
+        "end": {
+          "format": "date-time",
+          "title": "End",
+          "type": "string"
+        },
+        "train_ids": {
+          "items": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "title": "Train Ids",
+          "type": "array"
+        },
+        "validation_ids": {
+          "items": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "title": "Validation Ids",
+          "type": "array"
+        },
+        "excluded_ids": {
+          "items": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "title": "Excluded Ids",
+          "type": "array"
+        },
+        "sufficient": {
+          "title": "Sufficient",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "fold_id",
+        "boundary",
+        "end",
+        "train_ids",
+        "validation_ids",
+        "excluded_ids",
+        "sufficient"
+      ],
+      "title": "ForwardFold",
+      "type": "object"
+    },
+    "Membership": {
+      "additionalProperties": false,
+      "properties": {
+        "row_id": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Row Id",
+          "type": "string"
+        },
+        "event_id": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Event Id"
+        },
+        "as_of": {
+          "format": "date-time",
+          "title": "As Of",
+          "type": "string"
+        },
+        "partition": {
+          "anyOf": [
+            {
+              "enum": [
+                "train",
+                "validation",
+                "calibration",
+                "threshold",
+                "final_test"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Partition"
+        },
+        "target_value": {
+          "anyOf": [
+            {
+              "enum": [
+                0,
+                1
+              ],
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Target Value"
+        },
+        "exclusion_reasons": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclusion Reasons",
+          "type": "array"
+        }
+      },
+      "required": [
+        "row_id",
+        "event_id",
+        "as_of",
+        "partition",
+        "target_value",
+        "exclusion_reasons"
+      ],
+      "title": "Membership",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "event-temporal-membership-v1",
+      "default": "event-temporal-membership-v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "dataset_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Dataset Sha256",
+      "type": "string"
+    },
+    "spec_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Spec Sha256",
+      "type": "string"
+    },
+    "catalog_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Catalog Sha256",
+      "type": "string"
+    },
+    "review_sha256": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Review Sha256"
+    },
+    "membership": {
+      "items": {
+        "$ref": "#/$defs/Membership"
+      },
+      "title": "Membership",
+      "type": "array"
+    },
+    "folds": {
+      "items": {
+        "$ref": "#/$defs/ForwardFold"
+      },
+      "title": "Folds",
+      "type": "array"
+    },
+    "strategy": {
+      "enum": [
+        "chronological",
+        "grouped_temporal_cv",
+        "baseline_only"
+      ],
+      "title": "Strategy",
+      "type": "string"
+    },
+    "training_ready": {
+      "title": "Training Ready",
+      "type": "boolean"
+    },
+    "development_cv_ready": {
+      "title": "Development Cv Ready",
+      "type": "boolean"
+    },
+    "final_holdout_retained": {
+      "title": "Final Holdout Retained",
+      "type": "boolean"
+    },
+    "final_holdout_usable": {
+      "title": "Final Holdout Usable",
+      "type": "boolean"
+    },
+    "final_test_status": {
+      "const": "sealed",
+      "default": "sealed",
+      "title": "Final Test Status",
+      "type": "string"
+    },
+    "release_recommendation": {
+      "enum": [
+        "baseline_only",
+        "await_model_evaluation"
+      ],
+      "title": "Release Recommendation",
+      "type": "string"
+    },
+    "partition_counts": {
+      "additionalProperties": {
+        "additionalProperties": {
+          "type": "integer"
+        },
+        "type": "object"
+      },
+      "title": "Partition Counts",
+      "type": "object"
+    },
+    "exclusion_counts": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Exclusion Counts",
+      "type": "object"
+    },
+    "event_review_complete": {
+      "title": "Event Review Complete",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "dataset_sha256",
+    "spec_sha256",
+    "catalog_sha256",
+    "review_sha256",
+    "membership",
+    "folds",
+    "strategy",
+    "training_ready",
+    "development_cv_ready",
+    "final_holdout_retained",
+    "final_holdout_usable",
+    "release_recommendation",
+    "partition_counts",
+    "exclusion_counts",
+    "event_review_complete"
+  ],
+  "title": "SplitResult",
+  "type": "object"
+}

@@ -203,3 +203,124 @@ def test_provenance_is_required_even_when_payload_hashes_are_regenerated(handoff
     rehash(root, "provenance.json")
     with pytest.raises(ValueError, match="every run"):
         verify_handoff(root)
+
+
+@pytest.mark.parametrize(
+    "change",
+    [
+        "extra_feature_hash",
+        "snapshot_binding",
+        "provenance_region",
+        "duplicate_snapshot",
+        "duplicate_revision",
+        "duplicate_job",
+        "duplicate_run_id",
+    ],
+)
+def test_cross_stage_handoff_inconsistency_is_rejected(handoff, change):
+    from firewatch.sources.firms_normalize import digest
+
+    _, _, _, root, _ = handoff
+    if change in {"duplicate_job", "duplicate_run_id"}:
+        manifest = json.loads((root / "manifest.json").read_bytes())
+        if change == "duplicate_run_id":
+            manifest["run_ids"].append(manifest["run_ids"][0])
+        else:
+            jobs = json.loads((root / "jobs.json").read_bytes())
+            jobs.append(dict(jobs[0]))
+            (root / "jobs.json").write_text(json.dumps(jobs))
+            manifest["row_counts"]["jobs"] += 1
+        (root / "manifest.json").write_text(json.dumps(manifest))
+        if change == "duplicate_job":
+            rehash(root, "jobs.json")
+    else:
+        path = root / "provenance.json"
+        rows = json.loads(path.read_bytes())
+        entry = rows[0]
+        stages = entry["stage_manifests"]
+        features = stages["features"]
+        if change == "extra_feature_hash":
+            features["feature_hashes"][str(uuid4())] = "0" * 64
+        elif change == "snapshot_binding":
+            features["snapshot_sha256"] = "0" * 64
+        elif change == "provenance_region":
+            entry["region_id"] = str(uuid4())
+        elif change == "duplicate_snapshot":
+            stages["clustering"]["batch"]["snapshots"].append(
+                stages["clustering"]["batch"]["snapshots"][0]
+            )
+            stages["clustering"]["sha256"] = digest(stages["clustering"]["batch"])
+        else:
+            stages["firms"]["selected"].append(stages["firms"]["selected"][0])
+        features["sha256"] = digest({k: v for k, v in features.items() if k != "sha256"})
+        path.write_text(json.dumps(rows))
+        rehash(root, path.name)
+    with pytest.raises(ValueError):
+        verify_handoff(root)
+
+
+def test_input_assessment_reports_eligibility_without_claiming_training_readiness(handoff):
+    from typer.testing import CliRunner
+
+    from firewatch.cli import app
+    from firewatch.pipeline.handoff import assess_handoff
+
+    _, _, _, root, verified = handoff
+    report = assess_handoff(root, verified["manifest_sha256"])
+    assert report["verified"] and not report["training_ready"] and not report["labels_included"]
+    assert report["feature_rows"] == report["target_input_eligible_rows"] == 1
+    assert report["excluded_rows"] == report["observations_reused_across_snapshots"] == 0
+    command = [
+        "assess-pipeline-handoff",
+        "--path",
+        str(root),
+        "--manifest-sha256",
+        verified["manifest_sha256"],
+    ]
+    result = CliRunner().invoke(app, command)
+    assert result.exit_code == 0 and json.loads(result.stdout) == report
+    failed = CliRunner().invoke(
+        app, ["assess-pipeline-handoff", "--path", str(root), "--manifest-sha256", "0" * 64]
+    )
+    assert failed.exit_code == 1
+
+
+def test_feature_lineage_must_match_source_pins_even_after_rehash(handoff):
+    import pyarrow as pa
+
+    from firewatch.processing.features import FEATURE_NAMES, MISSING_NAMES, UNITS
+    from firewatch.schemas.contracts import FeatureSet
+    from firewatch.sources.firms_normalize import digest
+
+    _, _, _, root, _ = handoff
+    path = root / "features.parquet"
+    table = pq.read_table(path)
+    rows = table.to_pylist()
+    row = rows[0]
+    lineage = json.loads(row["lineage_json"])
+    lineage["member_revisions"][0]["batch_id"] = str(uuid4())
+    feature = FeatureSet(
+        run_id=row["run_id"],
+        snapshot_id=row["snapshot_id"],
+        mode=row["mode"],
+        as_of=row["as_of"],
+        feature_version=row["feature_version"],
+        values={n: row[n] for n in FEATURE_NAMES},
+        missing_flags={n: row[n + "_missing"] for n in MISSING_NAMES},
+        units=UNITS,
+        lineage=lineage,
+        feature_hash=row["feature_hash"],
+    )
+    row["feature_hash"] = digest(feature.model_dump(mode="json", exclude={"feature_hash"}))
+    row["lineage_json"] = json.dumps(lineage)
+    pq.write_table(pa.Table.from_pylist(rows, schema=table.schema), path)
+    rehash(root, path.name)
+    path = root / "provenance.json"
+    entries = json.loads(path.read_bytes())
+    stage = entries[0]["stage_manifests"]["features"]
+    stage["feature_hashes"][row["snapshot_id"]] = row["feature_hash"]
+    stage["sha256"] = digest({k: v for k, v in stage.items() if k != "sha256"})
+    path.write_text(json.dumps(entries))
+    rehash(root, path.name)
+    with pytest.raises(ValueError, match="lineage"):
+        verify_handoff(root)

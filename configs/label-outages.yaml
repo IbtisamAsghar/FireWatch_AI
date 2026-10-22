@@ -1,0 +1,3 @@
+# Known, evidenced outages only. Empty is not proof that no outages occurred.
+schema_version: label-outages-v1
+outages: []

@@ -1,0 +1,91 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "target-spec-v1",
+      "default": "target-spec-v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "target_version": {
+      "const": "observed-frp-strengthening-v1",
+      "default": "observed-frp-strengthening-v1",
+      "title": "Target Version",
+      "type": "string"
+    },
+    "radius_km": {
+      "default": 2.0,
+      "exclusiveMinimum": 0,
+      "title": "Radius Km",
+      "type": "number"
+    },
+    "horizon_hours": {
+      "default": 24,
+      "exclusiveMinimum": 0,
+      "title": "Horizon Hours",
+      "type": "integer"
+    },
+    "frp_increase_min_mw": {
+      "default": 5.0,
+      "exclusiveMinimum": 0,
+      "title": "Frp Increase Min Mw",
+      "type": "number"
+    },
+    "frp_increase_fraction": {
+      "default": 0.2,
+      "exclusiveMinimum": 0,
+      "title": "Frp Increase Fraction",
+      "type": "number"
+    },
+    "cadence_hours": {
+      "default": 6,
+      "exclusiveMinimum": 0,
+      "title": "Cadence Hours",
+      "type": "integer"
+    },
+    "cadence_anchor": {
+      "default": "2022-01-01T00:00:00Z",
+      "format": "date-time",
+      "title": "Cadence Anchor",
+      "type": "string"
+    },
+    "feature_version": {
+      "const": "features-v1",
+      "default": "features-v1",
+      "title": "Feature Version",
+      "type": "string"
+    },
+    "target_input_policy": {
+      "const": "compact-centroid-inputs-v1",
+      "default": "compact-centroid-inputs-v1",
+      "title": "Target Input Policy",
+      "type": "string"
+    },
+    "product": {
+      "const": "VIIRS_NOAA20_SP",
+      "default": "VIIRS_NOAA20_SP",
+      "title": "Product",
+      "type": "string"
+    },
+    "comparison_policy": {
+      "const": "separate_sensor_product_cohorts",
+      "default": "separate_sensor_product_cohorts",
+      "title": "Comparison Policy",
+      "type": "string"
+    },
+    "window": {
+      "const": "(T,T+24h]",
+      "default": "(T,T+24h]",
+      "title": "Window",
+      "type": "string"
+    },
+    "evaluation_kind": {
+      "const": "retrospective_observation_proxy",
+      "default": "retrospective_observation_proxy",
+      "title": "Evaluation Kind",
+      "type": "string"
+    }
+  },
+  "title": "TargetSpec",
+  "type": "object"
+}

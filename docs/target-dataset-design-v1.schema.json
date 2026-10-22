@@ -1,0 +1,138 @@
+{
+  "$defs": {
+    "BoundingBox": {
+      "additionalProperties": false,
+      "properties": {
+        "west": {
+          "maximum": 180,
+          "minimum": -180,
+          "title": "West",
+          "type": "number"
+        },
+        "south": {
+          "maximum": 90,
+          "minimum": -90,
+          "title": "South",
+          "type": "number"
+        },
+        "east": {
+          "maximum": 180,
+          "minimum": -180,
+          "title": "East",
+          "type": "number"
+        },
+        "north": {
+          "maximum": 90,
+          "minimum": -90,
+          "title": "North",
+          "type": "number"
+        }
+      },
+      "required": [
+        "west",
+        "south",
+        "east",
+        "north"
+      ],
+      "title": "BoundingBox",
+      "type": "object"
+    },
+    "DatasetPeriod": {
+      "additionalProperties": false,
+      "properties": {
+        "start": {
+          "format": "date-time",
+          "title": "Start",
+          "type": "string"
+        },
+        "end": {
+          "format": "date-time",
+          "title": "End",
+          "type": "string"
+        }
+      },
+      "required": [
+        "start",
+        "end"
+      ],
+      "title": "DatasetPeriod",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "target-dataset-design-v1",
+      "default": "target-dataset-design-v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "target_spec_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Target Spec Sha256",
+      "type": "string"
+    },
+    "region": {
+      "const": "northern-california",
+      "default": "northern-california",
+      "title": "Region",
+      "type": "string"
+    },
+    "bbox": {
+      "$ref": "#/$defs/BoundingBox"
+    },
+    "periods": {
+      "items": {
+        "$ref": "#/$defs/DatasetPeriod"
+      },
+      "maxItems": 10,
+      "minItems": 1,
+      "title": "Periods",
+      "type": "array"
+    },
+    "feature_lookback_hours": {
+      "const": 24,
+      "default": 24,
+      "title": "Feature Lookback Hours",
+      "type": "integer"
+    },
+    "reference_years": {
+      "default": [
+        2010,
+        2019
+      ],
+      "maxItems": 2,
+      "minItems": 2,
+      "prefixItems": [
+        {
+          "const": 2010,
+          "type": "integer"
+        },
+        {
+          "const": 2019,
+          "type": "integer"
+        }
+      ],
+      "title": "Reference Years",
+      "type": "array"
+    },
+    "split_policy": {
+      "const": "deferred_to_phase_4_2",
+      "default": "deferred_to_phase_4_2",
+      "title": "Split Policy",
+      "type": "string"
+    },
+    "final_test_access": {
+      "const": "forbidden_during_target_design",
+      "default": "forbidden_during_target_design",
+      "title": "Final Test Access",
+      "type": "string"
+    }
+  },
+  "required": [
+    "target_spec_sha256",
+    "periods"
+  ],
+  "title": "DatasetDesign",
+  "type": "object"
+}

@@ -1,0 +1,120 @@
+{
+  "$defs": {
+    "EventDecision": {
+      "additionalProperties": false,
+      "properties": {
+        "decision": {
+          "enum": [
+            "accept",
+            "exclude"
+          ],
+          "title": "Decision",
+          "type": "string"
+        },
+        "reason": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "decision",
+        "reason"
+      ],
+      "title": "EventDecision",
+      "type": "object"
+    },
+    "SeparateDecision": {
+      "additionalProperties": false,
+      "properties": {
+        "left": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Left",
+          "type": "string"
+        },
+        "right": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Right",
+          "type": "string"
+        },
+        "reason": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "left",
+        "right",
+        "reason"
+      ],
+      "title": "SeparateDecision",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "partition-event-review-v1",
+      "default": "partition-event-review-v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "catalog_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Catalog Sha256",
+      "type": "string"
+    },
+    "reviewer": {
+      "maxLength": 100,
+      "minLength": 1,
+      "title": "Reviewer",
+      "type": "string"
+    },
+    "decisions": {
+      "patternProperties": {
+        "^[0-9a-f]{64}$": {
+          "$ref": "#/$defs/EventDecision"
+        }
+      },
+      "title": "Decisions",
+      "type": "object"
+    },
+    "merge_sets": {
+      "items": {
+        "items": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "maxItems": 1000,
+      "title": "Merge Sets",
+      "type": "array"
+    },
+    "separate_pairs": {
+      "items": {
+        "$ref": "#/$defs/SeparateDecision"
+      },
+      "maxItems": 1000,
+      "title": "Separate Pairs",
+      "type": "array"
+    },
+    "note": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Note",
+      "type": "string"
+    }
+  },
+  "required": [
+    "catalog_sha256",
+    "reviewer",
+    "decisions",
+    "note"
+  ],
+  "title": "EventReview",
+  "type": "object"
+}

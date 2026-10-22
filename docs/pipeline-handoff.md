@@ -132,3 +132,35 @@ The acceptance matrix uses existing meaningful regressions plus new handoff test
 
 See [Phase 3.7 checklist](phase-3.7-checklist.md) for final verification results.
 No emergency classification, model skill, chain submission or deployment is implied.
+
+
+## Pre-Phase 4 input gate
+
+Run the offline assessment against the reviewed package hash:
+
+```powershell
+.\.venv\Scripts\firewatch.exe assess-pipeline-handoff --path data/handoffs/module-3-v1 --manifest-sha256 6395e9ff7177c1a4c1eec3bbc708f84bbe90c293838b0ccb841a66a0865ce5c7
+```
+
+Policy `compact-centroid-inputs-v1` requires every current cluster member to lie
+within the closed 2 km centroid radius and requires complete current FRP. Wide
+DBSCAN chains and missing/partial FRP baselines are excluded from the proposed
+centroid target inputs. This resolves the default spatial mismatch conservatively:
+whole-cluster FRP cannot set a target baseline for a smaller, different footprint.
+No saved cluster, feature hash, replay, score or alert is recomputed or overwritten.
+A different footprint requires a newly versioned definition and reviewed dataset.
+
+The existing real package contains eight compact-target candidate rows and four
+excluded wide rows. All 832 unique member observations are reused across snapshots;
+the twelve rows are not twelve independent events. The report lists row decisions,
+reason counts and reuse counts, always with `training_ready=false`. Input eligibility
+does not certify follow-up, labels, class balance, event independence or splits.
+Future label construction must apply the declared policy using the shared
+`centroid_target_exclusions` helper before using a current FRP baseline.
+
+Verification additionally rejects duplicate JSON keys/nonfinite values, required
+Parquet nulls, duplicated runs/jobs/snapshots/source pins, mismatched region/context,
+extra feature-hash entries, broken snapshot-stage binding, and feature lineage that
+disagrees with the saved source revisions, configuration or clustering input hash.
+Malformed structures produce a validation error. The existing v1 package format
+and its reviewed manifest digest remain valid.

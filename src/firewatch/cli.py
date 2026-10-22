@@ -958,5 +958,38 @@ def refresh_command(
             database.close()
 
 
+@app.command("replay")
+def replay_command(
+    scenario: Annotated[str, typer.Option(help="Allowlisted fixed historical scenario ID")],
+) -> None:
+    """Import a verified local bundle and run historical replay without provider calls."""
+    from firewatch.api.errors import APIError
+    from firewatch.pipeline.jobs import LeaseLost
+    from firewatch.pipeline.replay import replay_scenario
+
+    database = None
+    try:
+        settings = get_settings()
+        database = Database(settings)
+        result = replay_scenario(database.engine, settings, scenario)
+        typer.echo(json.dumps(result))
+    except (
+        ConfigurationError,
+        ValueError,
+        OSError,
+        SQLAlchemyError,
+        APIError,
+        yaml.YAMLError,
+        LeaseLost,
+    ):
+        typer.echo(
+            "Replay failed; verify the scenario catalog, bundle checksums and database.", err=True
+        )
+        raise typer.Exit(1) from None
+    finally:
+        if database is not None:
+            database.close()
+
+
 if __name__ == "__main__":
     app()

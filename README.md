@@ -35,7 +35,11 @@ forks. See [feature definitions](docs/features-v1.md) and
 Phase 3.5 adds the standalone durable worker, slot scheduler, fenced leases,
 stage recovery, FRP baseline, immutable evidence/outbox and guarded publication.
 See [worker operations](docs/durable-worker.md) and [Phase 3.5 acceptance](docs/phase-3.5-checklist.md).
-Replay scenario packaging, evaluated ML and chain submission remain later modules. See the [implementation plan](FireWatchImplementationPlan.md),
+Phase 3.6 adds three real historical replay scenarios, portable checksummed input
+bundles, exact enrichment pins and `firewatch replay --scenario <id>`.
+See [deterministic replay](docs/deterministic-replay.md) and
+[Phase 3.6 acceptance](docs/phase-3.6-checklist.md).
+Evaluated ML and chain submission remain later modules. See the [implementation plan](FireWatchImplementationPlan.md),
 [Phase 1.4 acceptance](docs/phase-1.4-checklist.md),
 [Phase 1.5 acceptance](docs/phase-1.5-checklist.md), [operator API](docs/operator-api.md), and
 [frontend API handoff](docs/frontend-handoff.md),

@@ -6,7 +6,7 @@ from uuid import UUID
 from pydantic import Field, model_validator
 
 from firewatch.schemas.api import APIResponse
-from firewatch.schemas.common import DTO, JobStatus, JobType, UTCDateTime, Version
+from firewatch.schemas.common import DTO, Digest, JobStatus, JobType, UTCDateTime, Version
 
 Slug = Annotated[str, Field(min_length=1, max_length=100, pattern=r"^[a-z0-9]+(-[a-z0-9]+)*$")]
 
@@ -48,6 +48,7 @@ class ReplayScenario(DTO):
     scorer_version: Version
     feature_version: Version
     asset_ids: Annotated[list[UUID], Field(min_length=1, max_length=200)]
+    bundle_sha256: Digest | None = None
 
     @model_validator(mode="after")
     def valid_scenario(self) -> Self:

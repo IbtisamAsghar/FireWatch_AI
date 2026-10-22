@@ -24,3 +24,16 @@ expired leases are reclaimed automatically, committed stages are retained, and
 failed refreshes keep the previous live head. See [worker operating guide](durable-worker.md)
 for queue bounds, retry codes, source policies and crash acceptance commands.
 Production service installation and monitoring remain delivery work.
+
+
+## Offline historical replay (Phase 3.6)
+
+Preserve `data/replays/<scenario-id>/` with `configs/replays.yaml`. On a migrated
+PostgreSQL database, run `firewatch replay --scenario norcal-active-v1`,
+`norcal-quiet-v1` or `norcal-degraded-v1`. The CLI verifies/imports bundles and
+prints the completed replay run UUID. Regions may remain disabled; live heads are
+never advanced. Repeated admission reuses completed outputs. For a missing or
+tampered bundle, restore the exact reviewed directory/catalog pair before retrying;
+do not replace its checksum to bypass verification. Existing UUID/data conflicts
+require an isolated fresh database or an explicit data investigation. See
+[replay operating guide](deterministic-replay.md).

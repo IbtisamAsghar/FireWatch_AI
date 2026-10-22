@@ -1,4 +1,35 @@
 schema_version: replays-v1
-# Trusted operators add fixed real-data scenarios after archive preparation.
-# Empty until real source assets, region coverage and versions are verified.
-scenarios: []
+scenarios:
+- id: norcal-active-v1
+  name: Northern California observed activity, 25 July 2024
+  region_name: northern-california
+  window_start: '2024-07-24T22:00:00Z'
+  window_end: '2024-07-25T22:00:00Z'
+  scorer_version: baseline-v1
+  feature_version: features-v1
+  asset_ids:
+  - afd822bc-78b3-5636-9039-252abad9a17f
+  - d549f799-f10c-5ee0-9442-0bd21edaa94e
+  bundle_sha256: 26c6d9da403a72de4658babfe8c40fb427a9505d7b508ff5e62c6b8d46d270f6
+- id: norcal-quiet-v1
+  name: Northern California quiet observation window, 6 May 2024
+  region_name: northern-california
+  window_start: '2024-05-05T12:00:00Z'
+  window_end: '2024-05-06T12:00:00Z'
+  scorer_version: baseline-v1
+  feature_version: features-v1
+  asset_ids:
+  - 477c3207-49ef-56dc-a771-7415fe0c4f67
+  - 7f7e519c-a3e4-5e39-9aa0-cb4cc50228a1
+  bundle_sha256: b0e467a8653ad5c4fc19df3ddada63ce7d7c70771d06e23be7119f5e33cd3ca7
+- id: norcal-degraded-v1
+  name: Northern California incomplete cached weather, 25 July 2024
+  region_name: northern-california
+  window_start: '2024-07-24T23:00:00Z'
+  window_end: '2024-07-25T23:00:00Z'
+  scorer_version: baseline-v1
+  feature_version: features-v1
+  asset_ids:
+  - afd822bc-78b3-5636-9039-252abad9a17f
+  - d549f799-f10c-5ee0-9442-0bd21edaa94e
+  bundle_sha256: 4dcd404d4056bdf7d4aaf9d61a623e075004fc0cc5981ec6c87911dfdd16ad08

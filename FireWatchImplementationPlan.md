@@ -632,13 +632,18 @@ evaluated ML, scenario packaging and chain submission remain later phases.
 
 ### Phase 3.6: Create deterministic replay
 
-- [ ] Prepare at least three real-data scenarios: varied activity, quieter/empty period, and degraded-source example.
-- [ ] Bundle their raw/canonical data manifest and required cached weather/baselines.
-- [ ] Implement `firewatch replay --scenario <id>` using an injected clock and fixed as_of.
-- [ ] Replay performs no live weather calls and never writes to the latest-live pointer.
-- [ ] Mark all outputs `mode=replay`; expose detection time and actual later processing time separately.
-- [ ] Repeating the same scenario/model/config produces identical feature hashes and numeric results within documented numerical tolerance.
-- [ ] Keep synthetic failure fixtures clearly labeled and separate from real replay evidence.
+- [x] Prepare at least three real-data scenarios: varied activity, quieter/empty period, and degraded-source example.
+- [x] Bundle their raw/canonical data manifest and required cached weather/baselines.
+- [x] Implement `firewatch replay --scenario <id>` using an injected clock and fixed as_of.
+- [x] Replay performs no live weather calls and never writes to the latest-live pointer.
+- [x] Mark all outputs `mode=replay`; expose detection time and actual later processing time separately.
+- [x] Repeating the same scenario/model/config produces identical feature hashes and numeric results within documented numerical tolerance.
+- [x] Keep synthetic failure fixtures clearly labeled and separate from real replay evidence.
+
+Implementation/acceptance: [deterministic replay guide](docs/deterministic-replay.md),
+[real scenario catalog](docs/replay-catalog.json), and
+[Phase 3.6 acceptance](docs/phase-3.6-checklist.md). Prepared raw/canonical bundles
+are local ignored data artifacts with checksums pinned in configs/replays.yaml.
 
 ### Phase 3.7: Acceptance and handoff
 

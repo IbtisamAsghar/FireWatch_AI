@@ -15,6 +15,7 @@ from firewatch.db.models import (
     Alert,
     AnchorOutbox,
     IngestionBatch,
+    Job,
     Region,
     Run,
     Score,
@@ -23,6 +24,7 @@ from firewatch.db.models import (
 from firewatch.evidence.canonical import canonical_bytes, evidence_hash
 from firewatch.ml.predict import score_features
 from firewatch.pipeline.jobs import Lease, fence
+from firewatch.pipeline.replay_bundle import import_bundle, load_bundle
 from firewatch.processing.clusters import ClusteringSpec
 from firewatch.processing.features import FeatureSpec, load_feature_spec
 from firewatch.repositories.features import build_run_features
@@ -34,6 +36,7 @@ from firewatch.repositories.weather import cached_weather, save_weather
 from firewatch.schemas.common import (
     DTO,
     Completeness,
+    Digest,
     JobType,
     Priority,
     Product,
@@ -45,6 +48,7 @@ from firewatch.schemas.common import (
 )
 from firewatch.schemas.contracts import BoundingBox, FeatureSet
 from firewatch.schemas.firms_refresh import RefreshSpec
+from firewatch.schemas.operator import Slug
 from firewatch.sources.firms import FirmsClient
 from firewatch.sources.firms_normalize import digest, normalize_firms_batch
 from firewatch.sources.open_meteo import OpenMeteoClient, WeatherRequest, weather_cell
@@ -61,8 +65,9 @@ class PipelineRequest(DTO):
     scorer_version: str
     feature_version: str
     asset_ids: list[UUID] = Field(default_factory=list, max_length=200)
-    scenario_id: str | None = None
+    scenario_id: Slug | None = None
     scenario_name: str | None = None
+    bundle_sha256: Digest | None = None
 
     @model_validator(mode="after")
     def validate_window(self) -> "PipelineRequest":
@@ -73,6 +78,13 @@ class PipelineRequest(DTO):
         if self.feature_version != "features-v1" or self.scorer_version != "baseline-v1":
             raise ValueError("Unsupported scorer or feature version")
         return self
+
+
+def _request_manifest(request: PipelineRequest) -> dict[str, Any]:
+    result = request.model_dump(mode="json")
+    if result["bundle_sha256"] is None:
+        result.pop("bundle_sha256")  # Preserve Phase 3.5 run compatibility.
+    return result
 
 
 def _quality_flags(feature: FeatureSet) -> list[str]:
@@ -102,6 +114,29 @@ def execute_run(
     after_stage: Callable[[Stage], None] = lambda _: None,
 ) -> UUID:
     """Each checkpoint commits independently; every output commit fences lease ownership."""
+    with Session(engine) as session:
+        pending = session.get(Job, lease.job_id)
+        if pending is None:
+            raise ValueError("Unknown replay job")
+        initial = PipelineRequest.model_validate(pending.payload)
+    bundle = None
+    if initial.bundle_sha256:
+        if initial.mode != RunMode.REPLAY or not initial.scenario_id:
+            raise ValueError("A replay bundle requires an identified historical scenario")
+        bundle = load_bundle(
+            settings.replay_bundle_dir / initial.scenario_id, initial.bundle_sha256
+        )
+        with Session(engine) as imported, imported.begin():
+            import_bundle(imported, settings.replay_bundle_dir / initial.scenario_id, bundle)
+        if (
+            bundle.scenario.id != initial.scenario_id
+            or bundle.scenario.window_start != initial.window_start
+            or bundle.scenario.window_end != initial.as_of
+            or set(bundle.scenario.asset_ids) != set(initial.asset_ids)
+            or bundle.scenario.scorer_version != initial.scorer_version
+            or bundle.scenario.feature_version != initial.feature_version
+        ):
+            raise ValueError("Replay request differs from its frozen bundle")
     with Session(engine) as session, session.begin():
         job = fence(session, lease, now())
         if job.type not in {JobType.REFRESH, JobType.REPLAY}:
@@ -112,33 +147,46 @@ def execute_run(
         if request.as_of > now():
             raise ValueError("Pipeline cutoff cannot be in the future")
         area = session.get(Region, request.region_id)
-        if area is None or not area.enabled:
-            raise ValueError("Pipeline requires an enabled region")
+        if area is None or (not area.enabled and bundle is None):
+            raise ValueError("Pipeline requires an enabled region or a verified replay bundle")
+        if bundle is not None and area.name != bundle.scenario.region_name:
+            raise ValueError("Replay region differs from its frozen bundle")
         if (area.east - area.west) * (area.north - area.south) > settings.max_region_area_degrees2:
             raise ValueError("Region exceeds configured bound")
         bbox = BoundingBox(west=area.west, south=area.south, east=area.east, north=area.north)
         region_name = area.name
         key = f"pipeline-v1:{area.id}:{request.mode}:{request.as_of.isoformat()}"
+        if bundle is not None:
+            key = f"replay-v1:{area.id}:{request.bundle_sha256}:{request.as_of.isoformat()}"
         identifier = uuid5(NAMESPACE_URL, key)
         # All workers first lock the job then the run, including duplicate requests.
         run = session.get(Run, identifier)
         if run is None:
-            config = load_feature_spec(settings.features_config)
-            if (
+            config = (
+                bundle.feature_config.model_copy(deep=True)
+                if bundle is not None
+                else load_feature_spec(settings.features_config)
+            )
+            if bundle is None and (
                 settings.cluster_radius_km != 2
                 or settings.snapshot_lookback_hours != 6
                 or settings.weather_cache_grid_degrees != 0.1
             ):
                 raise ValueError("features-v1 requires the frozen cluster/grid definition")
-            config.weather_max_age_hours = settings.weather_max_age_hours
+            if bundle is None:
+                config.weather_max_age_hours = settings.weather_max_age_hours
             frozen: dict[str, Any] = dict(
-                request=request.model_dump(mode="json"),
+                request=_request_manifest(request),
                 bbox=bbox.model_dump(),
                 features=config.model_dump(mode="json"),
                 evidence=settings.evidence_schema_version,
-                detection_max_age_hours=settings.detection_max_age_hours,
+                detection_max_age_hours=(
+                    bundle.detection_max_age_hours
+                    if bundle is not None
+                    else settings.detection_max_age_hours
+                ),
                 network=f"eip155:{settings.chain_id}:{settings.alert_registry_address.lower()}"
-                if settings.chain_enabled
+                if settings.chain_enabled and bundle is None
                 else None,
             )
             if frozen["evidence"] != "evidence-v1":
@@ -166,7 +214,7 @@ def execute_run(
             if (
                 digest(frozen) != run.config_hash
                 or frozen["bbox"] != bbox.model_dump()
-                or frozen["request"] != request.model_dump(mode="json")
+                or frozen["request"] != _request_manifest(request)
             ):
                 raise ValueError("Run key conflicts with changed inputs or configuration")
             config = FeatureSpec.model_validate(frozen["features"])
@@ -243,6 +291,8 @@ def execute_run(
                 b.fetched_count > 0 and b.accepted_count + b.duplicate_count == 0 for b in chosen
             ):
                 raise ValueError("A satellite source contains only rejected rows")
+            if bundle is not None:
+                policy = bundle.policy
             # Validate complete source days before claiming ingest success.
             from firewatch.repositories.snapshots import check_coverage
 
@@ -257,7 +307,12 @@ def execute_run(
         fence(session, lease, now())
         run = _run(session, identifier)
         policy = RevisionPolicy.model_validate(run.input_asset_manifest["ingestion_policy"])
-        snapshots = build_run_snapshots(session, identifier, policy, ClusteringSpec())
+        snapshots = build_run_snapshots(
+            session,
+            identifier,
+            policy,
+            bundle.clustering_config if bundle is not None else ClusteringSpec(),
+        )
     after_stage(Stage.SNAPSHOTS)
 
     # Climate is precomputed. Live weather fetches only bounded missing cells, without locks.
@@ -310,8 +365,20 @@ def execute_run(
     with Session(engine) as session, session.begin():
         fence(session, lease, now())
         run = _run(session, identifier)
-        availability = None if "features" in run.input_asset_manifest else now()
-        features = build_run_features(session, identifier, config, retrieval_cutoff=availability)
+        availability = (
+            bundle.pins.retrieval_cutoff
+            if bundle is not None
+            else None
+            if "features" in run.input_asset_manifest
+            else now()
+        )
+        features = build_run_features(
+            session,
+            identifier,
+            config,
+            retrieval_cutoff=availability,
+            enrichment_pins=bundle.pins if bundle is not None else None,
+        )
         run = _run(session, identifier)
         quality = set(snapshots.quality_flags) | {
             flag for f in features for flag in _quality_flags(f)

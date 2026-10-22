@@ -1,0 +1,44 @@
+{
+  "schema_version": "phase-3.6-cli-smoke-v1",
+  "data_kind": "real-cached-historical",
+  "latest_live_pointer_unchanged": true,
+  "region_settings_unchanged": true,
+  "application_replay_runs": [
+    {
+      "scenario_id": "norcal-active-v1",
+      "job_id": "8ffd8e25-b6d1-420b-9304-8cdacb3d2005",
+      "run_id": "3ef7cac1-0500-5374-8351-9a089ec4d477",
+      "mode": "replay",
+      "status": "completed",
+      "as_of": "2024-07-25T22:00:00+00:00",
+      "processed_at": "2026-10-22T05:28:03.514330+00:00",
+      "completeness": "partial",
+      "alerts": 2,
+      "snapshots": 6
+    },
+    {
+      "scenario_id": "norcal-quiet-v1",
+      "job_id": "8dc56e65-86ef-4432-8b57-cf1fe7b64467",
+      "run_id": "3b73aaba-5a5b-5984-911e-d3870df0aa1d",
+      "mode": "replay",
+      "status": "completed",
+      "as_of": "2024-05-06T12:00:00+00:00",
+      "processed_at": "2026-10-22T05:28:06.401915+00:00",
+      "completeness": "complete",
+      "alerts": 0,
+      "snapshots": 0
+    },
+    {
+      "scenario_id": "norcal-degraded-v1",
+      "job_id": "89784c5c-4364-400f-bd88-03c75211456a",
+      "run_id": "a89fe64e-bbf2-528a-a643-9ae5a5fc14a6",
+      "mode": "replay",
+      "status": "completed",
+      "as_of": "2024-07-25T23:00:00+00:00",
+      "processed_at": "2026-10-22T05:28:17.088569+00:00",
+      "completeness": "partial",
+      "alerts": 2,
+      "snapshots": 6
+    }
+  ]
+}

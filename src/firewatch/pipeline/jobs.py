@@ -5,7 +5,7 @@ from datetime import UTC, datetime, timedelta
 from typing import Any
 from uuid import UUID, uuid4
 
-from sqlalchemy import func, or_, select
+from sqlalchemy import func, or_, select, true
 from sqlalchemy.orm import Session
 
 from firewatch.config import Settings
@@ -92,7 +92,9 @@ def schedule(session: Session, settings: Settings, now: datetime) -> int:
     return created
 
 
-def claim(session: Session, settings: Settings, now: datetime) -> Lease | None:
+def claim(
+    session: Session, settings: Settings, now: datetime, *, job_id: UUID | None = None
+) -> Lease | None:
     now = utc(now)
     # Serialize only admission/claim, never provider I/O or stage execution.
     _admission_lock(session, settings)
@@ -106,6 +108,7 @@ def claim(session: Session, settings: Settings, now: datetime) -> Lease | None:
                     & or_(Job.lease_until <= now, Job.lease_until.is_(None)),
                 )
             )
+            .where(Job.id == job_id if job_id is not None else true())
             .order_by(Job.available_at, Job.id)
             .with_for_update(skip_locked=True)
             .limit(settings.max_job_queue_depth + 20)

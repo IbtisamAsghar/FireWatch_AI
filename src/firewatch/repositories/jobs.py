@@ -83,13 +83,18 @@ def enqueue(
 
 
 def allowed_region(
-    session: Session, settings: Settings, *, identifier: UUID | None = None, name: str | None = None
+    session: Session,
+    settings: Settings,
+    *,
+    identifier: UUID | None = None,
+    name: str | None = None,
+    allow_disabled: bool = False,
 ) -> Region:
     condition = Region.id == identifier if identifier is not None else Region.name == name
     record = session.scalar(select(Region).where(condition).with_for_update(read=True))
     if record is None:
         raise APIError(404, "REGION_NOT_FOUND", "The requested region was not found.")
-    if not record.enabled:
+    if not record.enabled and not allow_disabled:
         raise APIError(422, "REGION_DISABLED", "The requested region is not enabled.")
     if (record.east - record.west) * (
         record.north - record.south
@@ -139,11 +144,30 @@ def replay_payload(
         raise APIError(
             404, "SCENARIO_NOT_FOUND", "The requested replay scenario is not allowlisted."
         )
+    if scenario.bundle_sha256:
+        from firewatch.pipeline.replay_bundle import load_bundle
+
+        try:
+            bundle = load_bundle(settings.replay_bundle_dir / scenario.id, scenario.bundle_sha256)
+            if bundle.scenario != scenario.model_copy(update={"bundle_sha256": None}):
+                raise ValueError("Catalog and replay bundle disagree")
+        except (OSError, ValueError):
+            raise APIError(
+                503,
+                "REPLAY_BUNDLE_UNAVAILABLE",
+                "Required replay bundle is missing or failed verification.",
+                True,
+            ) from None
     if scenario.window_end > now or scenario.window_end - scenario.window_start > timedelta(
         days=settings.max_replay_window_days
     ):
         raise APIError(422, "INVALID_REPLAY_WINDOW", "The configured replay window exceeds bounds.")
-    area = allowed_region(session, settings, name=scenario.region_name)
+    area = allowed_region(
+        session,
+        settings,
+        name=scenario.region_name,
+        allow_disabled=scenario.bundle_sha256 is not None,
+    )
     available = set(
         session.scalars(select(SourceAsset.id).where(SourceAsset.id.in_(scenario.asset_ids)))
     )
@@ -153,7 +177,8 @@ def replay_payload(
         )
     return {
         "schema_version": "jobs-v1",
-        **scenario.model_dump(mode="json", exclude={"id", "name", "region_name"}),
+        **scenario.model_dump(mode="json", exclude={"id", "name", "region_name", "bundle_sha256"}),
+        **({"bundle_sha256": scenario.bundle_sha256} if scenario.bundle_sha256 else {}),
         "scenario_id": scenario.id,
         "scenario_name": scenario.name,
         "region_id": str(area.id),

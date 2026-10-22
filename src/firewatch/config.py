@@ -37,6 +37,7 @@ class Settings(BaseSettings):
     regions_config: Path = Path("configs/regions.yaml")
     raw_data_dir: Path = Path("data/raw")
     model_dir: Path = Path("models")
+    replay_bundle_dir: Path = Path("data/replays")
     replays_config: Path = Path("configs/replays.yaml")
     max_request_body_bytes: int = Field(default=16384, ge=1024, le=1048576)
     request_body_timeout_seconds: int = Field(default=5, ge=1, le=30)

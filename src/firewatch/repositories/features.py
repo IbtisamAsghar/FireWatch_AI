@@ -105,7 +105,7 @@ def _weather_slice(session: Session, request: WeatherRequest, cutoff: datetime) 
     )
 
 
-def _collect(
+def collect_enrichment(
     session: Session,
     run: Run,
     snapshots: SnapshotBatch,
@@ -252,6 +252,7 @@ def build_run_features(
     config: FeatureSpec | None = None,
     *,
     retrieval_cutoff: datetime | None = None,
+    enrichment_pins: EnrichmentPins | None = None,
 ) -> list[FeatureSet]:
     """Caller owns transaction; cached inputs only. A retry never reselects enrichment."""
     if not session.in_transaction():
@@ -274,13 +275,21 @@ def build_run_features(
         if digest(body) != existing["sha256"] or body["config"] != config.model_dump(mode="json"):
             raise ValueError("Saved feature stage or configuration changed")
         pins = EnrichmentPins.model_validate(body["pins"])
+        if enrichment_pins is not None and pins != enrichment_pins:
+            raise ValueError("Replay enrichment pins cannot change on retry")
         if retrieval_cutoff is not None and utc(retrieval_cutoff) != pins.retrieval_cutoff:
             raise ValueError("Feature availability cannot be repinned")
     else:
         if run.status != RunStatus.RUNNING:
             raise ValueError("Only running Runs can create features")
         cutoff = utc(retrieval_cutoff or datetime.now(UTC))
-        pins = _collect(session, run, snapshots, policy, config, cutoff)
+        pins = (
+            EnrichmentPins.model_validate(enrichment_pins.model_dump())
+            if enrichment_pins is not None
+            else collect_enrichment(session, run, snapshots, policy, config, cutoff)
+        )
+        if retrieval_cutoff is not None and pins.retrieval_cutoff != cutoff:
+            raise ValueError("Replay availability cutoff differs from pinned inputs")
     _verify_pins(session, pins, config, run.as_of.month)
     computed = build_features(
         snapshots, selected, _enrichments(snapshots, pins), pins.satellite_assets, config

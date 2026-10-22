@@ -169,3 +169,14 @@ Worker payload_hash remains an admission identity hash. Run config_hash covers t
 frozen orchestration request/config/bbox/evidence policy. coverage_warnings are
 separate from stage_status; freshness uses actual pinned retrieval and valid times.
 See [worker contracts and baseline thresholds](durable-worker.md).
+
+
+## Phase 3.6 replay bundles
+
+`bundle_sha256` identifies exact canonical replay-bundle-v1 manifest bytes. File
+inventory entries contain relative path, byte size and SHA-256. data_kind separates
+real observations from synthetic fixtures; scenario_kind is active/quiet/degraded.
+Canonical input UUIDs, raw source hashes/retrieval times, explicit satellite policy,
+EnrichmentPins and feature configuration are retained. as_of is the historical
+cutoff; processed_at/scored_at record actual later execution. See
+[replay catalog](replay-catalog.json) and [definitions](deterministic-replay.md).

@@ -1,0 +1,18 @@
+schema_version: replay-preparation-v1
+region: northern-california
+scenarios:
+  - id: norcal-active-v1
+    name: Northern California observed activity, 25 July 2024
+    as_of: '2024-07-25T22:00:00Z'
+    kind: active
+    coverage_note: Real NOAA-20 archive observations with available cached GFS weather and fixed NASA POWER baselines. Satellite-observed activity only; no physical incident severity or strict operational backtest claim.
+  - id: norcal-quiet-v1
+    name: Northern California quiet observation window, 6 May 2024
+    as_of: '2024-05-06T12:00:00Z'
+    kind: quiet
+    coverage_note: A real archive-covered interval with no candidate detections in the preceding six hours. This is no observed thermal activity, not proof of no fires or cloud-free satellite coverage. No weather cells are required for an empty snapshot set.
+  - id: norcal-degraded-v1
+    name: Northern California incomplete cached weather, 25 July 2024
+    as_of: '2024-07-25T23:00:00Z'
+    kind: degraded
+    coverage_note: Real archive observations at a later cutoff than the prepared GFS cache. The newest weather hour is absent from the local cache, so 24-hour rainfall remains null/flagged. This demonstrates actual cached coverage limitations, not an asserted provider outage or synthetic alteration of observations.

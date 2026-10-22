@@ -1,0 +1,139 @@
+{
+  "schema_version": "phase-3.6-smoke-v1",
+  "data_kind": "real-cached-historical",
+  "provider_http_disabled": true,
+  "provider_http_attempts": 0,
+  "fresh_database_passes": 2,
+  "relocated_bundle_pass": true,
+  "repeats_per_scenario_per_database": 2,
+  "exact_feature_hash_match": true,
+  "exact_numeric_match": true,
+  "numeric_tolerance": 1e-12,
+  "latest_live_pointer_unchanged": true,
+  "regions_remain_disabled": true,
+  "scenarios": [
+    {
+      "job_id": "ecb1a840-e8c8-45c8-ae0d-c9a689dc290d",
+      "run_id": "3ef7cac1-0500-5374-8351-9a089ec4d477",
+      "scenario_id": "norcal-active-v1",
+      "mode": "replay",
+      "status": "completed",
+      "as_of": "2024-07-25T22:00:00+00:00",
+      "processed_at": "2026-10-22T05:23:47.989018+00:00",
+      "feature_hashes": [
+        "1fb28c64114c32839ead6ae259ff332da6e9fd5c6b1c56ffd27cfa6e2959e624",
+        "f452fe2cff3b390e0a3bc07a17d845590a495bf4b0643a6a65a7910d07dcc42e",
+        "d6b8db3243fed6967ae3d8685de4a79e6c02726ce8253339e2e59a919fe1757e",
+        "93323694d2e0ffc9cd1a3c4aa96c201e267877c56061a32db4ca0f77145015ac",
+        "c6a0be57dc42a4291832eca7c36a75b5d8ad87c057046ef6586dd241e1e4d38f",
+        "3915381883a94aa7f20cec8f8f91dd17ca639c7545bda786f104205185935a89"
+      ],
+      "priority_scores": [
+        6.77,
+        10.69,
+        1564.68,
+        1122.61,
+        23.9,
+        11.86
+      ],
+      "priorities": [
+        "LOW",
+        "MEDIUM",
+        "CRITICAL",
+        "CRITICAL",
+        "MEDIUM",
+        "MEDIUM"
+      ],
+      "scored_at": [
+        "2026-10-22T05:23:47.923891+00:00",
+        "2026-10-22T05:23:47.923891+00:00",
+        "2026-10-22T05:23:47.923891+00:00",
+        "2026-10-22T05:23:47.923891+00:00",
+        "2026-10-22T05:23:47.923891+00:00",
+        "2026-10-22T05:23:47.923891+00:00"
+      ],
+      "completeness": "partial",
+      "coverage_warnings": [
+        "members_outside_centroid_radius"
+      ],
+      "alerts": 2,
+      "data_kind": "real",
+      "scenario_kind": "active",
+      "bundle_sha256": "26c6d9da403a72de4658babfe8c40fb427a9505d7b508ff5e62c6b8d46d270f6"
+    },
+    {
+      "job_id": "f0ebf9d5-a165-47a9-bb7c-7cc8402f302b",
+      "run_id": "3b73aaba-5a5b-5984-911e-d3870df0aa1d",
+      "scenario_id": "norcal-quiet-v1",
+      "mode": "replay",
+      "status": "completed",
+      "as_of": "2024-05-06T12:00:00+00:00",
+      "processed_at": "2026-10-22T05:23:52.994663+00:00",
+      "feature_hashes": [],
+      "priority_scores": [],
+      "priorities": [],
+      "scored_at": [],
+      "completeness": "complete",
+      "coverage_warnings": [],
+      "alerts": 0,
+      "data_kind": "real",
+      "scenario_kind": "quiet",
+      "bundle_sha256": "b0e467a8653ad5c4fc19df3ddada63ce7d7c70771d06e23be7119f5e33cd3ca7"
+    },
+    {
+      "job_id": "0a1b81a3-8ce1-413a-b7e1-3b6015b0caab",
+      "run_id": "a89fe64e-bbf2-528a-a643-9ae5a5fc14a6",
+      "scenario_id": "norcal-degraded-v1",
+      "mode": "replay",
+      "status": "completed",
+      "as_of": "2024-07-25T23:00:00+00:00",
+      "processed_at": "2026-10-22T05:24:00.848697+00:00",
+      "feature_hashes": [
+        "31eaa1ca5ee31e78790fb54b770d2e09a40870c017a23b9615df9a6823543577",
+        "d24207f7d23b53e6254dec77de3df23ced4d7359a0c88ccf2fb2bea97fddeb6a",
+        "3484b4e01d7290fc1fc2721522f497b2a1146667deeab4fef8bab7b48948ed23",
+        "58f3f3f6aec5a8ee08b7e49c21d18a9784ff420f57bf4df0154f798665d9fc58",
+        "95bd784bd9b4f35c2c0f73ca2a4bec2d8920e01a04aed11735687860ceabf384",
+        "db54aae62ee9aeb7f397ec7a90f280cc0eeee20184690cb7ac24a9cfb328ebb6"
+      ],
+      "priority_scores": [
+        6.77,
+        10.69,
+        1122.61,
+        1564.68,
+        11.86,
+        23.9
+      ],
+      "priorities": [
+        "LOW",
+        "MEDIUM",
+        "CRITICAL",
+        "CRITICAL",
+        "MEDIUM",
+        "MEDIUM"
+      ],
+      "scored_at": [
+        "2026-10-22T05:24:00.796184+00:00",
+        "2026-10-22T05:24:00.796184+00:00",
+        "2026-10-22T05:24:00.796184+00:00",
+        "2026-10-22T05:24:00.796184+00:00",
+        "2026-10-22T05:24:00.796184+00:00",
+        "2026-10-22T05:24:00.796184+00:00"
+      ],
+      "completeness": "partial",
+      "coverage_warnings": [
+        "members_outside_centroid_radius",
+        "precipitation_24h_incomplete",
+        "precipitation_24h_mm_missing",
+        "rainfall_deficit_24h_mm_missing",
+        "rainfall_deficit_missing",
+        "weather_cache_partial_interval",
+        "weather_latest_hour_missing"
+      ],
+      "alerts": 2,
+      "data_kind": "real",
+      "scenario_kind": "degraded",
+      "bundle_sha256": "4dcd404d4056bdf7d4aaf9d61a623e075004fc0cc5981ec6c87911dfdd16ad08"
+    }
+  ]
+}

@@ -183,3 +183,15 @@ JSONL records and handoff.json retain exact source batch/revision identities
 and a verified payload hash. Existing API-v1 status fields are extended additively
 for Member 1; the public dictionary is regenerated. See the
 [refresh contract](firms-refresh.md). No completed Run is created by ingestion.
+
+
+## Phase 3.6 deterministic replay
+
+`ReplayScenario.bundle_sha256` optionally binds a trusted replay-bundle-v1 manifest.
+The scenario catalog retains replays-v1 compatibility for earlier API admission
+fixtures. The new CLI requires a prepared bundle. Bundle-backed jobs add the digest
+to private jobs-v1 payloads and verify files/canonical inputs again at execution.
+Disabled regions are eligible for verified historical bundles without enabling live
+scheduling. `build_run_features` accepts typed EnrichmentPins so replay never
+reselects cache revisions. `claim(..., job_id=...)` supports targeted CLI execution.
+See [replay interfaces and portability](deterministic-replay.md).

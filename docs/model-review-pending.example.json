@@ -1,0 +1,16 @@
+{
+  "schema_version": "model-approval-review-v1",
+  "decision": "pending",
+  "reviewer": null,
+  "model_author": null,
+  "independent_review": false,
+  "limitations_acknowledged": false,
+  "evaluation_manifest_sha256": null,
+  "inference_manifest_sha256": null,
+  "model_card_sha256": null,
+  "rationale": "Complete only after reviewing the concrete release report and limitations.",
+  "supported_modes": [
+    "replay"
+  ],
+  "live_generalization_reviewed": false
+}

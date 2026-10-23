@@ -91,7 +91,7 @@ database or providers. Required secrets are validated at application startup.
 
 See [native development instructions](docs/local-development.md) for lifecycle,
 backup locations, existing PostgreSQL services, configuration, tests and lock updates.
-Migrations are implemented through revision `0002`. The supplied demo region
+Migrations are implemented through revision `0003`. The supplied demo region
 is disabled until source coverage is verified. See [schema and publication rules](docs/database-schema.md).
 
 ## Repository layout and ownership
@@ -226,3 +226,13 @@ Both baselines expose actual score terms and missing/provisional warnings.
 See [runtime contract](docs/inference-and-explanations.md) and
 [acceptance evidence](docs/phase-4.6-checklist.md). No real ML artifact is approved;
 registry activation remains Phase 4.7.
+
+## Registry, promotion and rollback (Phase 4.7)
+
+`firewatch train`, `evaluate`, `promote-model` and `rollback-model` provide the
+offline release workflow. Promotion requires final-test evidence, matching
+artifacts/card and independent review. `ACTIVE_SCORER=registry` selects the
+transactional active pointer; default baselines remain explicit. Worker runs pin
+their approved model and fail clearly on missing required data or model errors.
+See [workflow](docs/model-registry-and-promotion.md) and
+[acceptance](docs/phase-4.7-checklist.md). Current real data still cannot be promoted.

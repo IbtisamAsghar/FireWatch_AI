@@ -9,6 +9,7 @@ from typing import Any
 from fastapi.testclient import TestClient
 
 from firewatch.config import Settings
+from firewatch.db.base import SCHEMA_REVISION
 from firewatch.main import create_app
 from scripts.demo_api import configured_demo, create_demo_app
 from scripts.demo_data import FIXTURE, IDS, LABEL, ROOT, read_requests
@@ -95,7 +96,7 @@ def export_handoff(output: Path, settings: Settings) -> dict[str, Any]:
         "schema_version": "handoff-v1",
         "api_version": "api-v1",
         "contracts_version": "contracts-v1",
-        "migration_revision": "0002",
+        "migration_revision": SCHEMA_REVISION,
         "synthetic": True,
         "fixture": LABEL,
         "fixture_sha256": hashlib.sha256(FIXTURE.read_bytes()).hexdigest(),

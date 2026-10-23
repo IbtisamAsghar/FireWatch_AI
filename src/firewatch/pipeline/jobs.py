@@ -10,6 +10,7 @@ from sqlalchemy.orm import Session
 
 from firewatch.config import Settings
 from firewatch.db.models import Job, Region, Run
+from firewatch.ml.registry import selected_version
 from firewatch.repositories.jobs import ENQUEUE_LOCK
 from firewatch.schemas.common import JobStatus, JobType, RunStatus
 from firewatch.sources.firms_normalize import digest
@@ -72,7 +73,7 @@ def schedule(session: Session, settings: Settings, now: datetime) -> int:
             as_of=slot.isoformat(),
             window_start=(slot - timedelta(hours=48)).isoformat(),
             window_end=slot.isoformat(),
-            scorer_version=settings.active_scorer,
+            scorer_version=selected_version(session, settings),
             feature_version=settings.feature_schema_version,
         )
         session.add(

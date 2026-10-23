@@ -1431,3 +1431,106 @@ def verify_inference_bundle_command(
             "Inference verification failed; check trusted digest and frozen contract.", err=True
         )
         raise typer.Exit(1) from None
+
+
+# Backwards-compatible phase-specific commands remain available.
+app.command("train")(train_forest_command)
+
+
+@app.command("evaluate")
+def evaluate_command(
+    manifest_sha256: Annotated[str, typer.Option(help="Trusted input manifest SHA256")],
+    output: Annotated[Path, typer.Option(help="New evaluation output directory")],
+    training: Annotated[Path | None, typer.Option()] = None,
+    prepared: Annotated[Path | None, typer.Option()] = None,
+    final: Annotated[
+        bool, typer.Option(help="Consume final holdout once; needs --prepared")
+    ] = False,
+    spec: Annotated[Path, typer.Option()] = Path("configs/evaluation-v1.yaml"),
+) -> None:
+    """Offline development evaluation or explicit one-shot final release evaluation."""
+    if final and prepared is not None and training is None:
+        evaluate_final_command(prepared, manifest_sha256, output)
+    elif not final and training is not None and prepared is None:
+        prepare_evaluation_command(training, manifest_sha256, output, spec)
+    else:
+        typer.echo(
+            "Use --training for development or --final with --prepared for release.", err=True
+        )
+        raise typer.Exit(1)
+
+
+@app.command("promote-model")
+def promote_model_command(
+    version: Annotated[str, typer.Option(help="Evaluated supervised candidate version")],
+    evaluation: Annotated[Path, typer.Option(help="Final release evaluation package")],
+    evaluation_sha256: Annotated[
+        str, typer.Option(help="Trusted final evaluation manifest SHA256")
+    ],
+    bundle: Annotated[Path, typer.Option(help="Matching compact inference bundle")],
+    manifest_sha256: Annotated[str, typer.Option(help="Trusted inference manifest SHA256")],
+    review: Annotated[
+        Path, typer.Option(help="Independent approval review bound to exact digests")
+    ],
+) -> None:
+    """Check release evidence and review, retain immutable artifacts and activate atomically."""
+    from firewatch.ml.registry import promote
+    from firewatch.ml.registry_artifacts import prepare_promotion
+
+    database = None
+    try:
+        settings = get_settings()
+        candidate = prepare_promotion(
+            settings.model_dir,
+            version,
+            evaluation,
+            evaluation_sha256,
+            bundle,
+            manifest_sha256,
+            review,
+        )
+        database = Database(settings)
+        with database.transaction() as session:
+            result = promote(session, settings.model_dir, candidate)
+        result["registry_mode_enabled"] = settings.active_scorer == "registry"
+        typer.echo(json.dumps(result))
+    except (ConfigurationError, ValueError, OSError, KeyError, TypeError, SQLAlchemyError):
+        typer.echo(
+            "Promotion refused; verify final metrics, digests and independent review.",
+            err=True,
+        )
+        raise typer.Exit(1) from None
+    finally:
+        if database is not None:
+            database.close()
+
+
+@app.command("rollback-model")
+def rollback_model_command(
+    reviewer: Annotated[str, typer.Option(help="Operator requesting rollback")],
+    reason: Annotated[str, typer.Option(help="Reason retained in the immutable audit log")],
+    version: Annotated[
+        str | None, typer.Option(help="Previous approved version; defaults to previous pointer")
+    ] = None,
+) -> None:
+    """Restore a retained approved model without retraining or changing historical scores."""
+    from firewatch.ml.registry import rollback
+
+    database = None
+    try:
+        settings = get_settings()
+        database = Database(settings)
+        with database.transaction() as session:
+            result = rollback(
+                session, settings, version=version, reviewer=reviewer, rationale=reason
+            )
+        typer.echo(json.dumps(result))
+    except (ConfigurationError, ValueError, OSError, KeyError, TypeError, SQLAlchemyError):
+        typer.echo(
+            "Rollback refused; verify previous approval, retained artifacts and operator reason.",
+            err=True,
+        )
+        raise typer.Exit(1) from None
+    finally:
+        if database is not None:
+            database.close()

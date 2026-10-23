@@ -285,7 +285,8 @@ def test_ready_schema_and_model_artifact_checks(api):
         )
         session.add(model)
         session.commit()
-    assert client.get("/health/ready").status_code == 200
+    # An opaque legacy artifact is inspectable but cannot execute through the registry.
+    assert client.get("/health/ready").status_code == 503
     metadata = get(client, "models/current")
     assert metadata["artifact_ready"] and not metadata["scoring_available"]
     assert str(artifact) not in json.dumps(metadata)

@@ -64,7 +64,7 @@ synthetic isolated data and never populate the application database with it.
 ## Read endpoints and filters
 
 - `/health/live`: process-only `{"status":"ok"}`; makes no dependency calls.
-- `/health/ready`: checks database revision `0002` and required local artifact.
+- `/health/ready`: checks database revision `0003` and required local artifact.
 - `/api/v1/status`: source attempts/successes, last published live refresh,
   forecast-cache retrieval time, climate-record count, and scorer availability.
 - `/api/v1/runs/{run_id}`: configuration hash, versions, stages, status,

@@ -15,6 +15,7 @@ from sqlalchemy.orm import Session
 from firewatch.config import Settings, get_settings
 from firewatch.db.models import Run
 from firewatch.db.session import Database
+from firewatch.ml.registry import ModelRegistryError, ModelScoringError
 from firewatch.pipeline.jobs import Lease, LeaseLost, claim, fence, finish, heartbeat, schedule
 from firewatch.pipeline.runner import execute_run
 from firewatch.schemas.common import JobType, RunStatus, Stage
@@ -86,6 +87,10 @@ def process_one(
     except FirmsError as exc:
         error, retryable = "SATELLITE_SOURCE_FAILED", exc.retryable
         retry_after = exc.retry_after_seconds or 0
+    except ModelScoringError:
+        error, retryable = "MODEL_SCORING_WITHHELD", False
+    except ModelRegistryError:
+        error, retryable = "MODEL_APPROVAL_UNAVAILABLE", False
     except (ValueError, OSError):
         error, retryable = "INVALID_INPUT_OR_CONFIGURATION", False
     except Exception:
@@ -142,6 +147,9 @@ def main(argv: list[str] | None = None) -> int:
                     with database.transaction() as session:
                         schedule(session, settings, datetime.now(UTC))
                 worked = process_one(database.engine, settings)
+            except ModelRegistryError:
+                log.error("Configured model registry is unavailable; no baseline substitution")
+                worked = False
             except SQLAlchemyError:
                 log.error("Worker database operation failed; retrying after poll interval")
                 worked = False

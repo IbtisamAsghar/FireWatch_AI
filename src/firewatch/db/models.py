@@ -395,6 +395,32 @@ class ModelVersion(Identity, Base):
     )
 
 
+class ModelActivation(Base):
+    __tablename__ = "model_activation"
+    name: Mapped[str] = mapped_column(sa.String(20), primary_key=True)
+    active_model_id: Mapped[UUID] = mapped_column(sa.ForeignKey("model_versions.id"))
+    previous_model_id: Mapped[UUID | None] = mapped_column(sa.ForeignKey("model_versions.id"))
+    revision: Mapped[int] = mapped_column(sa.Integer)
+    __table_args__ = (
+        sa.CheckConstraint("name='default' AND revision>=1", name="singleton_revision"),
+    )
+
+
+class ModelPromotion(Identity, Base):
+    __tablename__ = "model_promotions"
+    model_id: Mapped[UUID] = mapped_column(sa.ForeignKey("model_versions.id"))
+    previous_model_id: Mapped[UUID | None] = mapped_column(sa.ForeignKey("model_versions.id"))
+    action: Mapped[str] = mapped_column(sa.String(20))
+    reviewer: Mapped[str] = mapped_column(sa.String(100))
+    rationale: Mapped[str] = mapped_column(sa.String(2000))
+    created_at: Mapped[datetime] = mapped_column(sa.DateTime(timezone=True))
+    release_sha256: Mapped[str] = mapped_column(sa.String(64))
+    __table_args__ = (
+        sa.CheckConstraint("action IN ('promote','rollback')", name="action"),
+        sa.CheckConstraint("release_sha256 ~ '^[0-9a-f]{64}$'", name="release_hash"),
+    )
+
+
 class Score(Identity, Base):
     __tablename__ = "scores"
     snapshot_id: Mapped[UUID] = mapped_column(sa.Uuid)

@@ -16,6 +16,9 @@ from sqlalchemy.orm import Session
 from firewatch.config import Settings
 from firewatch.db.models import Alert, Anchor, AnchorOutbox, ModelVersion, Run
 from firewatch.ml.baselines import BASELINE_VERSIONS
+from firewatch.ml.inference_bundle import load_bundle as load_inference_bundle
+from firewatch.ml.registry import ModelRegistryError, selected_version
+from firewatch.ml.registry_artifacts import managed_path
 from firewatch.repositories.reads import run_times
 from firewatch.schemas.api import (
     AnchorView,
@@ -229,6 +232,36 @@ class ArtifactInspector:
             base = root.resolve()
             supplied = Path(model.artifact_path)
             path = (supplied if supplied.is_absolute() else base / supplied).resolve()
+            if (
+                isinstance(model.training_manifest, dict)
+                and model.training_manifest.get("schema_version") == "model-registry-v1"
+            ):
+                path = managed_path(root, model.artifact_path)
+                files = [
+                    path / name
+                    for name in (
+                        "manifest.json",
+                        "model.json",
+                        "thresholds.json",
+                        "feature-contract.json",
+                    )
+                ]
+                fingerprint = tuple(
+                    (file.stat().st_mtime_ns, file.stat().st_size) for file in files
+                )
+                key = (
+                    str(path),
+                    model.artifact_hash,
+                    hash(fingerprint),
+                    sum(v[1] for v in fingerprint),
+                )
+                with self._lock:
+                    if key not in self._cache:
+                        load_inference_bundle(path, model.artifact_hash, model.version)
+                        if len(self._cache) >= 64:
+                            self._cache.clear()
+                        self._cache[key] = True
+                    return self._cache[key]
             if not path.is_relative_to(base) or not path.is_file():
                 return False
             stat = path.stat()
@@ -254,11 +287,15 @@ def model_metadata(
 ) -> ModelMetadata:
     limitations = [
         "Satellite-observed strengthening is a research proxy, not physical fire severity.",
-        "Baseline thresholds and index weights are provisional; ML evaluation is pending.",
+        "Priority categories remain provisional; approval does not establish physical severity.",
     ]
-    if settings.active_scorer in BASELINE_VERSIONS:
+    try:
+        version = selected_version(session, settings)
+    except ModelRegistryError:
+        version = "registry"
+    if version in BASELINE_VERSIONS:
         return ModelMetadata(
-            scorer_version=settings.active_scorer,
+            scorer_version=version,
             score_kind=ScoreKind.BASELINE,
             feature_version=settings.feature_schema_version,
             model_id=None,
@@ -270,7 +307,7 @@ def model_metadata(
             limitations=limitations,
         )
     model = session.scalars(
-        select(ModelVersion).where(ModelVersion.version == settings.active_scorer)
+        select(ModelVersion).where(ModelVersion.version == version)
     ).one_or_none()
     valid = (
         model is not None
@@ -278,17 +315,23 @@ def model_metadata(
         and model.feature_version == settings.feature_schema_version
     )
     ready = artifacts.ready(model, settings.model_dir) if valid and model is not None else False
+    available = bool(
+        ready
+        and model
+        and isinstance(model.training_manifest, dict)
+        and model.training_manifest.get("schema_version") == "model-registry-v1"
+    )
     return ModelMetadata(
-        scorer_version=settings.active_scorer,
+        scorer_version=version,
         score_kind=ScoreKind.PROBABILITY
         if model and model.probability_supported
         else ScoreKind.MODEL,
         feature_version=model.feature_version if model else None,
         model_id=model.id if model else None,
-        status="ready" if ready else "unavailable",
+        status="ready" if available else "unavailable",
         artifact_required=True,
         artifact_ready=ready,
-        scoring_available=False,
+        scoring_available=available,
         probability_supported=bool(valid and model and model.probability_supported),
         limitations=limitations,
     )

@@ -1,6 +1,6 @@
 # Database schema and migration ownership
 
-Schema revision: `0002`. Member 1 owns migration numbering and integrates shared
+Schema revision: `0003`. Member 1 owns migration numbering and integrates shared
 model changes. PostgreSQL 16 is required; there is no SQLite path, PostGIS
 requirement, or extension dependency. Python models live in
 `src/firewatch/db/models.py`; value enums and DTOs live in `src/firewatch/schemas`.
@@ -170,3 +170,14 @@ remain failed with unknown counts. Existing source uniqueness and revision
 lineage guards apply. Region-scoped session advisory locking serializes source
 owners while short transactions share the same connection. See the
 [refresh persistence contract](firms-refresh.md).
+
+## Model registry (revision 0003)
+
+`model_activation` contains the singleton active and previous model IDs with a
+monotonic revision. `model_promotions` is an immutable audit of promotion and
+rollback, including operator/reviewer, reason, release digest and UTC time.
+Managed approved `model_versions` metadata cannot be repointed or deleted; an
+approved record may only transition to retired. Run orchestration stores a fixed
+approval pin, and SQL rejects managed scores without that matching model identity.
+Existing completed runs and alert evidence retain their original immutability
+rules. See [registry operations](model-registry-and-promotion.md).

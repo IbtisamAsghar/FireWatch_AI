@@ -25,6 +25,7 @@ from firewatch.api.presentation import (
     stages,
     verification,
 )
+from firewatch.db.base import SCHEMA_REVISION
 from firewatch.db.models import (
     Alert,
     ClimateBaselineRecord,
@@ -104,14 +105,14 @@ def model_info(request: Request, session: ReadSession) -> ModelMetadata:
 @health.get("/health/ready", response_model=Readiness, operation_id="health_ready")
 def readiness(request: Request, session: ReadSession) -> Readiness:
     versions = set(session.scalars(text("SELECT version_num FROM alembic_version")).all())
-    if versions != {"0002"}:
+    if versions != {SCHEMA_REVISION}:
         raise APIError(503, "SCHEMA_NOT_READY", "Database migrations are not current.", True)
     metadata = model_info(request, session)
-    if not metadata.artifact_ready:
+    if not metadata.artifact_ready or not metadata.scoring_available:
         raise APIError(
             503, "ARTIFACT_UNAVAILABLE", "A required local scorer artifact is unavailable.", True
         )
-    return Readiness(schema_revision="0002", artifact_ready=True)
+    return Readiness(schema_revision=SCHEMA_REVISION, artifact_ready=True)
 
 
 @router.get("/regions", response_model=Page[RegionView], operation_id="list_regions")

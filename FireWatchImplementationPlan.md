@@ -780,12 +780,18 @@ test remains sealed. See [Phase 4.6 evidence](docs/phase-4.6-checklist.md).
 
 ### Phase 4.7: Registry, promotion, and safe failure
 
-- [ ] Implement `firewatch train`, `evaluate`, and `promote-model --version ...` CLI commands.
-- [ ] Training is offline; promotion checks artifact digest, schema compatibility, metrics, and model card.
-- [ ] Record approved model version per run. Never rescore old saved alerts in place.
-- [ ] On model failure, either fail the run clearly or run an explicitly configured baseline with `score_kind=baseline`; never silently swap methods.
-- [ ] Missing optional values may use training-fitted imputation with warnings; widespread missing required inputs should withhold ML scoring under documented quality rules.
-- [ ] Keep the previous approved model available for rollback.
+- [x] Implement `firewatch train`, `evaluate`, and `promote-model --version ...` CLI commands.
+- [x] Training is offline; promotion checks artifact digest, schema compatibility, metrics, and model card.
+- [x] Record approved model version per run. Never rescore old saved alerts in place.
+- [x] On model failure, either fail the run clearly or run an explicitly configured baseline with `score_kind=baseline`; never silently swap methods.
+- [x] Missing optional values may use training-fitted imputation with warnings; widespread missing required inputs should withhold ML scoring under documented quality rules.
+- [x] Keep the previous approved model available for rollback.
+
+Implemented with source-bound final-release and independent-review gates, retained
+managed artifacts, transactional active/previous pointers, frozen run approval pins
+and explicit no-fallback failure. Migration 0003 is installed locally. Current real
+data cannot be promoted; baseline selection and the sealed final test are preserved.
+See [Phase 4.7 evidence](docs/phase-4.7-checklist.md).
 
 ### Phase 4.8: Acceptance and handoff
 

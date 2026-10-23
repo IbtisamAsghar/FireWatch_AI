@@ -220,3 +220,12 @@ probability remains separate. Baselines expose actual terms instead of SHAP.
 See [inference protocol](inference-and-explanations.md) and
 [score schema](inference-score-v1.schema.json). Registry resolution/promotion is
 Phase 4.7; the current worker and real dataset remain baseline-only.
+
+## Phase 4.7 approved execution
+
+Worker execution now resolves managed approved model references and freezes them
+per run. `ACTIVE_SCORER=registry` selects the transactional active pointer for new
+jobs; explicit baseline configuration remains artifact-free. Required-data or
+model failures withhold scoring with fixed job error codes instead of changing
+methods. Schema/readiness and frontend handoff report the shared revision 0003.
+See [promotion and rollback](model-registry-and-promotion.md).

@@ -38,3 +38,9 @@ inference_bundle_schema: inference-bundle-v1
 inference_contract: docs/inference-feature-contract-v1.json
 explanation_method: exact-tree-path-dependent-shap-v1
 approved_inference_bundle: null
+
+# Phase 4.7 promotion workflow; default ACTIVE_SCORER remains baseline-v1.
+model_registry_schema: model-registry-v1
+approval_review_schema: docs/model-approval-review-v1.schema.json
+model_failure_policy: fail_run_without_fallback
+required_ml_observations: [frp_max_mw, frp_sum_mw]

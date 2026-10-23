@@ -1,0 +1,96 @@
+{
+  "$defs": {
+    "RunMode": {
+      "enum": [
+        "live",
+        "replay"
+      ],
+      "title": "RunMode",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "model-approval-review-v1",
+      "default": "model-approval-review-v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "decision": {
+      "const": "approve",
+      "title": "Decision",
+      "type": "string"
+    },
+    "reviewer": {
+      "maxLength": 100,
+      "minLength": 3,
+      "title": "Reviewer",
+      "type": "string"
+    },
+    "model_author": {
+      "maxLength": 100,
+      "minLength": 3,
+      "title": "Model Author",
+      "type": "string"
+    },
+    "independent_review": {
+      "const": true,
+      "title": "Independent Review",
+      "type": "boolean"
+    },
+    "limitations_acknowledged": {
+      "const": true,
+      "title": "Limitations Acknowledged",
+      "type": "boolean"
+    },
+    "evaluation_manifest_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Evaluation Manifest Sha256",
+      "type": "string"
+    },
+    "inference_manifest_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Inference Manifest Sha256",
+      "type": "string"
+    },
+    "model_card_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Model Card Sha256",
+      "type": "string"
+    },
+    "rationale": {
+      "maxLength": 2000,
+      "minLength": 30,
+      "title": "Rationale",
+      "type": "string"
+    },
+    "supported_modes": {
+      "items": {
+        "$ref": "#/$defs/RunMode"
+      },
+      "maxItems": 2,
+      "minItems": 1,
+      "title": "Supported Modes",
+      "type": "array"
+    },
+    "live_generalization_reviewed": {
+      "default": false,
+      "title": "Live Generalization Reviewed",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "decision",
+    "reviewer",
+    "model_author",
+    "independent_review",
+    "limitations_acknowledged",
+    "evaluation_manifest_sha256",
+    "inference_manifest_sha256",
+    "model_card_sha256",
+    "rationale"
+  ],
+  "title": "ApprovalReview",
+  "type": "object"
+}

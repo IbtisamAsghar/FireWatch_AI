@@ -14,8 +14,10 @@ from sqlalchemy.orm import Session
 from firewatch.api.errors import APIError
 from firewatch.config import Settings
 from firewatch.db.models import Alert, Anchor, AnchorOutbox, Job, Region, SourceAsset
+from firewatch.ml.baselines import BASELINE_VERSIONS
+from firewatch.ml.registry import ModelRegistryError, resolve_approved, selected_version
 from firewatch.repositories.reads import require_run
-from firewatch.schemas.common import JobStatus, JobType
+from firewatch.schemas.common import JobStatus, JobType, RunMode
 from firewatch.schemas.operator import RefreshRequest, ReplayConfig, ReplayRequest
 
 # Every API producer uses this transaction-scoped PostgreSQL lock, including across processes.
@@ -115,13 +117,21 @@ def refresh_payload(
         raise APIError(
             422, "INVALID_REFRESH_WINDOW", "The refresh window exceeds configured bounds."
         )
+    try:
+        version = selected_version(session, settings)
+        if version not in BASELINE_VERSIONS:
+            resolve_approved(session, settings, version, region=area, mode=RunMode.LIVE)
+    except ModelRegistryError:
+        raise APIError(
+            503, "MODEL_UNAVAILABLE", "Configured model is not approved for this request."
+        ) from None
     return {
         "schema_version": "jobs-v1",
         **body.model_dump(mode="json"),
         "region_id": str(area.id),
         "mode": "live",
         "as_of": body.window_end.isoformat(),
-        "scorer_version": settings.active_scorer,
+        "scorer_version": version,
         "feature_version": settings.feature_schema_version,
     }
 

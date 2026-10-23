@@ -4,6 +4,7 @@ import pytest
 from sqlalchemy import create_engine, inspect, text
 from sqlalchemy.orm import Session
 
+from firewatch.db.base import SCHEMA_REVISION
 from scripts.demo_api import demo_schema
 from scripts.demo_data import seed_demo
 
@@ -18,7 +19,10 @@ def test_clean_migration_seed_is_idempotent_and_only_owned_schema_is_removed(dem
             with Session(engine) as session:
                 schema = session.scalar(text("SELECT current_schema()"))
                 assert schema.startswith("fw_demo_")
-                assert session.scalar(text("SELECT version_num FROM alembic_version")) == "0002"
+                assert (
+                    session.scalar(text("SELECT version_num FROM alembic_version"))
+                    == SCHEMA_REVISION
+                )
                 assert session.scalar(text("SELECT count(*) FROM runs")) == 4
                 assert session.scalar(text("SELECT count(*) FROM cluster_snapshots")) == 3
                 with session.begin_nested():

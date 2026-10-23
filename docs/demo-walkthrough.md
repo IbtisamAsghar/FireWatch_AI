@@ -66,7 +66,7 @@ IDs are deterministic fixture UUIDs. The demo clock is fixed at
 ## Demonstrate all reads
 
 1. `/health/live`: successful process-only liveness.
-2. `/health/ready`: database revision 0002 ready; no model artifact required for baseline reads.
+2. `/health/ready`: database revision 0003 ready; no model artifact required for baseline reads.
 3. `/api/v1/regions`: bounding boxes, completed modes and published live head.
 4. `/api/v1/status`: separate source retrieval/observation times and honest scorer status.
 5. `/api/v1/runs`: use the prefilled region; compare live/replay cutoffs and queued metadata.

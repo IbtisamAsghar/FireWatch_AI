@@ -1,5 +1,6 @@
 """Restartable staged pipeline. Provider I/O and scoring run outside DB transactions."""
 
+import re
 from collections.abc import Callable
 from datetime import datetime, timedelta
 from typing import Any, Literal
@@ -23,7 +24,9 @@ from firewatch.db.models import (
 )
 from firewatch.evidence.canonical import canonical_bytes, evidence_hash
 from firewatch.ml.baselines import BASELINE_VERSIONS
-from firewatch.ml.predict import score_features
+from firewatch.ml.inference_bundle import ApprovedScorer
+from firewatch.ml.predict import _approved_runtime, score_features
+from firewatch.ml.registry import ModelScoringError, resolve_approved
 from firewatch.pipeline.jobs import Lease, fence
 from firewatch.pipeline.replay_bundle import import_bundle, load_bundle
 from firewatch.processing.clusters import ClusteringSpec
@@ -76,7 +79,11 @@ class PipelineRequest(DTO):
             raise ValueError("Invalid pipeline window")
         if self.mode == RunMode.REPLAY and not self.asset_ids:
             raise ValueError("Replay requires explicitly pinned assets")
-        if self.feature_version != "features-v1" or self.scorer_version not in BASELINE_VERSIONS:
+        if (
+            self.feature_version != "features-v1"
+            or self.scorer_version == "registry"
+            or not re.fullmatch(r"[a-z][a-z0-9._-]{0,99}", self.scorer_version)
+        ):
             raise ValueError("Unsupported scorer or feature version")
         return self
 
@@ -190,6 +197,11 @@ def execute_run(
                 if settings.chain_enabled and bundle is None
                 else None,
             )
+            if request.scorer_version not in BASELINE_VERSIONS:
+                approved = resolve_approved(
+                    session, settings, request.scorer_version, region=area, mode=request.mode
+                )
+                frozen["scorer"] = approved.model_dump(mode="json")
             if frozen["evidence"] != "evidence-v1":
                 raise ValueError("Unsupported evidence schema")
             run = Run(
@@ -224,6 +236,20 @@ def execute_run(
         job.result_run_id = identifier
         if run.status == RunStatus.COMPLETED:
             return identifier
+
+    approved_reference = None
+    if "scorer" in frozen:
+        approved_reference = ApprovedScorer.model_validate(frozen["scorer"])
+        with Session(engine) as session:
+            current = resolve_approved(
+                session,
+                settings,
+                request.scorer_version,
+                region=session.get(Region, request.region_id),
+                mode=request.mode,
+            )
+        if current != approved_reference:
+            raise ModelScoringError("Saved approval no longer matches the registry")
 
     # Ingest one provider chunk at a time, retaining completed chunks after a crash.
     if request.mode == RunMode.LIVE:
@@ -440,16 +466,32 @@ def execute_run(
         scoring_done = run.stage_status.get(Stage.SCORING.value) == "succeeded"
     if not scoring_done:
         scoring_time = now()
-        scores = [
-            score
-            for start in range(0, len(features), 256)
-            for score in score_features(
-                features[start : start + 256], request.scorer_version, scored_at=scoring_time
-            )
-        ]
+        try:
+            if approved_reference is not None:
+                _approved_runtime(approved_reference)
+            scores = [
+                score
+                for start in range(0, len(features), 256)
+                for score in score_features(
+                    features[start : start + 256],
+                    request.scorer_version,
+                    scored_at=scoring_time,
+                    approved=approved_reference,
+                )
+            ]
+        except (ValueError, OSError, OverflowError, ArithmeticError):
+            if approved_reference is not None:
+                raise ModelScoringError(
+                    "Approved model or required inputs failed; scoring withheld"
+                ) from None
+            raise
         with Session(engine) as session, session.begin():
             fence(session, lease, now())
             run = _run(session, identifier)
+            if approved_reference is not None:
+                current = resolve_approved(session, settings, request.scorer_version)
+                if current != approved_reference:
+                    raise ModelScoringError("Approval changed before saving scores")
             for result in scores:
                 session.add(
                     Score(
@@ -457,10 +499,10 @@ def execute_run(
                         snapshot_id=result.snapshot_id,
                         run_id=identifier,
                         scorer_version=result.scorer_version,
-                        model_id=None,
+                        model_id=result.model_id,
                         priority_score=result.priority_score,
                         score_kind=result.score_kind,
-                        escalation_probability=None,
+                        escalation_probability=result.escalation_probability,
                         priority=result.priority,
                         explanation=result.explanation,
                         scored_at=result.scored_at,
@@ -490,7 +532,7 @@ def execute_run(
                     priority_score=score.priority_score,
                     priority=score.priority.value,
                     score_kind=score.score_kind.value,
-                    escalation_probability=None,
+                    escalation_probability=score.escalation_probability,
                     scored_at=score.scored_at.isoformat(),
                     explanation=score.explanation,
                     feature=feature.model_dump(mode="json"),
@@ -499,6 +541,8 @@ def execute_run(
                         "enrichment": run.input_asset_manifest["features"]["pins"],
                     },
                 )
+                if score.model_id is not None:
+                    payload["model_id"] = str(score.model_id)
                 content = canonical_bytes(payload)
                 session.add(
                     Alert(

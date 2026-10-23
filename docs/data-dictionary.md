@@ -1,4 +1,4 @@
-# Data dictionary: schema revision 0002
+# Data dictionary: schema revision 0003
 
 The authoritative field/type/constraint definitions are the SQLAlchemy models in
 `src/firewatch/db/models.py` and typed DTOs in `src/firewatch/schemas/contracts.py`.
@@ -203,3 +203,18 @@ feature hash, inference digest and approval reference are explicit. `warnings`
 inside explanation JSON survive existing score persistence and are exposed in
 hotspot `quality_flags`; no database column or migration is needed for this
 additive DTO field. See [inference protocol](inference-and-explanations.md).
+
+## Phase 4.7 registry and run pins
+
+`model_versions.training_manifest` uses model-registry-v1 for managed approvals,
+binding evaluation/release hashes, review, approved geographic/mode scope and an
+approval-event UUID. `metrics` stores final forest/baseline metrics and paired
+whole-event uncertainty. `artifact_path` resolves inside MODEL_DIR to the compact
+bundle; `artifact_hash` pins that bundle manifest.
+
+`model_activation` stores active_model_id, previous_model_id and revision.
+`model_promotions` records model_id, previous_model_id, action, reviewer, rationale,
+created_at and release_sha256. Run orchestration's scorer object stores model ID,
+version, manifest SHA256, approval reference and private managed path. These pins
+cannot be rewritten on resume; scores persist their actual model_id and nullable
+probability. The registry does not modify saved alerts or retrospective scores.

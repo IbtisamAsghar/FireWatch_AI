@@ -126,7 +126,7 @@ def test_weighted_pipeline_request_is_allowlisted():
         feature_version="features-v1",
     )
     assert PipelineRequest(**args).scorer_version == "weighted-baseline-v1"
-    args["scorer_version"] = "unapproved-logistic"
+    args["scorer_version"] = "invalid scorer syntax"
     with pytest.raises(ValueError, match="Unsupported"):
         PipelineRequest(**args)
 

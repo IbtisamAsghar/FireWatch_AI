@@ -1,0 +1,31 @@
+{
+  "schema_version": "phase-4.7-local-acceptance-v1",
+  "schema_revision": "0003",
+  "source_evaluation_manifest_sha256": "4e002768fc7a1b73e0331587e6c44ae3eb70890840e6883a60072473166aa12a",
+  "promotion_preflight_refused": true,
+  "registry_before": {
+    "model_versions": 0,
+    "model_promotions": 0,
+    "model_activation": 0
+  },
+  "registry_after": {
+    "model_versions": 0,
+    "model_promotions": 0,
+    "model_activation": 0
+  },
+  "active_scorer": "baseline-v1",
+  "real_model_approved": false,
+  "real_model_activated": false,
+  "final_test_status": "sealed",
+  "real_ml_metrics": null,
+  "failure_policy": "fail_run_without_fallback",
+  "required_ml_observations": [
+    "frp_max_mw",
+    "frp_sum_mw"
+  ],
+  "limitations": [
+    "Current twelve snapshots are off the frozen supervised cadence",
+    "No eligible fitted forest or final-test evidence exists",
+    "Independent human approval is still required for future eligible releases"
+  ]
+}

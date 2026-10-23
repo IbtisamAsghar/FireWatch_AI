@@ -225,7 +225,7 @@ JSON bundles, exact signed path-dependent SHAP and deterministic top-three reaso
 Both baselines expose actual score terms and missing/provisional warnings.
 See [runtime contract](docs/inference-and-explanations.md) and
 [acceptance evidence](docs/phase-4.6-checklist.md). No real ML artifact is approved;
-registry activation remains Phase 4.7.
+registry activation requires the Phase 4.7 release gates.
 
 ## Registry, promotion and rollback (Phase 4.7)
 
@@ -236,3 +236,23 @@ transactional active pointer; default baselines remain explicit. Worker runs pin
 their approved model and fail clearly on missing required data or model errors.
 See [workflow](docs/model-registry-and-promotion.md) and
 [acceptance](docs/phase-4.7-checklist.md). Current real data still cannot be promoted.
+
+## Acceptance and baseline handoff (Phase 4.8)
+
+`firewatch export-baseline-release` packages matching source-bound evaluation
+and baseline comparisons, the training manifest, model card, explicit absent
+ML bundle and portable reproduction commands. `firewatch verify-baseline-release`
+verifies the complete package against a trusted manifest SHA-256.
+See [acceptance and operator commands](docs/phase-4.8-checklist.md) and the
+[current model card](docs/model-card.md). The documented baseline release is
+the supported Phase 4 deliverable while real data remains insufficient for ML.
+
+## Historical training-data backfill
+
+`firewatch backfill-training-data` rebuilds the frozen six-hour seasonal dataset
+from cached sources without publishing application runs. Verified chunks support
+resume, offline feature/label recomputation and merging into the existing training
+input contract. `fill-backfill-weather` provides bounded historical cache filling.
+The first complete job produced **1,819 eligible rows**, fixing the original
+zero-row blocker; most weather remains missing and explicitly flagged.
+See [workflow and current data limitations](docs/historical-training-backfill.md).

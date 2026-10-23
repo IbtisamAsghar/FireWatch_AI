@@ -795,14 +795,29 @@ See [Phase 4.7 evidence](docs/phase-4.7-checklist.md).
 
 ### Phase 4.8: Acceptance and handoff
 
-- [ ] Labels have test cases for exact time/radius/FRP boundaries and incomplete follow-up.
-- [ ] Future records cannot affect features at T.
-- [ ] Split tests prove event disjointness and purge intervals.
-- [ ] Serialized and in-memory inference agree on fixtures.
-- [ ] API returns null probability for baseline/unvalidated-score cases.
-- [ ] Supply model card, training manifest, evaluation report, approved bundle, and reproducible CLI commands.
+- [x] Labels have test cases for exact time/radius/FRP boundaries and incomplete follow-up.
+- [x] Future records cannot affect features at T.
+- [x] Split tests prove event disjointness and purge intervals.
+- [x] Serialized and in-memory inference agree on fixtures.
+- [x] API returns null probability for baseline/unvalidated-score cases.
+- [x] Supply model card, training manifest, evaluation report, approved bundle, and reproducible CLI commands.
 
 Deliverable: honest, reproducible prioritization model or documented baseline release, plus explanations and evaluation evidence.
+
+Implemented as the documented baseline release permitted by this deliverable.
+The portable package retains source-bound training/evaluation evidence, card,
+baseline comparisons and reproducible commands; its approved ML bundle field is
+explicitly null with the insufficient-data reason. No final-test access, model
+approval or activation occurred. See [Phase 4.8 acceptance](docs/phase-4.8-checklist.md)
+and the [real baseline receipt](docs/phase-4.8-smoke.json).
+
+Subsequent historical backfill now resolves the zero-eligible-row data blocker:
+1,472 cadence cutoffs produce 1,819 eligible labels and a verified development-only
+Random Forest candidate. The original phase artifacts remain frozen; current data,
+weather/calibration limits and commands are documented in the
+[backfill workflow](docs/historical-training-backfill.md). No final-test evaluation
+or ML activation is implied.
+
 
 ## 10. Module 5 / Member 5: Evidence, optional blockchain, QA, and deployment
 

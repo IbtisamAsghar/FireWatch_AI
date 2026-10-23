@@ -1534,3 +1534,175 @@ def rollback_model_command(
     finally:
         if database is not None:
             database.close()
+
+
+@app.command("export-baseline-release")
+def export_baseline_release_command(
+    evaluation: Annotated[
+        Path, typer.Option(help="Sealed insufficient-data development evaluation")
+    ],
+    evaluation_sha256: Annotated[str, typer.Option(help="Trusted evaluation manifest SHA256")],
+    comparison: Annotated[Path, typer.Option(help="Baseline comparison using the same splits")],
+    comparison_sha256: Annotated[str, typer.Option(help="Trusted comparison manifest SHA256")],
+    output: Annotated[Path, typer.Option(help="New private portable baseline release directory")],
+) -> None:
+    """Package baseline evidence and reproduction commands without approving or activating ML."""
+    from firewatch.ml.acceptance import export_baseline_release
+
+    try:
+        typer.echo(
+            json.dumps(
+                export_baseline_release(
+                    evaluation, comparison, output, evaluation_sha256, comparison_sha256
+                )
+            )
+        )
+    except (ValueError, OSError, KeyError, TypeError, OverflowError):
+        typer.echo("Baseline release export failed; check source evidence and output.", err=True)
+        raise typer.Exit(1) from None
+
+
+@app.command("verify-baseline-release")
+def verify_baseline_release_command(
+    path: Annotated[Path, typer.Option(help="Portable baseline release directory")],
+    manifest_sha256: Annotated[str, typer.Option(help="Trusted release manifest SHA256")],
+) -> None:
+    """Verify the entire baseline release against source-bound recomputation offline."""
+    from firewatch.ml.acceptance import verify_baseline_release
+
+    try:
+        typer.echo(json.dumps(verify_baseline_release(path, manifest_sha256)))
+    except (ValueError, OSError, KeyError, TypeError, OverflowError):
+        typer.echo("Baseline release verification failed; check provenance and contents.", err=True)
+        raise typer.Exit(1) from None
+
+
+@app.command("backfill-training-data")
+def backfill_training_data_command(
+    output: Annotated[Path, typer.Option(help="Private resumable backfill job directory")],
+    start: Annotated[str | None, typer.Option(help="Optional inclusive UTC study cutoff")] = None,
+    end: Annotated[str | None, typer.Option(help="Optional exclusive UTC study cutoff")] = None,
+    resume: Annotated[bool, typer.Option(help="Verify and resume identical frozen job")] = False,
+    chunk_size: Annotated[int, typer.Option(min=1, max=32)] = 16,
+    retrieval_cutoff: Annotated[str | None, typer.Option()] = None,
+) -> None:
+    """Rebuild six-hour historical features and labels from cache; never publish or activate ML."""
+    from datetime import datetime
+
+    from firewatch.ml.backfill import run_backfill
+    from firewatch.ml.dataset import load_design
+    from firewatch.ml.labels import OutageCatalog
+    from firewatch.processing.features import load_feature_spec
+
+    database = None
+    try:
+        settings = get_settings()
+        database = Database(settings)
+
+        def parse(value: str | None) -> datetime | None:
+            return datetime.fromisoformat(value.replace("Z", "+00:00")) if value else None
+
+        result = run_backfill(
+            database.engine,
+            settings,
+            output,
+            load_design(Path("configs/target-dataset-v1.yaml")),
+            load_feature_spec(settings.features_config),
+            OutageCatalog.model_validate(
+                yaml.safe_load(Path("configs/label-outages.yaml").read_bytes())
+            ),
+            start=parse(start),
+            end=parse(end),
+            retrieval_cutoff=parse(retrieval_cutoff),
+            chunk_size=chunk_size,
+            resume=resume,
+            progress=lambda row: typer.echo(json.dumps(row)),
+        )
+        typer.echo(json.dumps(result))
+    except (ValueError, OSError, KeyError, TypeError, OverflowError, yaml.YAMLError):
+        typer.echo(
+            "Historical backfill failed; inspect cached coverage, frozen job and output.", err=True
+        )
+        raise typer.Exit(1) from None
+    finally:
+        if database is not None:
+            database.close()
+
+
+@app.command("merge-backfill-labels")
+def merge_backfill_labels_command(
+    path: Annotated[Path, typer.Option(help="Complete verified backfill job")],
+    output: Annotated[Path, typer.Option(help="New private label dataset directory")],
+) -> None:
+    """Merge recomputed chunk labels into the existing split/training input format."""
+    from firewatch.ml.backfill import merge_backfill_labels
+
+    try:
+        typer.echo(json.dumps(merge_backfill_labels(path, output)))
+    except (ValueError, OSError, KeyError, TypeError, OverflowError):
+        typer.echo(
+            "Backfill merge failed; check complete source chunks and dataset bounds.", err=True
+        )
+        raise typer.Exit(1) from None
+
+
+@app.command("verify-backfill-chunk")
+def verify_backfill_chunk_command(
+    path: Annotated[Path, typer.Option()],
+    manifest_sha256: Annotated[str, typer.Option(help="Trusted chunk manifest SHA256")],
+) -> None:
+    """Recompute historical snapshot/feature proofs and labels offline."""
+    from firewatch.ml.backfill import verify_chunk
+
+    try:
+        typer.echo(json.dumps(verify_chunk(path, manifest_sha256)))
+    except (ValueError, OSError, KeyError, TypeError, OverflowError):
+        typer.echo(
+            "Backfill chunk verification failed; check provenance and frozen inputs.", err=True
+        )
+        raise typer.Exit(1) from None
+
+
+@app.command("fill-backfill-weather")
+def fill_backfill_weather_command(
+    path: Annotated[Path, typer.Option(help="Complete verified historical backfill job")],
+    offset: Annotated[int, typer.Option(min=0)] = 0,
+    max_requests: Annotated[int, typer.Option(min=1, max=20)] = 1,
+    plan_only: Annotated[
+        bool, typer.Option(help="List request count without network access")
+    ] = False,
+) -> None:
+    """Fill historical weather in bounded batches; existing features remain immutable."""
+    from firewatch.ml.backfill_weather import fill_weather, weather_plan
+    from firewatch.sources.open_meteo import OpenMeteoClient
+    from firewatch.sources.weather_budget import WeatherBudget
+
+    database = None
+    client = None
+    try:
+        requests = weather_plan(path)
+        if plan_only:
+            typer.echo(json.dumps(dict(total_requests=len(requests), provider_requests=0)))
+            return
+        settings = get_settings()
+        database = Database(settings)
+        client = OpenMeteoClient(
+            settings.raw_data_dir / "weather",
+            WeatherBudget(settings.raw_data_dir.parent / "weather-budget.sqlite"),
+        )
+        result = fill_weather(
+            database.engine, requests, client, offset=offset, max_requests=max_requests
+        )
+        result["next_step"] = "Create a new backfill job to include newly retrieved weather"
+        typer.echo(json.dumps(result))
+    except (ValueError, OSError, KeyError, TypeError, OverflowError):
+        typer.echo(
+            "Historical weather fill failed; check verified job and provider availability.",
+            err=True,
+        )
+        raise typer.Exit(1) from None
+    finally:
+        if client is not None:
+            client.close()
+        if database is not None:
+            database.close()

@@ -1,0 +1,22 @@
+{
+  "schema_version": "phase-4.8-local-acceptance-v1",
+  "verified": true,
+  "manifest_sha256": "d315ec87147b11520bfd07226515d3b1d16f9e5ef297d5236fbb8e0135fe6316",
+  "release_kind": "documented_baseline",
+  "diagnostic_rows": 12,
+  "approved_bundle": null,
+  "final_test_status": "sealed",
+  "activation_performed": false,
+  "source_evaluation_manifest_sha256": "4e002768fc7a1b73e0331587e6c44ae3eb70890840e6883a60072473166aa12a",
+  "source_comparison_manifest_sha256": "2d50d21aa2d7ab4585a512f7a1e080f7e496ea65526dfc4eb5550da77e4ec180",
+  "recommended_scorer": "baseline-v1",
+  "eligible_supervised_rows": 0,
+  "held_out_ml_metrics": null,
+  "ml_probability": null,
+  "approved_bundle_status": "unavailable_insufficient_data",
+  "final_test_evaluated": false,
+  "real_model_approved": false,
+  "real_model_activated": false,
+  "private_handoff_path": "data/handoffs/module-4-v1",
+  "public_evidence_scope": "Hashes and counts; source data remains private and ignored by Git"
+}

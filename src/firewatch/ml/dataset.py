@@ -165,6 +165,35 @@ def export_labels(
     items = _inputs(handoff)
     if len(items) > 10000:
         raise ValueError("Label package exceeds bounded snapshot count")
+    return export_input_labels(
+        engine,
+        items,
+        output,
+        spec,
+        design,
+        outages,
+        available,
+        handoff_sha256=verified["manifest_sha256"],
+    )
+
+
+def export_input_labels(
+    engine: Engine,
+    items: list[TargetInput],
+    output: Path,
+    spec: TargetSpec,
+    design: DatasetDesign,
+    outages: OutageCatalog,
+    available: datetime,
+    *,
+    handoff_sha256: str | None = None,
+    backfill_source_sha256: str | None = None,
+) -> dict[str, Any]:
+    """Shared label writer for verified handoffs and recomputed historical backfills."""
+    if len(items) > 10000 or available > datetime.now(UTC):
+        raise ValueError("Invalid label export count or availability cutoff")
+    if (handoff_sha256 is None) == (backfill_source_sha256 is None):
+        raise ValueError("Choose exactly one label provenance source")
     target = output.resolve()
     if target.exists():
         raise ValueError("Label output exists; choose a new directory")
@@ -213,7 +242,12 @@ def export_labels(
             dict(
                 schema_version="target-label-package-v1",
                 target_spec_sha256=spec.sha256,
-                handoff_sha256=verified["manifest_sha256"],
+                handoff_sha256=handoff_sha256,
+                **(
+                    {"backfill_source_sha256": backfill_source_sha256}
+                    if backfill_source_sha256 is not None
+                    else {}
+                ),
                 design_sha256=digest(design.model_dump(mode="json")),
                 retrieval_cutoff=available.isoformat(),
                 row_count=len(rows),

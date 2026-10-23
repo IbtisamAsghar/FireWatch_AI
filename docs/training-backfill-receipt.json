@@ -1,0 +1,71 @@
+{
+  "schema_version": "historical-training-backfill-acceptance-v1",
+  "backfill_job_sha256": "39876f6a2ae65ceb64e7a1e73ef3f95f0aa1453839aca96c546f8382ad5fb277",
+  "backfill_collection_sha256": "54cdc83e4520bf852cae102f45c433ab12e89b88e4642b9d63594af1c6071f2a",
+  "label_manifest_sha256": "0231319527bf79ab05a3ac7b11a98dca5279a3a7a6314b1b36bd51ece1d071dc",
+  "split_manifest_sha256": "9969ba252c5d93987fe81d52dcd580de13a971639129eb47237f094aa6d6c659",
+  "training_manifest_sha256": "20d8f85f5b10a7177102093231b5aa50e3253593e508099921a9ec13917f337b",
+  "scheduled_cutoffs": 1472,
+  "completed_chunks": 92,
+  "snapshots": 1975,
+  "eligible_rows": 1819,
+  "eligible_labels": {
+    "negative": 1662,
+    "positive": 157
+  },
+  "unknown_rows": 156,
+  "missing_lookback_cutoffs": 0,
+  "missing_temperature_rows": 1969,
+  "split_strategy": "grouped_temporal_cv",
+  "training_ready": true,
+  "final_holdout_usable": true,
+  "partition_counts": {
+    "calibration": {
+      "events": 40,
+      "negative": 68,
+      "positive": 4,
+      "rows": 72
+    },
+    "final_test": {
+      "events": 170,
+      "negative": 407,
+      "positive": 33,
+      "rows": 440
+    },
+    "threshold": {
+      "events": 36,
+      "negative": 140,
+      "positive": 40,
+      "rows": 180
+    },
+    "train": {
+      "events": 344,
+      "negative": 739,
+      "positive": 68,
+      "rows": 807
+    },
+    "validation": {
+      "events": 92,
+      "negative": 176,
+      "positive": 5,
+      "rows": 181
+    }
+  },
+  "candidate_fitted": true,
+  "candidate_probability_supported": false,
+  "calibration_status": "cv_uncalibrated",
+  "final_test_status": "sealed",
+  "final_test_evaluated": false,
+  "model_approved": false,
+  "active_scorer_changed": false,
+  "feature_backfill_database_writes": 0,
+  "weather_plan_requests": 288,
+  "successful_bounded_weather_requests": 1,
+  "limitations": [
+    "Most snapshots lack weather; missing flags and training-only imputation remain",
+    "The sparse calibration cohort requires forward temporal CV and uncalibrated scores",
+    "Reviewed thermal event groups are partition proxies, not verified fire incidents",
+    "No final held-out model performance or independent ML release approval is claimed",
+    "Weather fetched after the frozen job cutoff requires a new backfill job"
+  ]
+}

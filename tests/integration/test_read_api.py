@@ -452,3 +452,48 @@ def test_readiness_rejects_incompatible_approved_model(api):
     response = client.get("/health/ready")
     assert response.status_code == 503
     assert response.json()["error"]["code"] == "ARTIFACT_UNAVAILABLE"
+
+
+@pytest.mark.parametrize(
+    "kind,version",
+    [
+        (ScoreKind.BASELINE, "baseline-v1"),
+        (ScoreKind.BASELINE, "weighted-baseline-v1"),
+        (ScoreKind.MODEL, "uncalibrated-fixture-v1"),
+    ],
+)
+def test_baseline_and_uncalibrated_api_never_claim_probability(api, kind, version):
+    client, engine, _ = api
+    with Session(engine, expire_on_commit=False) as session:
+        area = region(session)
+        run = running(session, area)
+        snapshot, score = outputs(session, run)
+        run.scorer_version = score.scorer_version = version
+        score.score_kind = kind
+        score.escalation_probability = None
+        if kind == ScoreKind.MODEL:
+            # Legacy fixture only: no registry approval or artifact execution is asserted.
+            model = ModelVersion(
+                id=uuid4(),
+                version=version,
+                artifact_path="synthetic.json",
+                artifact_hash="a" * 64,
+                feature_version="features-v1",
+                training_manifest={},
+                metrics={},
+                target_definition={},
+                status=ModelStatus.APPROVED,
+                probability_supported=False,
+            )
+            score.model_id = model.id
+            session.add(model)
+        complete_and_publish_run(session, run.id, T + timedelta(hours=4))
+        session.commit()
+        run_id, snapshot_id = run.id, snapshot.id
+    page = get(client, "hotspots", run_id=run_id)
+    detail = get(client, f"hotspots/{snapshot_id}", run_id=run_id)
+    geo = get(client, "hotspots.geojson", run_id=run_id)
+    for item in (page["items"][0], detail["hotspot"], geo["features"][0]["properties"]):
+        assert item["escalation_probability"] is None
+        assert item["score_kind"] == kind.value
+        assert item["scorer_version"] == version

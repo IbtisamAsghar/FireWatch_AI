@@ -212,7 +212,7 @@ def test_worker_persists_approved_model_id_probability_and_immutable_scores(work
         assert score.priority == "CRITICAL"
         alert = session.scalar(select(Alert).where(Alert.run_id == run.id))
         payload = json.loads(alert.canonical_payload)
-        assert payload["escalation_probability"] == score.escalation_probability
+        assert float(payload["escalation_probability"]) == score.escalation_probability
         assert payload["model_id"] == str(score.model_id)
         assert payload["scorer_version"] == score.scorer_version
         with pytest.raises(IntegrityError), session.begin_nested():

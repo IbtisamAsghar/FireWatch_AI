@@ -1,1 +1,1 @@
-"""FireWatch backend ownership skeleton; implementation pending."""
+"""Versioned canonical alert evidence; optional verification/chain adapters are separate."""

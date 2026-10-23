@@ -1,4 +1,4 @@
-"""evidence-v1: deterministic UTF-8 sorted JSON without nonfinite numbers."""
+"""Frozen legacy/package JSON encoding; new alert evidence uses serialization.py."""
 
 import hashlib
 import json

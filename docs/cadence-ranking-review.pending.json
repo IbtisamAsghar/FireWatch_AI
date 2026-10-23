@@ -1,0 +1,16 @@
+{
+  "schema_version": "model-approval-review-v1",
+  "decision": "pending",
+  "reviewer": null,
+  "model_author": "FireWatch ML development (Codex-assisted)",
+  "independent_review": false,
+  "limitations_acknowledged": false,
+  "evaluation_manifest_sha256": "ddb9e58821bd8d676c32c9213820352ada3c59093b0169a3db57b0139a28f931",
+  "inference_manifest_sha256": "b564e317491e2caf19279948ed2aa6cfb80f3496741e87aa5c4505472c904986",
+  "model_card_sha256": "6224bfbf9bf1fbcd9da10e429cba9ea33199c39534c75f249f77e861b686df2d",
+  "rationale": "Pending independent review of the concrete historical ranking candidate, its held-out results, sparse weather and uncalibrated scores.",
+  "supported_modes": [
+    "replay"
+  ],
+  "live_generalization_reviewed": false
+}

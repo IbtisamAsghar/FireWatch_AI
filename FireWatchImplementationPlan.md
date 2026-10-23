@@ -823,14 +823,19 @@ or ML activation is implied.
 
 ### Phase 5.1: Canonical evidence payload and hashing
 
-- [ ] Define `evidence-v1` including alert/run/snapshot IDs, mode, region, cutoff, satellite input IDs/hash manifest, weather values/times/product, baseline version, full feature vector/hash, scorer/model/feature versions, score/priority, explanation, warnings, source checksums, and scoring time.
-- [ ] Use a fixed representation: UTF-8, sorted JSON keys, compact separators, UTC timestamps, explicitly specified decimal strings, null rules, and no NaN/Infinity.
-- [ ] Sort unordered collections before serialization. Specify field precision before creating either the saved or anchored digest.
-- [ ] Generate canonical bytes once and store them immutably alongside SHA-256 hex digest.
-- [ ] Preserve exact canonical bytes/text, even if a JSONB copy exists for querying; do not rely on database JSON formatting for hashing.
-- [ ] Include evidence schema/canonicalization version. Future format changes create new versions.
-- [ ] Make evidence generation independent of chain availability.
-- [ ] Create evidence and its anchor outbox entry transactionally after scoring.
+- [x] Define `evidence-v1` including alert/run/snapshot IDs, mode, region, cutoff, satellite input IDs/hash manifest, weather values/times/product, baseline version, full feature vector/hash, scorer/model/feature versions, score/priority, explanation, warnings, source checksums, and scoring time.
+- [x] Use a fixed representation: UTF-8, sorted JSON keys, compact separators, UTC timestamps, explicitly specified decimal strings, null rules, and no NaN/Infinity.
+- [x] Sort unordered collections before serialization. Specify field precision before creating either the saved or anchored digest.
+- [x] Generate canonical bytes once and store them immutably alongside SHA-256 hex digest.
+- [x] Preserve exact canonical bytes/text, even if a JSONB copy exists for querying; do not rely on database JSON formatting for hashing.
+- [x] Include evidence schema/canonicalization version. Future format changes create new versions.
+- [x] Make evidence generation independent of chain availability.
+- [x] Create evidence and its anchor outbox entry transactionally after scoring.
+
+Implemented with the version pair `evidence-v1` / `evidence-json-v1`; legacy
+runs and saved alerts preserve their exact original bytes. See
+[Phase 5.1 acceptance](docs/phase-5.1-checklist.md) and the
+[canonical encoding contract](docs/canonical-evidence.md).
 
 ### Phase 5.2: Verification API and audit behavior
 

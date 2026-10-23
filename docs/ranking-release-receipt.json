@@ -1,0 +1,300 @@
+{
+  "schema_version": "ranking-release-readiness-v1",
+  "recorded_at": "2026-10-23T09:50:06.100640+00:00",
+  "development_manifest_sha256": "cdd81755576a0615ccfd77b4d9107ee1ca6ed558b6262a399e7137d8cd4e0fd1",
+  "final_evaluation_manifest_sha256": "ddb9e58821bd8d676c32c9213820352ada3c59093b0169a3db57b0139a28f931",
+  "inference_manifest_sha256": "b564e317491e2caf19279948ed2aa6cfb80f3496741e87aa5c4505472c904986",
+  "model_card_sha256": "6224bfbf9bf1fbcd9da10e429cba9ea33199c39534c75f249f77e861b686df2d",
+  "scorer_version": "forest-cadence-v1",
+  "selected_parameters": {
+    "class_weight": "balanced",
+    "max_depth": 8,
+    "min_samples_leaf": 3,
+    "n_estimators": 64
+  },
+  "probability_supported": false,
+  "final_test_status": "opened_once",
+  "final_test_ledger_state": "complete",
+  "final_metrics": {
+    "baseline-v1": {
+      "average_precision": 0.052994058047722524,
+      "confusion_matrix": {
+        "labels": [
+          0,
+          1
+        ],
+        "values": [
+          [
+            29,
+            378
+          ],
+          [
+            7,
+            26
+          ]
+        ]
+      },
+      "events": 170,
+      "f1": 0.11899313501144165,
+      "negative": 407,
+      "positive": 33,
+      "pr_auc": 0.050780622257559076,
+      "pr_auc_definition": "trapezoidal_precision_recall_curve",
+      "precision": 0.06435643564356436,
+      "precision_at_10": 0.10292003593890385,
+      "prevalence": 0.075,
+      "probability": null,
+      "ranking_runs": 106,
+      "recall": 0.7878787878787878,
+      "recall_at_10": 0.9259259259259259,
+      "recall_runs": 27,
+      "rows": 440,
+      "runs_without_positives": 79,
+      "undefined_recall": false
+    },
+    "forest": {
+      "average_precision": 0.19020540000969668,
+      "confusion_matrix": {
+        "labels": [
+          0,
+          1
+        ],
+        "values": [
+          [
+            253,
+            154
+          ],
+          [
+            12,
+            21
+          ]
+        ]
+      },
+      "events": 170,
+      "f1": 0.20192307692307693,
+      "negative": 407,
+      "positive": 33,
+      "pr_auc": 0.17800493021547548,
+      "pr_auc_definition": "trapezoidal_precision_recall_curve",
+      "precision": 0.12,
+      "precision_at_10": 0.10386343216531896,
+      "prevalence": 0.075,
+      "probability": null,
+      "ranking_runs": 106,
+      "recall": 0.6363636363636364,
+      "recall_at_10": 0.9259259259259259,
+      "recall_runs": 27,
+      "rows": 440,
+      "runs_without_positives": 79,
+      "undefined_recall": false
+    },
+    "forest_no_climate": {
+      "average_precision": 0.17452389714556352,
+      "confusion_matrix": {
+        "labels": [
+          0,
+          1
+        ],
+        "values": [
+          [
+            214,
+            193
+          ],
+          [
+            11,
+            22
+          ]
+        ]
+      },
+      "events": 170,
+      "f1": 0.1774193548387097,
+      "negative": 407,
+      "positive": 33,
+      "pr_auc": 0.16344251669855314,
+      "pr_auc_definition": "trapezoidal_precision_recall_curve",
+      "precision": 0.10232558139534884,
+      "precision_at_10": 0.10386343216531896,
+      "prevalence": 0.075,
+      "probability": null,
+      "ranking_runs": 106,
+      "recall": 0.6666666666666666,
+      "recall_at_10": 0.9259259259259259,
+      "recall_runs": 27,
+      "rows": 440,
+      "runs_without_positives": 79,
+      "undefined_recall": false
+    },
+    "forest_no_weather_climate": {
+      "average_precision": 0.18344958675834394,
+      "confusion_matrix": {
+        "labels": [
+          0,
+          1
+        ],
+        "values": [
+          [
+            225,
+            182
+          ],
+          [
+            9,
+            24
+          ]
+        ]
+      },
+      "events": 170,
+      "f1": 0.200836820083682,
+      "negative": 407,
+      "positive": 33,
+      "pr_auc": 0.17176199477829354,
+      "pr_auc_definition": "trapezoidal_precision_recall_curve",
+      "precision": 0.11650485436893204,
+      "precision_at_10": 0.10292003593890386,
+      "prevalence": 0.075,
+      "probability": null,
+      "ranking_runs": 106,
+      "recall": 0.7272727272727273,
+      "recall_at_10": 0.9074074074074074,
+      "recall_runs": 27,
+      "rows": 440,
+      "runs_without_positives": 79,
+      "undefined_recall": false
+    },
+    "logistic": {
+      "average_precision": 0.16708382976828134,
+      "confusion_matrix": {
+        "labels": [
+          0,
+          1
+        ],
+        "values": [
+          [
+            343,
+            64
+          ],
+          [
+            19,
+            14
+          ]
+        ]
+      },
+      "events": 170,
+      "f1": 0.25225225225225223,
+      "negative": 407,
+      "positive": 33,
+      "pr_auc": 0.1568319038303765,
+      "pr_auc_definition": "trapezoidal_precision_recall_curve",
+      "precision": 0.1794871794871795,
+      "precision_at_10": 0.10292003593890385,
+      "prevalence": 0.075,
+      "probability": null,
+      "ranking_runs": 106,
+      "recall": 0.42424242424242425,
+      "recall_at_10": 0.9074074074074074,
+      "recall_runs": 27,
+      "rows": 440,
+      "runs_without_positives": 79,
+      "undefined_recall": false
+    },
+    "weighted-baseline-v1": {
+      "average_precision": 0.06220517941126742,
+      "confusion_matrix": {
+        "labels": [
+          0,
+          1
+        ],
+        "values": [
+          [
+            12,
+            395
+          ],
+          [
+            0,
+            33
+          ]
+        ]
+      },
+      "events": 170,
+      "f1": 0.14316702819956617,
+      "negative": 407,
+      "positive": 33,
+      "pr_auc": 0.06053849040383796,
+      "pr_auc_definition": "trapezoidal_precision_recall_curve",
+      "precision": 0.07710280373831775,
+      "precision_at_10": 0.10292003593890385,
+      "prevalence": 0.075,
+      "probability": null,
+      "ranking_runs": 106,
+      "recall": 1.0,
+      "recall_at_10": 0.9259259259259259,
+      "recall_runs": 27,
+      "rows": 440,
+      "runs_without_positives": 79,
+      "undefined_recall": false
+    }
+  },
+  "paired_average_precision_deltas": {
+    "forest_minus_baseline-v1": {
+      "lower": 0.049450240835060846,
+      "upper": 0.26160635854311765,
+      "valid_replicates": 200
+    },
+    "forest_minus_forest_no_climate": {
+      "lower": 0.002858007129057699,
+      "upper": 0.03631000744525955,
+      "valid_replicates": 200
+    },
+    "forest_minus_forest_no_weather_climate": {
+      "lower": -0.019450105704638666,
+      "upper": 0.029043189618554562,
+      "valid_replicates": 200
+    },
+    "forest_minus_logistic": {
+      "lower": -0.0401445447028671,
+      "upper": 0.11292848134884555,
+      "valid_replicates": 200
+    },
+    "forest_minus_weighted-baseline-v1": {
+      "lower": 0.04703246416538876,
+      "upper": 0.2478413751739791,
+      "valid_replicates": 200
+    }
+  },
+  "promotion_recommendation": "independent_review_candidate",
+  "model_approved": false,
+  "model_activated": false,
+  "supported_review_scope": [
+    "replay"
+  ],
+  "limitations": [
+    "Held-out groups are satellite partition proxies, not independently verified fires",
+    "No emergency-response or physical severity validity is established",
+    "Promotion requires independent model-card/limitations review and registry approval",
+    "Forest output is an uncalibrated model_score; probability remains null"
+  ],
+  "verification": [
+    "Development exporter completed source-bound recomputation",
+    "Final exporter completed source-bound recomputation and committed ledger",
+    "Inference exporter verified the final source and wrote a compact candidate",
+    "Compact bundle loaded and model/threshold identities match final evaluation"
+  ],
+  "runtime_check": {
+    "installed_wheel": true,
+    "rows": 440,
+    "inference_manifest_sha256": "b564e317491e2caf19279948ed2aa6cfb80f3496741e87aa5c4505472c904986",
+    "score_priority_parity": true,
+    "all_probabilities_null": true,
+    "shap_additivity": true,
+    "settings_network_database_pickle_fitting_access": false,
+    "approval_granted": false
+  },
+  "verified_operational_state": {
+    "active_scorer": "baseline-v1",
+    "registry_counts": {
+      "model_versions": 0,
+      "model_promotions": 0,
+      "model_activation": 0
+    },
+    "read_only_database_check": true
+  }
+}

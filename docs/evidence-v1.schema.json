@@ -1,0 +1,1115 @@
+{
+  "$defs": {
+    "AssetPin": {
+      "additionalProperties": false,
+      "properties": {
+        "asset_id": {
+          "format": "uuid",
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "asset_id",
+        "sha256"
+      ],
+      "title": "AssetPin",
+      "type": "object"
+    },
+    "BoundingBox": {
+      "additionalProperties": false,
+      "properties": {
+        "west": {
+          "title": "West",
+          "type": "string",
+          "pattern": "^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]*[1-9])?$"
+        },
+        "south": {
+          "title": "South",
+          "type": "string",
+          "pattern": "^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]*[1-9])?$"
+        },
+        "east": {
+          "title": "East",
+          "type": "string",
+          "pattern": "^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]*[1-9])?$"
+        },
+        "north": {
+          "title": "North",
+          "type": "string",
+          "pattern": "^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]*[1-9])?$"
+        }
+      },
+      "required": [
+        "west",
+        "south",
+        "east",
+        "north"
+      ],
+      "title": "BoundingBox",
+      "type": "object"
+    },
+    "ClimateBaseline": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "contracts-v1",
+          "default": "contracts-v1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "cell_key": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Cell Key",
+          "type": "string"
+        },
+        "latitude": {
+          "title": "Latitude",
+          "type": "string",
+          "pattern": "^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]*[1-9])?$"
+        },
+        "longitude": {
+          "title": "Longitude",
+          "type": "string",
+          "pattern": "^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]*[1-9])?$"
+        },
+        "source": {
+          "$ref": "#/$defs/Provider",
+          "default": "nasa_power"
+        },
+        "reference_start_year": {
+          "maximum": 2100,
+          "minimum": 1900,
+          "title": "Reference Start Year",
+          "type": "integer"
+        },
+        "reference_end_year": {
+          "maximum": 2100,
+          "minimum": 1900,
+          "title": "Reference End Year",
+          "type": "integer"
+        },
+        "month": {
+          "maximum": 12,
+          "minimum": 1,
+          "title": "Month",
+          "type": "integer"
+        },
+        "temperature_mean_c": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]*[1-9])?$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Temperature Mean C"
+        },
+        "precipitation_mean_mm": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]*[1-9])?$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Precipitation Mean Mm"
+        },
+        "sample_counts": {
+          "additionalProperties": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "title": "Sample Counts",
+          "type": "object"
+        },
+        "statistics": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Statistics",
+          "type": "object"
+        },
+        "version": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        },
+        "asset_id": {
+          "format": "uuid",
+          "title": "Asset Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "cell_key",
+        "latitude",
+        "longitude",
+        "reference_start_year",
+        "reference_end_year",
+        "month",
+        "sample_counts",
+        "statistics",
+        "version",
+        "asset_id"
+      ],
+      "title": "ClimateBaseline",
+      "type": "object"
+    },
+    "ClusterSnapshot": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "contracts-v1",
+          "default": "contracts-v1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "run_id": {
+          "format": "uuid",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "mode": {
+          "$ref": "#/$defs/RunMode"
+        },
+        "as_of": {
+          "format": "date-time",
+          "title": "As Of",
+          "type": "string"
+        },
+        "feature_version": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Feature Version",
+          "type": "string"
+        },
+        "snapshot_id": {
+          "format": "uuid",
+          "title": "Snapshot Id",
+          "type": "string"
+        },
+        "latitude": {
+          "title": "Latitude",
+          "type": "string",
+          "pattern": "^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]*[1-9])?$"
+        },
+        "longitude": {
+          "title": "Longitude",
+          "type": "string",
+          "pattern": "^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]*[1-9])?$"
+        },
+        "member_ids": {
+          "items": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Member Ids",
+          "type": "array"
+        },
+        "frp_max_mw": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]*[1-9])?$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Frp Max Mw"
+        },
+        "frp_sum_mw": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]*[1-9])?$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Frp Sum Mw"
+        },
+        "latest_detection_at": {
+          "format": "date-time",
+          "title": "Latest Detection At",
+          "type": "string"
+        },
+        "algorithm_version": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Algorithm Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "mode",
+        "as_of",
+        "feature_version",
+        "snapshot_id",
+        "latitude",
+        "longitude",
+        "member_ids",
+        "latest_detection_at",
+        "algorithm_version"
+      ],
+      "title": "ClusterSnapshot",
+      "type": "object"
+    },
+    "EvidenceRegion": {
+      "additionalProperties": false,
+      "properties": {
+        "region_id": {
+          "format": "uuid",
+          "title": "Region Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "bbox": {
+          "$ref": "#/$defs/BoundingBox"
+        }
+      },
+      "required": [
+        "region_id",
+        "name",
+        "bbox"
+      ],
+      "title": "EvidenceRegion",
+      "type": "object"
+    },
+    "EvidenceRevision": {
+      "additionalProperties": false,
+      "properties": {
+        "detection_id": {
+          "format": "uuid",
+          "title": "Detection Id",
+          "type": "string"
+        },
+        "batch_id": {
+          "format": "uuid",
+          "title": "Batch Id",
+          "type": "string"
+        },
+        "revision_hash": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Revision Hash",
+          "type": "string"
+        }
+      },
+      "required": [
+        "detection_id",
+        "batch_id",
+        "revision_hash"
+      ],
+      "title": "EvidenceRevision",
+      "type": "object"
+    },
+    "FeatureSet": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "contracts-v1",
+          "default": "contracts-v1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "run_id": {
+          "format": "uuid",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "mode": {
+          "$ref": "#/$defs/RunMode"
+        },
+        "as_of": {
+          "format": "date-time",
+          "title": "As Of",
+          "type": "string"
+        },
+        "feature_version": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Feature Version",
+          "type": "string"
+        },
+        "snapshot_id": {
+          "format": "uuid",
+          "title": "Snapshot Id",
+          "type": "string"
+        },
+        "values": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Values",
+          "type": "object"
+        },
+        "missing_flags": {
+          "additionalProperties": {
+            "type": "boolean"
+          },
+          "title": "Missing Flags",
+          "type": "object"
+        },
+        "units": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Units",
+          "type": "object"
+        },
+        "lineage": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Lineage",
+          "type": "object"
+        },
+        "feature_hash": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Feature Hash",
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "mode",
+        "as_of",
+        "feature_version",
+        "snapshot_id",
+        "values",
+        "missing_flags",
+        "units",
+        "lineage",
+        "feature_hash"
+      ],
+      "title": "FeatureSet",
+      "type": "object"
+    },
+    "JsonValue": {},
+    "ModelEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "model_id": {
+          "format": "uuid",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "scorer_version": {
+          "title": "Scorer Version",
+          "type": "string"
+        },
+        "inference_manifest_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Inference Manifest Sha256",
+          "type": "string"
+        },
+        "approval_reference": {
+          "title": "Approval Reference",
+          "type": "string"
+        }
+      },
+      "required": [
+        "model_id",
+        "scorer_version",
+        "inference_manifest_sha256",
+        "approval_reference"
+      ],
+      "title": "ModelEvidence",
+      "type": "object"
+    },
+    "Priority": {
+      "enum": [
+        "LOW",
+        "MEDIUM",
+        "HIGH",
+        "CRITICAL"
+      ],
+      "title": "Priority",
+      "type": "string"
+    },
+    "Product": {
+      "enum": [
+        "VIIRS_NOAA20_NRT",
+        "VIIRS_NOAA21_NRT",
+        "VIIRS_NOAA20_SP",
+        "VIIRS_NOAA21_SP"
+      ],
+      "title": "Product",
+      "type": "string"
+    },
+    "Provider": {
+      "enum": [
+        "firms",
+        "open_meteo",
+        "nasa_power"
+      ],
+      "title": "Provider",
+      "type": "string"
+    },
+    "RevisionPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "firms-selection-v1",
+          "default": "firms-selection-v1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "products": {
+          "additionalProperties": {
+            "$ref": "#/$defs/Product"
+          },
+          "propertyNames": {
+            "$ref": "#/$defs/Sensor"
+          },
+          "title": "Products",
+          "type": "object"
+        },
+        "batch_ids": {
+          "items": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "minItems": 1,
+          "title": "Batch Ids",
+          "type": "array"
+        },
+        "retrieval_cutoff": {
+          "format": "date-time",
+          "title": "Retrieval Cutoff",
+          "type": "string"
+        },
+        "allow_rejected_batches": {
+          "default": false,
+          "title": "Allow Rejected Batches",
+          "type": "boolean"
+        },
+        "max_observations": {
+          "default": 100000,
+          "maximum": 500000,
+          "minimum": 1,
+          "title": "Max Observations",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "products",
+        "batch_ids",
+        "retrieval_cutoff"
+      ],
+      "title": "RevisionPolicy",
+      "type": "object"
+    },
+    "RunMode": {
+      "enum": [
+        "live",
+        "replay"
+      ],
+      "title": "RunMode",
+      "type": "string"
+    },
+    "SatelliteAssetPin": {
+      "additionalProperties": false,
+      "properties": {
+        "asset_id": {
+          "format": "uuid",
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "batch_id": {
+          "format": "uuid",
+          "title": "Batch Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "asset_id",
+        "sha256",
+        "batch_id"
+      ],
+      "title": "SatelliteAssetPin",
+      "type": "object"
+    },
+    "SatelliteEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "policy": {
+          "$ref": "#/$defs/RevisionPolicy"
+        },
+        "window_start": {
+          "format": "date-time",
+          "title": "Window Start",
+          "type": "string"
+        },
+        "selected": {
+          "items": {
+            "$ref": "#/$defs/EvidenceRevision"
+          },
+          "maxItems": 500000,
+          "title": "Selected",
+          "type": "array"
+        },
+        "assets": {
+          "items": {
+            "$ref": "#/$defs/SatelliteAssetPin"
+          },
+          "title": "Assets",
+          "type": "array"
+        },
+        "snapshot_input_hash": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Snapshot Input Hash",
+          "type": "string"
+        }
+      },
+      "required": [
+        "policy",
+        "window_start",
+        "selected",
+        "assets",
+        "snapshot_input_hash"
+      ],
+      "title": "SatelliteEvidence",
+      "type": "object"
+    },
+    "ScoreKind": {
+      "enum": [
+        "baseline",
+        "model_score",
+        "probability"
+      ],
+      "title": "ScoreKind",
+      "type": "string"
+    },
+    "Sensor": {
+      "enum": [
+        "NOAA-20",
+        "NOAA-21"
+      ],
+      "title": "Sensor",
+      "type": "string"
+    },
+    "WeatherEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "cell_key": {
+          "title": "Cell Key",
+          "type": "string"
+        },
+        "product": {
+          "title": "Product",
+          "type": "string"
+        },
+        "model": {
+          "title": "Model",
+          "type": "string"
+        },
+        "valid_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Valid At"
+        },
+        "precipitation_interval_end": {
+          "format": "date-time",
+          "title": "Precipitation Interval End",
+          "type": "string"
+        },
+        "records_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Records Sha256",
+          "type": "string"
+        },
+        "series": {
+          "$ref": "#/$defs/WeatherSeries"
+        },
+        "assets": {
+          "items": {
+            "$ref": "#/$defs/AssetPin"
+          },
+          "title": "Assets",
+          "type": "array"
+        }
+      },
+      "required": [
+        "cell_key",
+        "product",
+        "model",
+        "valid_at",
+        "precipitation_interval_end",
+        "records_sha256",
+        "series",
+        "assets"
+      ],
+      "title": "WeatherEvidence",
+      "type": "object"
+    },
+    "WeatherRecordInput": {
+      "additionalProperties": false,
+      "properties": {
+        "cell_key": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Cell Key",
+          "type": "string"
+        },
+        "latitude": {
+          "title": "Latitude",
+          "type": "string",
+          "pattern": "^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]*[1-9])?$"
+        },
+        "longitude": {
+          "title": "Longitude",
+          "type": "string",
+          "pattern": "^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]*[1-9])?$"
+        },
+        "requested_latitude": {
+          "title": "Requested Latitude",
+          "type": "string",
+          "pattern": "^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]*[1-9])?$"
+        },
+        "requested_longitude": {
+          "title": "Requested Longitude",
+          "type": "string",
+          "pattern": "^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]*[1-9])?$"
+        },
+        "provider": {
+          "$ref": "#/$defs/Provider",
+          "default": "open_meteo"
+        },
+        "model": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Model",
+          "type": "string"
+        },
+        "product": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Product",
+          "type": "string"
+        },
+        "source_version": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Source Version",
+          "type": "string"
+        },
+        "valid_at": {
+          "format": "date-time",
+          "title": "Valid At",
+          "type": "string"
+        },
+        "retrieved_at": {
+          "format": "date-time",
+          "title": "Retrieved At",
+          "type": "string"
+        },
+        "temperature_c": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]*[1-9])?$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Temperature C"
+        },
+        "humidity_pct": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]*[1-9])?$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Humidity Pct"
+        },
+        "wind_ms": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]*[1-9])?$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Wind Ms"
+        },
+        "gust_ms": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]*[1-9])?$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gust Ms"
+        },
+        "precipitation_mm": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]*[1-9])?$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Precipitation Mm"
+        },
+        "units": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Units",
+          "type": "object"
+        },
+        "quality_flags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Quality Flags",
+          "type": "array"
+        },
+        "asset_id": {
+          "format": "uuid",
+          "title": "Asset Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "cell_key",
+        "latitude",
+        "longitude",
+        "requested_latitude",
+        "requested_longitude",
+        "model",
+        "product",
+        "source_version",
+        "valid_at",
+        "retrieved_at",
+        "units",
+        "asset_id"
+      ],
+      "title": "WeatherRecordInput",
+      "type": "object"
+    },
+    "WeatherSeries": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "contracts-v1",
+          "default": "contracts-v1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "records": {
+          "items": {
+            "$ref": "#/$defs/WeatherRecordInput"
+          },
+          "title": "Records",
+          "type": "array"
+        },
+        "quality_flags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Quality Flags",
+          "type": "array"
+        }
+      },
+      "required": [
+        "records"
+      ],
+      "title": "WeatherSeries",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "evidence-v1",
+      "default": "evidence-v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "canonicalization_version": {
+      "const": "evidence-json-v1",
+      "default": "evidence-json-v1",
+      "title": "Canonicalization Version",
+      "type": "string"
+    },
+    "alert_id": {
+      "format": "uuid",
+      "title": "Alert Id",
+      "type": "string"
+    },
+    "run_id": {
+      "format": "uuid",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "snapshot_id": {
+      "format": "uuid",
+      "title": "Snapshot Id",
+      "type": "string"
+    },
+    "score_id": {
+      "format": "uuid",
+      "title": "Score Id",
+      "type": "string"
+    },
+    "mode": {
+      "$ref": "#/$defs/RunMode"
+    },
+    "region": {
+      "$ref": "#/$defs/EvidenceRegion"
+    },
+    "as_of": {
+      "format": "date-time",
+      "title": "As Of",
+      "type": "string"
+    },
+    "snapshot": {
+      "$ref": "#/$defs/ClusterSnapshot"
+    },
+    "feature_version": {
+      "title": "Feature Version",
+      "type": "string"
+    },
+    "feature_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Feature Hash",
+      "type": "string"
+    },
+    "feature": {
+      "$ref": "#/$defs/FeatureSet"
+    },
+    "feature_payload_json": {
+      "title": "Feature Payload Json",
+      "type": "string"
+    },
+    "scorer_version": {
+      "title": "Scorer Version",
+      "type": "string"
+    },
+    "model_id": {
+      "anyOf": [
+        {
+          "format": "uuid",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Model Id"
+    },
+    "model": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ModelEvidence"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "score_kind": {
+      "$ref": "#/$defs/ScoreKind"
+    },
+    "priority_score": {
+      "title": "Priority Score",
+      "type": "string",
+      "pattern": "^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]*[1-9])?$"
+    },
+    "escalation_probability": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]*[1-9])?$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Escalation Probability"
+    },
+    "priority": {
+      "$ref": "#/$defs/Priority"
+    },
+    "explanation": {
+      "additionalProperties": true,
+      "title": "Explanation",
+      "type": "object"
+    },
+    "reasons": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Reasons",
+      "type": "array"
+    },
+    "warnings": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Warnings",
+      "type": "array"
+    },
+    "scored_at": {
+      "format": "date-time",
+      "title": "Scored At",
+      "type": "string"
+    },
+    "satellite": {
+      "$ref": "#/$defs/SatelliteEvidence"
+    },
+    "weather": {
+      "$ref": "#/$defs/WeatherEvidence"
+    },
+    "baseline_version": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Baseline Version"
+    },
+    "baseline": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ClimateBaseline"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "baseline_asset": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/AssetPin"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "source_checksums": {
+      "items": {
+        "$ref": "#/$defs/AssetPin"
+      },
+      "title": "Source Checksums",
+      "type": "array"
+    },
+    "retrieval_cutoff": {
+      "format": "date-time",
+      "title": "Retrieval Cutoff",
+      "type": "string"
+    },
+    "run_config_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Run Config Hash",
+      "type": "string"
+    },
+    "feature_stage_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Feature Stage Hash",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "canonicalization_version",
+    "alert_id",
+    "run_id",
+    "snapshot_id",
+    "score_id",
+    "mode",
+    "region",
+    "as_of",
+    "snapshot",
+    "feature_version",
+    "feature_hash",
+    "feature",
+    "feature_payload_json",
+    "scorer_version",
+    "model_id",
+    "model",
+    "score_kind",
+    "priority_score",
+    "escalation_probability",
+    "priority",
+    "explanation",
+    "reasons",
+    "warnings",
+    "scored_at",
+    "satellite",
+    "weather",
+    "baseline_version",
+    "baseline",
+    "baseline_asset",
+    "source_checksums",
+    "retrieval_cutoff",
+    "run_config_hash",
+    "feature_stage_hash"
+  ],
+  "title": "EvidencePayload",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:firewatch:evidence-v1:evidence-json-v1",
+  "description": "Saved wire format; canonical-evidence.md specifies encoding rules."
+}

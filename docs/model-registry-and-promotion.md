@@ -140,10 +140,18 @@ together; promotion never deletes previous approved bundles or evidence.
 
 ## Current real-data state
 
-The twelve existing snapshots are off the frozen six-hour cadence. There is no
-eligible fitted model, supported final-test comparison or completed review to
-promote. The real promotion preflight refuses the development-only/no-fit package
-without reading a review or creating registry approval. Default baselines remain
-active, the final test stays sealed and no actual ML activation occurred.
+The original twelve-snapshot diagnostic package remains insufficient. A separate
+seasonal cadence backfill now supplies eligible rows and a fitted candidate.
+Nested forward development selection and the frozen one-shot final comparison
+have completed. The selected forest passes both paired baseline ranking gates;
+calibrated probabilities remain unsupported and null.
 
-See [acceptance evidence](phase-4.7-checklist.md) and [real receipt](phase-4.7-smoke.json).
+The [ranking release handoff](ranking-ml-release.md) records the concrete candidate,
+metrics, exact artifact hashes and pending independent review. No model is approved,
+registered or active; the configured scorer remains `baseline-v1`. Historical SP
+results do not establish live generalization. Do not delete the committed final
+ledger or rerun model selection against the opened holdout.
+
+The [Phase 4.7 acceptance evidence](phase-4.7-checklist.md) and
+[original receipt](phase-4.7-smoke.json) remain frozen historical baseline-stage
+records. Their sealed-holdout preflight is not the current release verifier.

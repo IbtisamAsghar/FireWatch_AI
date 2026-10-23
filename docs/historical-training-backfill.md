@@ -90,7 +90,7 @@ cleaned up; existing outputs are never overwritten. Keep all backfill/source dat
 private and Git-ignored. Manifest digests provide integrity, not source
 authentication or evidence of model performance.
 
-## Verified candidate and next evaluation
+## Verified training candidate and subsequent evaluation
 
 The new dataset passes the frozen split policy with grouped temporal CV. Its
 separate calibration period has only four positives, so the existing sparse-data
@@ -100,20 +100,28 @@ and portable prediction parity. It is development-only and uncalibrated:
 probability remains null. No model was registered, approved or activated.
 
 The [public receipt](training-backfill-receipt.json) binds the exact backfill,
-merged labels, splits and training package hashes. Reproduce the receipt with
-`.venv/Scripts/python.exe -m scripts.verify_training_backfill`.
+merged labels, splits and training package hashes. The original receipt was
+generated with `.venv/Scripts/python.exe -m scripts.verify_training_backfill`
+before final holdout access.
 
-The next existing workflow step is development evaluation and cross-fitted
-threshold selection:
+Development evaluation and cross-fitted threshold selection have subsequently
+completed, followed by the frozen one-shot final evaluation. The selected ranking
+candidate passed the paired baseline gates; independent approval remains pending.
+See the [current ranking release handoff](ranking-ml-release.md). The public
+backfill receipt above describes the earlier training stage. Its generator
+intentionally requires a sealed holdout and must not be used after final access.
+
+The original development command was:
 
 ```powershell
 $receipt = Get-Content docs/training-backfill-receipt.json | ConvertFrom-Json
 firewatch evaluate --training data/models/cadence-seasons-v1 --manifest-sha256 $receipt.training_manifest_sha256 --output data/evaluations/cadence-development-v1
 ```
 
-Only after freezing the development protocol should the one-shot final evaluation
-and independent limitations review be considered. No final performance claim or
-approval follows from dataset eligibility or candidate fitting.
+Existing outputs are immutable; do not rerun the command into the same directory.
+The final ledger is now committed and must remain authoritative across machines.
+Do not delete it to reopen the holdout or tune a new experiment against those
+results. Dataset eligibility and candidate fitting alone never grant approval.
 
 ## Verification
 

@@ -1,11 +1,11 @@
 # FireWatch scorer and candidate model card
 
-Release state: **documented baseline release; no approved ML model**.
-The default scorer remains `baseline-v1`. No held-out ML performance or calibrated
-probability can be claimed for the current real data. Phase 4 implements the full
-training, evaluation, inference and promotion workflow. Historical backfill now
-fixes the zero-eligible-row blocker; final evaluation and independent approval
-remain required before ML activation.
+Release state: **ranking candidate passed final evaluation; independent approval pending**.
+The default scorer remains `baseline-v1`; no ML model is approved or active.
+Historical backfill fixed the zero-eligible-row blocker. The frozen one-shot
+final evaluation now supports a historical ranking candidate. Calibrated
+probability remains unsupported and null. See the
+[ranking release handoff](ranking-ml-release.md) for exact evidence and review inputs.
 
 ## Intended use and scope
 
@@ -41,17 +41,25 @@ fill workflow is available. Later weather retrievals require a new frozen backfi
 job and downstream experiment artifacts.
 
 A real Random Forest candidate has now been fitted and exported with deterministic
-source-bound recomputation and portable prediction parity. The selected candidate
-has 32 trees, maximum depth 8, minimum leaf size 1 and no class weighting.
-Its status is `fitted_development_only`; forward CV leaves it uncalibrated and
-`probability_supported=false`. It is not registered or active.
+source-bound recomputation and portable prediction parity. The original training
+selection has 32 trees, maximum depth 8, minimum leaf size 1 and no class weighting.
+That original package remains `fitted_development_only`. Nested forward
+development evaluation selected a replacement forest with 64 trees, depth 8,
+minimum leaf size 3 and balanced class weights. It remains uncalibrated with
+`probability_supported=false`, unregistered and inactive.
 
-The final-test ledger remains unconsumed; no approved ML bundle or supported
-final-held-out performance claim exists. See the
-[historical backfill workflow](historical-training-backfill.md) and
-[real-data receipt](training-backfill-receipt.json) for reproduction,
-data limitations and the current offline-candidate state. Original Phase 4.8
-baseline evidence remains frozen in its original package.
+The final-test ledger is now committed for the frozen release experiment.
+On 440 held-out rows (33 positive, 407 negative, 170 thermal partition groups),
+forest average precision is 0.190205 versus 0.0529941 and 0.0622052 for the two
+baselines. Paired whole-event 95% AP-improvement intervals are strictly positive
+against both baselines, with 200 valid replicates. At the selected High boundary,
+precision is 0.12 and recall is 0.636364: false positives remain substantial.
+AP is a ranking measure, not accuracy or a calibrated hotspot probability.
+
+See the [ranking release receipt](ranking-release-receipt.json) for exact metrics
+and artifact pins. The [historical backfill workflow](historical-training-backfill.md)
+and [original backfill receipt](training-backfill-receipt.json) retain their earlier
+training-stage evidence. Original Phase 4.8 baseline evidence remains frozen.
 
 ## Baselines, thresholds and explanations
 
@@ -89,9 +97,10 @@ independent verification and reproduction using locked dependencies. Preserve
 the release manifest SHA-256 through a separately trusted channel. A checksum
 alone is an integrity check, not an authenticated review or a performance claim.
 
-An approved ML bundle is explicitly unavailable in this baseline release.
-Eligible historical features/labels and reviewed purged splits now exist.
-Future activation still requires supported score/threshold validation, frozen
-one-shot final evaluation with positive paired baseline improvements, source-bound
-bundle verification and independent limitations review. Then follow
-[registry promotion](model-registry-and-promotion.md). No bypass is supplied.
+An approved ML bundle is still unavailable. Score/threshold selection and the
+frozen one-shot final evaluation have completed with positive paired baseline
+improvements. The exact inference candidate and review hashes are recorded in
+the [ranking release handoff](ranking-ml-release.md). Independent limitations
+review and registry promotion remain required before activation. These historical
+SP results do not establish live generalization. Follow
+[registry promotion](model-registry-and-promotion.md); no bypass is supplied.

@@ -23,6 +23,8 @@ from firewatch.db.models import (
     SourceAsset,
 )
 from firewatch.evidence.canonical import canonical_bytes, evidence_hash
+from firewatch.evidence.payload import EvidenceRegion, build_evidence, evidence_content
+from firewatch.evidence.serialization import CANONICALIZATION_VERSION
 from firewatch.ml.baselines import BASELINE_VERSIONS
 from firewatch.ml.inference_bundle import ApprovedScorer
 from firewatch.ml.predict import _approved_runtime, score_features
@@ -31,7 +33,7 @@ from firewatch.pipeline.jobs import Lease, fence
 from firewatch.pipeline.replay_bundle import import_bundle, load_bundle
 from firewatch.processing.clusters import ClusteringSpec
 from firewatch.processing.features import FeatureSpec, load_feature_spec
-from firewatch.repositories.features import build_run_features
+from firewatch.repositories.features import EnrichmentPins, build_run_features
 from firewatch.repositories.ingestion import persist_normalized
 from firewatch.repositories.revisions import RevisionPolicy
 from firewatch.repositories.runs import complete_and_publish_run
@@ -50,7 +52,7 @@ from firewatch.schemas.common import (
     Stage,
     UTCDateTime,
 )
-from firewatch.schemas.contracts import BoundingBox, FeatureSet
+from firewatch.schemas.contracts import BoundingBox, FeatureSet, ScoreResult
 from firewatch.schemas.firms_refresh import RefreshSpec
 from firewatch.schemas.operator import Slug
 from firewatch.sources.firms import FirmsClient
@@ -188,6 +190,8 @@ def execute_run(
                 bbox=bbox.model_dump(),
                 features=config.model_dump(mode="json"),
                 evidence=settings.evidence_schema_version,
+                evidence_canonicalization=CANONICALIZATION_VERSION,
+                region=dict(region_id=str(area.id), name=region_name, bbox=bbox.model_dump()),
                 detection_max_age_hours=(
                     bundle.detection_max_age_hours
                     if bundle is not None
@@ -236,6 +240,9 @@ def execute_run(
         job.result_run_id = identifier
         if run.status == RunStatus.COMPLETED:
             return identifier
+
+    if frozen.get("evidence_canonicalization") not in {None, CANONICALIZATION_VERSION}:
+        raise ValueError("Unsupported saved evidence canonicalization")
 
     approved_reference = None
     if "scorer" in frozen:
@@ -515,35 +522,76 @@ def execute_run(
         fence(session, lease, now())
         run = _run(session, identifier)
         if run.stage_status.get(Stage.EVIDENCE.value) != "succeeded":
+            feature_by_id = {f.snapshot_id: f for f in features}
+            snapshot_by_id = {d.snapshot.snapshot_id: d.snapshot for d in snapshots.snapshots}
+            formal_pins = (
+                EnrichmentPins.model_validate(run.input_asset_manifest["features"]["pins"])
+                if frozen.get("evidence_canonicalization") == CANONICALIZATION_VERSION
+                else None
+            )
             for score in session.scalars(
                 select(Score).where(Score.run_id == identifier, Score.priority == Priority.CRITICAL)
             ):
-                feature = next(f for f in features if f.snapshot_id == score.snapshot_id)
+                feature = feature_by_id[score.snapshot_id]
                 alert_id = uuid5(score.id, "evidence-v1")
-                payload = dict(
-                    schema_version="evidence-v1",
-                    alert_id=str(alert_id),
-                    run_id=str(identifier),
-                    mode=request.mode.value,
-                    as_of=request.as_of.isoformat(),
-                    snapshot_id=str(score.snapshot_id),
-                    score_id=str(score.id),
-                    scorer_version=score.scorer_version,
-                    priority_score=score.priority_score,
-                    priority=score.priority.value,
-                    score_kind=score.score_kind.value,
-                    escalation_probability=score.escalation_probability,
-                    scored_at=score.scored_at.isoformat(),
-                    explanation=score.explanation,
-                    feature=feature.model_dump(mode="json"),
-                    source_manifest={
-                        "satellite": run.input_asset_manifest["firms"],
-                        "enrichment": run.input_asset_manifest["features"]["pins"],
-                    },
-                )
-                if score.model_id is not None:
-                    payload["model_id"] = str(score.model_id)
-                content = canonical_bytes(payload)
+                if formal_pins is not None:
+                    formal = build_evidence(
+                        score_id=score.id,
+                        score=ScoreResult(
+                            run_id=run.id,
+                            snapshot_id=score.snapshot_id,
+                            mode=run.mode,
+                            as_of=run.as_of,
+                            feature_version=run.feature_version,
+                            scorer_version=score.scorer_version,
+                            model_id=score.model_id,
+                            score_kind=score.score_kind,
+                            priority_score=score.priority_score,
+                            escalation_probability=score.escalation_probability,
+                            priority=score.priority,
+                            explanation=score.explanation,
+                            reasons=score.explanation.get("reasons", []),
+                            warnings=score.explanation.get("warnings", []),
+                            scored_at=score.scored_at,
+                        ),
+                        snapshot=snapshot_by_id[score.snapshot_id],
+                        feature=feature,
+                        region=EvidenceRegion.model_validate(frozen["region"]),
+                        firms=run.input_asset_manifest["firms"],
+                        pins=formal_pins,
+                        run_config_hash=run.config_hash,
+                        feature_stage_hash=run.input_asset_manifest["features"]["sha256"],
+                        warnings=run.input_asset_manifest.get("coverage_warnings", []),
+                        approved=approved_reference,
+                    )
+                    content, original_hash = evidence_content(formal)
+                else:
+                    # Runs admitted before Phase 5.1 keep their original exact encoding.
+                    payload = dict(
+                        schema_version="evidence-v1",
+                        alert_id=str(alert_id),
+                        run_id=str(identifier),
+                        mode=request.mode.value,
+                        as_of=request.as_of.isoformat(),
+                        snapshot_id=str(score.snapshot_id),
+                        score_id=str(score.id),
+                        scorer_version=score.scorer_version,
+                        priority_score=score.priority_score,
+                        priority=score.priority.value,
+                        score_kind=score.score_kind.value,
+                        escalation_probability=score.escalation_probability,
+                        scored_at=score.scored_at.isoformat(),
+                        explanation=score.explanation,
+                        feature=feature.model_dump(mode="json"),
+                        source_manifest={
+                            "satellite": run.input_asset_manifest["firms"],
+                            "enrichment": run.input_asset_manifest["features"]["pins"],
+                        },
+                    )
+                    if score.model_id is not None:
+                        payload["model_id"] = str(score.model_id)
+                    content = canonical_bytes(payload)
+                    original_hash = evidence_hash(content)
                 session.add(
                     Alert(
                         id=alert_id,
@@ -551,7 +599,7 @@ def execute_run(
                         run_id=identifier,
                         score_id=score.id,
                         canonical_payload=content,
-                        original_hash=evidence_hash(content),
+                        original_hash=original_hash,
                         evidence_schema_version="evidence-v1",
                         created_at=now(),
                     )

@@ -256,3 +256,12 @@ input contract. `fill-backfill-weather` provides bounded historical cache fillin
 The first complete job produced **1,819 eligible rows**, fixing the original
 zero-row blocker; most weather remains missing and explicitly flagged.
 See [workflow and current data limitations](docs/historical-training-backfill.md).
+
+## Canonical alert evidence (Phase 5.1)
+
+New runs pin `evidence-v1` / `evidence-json-v1`: a complete source-bound payload
+with decimal strings, UTC timestamps and exact immutable bytes/SHA-256.
+Alert and optional anchor-outbox publication share one transaction; no chain
+access is needed. Existing alerts and already-admitted runs keep their original
+encoding. See [encoding and compatibility](docs/canonical-evidence.md) and
+[acceptance](docs/phase-5.1-checklist.md).

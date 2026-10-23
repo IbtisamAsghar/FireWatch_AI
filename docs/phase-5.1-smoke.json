@@ -1,0 +1,71 @@
+{
+  "schema_version": "phase-5.1-acceptance-v1",
+  "recorded_at": "2026-10-23T10:41:28.720307+00:00",
+  "canonicalization_version": "evidence-json-v1",
+  "data_kind": "real-cached-historical",
+  "database_scope": "disposable migrated test schema",
+  "provider_attempts": 0,
+  "chain_calls": 0,
+  "application_state_unchanged": true,
+  "historical_alert_bytes_unchanged": true,
+  "scenarios": [
+    {
+      "scenario": "norcal-active-v1",
+      "run_id": "3ef7cac1-0500-5374-8351-9a089ec4d477",
+      "status": "completed",
+      "mode": "replay",
+      "features": 6,
+      "scores": 6,
+      "alerts": 2,
+      "exact_saved_hashes_match": true,
+      "repeated_bytes_unchanged": true,
+      "upstream_feature_preimages_match": true
+    },
+    {
+      "scenario": "norcal-quiet-v1",
+      "run_id": "3b73aaba-5a5b-5984-911e-d3870df0aa1d",
+      "status": "completed",
+      "mode": "replay",
+      "features": 0,
+      "scores": 0,
+      "alerts": 0,
+      "exact_saved_hashes_match": true,
+      "repeated_bytes_unchanged": true,
+      "upstream_feature_preimages_match": true
+    },
+    {
+      "scenario": "norcal-degraded-v1",
+      "run_id": "a89fe64e-bbf2-528a-a643-9ae5a5fc14a6",
+      "status": "completed",
+      "mode": "replay",
+      "features": 6,
+      "scores": 6,
+      "alerts": 2,
+      "exact_saved_hashes_match": true,
+      "repeated_bytes_unchanged": true,
+      "upstream_feature_preimages_match": true
+    }
+  ],
+  "validation": {
+    "full_regression_passed": 1132,
+    "full_regression_seconds": 410.4,
+    "final_focused_passed": 84,
+    "final_focused_seconds": 31.58,
+    "new_acceptance_cases": 43,
+    "strict_mypy_source_files": 101,
+    "ci_lint_format_files": 207,
+    "runtime_lock_packages": 54,
+    "development_lock_packages": 71,
+    "configured_secret_scan_files": 371,
+    "installed_wheel_exact_example_parity": true,
+    "isolated_wheel_settings_network_database_pickle_access": false,
+    "no_new_dependency_or_migration": true,
+    "hosted_ci_verified": false
+  },
+  "format_sha256": {
+    "docs\\evidence-v1.schema.json": "84e5bb9852eb28ea89a2d55259a85d442849a93a40401a49a3009f0b0495226f",
+    "docs\\evidence-v1-example.json": "ba0fb21c56e7d27f9d4a378df3427b86bf5365f539407d1b5756f9aac48e89a9",
+    "src\\firewatch\\evidence\\serialization.py": "d7fb7c762557538d8c3b9712c0917856162d63c8b66f9518316abb25802fff82",
+    "src\\firewatch\\evidence\\payload.py": "998c9511b7b4327d1a6d01111df405d5a53d4d39fe2aa6cd7cb08b9071e46b29"
+  }
+}

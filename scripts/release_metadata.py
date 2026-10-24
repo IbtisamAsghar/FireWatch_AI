@@ -33,6 +33,12 @@ def main() -> None:
             path.relative_to(ROOT).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
             for path in files
         },
+        "source_files_sha256": {
+            path.relative_to(ROOT).as_posix(): hashlib.sha256(
+                path.read_bytes().replace(b"\r\n", b"\n")
+            ).hexdigest()
+            for path in sorted((ROOT / "src/firewatch").rglob("*.py"))
+        },
     }
     output = ROOT / "artifacts/build-metadata.json"
     output.parent.mkdir(exist_ok=True)

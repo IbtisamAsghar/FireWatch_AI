@@ -1,0 +1,13 @@
+{
+  "api_ready": true,
+  "completeness": "partial",
+  "evidence_records_verified": 4,
+  "hotspots": 6,
+  "idempotency_verified": true,
+  "managed_release_verified": true,
+  "model_ready": true,
+  "observations": 19771,
+  "operator_authentication_verified": true,
+  "schema_version": "delivery-repair-readiness-v1",
+  "worker_replay_verified": true
+}

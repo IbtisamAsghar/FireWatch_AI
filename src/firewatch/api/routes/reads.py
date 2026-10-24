@@ -40,6 +40,7 @@ from firewatch.db.models import (
 )
 from firewatch.repositories.reads import (
     hotspot_selection,
+    page_run_times,
     ranked_page,
     region_rows,
     require_run,
@@ -153,8 +154,12 @@ def runs(
     records = session.scalars(
         selection.order_by(Run.as_of.desc(), Run.id).limit(query.limit).offset(query.offset)
     ).all()
+    times = page_run_times(session, records)
     return Page[RunView](
-        items=[run_view(session, run, now(request), api_settings(request)) for run in records],
+        items=[
+            run_view(session, run, now(request), api_settings(request), times=times[run.id])
+            for run in records
+        ],
         total=total,
         limit=query.limit,
         offset=query.offset,
@@ -299,12 +304,15 @@ def replays(
     records = session.scalars(
         selection.order_by(Run.as_of.desc(), Run.id).limit(query.limit).offset(query.offset)
     ).all()
+    times = page_run_times(session, records)
     items = []
     for run in records:
         scenario = run.input_asset_manifest["replay_scenario"]
         items.append(
             ReplayView(
-                **context(session, run, now(request), api_settings(request)).model_dump(),
+                **context(
+                    session, run, now(request), api_settings(request), times=times[run.id]
+                ).model_dump(),
                 scenario_id=scenario["id"],
                 name=safe_text(scenario.get("name"), scenario["id"]),
                 description=safe_text(scenario.get("description")),

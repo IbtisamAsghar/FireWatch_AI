@@ -9,6 +9,11 @@ import sys
 from pathlib import Path
 from urllib.parse import unquote
 
+try:
+    from scripts.delivery_inventory import filesystem_path
+except ModuleNotFoundError:
+    from delivery_inventory import filesystem_path
+
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED = (
     "README.md",
@@ -144,8 +149,9 @@ def main():
         reviewed_artifact = (
             name.startswith(("data/", "models/"))
             and name in delivery
-            and (ROOT / name).is_file()
-            and hashlib.sha256((ROOT / name).read_bytes()).hexdigest() == delivery[name]
+            and filesystem_path(ROOT / name).is_file()
+            and hashlib.sha256(filesystem_path(ROOT / name).read_bytes()).hexdigest()
+            == delivery[name]
         )
         if (
             Path(name).name == ".env"

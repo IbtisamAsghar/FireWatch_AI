@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any
 
 from firewatch.ml.registry_artifacts import managed_path, verify_managed_release
+from firewatch.paths import filesystem_path
 
 STORAGE = Path("/var/lib/firewatch")
 
@@ -31,7 +32,7 @@ def init_storage(root: Path = STORAGE) -> None:
 
 
 def _regular(base: Path, name: str) -> Path:
-    path = managed_path(base, name)
+    path = filesystem_path(managed_path(base, name))
     if not path.is_file() or path.is_symlink():
         raise ValueError("Expected a regular artifact file")
     return path
@@ -62,7 +63,7 @@ def install_model(source: Path, expected_sha256: str, destination: Path) -> dict
             raise ValueError("Model inventory exceeds transfer limit")
         for name in names:
             original = _regular(source, name)
-            target_file = managed_path(staging, name)
+            target_file = filesystem_path(managed_path(staging, name))
             with original.open("rb") as stream:
                 content = stream.read(64 * 1024 * 1024 + 1)
             total += len(content)
@@ -79,7 +80,7 @@ def install_model(source: Path, expected_sha256: str, destination: Path) -> dict
                 ".transfer-"
             ):
                 raise ValueError("Unsafe transfer cleanup path")
-            shutil.rmtree(staging)
+            shutil.rmtree(filesystem_path(staging))
     return {"version": version, "release_sha256": expected_sha256, "already_installed": False}
 
 

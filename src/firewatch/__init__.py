@@ -1,1 +1,1 @@
-"""FireWatch backend ownership skeleton; implementation pending."""
+"""FireWatch satellite hotspot research backend."""

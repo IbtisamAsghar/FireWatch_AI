@@ -114,6 +114,7 @@ jobs:
           python-version: '3.12'
       - run: python scripts/check_scaffold.py
       - run: python scripts/check_locks.py
+      - run: python scripts/delivery_inventory.py
       - run: git diff --check HEAD
   scaffold-windows:
     runs-on: windows-latest
@@ -158,8 +159,8 @@ jobs:
           python -m pip check
       - name: Formatting, lint and types
         run: |
-          ruff check scripts/compose_stack.py scripts/verify_compose.py
-          ruff format --check scripts/compose_stack.py scripts/verify_compose.py
+          ruff check scripts/compose_stack.py scripts/verify_compose.py scripts/delivery_inventory.py scripts/check_distribution.py scripts/prepare_local.py scripts/test_local.py scripts/verify_local_delivery.py
+          ruff format --check scripts/compose_stack.py scripts/verify_compose.py scripts/delivery_inventory.py scripts/check_distribution.py scripts/prepare_local.py scripts/test_local.py scripts/verify_local_delivery.py
           ruff check scripts/scan_secrets.py scripts/release_metadata.py scripts/live_provider_smoke.py scripts/container_probe.py
           ruff format --check scripts/scan_secrets.py scripts/release_metadata.py scripts/live_provider_smoke.py scripts/container_probe.py
           ruff check src tests migrations scripts/native_postgres.py scripts/verify_bootstrap.py scripts/check_locks.py scripts/export_openapi.py scripts/demo_api.py scripts/demo_data.py scripts/export_handoff.py scripts/verify_demo.py scripts/verify_firms_handoff.py scripts/verify_worker.py scripts/prepare_replays.py scripts/verify_replays.py scripts/verify_pipeline.py scripts/verify_target_labels.py scripts/verify_splits.py scripts/verify_baselines.py scripts/verify_forest.py scripts/verify_evaluation.py scripts/verify_inference.py scripts/verify_registry.py scripts/verify_acceptance.py scripts/verify_training_backfill.py scripts/verify_evidence.py scripts/contract_tools.py scripts/verify_anchoring.py
@@ -201,6 +202,7 @@ jobs:
           firewatch --help
           firewatch --version
           python -m build --no-isolation
+          python scripts/check_distribution.py
           python scripts/release_metadata.py
       - uses: actions/upload-artifact@v4
         with:

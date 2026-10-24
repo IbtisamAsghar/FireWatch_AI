@@ -1,59 +1,33 @@
 # FireWatch AI
 
-Backend for the IEEE ClimateChain Global Hackathon. It will collect regional
-satellite thermal anomalies, enrich them with weather and climate context,
-and rank hotspot clusters for analyst review.
+Backend for the IEEE ClimateChain Global Hackathon. It collects regional
+satellite thermal anomalies, enriches them with weather and climate context,
+and ranks hotspot clusters for analyst review.
 
 ## Current status
 
-Phase 1.4 adds all 15 typed read APIs: run-scoped ranking, detail, summary,
-GeoJSON, source freshness, replay history, saved evidence verification and
-authenticated job progress. Phase 1.5 adds authenticated, bounded, idempotent
-refresh/replay/anchor job submission, atomic anchor outbox writes and log redaction.
-Phase 1.6 adds isolated synthetic Swagger fixtures, explicit frontend contract tests
-and a generated handoff bundle. The native PostgreSQL schema and immutable publication
-rules from Phase 1.3 remain in use. OpenAPI is exported as a CI artifact.
-Phase 2.1 source reconnaissance is recorded: NOAA availability, a valid empty recent sample, two NOAA-20 SP historical samples, and ten complete historical-weather point checks. The candidate region remains disabled. Both seasonal NOAA-20 CSV archives (`828115` and `828116`) are delivered and imported: 17,862 distinct observations. Independent source review remains pending.
-Phase 2.2 adds the reusable bounded FIRMS client and `firewatch fetch-firms`, with retry/backoff, persistent quota guards, and raw evidence manifests. See [FIRMS client](docs/firms-client.md) and [Phase 2.2 acceptance](docs/phase-2.2-checklist.md).
-Phases 2.3–2.6 add normalization/revision selection, resumable seasonal imports,
-48-hour refresh and a verified source handoff. Phase 3.1 adds separate weather
-adapters, immutable PostgreSQL caching, offline reads and complete-hour rainfall
-selection. See [weather cache](docs/weather-cache.md) and
-[Phase 3.1 acceptance](docs/phase-3.1-checklist.md).
-Phase 3.2 adds fixed-reference NASA POWER daily climate context, resumable annual
-source caching, immutable monthly baselines and `firewatch build-baselines`.
-See [climate baseline guide](docs/climate-baselines.md) and
-[Phase 3.2 acceptance](docs/phase-3.2-checklist.md).
-Phase 3.3 adds deterministic haversine DBSCAN snapshots, frozen source revisions,
-spherical centroids, independent 6/12/24-hour activity counts and an offline
-`firewatch build-snapshots` stage. See [cluster snapshots](docs/cluster-snapshots.md)
-and [Phase 3.3 acceptance](docs/phase-3.3-checklist.md).
-Phase 3.4 adds the strict shared features-v1 builder, 17 values/14 missing indicators,
-frozen enrichment provenance and `firewatch build-features` with explicit enrichment
-forks. See [feature definitions](docs/features-v1.md) and
-[Phase 3.4 acceptance](docs/phase-3.4-checklist.md).
-Phase 3.5 adds the standalone durable worker, slot scheduler, fenced leases,
-stage recovery, FRP baseline, immutable evidence/outbox and guarded publication.
-See [worker operations](docs/durable-worker.md) and [Phase 3.5 acceptance](docs/phase-3.5-checklist.md).
-Phase 3.6 adds three real historical replay scenarios, portable checksummed input
-bundles, exact enrichment pins and `firewatch replay --scenario <id>`.
-See [deterministic replay](docs/deterministic-replay.md) and
-[Phase 3.6 acceptance](docs/phase-3.6-checklist.md).
-Phase 3.7 closes pipeline acceptance and exports verified Parquet features/source
-memberships plus typed run/status handoff data. See
-[Member 3 handoff](docs/pipeline-handoff.md) and [Phase 3.7 acceptance](docs/phase-3.7-checklist.md).
-Phase 4.1 freezes the observed-FRP target and six-hour seasonal dataset design,
-implements read-only historical labeling and portable offline recomputation, and
-records sensor/product/overpass diagnostics. See
-[target and dataset contract](docs/target-and-dataset-v1.md) and
-[Phase 4.1 acceptance](docs/phase-4.1-checklist.md). The current real diagnostic
-labels are excluded from training; event grouping, splits and training remain later work.
-Evaluated ML and chain submission remain later modules. See the [implementation plan](FireWatchImplementationPlan.md),
-[Phase 1.4 acceptance](docs/phase-1.4-checklist.md),
-[Phase 1.5 acceptance](docs/phase-1.5-checklist.md), [operator API](docs/operator-api.md), and
-[frontend API handoff](docs/frontend-handoff.md),
-[Phase 1.6 acceptance](docs/phase-1.6-checklist.md), [Phase 2.1 acceptance](docs/phase-2.1-checklist.md), [source-access study](docs/source-access.md), and [Swagger demo](docs/demo-walkthrough.md). No real-data coverage,
-trained-model accuracy or team sign-off is implied.
+This branch delivers the Python backend, historical source data, replay bundles,
+a consistent PostgreSQL dump, and the reviewed `forest-independent-2025-v2` model.
+There is no frontend application; Swagger and the typed API handoff support frontend
+integration. The implementation includes ingestion, enrichment, durable workers,
+model evaluation/registry, evidence verification and optional chain anchoring.
+
+The delivered review approves the model for **historical northern-California
+NOAA-20 SP replay only**. The original-machine activation is recorded in
+[the readiness receipt](docs/local-real-readiness-receipt.json); a new clone must
+restore/configure its database before that state exists locally. Default clean
+installations use `baseline-v1`. Model scores are uncalibrated ranking values;
+`escalation_probability` remains null. The saved 2025 forest AP is 0.109701,
+versus 0.050746/0.055594 for the two baselines and 0.139349 for logistic.
+The delivered forest uses satellite/activity splits only; additional weather or
+climate predictive skill is not established.
+
+Start with the [current model card](docs/model-card.md),
+[fresh historical restore guide](docs/local-real-readiness.md), and
+[delivery/rebuild procedure](docs/devtalha-delivery.md).
+Live NRT/new-region generalization, end-user login, production HTTPS and
+operational deployment acceptance remain separate work. Historical phase notes
+below describe the state at each milestone, not the current release status.
 
 ## Start locally on Windows
 
@@ -63,7 +37,7 @@ Required: Git, Python 3.12, PowerShell and an editor. Run from this repository:
 py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install --require-hashes -r requirements-dev.lock
 .\.venv\Scripts\python.exe -m pip install -e . --no-deps --no-build-isolation
-.\.venv\Scripts\python.exe scripts/native_postgres.py setup
+.\.venv\Scripts\python.exe scripts/prepare_local.py
 .\.venv\Scripts\firewatch.exe --help
 .\.venv\Scripts\firewatch.exe check-config
 .\.venv\Scripts\firewatch.exe db-check
@@ -75,8 +49,8 @@ py -3.12 -m venv .venv
 The native setup helper downloads official PostgreSQL 16 binaries, stores
 persistent data outside OneDrive, and generates a protected ignored `.env` with
 random local secrets. Existing `.env` files are preserved. No FIRMS key is needed
-until satellite ingestion is implemented. Use `setup --port 55432` if 5432 is
-already occupied. No Docker Desktop, WSL, paid service or administrator Windows
+until satellite ingestion is implemented. The isolated instance defaults to port 55432; choose a separate `--home`
+and `--port` to provision another instance without reusing an existing cluster. No Docker Desktop, WSL, paid service or administrator Windows
 service registration is required. The database runs as a per-user background process.
 
 In another PowerShell window, call
@@ -105,9 +79,9 @@ is disabled until source coverage is verified. See [schema and publication rules
   integrity, optional chain, CI, and delivery; Member 1 reviews shared setup.
 - `configs`: reviewed non-secret configuration; region selection is pending.
 - `data/sample`: small, sanitized, explicitly licensed fixtures only.
-- `models`: documentation only until trusted bundles are approved.
+- `models`: checksum-pinned managed historical model release and review evidence.
 - `tests/unit`, `integration`, `contract`: foundation, security and API acceptance;
-  processing end-to-end suites remain later work.
+  pipeline, model, replay and integrity acceptance suites are implemented.
 - `migrations`: Member 1 owns revision numbering and integration.
 
 ## Collaboration and validation
@@ -149,6 +123,12 @@ for emergency response, preservation of life, or protection of property.
 Confirm important events with official authorities and operational fire services.
 
 Licensed under the [MIT License](LICENSE).
+
+## Historical implementation milestones
+
+The following notes preserve phase-specific acceptance context. Their earlier
+statements about missing data, unapproved models or future modules are historical.
+Use Current status above and the current model card for the delivered release.
 
 ## FIRMS normalization (Phase 2.3)
 

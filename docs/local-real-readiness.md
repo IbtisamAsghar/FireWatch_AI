@@ -1,26 +1,65 @@
-# Run and test the local backend with real data
+# Install and restore the historical backend
 
-The API is available at `http://127.0.0.1:8000`; interactive documentation is
-`http://127.0.0.1:8000/docs`. All described result data comes from actual provider
-observations. Results are historical research replays, not current live fires.
+The delivered database and readiness receipts describe historical research
+replays on the original host. They do not imply that an API is running on a new
+clone. The original export contains 19,771 source observations, 288 weather
+records, 48 climate references and the recorded approved historical model.
 
-## Ready now
+## Fresh Windows installation
 
-- 19,771 NASA FIRMS source observations, 288 Open-Meteo hourly weather records
-  and 48 NASA POWER monthly climate references are stored locally.
-- Four historical runs are published. The active ML run has six
-  hotspots with real weather and climate. The enriched baseline run has six
-  hotspots, two evidence records and real temperature, humidity, wind, gust,
-  24-hour rainfall, temperature departure and rainfall deficit on all hotspots.
-- Map, ranked list, summary and details agree. Both evidence payloads passed local
-  hash checks. A quiet scenario correctly returns zero hotspots.
-- Local frontend origins on ports 3000 and 5173 are allowed. Operator submission
-  still requires the server token; never put that token into browser code.
-- Full regression: 1,273 passed, one Windows symlink skip. Strict mypy and Ruff
-  passed. These tests use disposable data; the serving replays use real data.
+Use Python 3.12. Run from the repository root. The runtime and credentials are
+kept under Local AppData, outside the checkout and OneDrive. No machine-wide
+long-path setting is required for managed-release verification: Python artifact
+I/O uses Windows extended paths. Git still needs `core.longpaths=true` for checkout.
 
-The trained-ML run ID is `b3f9c88e-d4e2-501b-85b1-8fea26048fb4`.
-Use it consistently for these GET requests:
+```powershell
+py -3.12 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install --require-hashes -r requirements-dev.lock
+.\.venv\Scripts\python.exe -m pip install -e . --no-deps --no-build-isolation
+.\.venv\Scripts\python.exe scripts/prepare_local.py --restore
+.\.venv\Scripts\firewatch.exe check-config
+.\.venv\Scripts\firewatch.exe db-check
+```
+
+`--restore` provisions the isolated `PostgreSQL16-devtalha` instance on localhost
+55432 and restores the delivered dump into its **empty** application database.
+It refuses a nonempty database and never uses `pg_restore --clean`. The restore
+is one transaction. Original alert payloads, completed runs, scores, approval
+records and the final-test ledger are preserved. Source storage locators are
+rebased only when the destination file matches its original SHA-256. Sources
+outside the existing audit roots are copied byte-for-byte into a content-addressed
+`data/raw/restored-assets` cache; unavailable files remain explicitly unavailable. No historical evidence bytes are rewritten.
+The script selects the restored registry and the delivered readiness replay catalog.
+Existing environment files selecting another database are preserved and rejected.
+
+For a new empty baseline installation, omit `--restore`, then seed regions with
+`firewatch seed-regions --config configs/regions.yaml`. Choose the empty or restore
+workflow before the first migration: a database already containing tables cannot
+be used as a restore target. Use a separate `--home`/`--port` and matching private
+environment when provisioning another instance. Never overwrite an existing DB.
+
+## Start after installation or restart
+
+```powershell
+.\.venv\Scripts\python.exe scripts/native_postgres.py start --home "$env:LOCALAPPDATA\FireWatch\PostgreSQL16-devtalha"
+.\.venv\Scripts\python.exe -m uvicorn firewatch.main:app --host 127.0.0.1 --port 8000
+```
+
+Use a second terminal for the replay-only job worker:
+
+```powershell
+.\.venv\Scripts\python.exe -m firewatch.worker --no-schedule
+```
+
+The compatibility `prepare_training_database.py` now delegates to the same
+portable helper; it no longer assumes an excluded `.local/phase52` runtime.
+The restart PowerShell script derives its workspace from its own location and
+checks process ownership before stopping services. It needs a configured `.env`.
+
+## Verify the restored historical results
+
+Check `/health/ready` and `/api/v1/models/current`. The recorded ML run ID is
+`b3f9c88e-d4e2-501b-85b1-8fea26048fb4`. Use it consistently for:
 
 ```text
 /api/v1/hotspots?run_id=b3f9c88e-d4e2-501b-85b1-8fea26048fb4
@@ -28,44 +67,33 @@ Use it consistently for these GET requests:
 /api/v1/summary?run_id=b3f9c88e-d4e2-501b-85b1-8fea26048fb4
 ```
 
-Open `/api/v1/hotspots/{snapshot_id}` using a returned snapshot ID. The response
-has a flat `features` mapping, explicit `units` and `missing_flags`.
-`artifacts/enriched-real-ml-api-examples.json` contains verified ML responses.
-`ACTIVE_SCORER=registry` selects the approved `forest-independent-2025-v2`.
-Talha confirmed review and approval for historical replay with limitations
-acknowledged. The authenticated HTTP submission, dedicated worker, matching
-map/list/counts, operator authentication and retry idempotency all passed.
-The ML priority thresholds emitted no alert evidence in this run; baseline
-evidence records remain available under the preserved baseline run
-`63c1b8df-4f31-544d-9691-16f8ef39f9bf`. Historical scores are unchanged.
+The original results have six hotspots, real enrichment and `partial` coverage
+because a cluster exceeds target geometry. Preserve that warning. The model is
+uncalibrated; probability remains null. It emitted no alert evidence for this run.
+The baseline run `63c1b8df-4f31-544d-9691-16f8ef39f9bf` retains two evidence records.
+Use `verify_artifacts=true` to audit the original pinned sources in addition to
+payload hashes. Operator submissions need the private server token and an
+idempotency key; keep the token out of browser code.
 
-The populated run remains `partial` because one satellite cluster extends beyond
-the target radius. All requested weather/climate fields are present. This warning
-must remain visible; it must not be removed to display a misleading Complete badge.
+## Database-backed regression
 
-## Start after a restart
-
-From the repository root:
+The private runtime provisions a separate `firewatch_test` database. Run:
 
 ```powershell
-.\.venv\Scripts\python.exe .local/model-training/prepare_training_database.py
-.\.venv\Scripts\python.exe -m uvicorn firewatch.main:app --host 127.0.0.1 --port 8000
+.\.venv\Scripts\python.exe scripts/test_local.py
+.\.venv\Scripts\python.exe scripts/verify_local_delivery.py --replay
 ```
 
-Use a second terminal for the replay-only job worker if queue submission is needed:
+The test runner reads private configuration without printing credentials and
+selects only `firewatch_test`; outbound provider access is blocked. The delivery
+verifier checks readiness, the full managed release, list/map/summary consistency,
+all evidence artifacts and an idempotent worker replay. Its replay flag admits
+one job and refuses to consume unrelated queued work.
+Never point tests at the restored application database. Test schema cleanup
+refuses a database whose name does not end in `_test`.
 
-```powershell
-.\.venv\Scripts\python.exe -m firewatch.worker --no-schedule
-```
-
-The private `.env` points to the isolated PostgreSQL 16 database on localhost port
-55432 and the new replay catalog. Data persists under `.local/model-training/`;
-raw evidence, bundles and models persist under `data/`. The original PostgreSQL
-service on 5432 was not modified. No public deployment is claimed.
-
-## Remaining boundaries
-
-This is ready for local frontend integration with real historical data. Trained
-ML is active for the approved historical scope. Live NRT
-generalization, production hosting/HTTPS, monitoring and backup/restore acceptance
-remain separate work. See [the verified receipt](local-real-readiness-receipt.json).
+The old [readiness receipt](local-real-readiness-receipt.json) and committed XML
+reports remain original-host evidence. Fresh repair validation is recorded
+separately in [delivery repair validation](delivery-repair-validation.md).
+Live NRT/new-region validity, production HTTPS, backup operations and deployment
+monitoring remain separate acceptance work; no public deployment is implied.

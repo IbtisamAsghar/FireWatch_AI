@@ -53,6 +53,7 @@ class Settings(BaseSettings):
     worker_lease_seconds: int = Field(default=120, ge=15, le=3600)
     worker_poll_seconds: float = Field(default=2, ge=0.1, le=60)
     worker_retry_seconds: int = Field(default=30, ge=1, le=3600)
+    worker_health_max_lag_seconds: int = Field(default=600, ge=30, le=86400)
     detection_max_age_hours: float = Field(default=24, gt=0, le=168)
     features_config: Path = Path("configs/features-v1.yaml")
     weather_cache_grid_degrees: float = Field(default=0.1, gt=0, le=5)

@@ -47,6 +47,19 @@ firewatch = "firewatch.cli:app"
 [tool.hatch.build.targets.wheel]
 packages = ["src/firewatch"]
 
+[tool.hatch.build.targets.sdist]
+# The branch inventory hashes distributions; including it in an archive would
+# create a circular digest. Operational data/reports are separate delivery assets.
+exclude = [
+  "/docs/branch-delivery-inventory.json",
+  "/output",
+  "/artifacts",
+  "/.local",
+  "/dist",
+  "/data",
+  "/models",
+]
+
 [tool.ruff]
 target-version = "py312"
 line-length = 100

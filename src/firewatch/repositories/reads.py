@@ -101,6 +101,37 @@ def run_times(session: Session, run: Run) -> tuple[datetime | None, datetime | N
     return observed, scored
 
 
+def page_run_times(
+    session: Session, runs: Sequence[Run]
+) -> dict[UUID, tuple[datetime | None, datetime | None]]:
+    """Two aggregate queries per history page, independent of its row count."""
+    if not runs:
+        return {}
+    identifiers = [run.id for run in runs]
+    observed = {
+        identifier: timestamp
+        for identifier, timestamp in session.execute(
+            select(
+                ClusterSnapshotRecord.run_id, func.max(ClusterSnapshotRecord.latest_detection_at)
+            )
+            .where(ClusterSnapshotRecord.run_id.in_(identifiers))
+            .group_by(ClusterSnapshotRecord.run_id)
+        ).all()
+    }
+    scored = {
+        identifier: timestamp
+        for identifier, timestamp in session.execute(
+            select(Score.run_id, func.max(Score.scored_at))
+            .join(Run, (Run.id == Score.run_id) & (Run.scorer_version == Score.scorer_version))
+            .where(Score.run_id.in_(identifiers))
+            .group_by(Score.run_id)
+        ).all()
+    }
+    return {
+        identifier: (observed.get(identifier), scored.get(identifier)) for identifier in identifiers
+    }
+
+
 def region_rows(session: Session) -> Sequence[Row[Any]]:
     return session.execute(
         select(Region, LiveRunHead.run_id)

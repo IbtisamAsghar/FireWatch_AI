@@ -27,6 +27,7 @@ from firewatch.ml.splits import (
     create_splits,
     default_split_spec,
 )
+from firewatch.paths import filesystem_path
 from firewatch.pipeline.handoff import _decode_json
 from firewatch.processing.features import MODEL_INPUT_NAMES
 from firewatch.schemas.common import Product, Sensor
@@ -46,8 +47,8 @@ def _safe_file(root: Path, name: str) -> Path:
         or str(parts) != name
     ):
         raise ValueError("Unsafe split package path")
-    file = root.joinpath(*parts.parts)
-    if file.is_symlink() or not file.resolve().is_relative_to(root.resolve()):
+    file = filesystem_path(root.joinpath(*parts.parts))
+    if file.is_symlink() or not file.resolve().is_relative_to(filesystem_path(root).resolve()):
         raise ValueError("Split package file escapes root")
     return file
 

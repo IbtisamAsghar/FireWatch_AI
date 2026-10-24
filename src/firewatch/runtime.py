@@ -6,13 +6,17 @@ import signal
 import sys
 import threading
 import time
+from datetime import UTC, datetime, timedelta
 
-from sqlalchemy import text
+from sqlalchemy import or_, select, text
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import Session
 
 from firewatch.config import ConfigurationError, Settings, get_settings
 from firewatch.db.base import SCHEMA_REVISION
+from firewatch.db.models import Job
 from firewatch.db.session import Database
+from firewatch.schemas.common import JobStatus, JobType
 
 
 def check_database(database: Database, *, schema: bool) -> None:
@@ -44,10 +48,35 @@ def wait_for_database(settings: Settings, *, schema: bool, stop: threading.Event
         database.close()
 
 
+def queue_progress(session: Session, settings: Settings, now: datetime) -> bool:
+    """Reject overdue work or abandoned leases; an empty queue is idle/healthy."""
+    cutoff = now - timedelta(seconds=settings.worker_health_max_lag_seconds)
+    stalled = session.scalar(
+        select(Job.id)
+        .where(Job.type.in_([JobType.REFRESH, JobType.REPLAY]))
+        .where(
+            or_(
+                (Job.status == JobStatus.QUEUED) & (Job.available_at < cutoff),
+                (Job.status == JobStatus.RUNNING)
+                & or_(
+                    Job.heartbeat_at < cutoff,
+                    (Job.heartbeat_at.is_(None)) & (Job.available_at < cutoff),
+                    Job.lease_until < cutoff,
+                ),
+            )
+        )
+        .limit(1)
+    )
+    return stalled is None
+
+
 def health(settings: Settings) -> bool:
     database = Database(settings)
     try:
         check_database(database, schema=True)
+        with database.session() as session:
+            if not queue_progress(session, settings, datetime.now(UTC)):
+                return False
         return (
             settings.raw_data_dir.is_dir()
             and os.access(settings.raw_data_dir, os.W_OK)
@@ -65,7 +94,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--database-only", action="store_true", help="For explicit migration commands"
     )
-    parser.add_argument("--health", action="store_true", help="Worker DB/schema/storage health")
+    parser.add_argument(
+        "--health", action="store_true", help="Worker DB/schema/storage/queue health"
+    )
     parser.add_argument("command", nargs=argparse.REMAINDER)
     args = parser.parse_args(argv)
     try:

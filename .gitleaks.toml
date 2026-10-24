@@ -24,3 +24,17 @@ regexes = [
   '''^\s*"alert_key": "0x[0-9a-f]{64}",?$''',
   '''^\s*"src/firewatch/schemas/api\.py": "[0-9a-f]{64}",?$''',
 ]
+
+[[rules.allowlists]]
+description = "SHA-256 file-path entries in generated build/delivery inventories"
+condition = "AND"
+regexTarget = "line"
+paths = [
+  '''(^|/)artifacts/build-metadata\.json$''',
+  '''(^|/)docs/branch-delivery-inventory\.json$''',
+]
+# Only file-path keys with a complete lowercase SHA-256 value. Credential fields
+# such as api_key/password/token do not match, and other scanner rules still apply.
+regexes = [
+  '''^\s*"[A-Za-z0-9._-]+(?:/[A-Za-z0-9._-]+)+": "[0-9a-f]{64}",?\r?$''',
+]

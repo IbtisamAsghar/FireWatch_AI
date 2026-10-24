@@ -21,6 +21,7 @@ from firewatch.ml.baselines import BASELINE_VERSIONS
 from firewatch.ml.forest_artifact import PortableForest, transformed_inputs
 from firewatch.ml.priority_thresholds import PriorityThresholds
 from firewatch.ml.tree_shap import PathDependentSHAP
+from firewatch.paths import filesystem_path
 from firewatch.processing.features import MODEL_INPUT_NAMES, UNITS
 from firewatch.schemas.common import DTO, Digest, Version
 from firewatch.schemas.contracts import FeatureSet
@@ -82,6 +83,7 @@ def _json(raw: bytes) -> Any:
 
 
 def _file(root: Path, name: str, limit: int = MAX_BYTES) -> bytes:
+    root = filesystem_path(root)
     if name not in FILES | {"manifest.json"} or root.is_symlink():
         raise ValueError("Invalid inference artifact path")
     path = root / name

@@ -84,6 +84,8 @@ def setup(home: Path, requested_port: int) -> dict:
     state_file = home / "bootstrap.json"
     if state_file.exists():
         state = json.loads(state_file.read_text(encoding="utf-8"))
+        if state["port"] != requested_port:
+            raise RuntimeError("Runtime uses a different port; select a separate --home")
     else:
         if (home / "data" / "PG_VERSION").exists():
             raise RuntimeError("Existing cluster has no bootstrap record; refusing to overwrite it")
@@ -226,10 +228,16 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("action", choices=["setup", "start", "stop", "status", "backup"])
     parser.add_argument("--port", type=int, default=5432)
+    parser.add_argument(
+        "--home",
+        type=Path,
+        default=Path(os.environ["LOCALAPPDATA"]) / "FireWatch" / "PostgreSQL16",
+        help="Private runtime/data directory; use a separate home for an isolated instance",
+    )
     args = parser.parse_args()
     if not 1024 <= args.port <= 65535:
         parser.error("Choose a port between 1024 and 65535")
-    home = Path(os.environ["LOCALAPPDATA"]) / "FireWatch" / "PostgreSQL16"
+    home = args.home.resolve()
     try:
         if args.action == "setup":
             setup(home, args.port)

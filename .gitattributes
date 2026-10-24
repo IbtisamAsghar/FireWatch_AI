@@ -8,6 +8,13 @@
 *.sh text eol=lf
 *.ps1 text eol=crlf
 .env.example text eol=lf
+.env.compose.example text eol=lf
+.gitattributes text eol=lf
+*.lock text eol=lf
+*.in text eol=lf
+*.sol text eol=lf
+*.txt text eol=lf
+Dockerfile text eol=lf
 .gitignore text eol=lf
 .dockerignore text eol=lf
 

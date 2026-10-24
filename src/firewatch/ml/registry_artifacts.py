@@ -13,6 +13,7 @@ from pydantic import Field, model_validator
 
 from firewatch.ml.baselines import BASELINE_VERSIONS
 from firewatch.ml.inference_bundle import _json, load_bundle
+from firewatch.paths import filesystem_path
 from firewatch.schemas.common import DTO, Digest, RunMode
 from firewatch.schemas.contracts import BoundingBox
 from firewatch.sources.firms_normalize import digest
@@ -71,6 +72,7 @@ class PromotionCandidate:
 
 
 def _read(path: Path, limit: int) -> bytes:
+    path = filesystem_path(path)
     if path.is_symlink() or not path.is_file():
         raise ValueError("Release evidence must be a regular file")
     with path.open("rb") as stream:
@@ -93,12 +95,14 @@ def managed_path(root: Path, relative: str) -> Path:
     if supplied.is_absolute() or ".." in supplied.parts:
         raise ValueError("Model artifacts must stay inside the managed model directory")
     path = base / supplied
-    if path.resolve() == base or not path.resolve().is_relative_to(base):
+    resolved_base = filesystem_path(base).resolve()
+    resolved_path = filesystem_path(path).resolve()
+    if resolved_path == resolved_base or not resolved_path.is_relative_to(resolved_base):
         raise ValueError("Model artifact escapes the managed directory")
     current = base
     for part in supplied.parts:
         current /= part
-        if current.is_symlink():
+        if filesystem_path(current).is_symlink():
             raise ValueError("Managed model paths must not traverse symlinks")
     return path
 
@@ -106,6 +110,7 @@ def managed_path(root: Path, relative: str) -> Path:
 def _copy_package(source: Path, destination: Path, expected_sha: str) -> None:
     from firewatch.ml.split_package import _safe_file
 
+    destination = filesystem_path(destination)
     raw = _read(source / "manifest.json", 1024 * 1024)
     if hashlib.sha256(raw).hexdigest() != expected_sha:
         raise ValueError("Source changed while preparing promotion")
@@ -130,6 +135,7 @@ def _copy_package(source: Path, destination: Path, expected_sha: str) -> None:
 def verify_managed_release(root: Path, expected_sha: str) -> dict[str, Any]:
     from firewatch.ml.split_package import _safe_file
 
+    root = filesystem_path(root)
     raw = _read(root / "release-manifest.json", 1024 * 1024)
     if hashlib.sha256(raw).hexdigest() != expected_sha:
         raise ValueError("Managed release manifest checksum mismatch")
@@ -237,7 +243,9 @@ def prepare_promotion(
     )
     root = managed_path(model_dir, f"releases/{version}/{bundle_sha256}")
     root.parent.mkdir(parents=True, exist_ok=True)
-    staging = Path(tempfile.mkdtemp(prefix=".registry-stage-", dir=root.parent)).resolve()
+    staging = filesystem_path(
+        Path(tempfile.mkdtemp(prefix=".registry-stage-", dir=root.parent)).resolve()
+    )
     try:
         _copy_package(bundle, staging / "bundle", bundle_sha256)
         _copy_package(evaluation, staging / "evaluation", evaluation_sha256)
@@ -279,6 +287,8 @@ def prepare_promotion(
         )
     finally:
         if staging.exists():
-            if staging.parent != root.parent or not staging.name.startswith(".registry-stage-"):
+            if staging.parent.resolve() != filesystem_path(
+                root.parent
+            ).resolve() or not staging.name.startswith(".registry-stage-"):
                 raise ValueError("Refusing cleanup outside owned registry staging")
             shutil.rmtree(staging)

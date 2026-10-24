@@ -115,8 +115,15 @@ def aware_timestamp(value: Any) -> datetime | None:
         return None
 
 
-def context(session: Session, run: Run, now: datetime, settings: Settings) -> RunContext:
-    observed, scored = run_times(session, run)
+def context(
+    session: Session,
+    run: Run,
+    now: datetime,
+    settings: Settings,
+    *,
+    times: tuple[datetime | None, datetime | None] | None = None,
+) -> RunContext:
+    observed, scored = run_times(session, run) if times is None else times
     reference = run.as_of if run.mode == RunMode.REPLAY else now
     manifest = run.input_asset_manifest.get("freshness", {})
     manifest = manifest if isinstance(manifest, dict) else {}
@@ -167,9 +174,16 @@ def stages(run: Run) -> dict[Stage, StageStatus]:
     return result
 
 
-def run_view(session: Session, run: Run, now: datetime, settings: Settings) -> RunView:
+def run_view(
+    session: Session,
+    run: Run,
+    now: datetime,
+    settings: Settings,
+    *,
+    times: tuple[datetime | None, datetime | None] | None = None,
+) -> RunView:
     return RunView(
-        **context(session, run, now, settings).model_dump(),
+        **context(session, run, now, settings, times=times).model_dump(),
         region_id=run.region_id,
         status=run.status,
         config_hash=run.config_hash,

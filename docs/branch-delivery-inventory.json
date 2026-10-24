@@ -12364,7 +12364,7 @@
     "Untracked files not explicitly reviewed, including secrets, runtimes and caches",
     "The delivery inventory itself (avoids a circular checksum)"
   ],
-  "files": 12834,
+  "files": 12836,
   "files_sha256": {
     ".dockerignore": "f1f57eff75dabc65481a9c8658ea4a23519f01e0da9d01e2da77bf660b8eb1b8",
     ".editorconfig": "dd7252340ff5db6afaf9c23c5a42868e3cf4494d26fa1000100b8826d4fb834b",
@@ -23933,6 +23933,7 @@
     "deploy/Caddyfile.local": "b944e24298e4146ff45de98ee76eb025c3ee9eada744add59b8f1d9b5545a6d1",
     "deploy/README.md": "b58abd6152309e1e666f02e525d339ef84e9c8bc70bd6436d956b8cb0e931b0e",
     "deploy/bundles/README.md": "5298ea81f1051d71be0385df8ab489f6cdb9f48de9c3830462df33c4c9f5d753",
+    "deploy/northflank.Dockerfile": "f478123a7798241ae3252abf769e3f10830f54150466051c6527af8fd31af036",
     "deploy/postgres-init.sh": "3e3cc3556ce674810101062903084daf28626ed3b0bf49b156eb63f8a4f7f206",
     "deploy/render/assets/01534e3ea4e7c51d1864c23f193cbfe81465cd2da33290e35383f5fc104963fb.bin": "01534e3ea4e7c51d1864c23f193cbfe81465cd2da33290e35383f5fc104963fb",
     "deploy/render/assets/01995080191ac47560361a53ae4b494ea42f095f27f5c743fbb87427e6295b6f.bin": "01995080191ac47560361a53ae4b494ea42f095f27f5c743fbb87427e6295b6f",
@@ -24051,6 +24052,7 @@
     "docs/model-card.md": "9e311be9f96e47c1539c48416ac1a13f7c0f278e268314c9ebab1506a28a8cc4",
     "docs/model-registry-and-promotion.md": "67c996e4059e9a6ffd164041eb6ff9ae2c80e4783372dd9206a33497c31875f3",
     "docs/model-review-pending.example.json": "2c4890100d4a67b9ceea34c88dc66226bf443c4c400c0971fe386aa1205f8b16",
+    "docs/northflank-neon.md": "bec3f049d291ba9dab05dd68f9d5e384ac05f1634555d74047f37b9464a0aaf2",
     "docs/observed-frp-label-v1.schema.json": "6824c80779cd8eab2e2fdf0b065b015d8a776d9e66c025c9cb0ceed34f93017c",
     "docs/operator-api.md": "68c0bd4909b5a8a2ece497e47353c3aedf39824f865bb2d3e69b1e562264f0e7",
     "docs/partition-event-review-v1.schema.json": "45c4cc166f47ba7a21a2beebfad03b11cec7c83fbcb214f6a4417e0a7983c5cd",
@@ -25204,5 +25206,5 @@
   "hash_semantics": "lf-normalized-text-exact-binary-v1",
   "inventory_excludes_itself": true,
   "schema_version": "branch-delivery-inventory-v2",
-  "total_bytes": 1481500727
+  "total_bytes": 1481503699
 }

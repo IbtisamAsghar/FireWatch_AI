@@ -1,0 +1,90 @@
+{
+  "schema_version": "firms-request-manifest-v1",
+  "batch_id": "8146cfc9-d86b-4324-b97d-7df4542f200e",
+  "provider": "firms",
+  "host": "https://firms.modaps.eosdis.nasa.gov",
+  "endpoint": "/api/area/csv/{MAP_KEY}/{PRODUCT}/{BBOX}/{DAYS}/{DATE}",
+  "request": {
+    "product": "VIIRS_NOAA20_SP",
+    "bbox": {
+      "west": -122.5,
+      "south": 38.5,
+      "east": -120.0,
+      "north": 40.5
+    },
+    "start_date": "2025-06-29",
+    "days": 5
+  },
+  "responses": [
+    {
+      "kind": "quota",
+      "retrieved_at": "2026-10-24T14:12:51.909913+00:00",
+      "http_status": 200,
+      "reserved_transaction_units": 100,
+      "complete": true,
+      "filename": "response-01.bin",
+      "sha256": "2fc67ff17cced4e0af158c884780aeb2b1dc27fddc9db0ac7e98d1e2d549c3ae",
+      "byte_count": 98
+    },
+    {
+      "kind": "area",
+      "retrieved_at": "2026-10-24T14:12:52.314029+00:00",
+      "http_status": 200,
+      "reserved_transaction_units": 1000,
+      "complete": true,
+      "filename": "response-02.bin",
+      "sha256": "77023b0dc37448d402e6afc68b6486a6fb58cc46bae40cfdc81a7f8e55a6adfe",
+      "byte_count": 2663
+    }
+  ],
+  "status": "succeeded",
+  "attribution_reference": "https://www.earthdata.nasa.gov/data/tools/firms",
+  "transaction_accounting": "Estimated reservations; provider charges may differ.",
+  "attempts": 1,
+  "provider_quota_before": {
+    "limit": 5000,
+    "used": 120
+  },
+  "row_count": 31,
+  "columns": [
+    "latitude",
+    "longitude",
+    "bright_ti4",
+    "scan",
+    "track",
+    "acq_date",
+    "acq_time",
+    "satellite",
+    "instrument",
+    "confidence",
+    "version",
+    "bright_ti5",
+    "frp",
+    "daynight",
+    "type"
+  ],
+  "processing_versions": [
+    "2"
+  ],
+  "retrieved_at": "2026-10-24T14:12:52.315344+00:00",
+  "asset": {
+    "provider": "firms",
+    "product": "VIIRS_NOAA20_SP",
+    "request_metadata": {
+      "product": "VIIRS_NOAA20_SP",
+      "bbox": {
+        "west": -122.5,
+        "south": 38.5,
+        "east": -120.0,
+        "north": 40.5
+      },
+      "start_date": "2025-06-29",
+      "days": 5
+    },
+    "retrieved_at": "2026-10-24T14:12:52.315344Z",
+    "storage_path": "C:\\Users\\talha\\Desktop\\FireWatch_AI\\data\\raw\\firms\\8146cfc9-d86b-4324-b97d-7df4542f200e\\response-02.bin",
+    "content_hash": "77023b0dc37448d402e6afc68b6486a6fb58cc46bae40cfdc81a7f8e55a6adfe",
+    "format": "csv",
+    "processing_version": "2"
+  }
+}

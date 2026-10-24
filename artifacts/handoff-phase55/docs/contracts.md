@@ -1,0 +1,232 @@
+# Shared contracts: contracts-v1
+
+Phase 1.3 implements these typed handoffs in `src/firewatch/schemas/contracts.py`
+and shared enums/value types in `schemas/common.py`. They are ready for review by
+Members 2-5 before integration; no human sign-off is implied by implementation.
+
+## Cross-module rules
+
+DTOs forbid unknown fields, invalid enum values and non-finite numbers. Timestamp
+inputs require an explicit timezone; offset-aware values normalize to UTC and
+serialize with `Z`. Numeric epochs and naive timestamps are rejected. Coordinates
+are latitude/longitude fields; future GeoJSON uses longitude first. Null denotes
+missing values; it is never silently converted to zero. Versions are nonempty
+strings, digests are lowercase 64-character SHA-256 hex, and identifiers are UUIDs.
+
+`contracts-v1` is an enforced literal, not an arbitrary client-provided label.
+Run-bound processing/scoring outputs carry run ID, mode, cutoff, schema and
+feature versions. Source records created before a run use their own asset/batch
+lineage. Phase 1.4 implements REST serializers in `schemas/api.py` as `api-v1`;
+see [frontend handoff](frontend-handoff.md) for endpoint, filter and error contracts.
+
+## Member 2: satellite and source inputs
+
+- `BoundingBox` validates global bounds and ordered west/east, south/north.
+- `RegionDefinition` and `RegionConfig` validate unique names and regions-v1 YAML.
+- `SourceAssetInput` describes provider, product, sanitized request metadata,
+  retrieval, path, content digest, format and processing version. Common credential
+  keys and unredacted FIRMS credential paths are rejected. Clients must sanitize
+  metadata before constructing it; never log raw validation input or full URLs.
+- `DetectionInput` validates NOAA-20/NOAA-21 NRT/SP products and sensor agreement,
+  coordinates, acquisition time, nonnegative FRP/scan/track, positive brightness,
+  confidence/day-night enums and deterministic dedup key. Invalid converted
+  values go in `raw_values`, with the normalized value null and explicit flags.
+  The future normalizer owns conversion decisions and dedup-key construction.
+- `DetectionBatch` checks product consistency and the ordered UTC import window.
+- Phase 2.2 adds `FirmsAreaRequest` and `FirmsBatch` (`firms-raw-batch-v1`) in
+  `sources/firms.py`. `FirmsClient.fetch(request)` returns lexical CSV rows plus
+  `SourceAssetInput`, columns, row count, empty status, observed processing versions
+  and manifest path. See the [FIRMS client guide](firms-client.md). The later
+  `fetch_detections` normalization service still returns `DetectionBatch`; raw
+  transport rows are not yet `DetectionInput` observations.
+
+`save_detection(session, batch_id, region_id, observation)` is the shared
+persistence boundary. It validates the batch/region/product/time/bbox, inserts
+once by dedup key, and preserves every distinct batch association and region.
+An identical key with conflicting observation identity is rejected. Different
+normalized values for the same identity do not overwrite the first stored
+observation; their full input is retained in source lineage. Member 2 must define
+the explicit NRT/science revision-selection policy before live/archive ingestion.
+
+## Member 3: enrichment, snapshots, features and runs
+
+- `WeatherRecordInput` and `WeatherSeries` preserve cell/source/model/product,
+  requested/returned coordinates, UTC valid/retrieval times, units and flags.
+  Humidity is 0-100%, temperature cannot fall below absolute zero, wind/gust/rain
+  cannot be negative. Missing values remain nullable. Provider adapters must
+  validate returned unit metadata and precipitation intervals in Module 3.
+- `ClimateBaseline` validates reference-year order, month, sample counts,
+  source/version and nullable means. The feature builder must ensure the
+  reference ends before the snapshot/evaluation period.
+- `ClusterSnapshot` carries run context and unique member IDs; latest observation
+  cannot follow the cutoff. It describes a run-specific cluster, not a tracked fire.
+- `FeatureSet` carries values, missing indicators, unit map, lineage and hash.
+- `RunResult` describes status/coverage/stages. A completed result requires all
+  stage checkpoints, usable coverage and a completion time at/after the cutoff.
+
+Use `complete_and_publish_run()` inside a caller-owned transaction after successful
+stages. Database checks additionally verify persisted members/features/scores and
+critical evidence. See [publication and concurrency rules](database-schema.md).
+Weather/cache and climate context are implemented in Phases 3.1–3.2. Phase 3.3
+adds `build_snapshots(run_id, mode, as_of, selected_revisions, config)` and the
+transactional `build_run_snapshots(session, run_id, policy, config)` stage. The
+shared `ClusterSnapshot` DTO is unchanged; typed `ClusterDetails` and `SnapshotBatch`
+carry counts, diagnostics and version/hash metadata in the Run input manifest.
+See [cluster snapshot interfaces](cluster-snapshots.md). Phase 3.4 adds the pure
+`build_features(...)`, transactional `build_run_features(...)`, strict 17-value/
+14-indicator schema and validated `model_inputs(...)` whitelist. The existing
+`FeatureSet` DTO is unchanged; its lineage and the Run feature-stage manifest bind
+source revisions, units, cutoff and frozen enrichment. See
+[feature definitions and interfaces](features-v1.md). Worker orchestration and
+completed pipeline publication remain later Module 3 work.
+
+## Member 4: scoring
+
+`ScoreResult` carries run/snapshot, scorer and optional model, rank value, kind,
+priority, nullable probability, reasons, structured explanation, flags and time.
+Baseline scores have no model ID; supervised scores require one. Only the
+`probability` kind can contain a probability, and it must be between zero and one.
+Scoring cannot precede the feature cutoff. Ranking values are nonnegative and
+version-specific; they are not interchangeable across scorers or probabilities.
+
+The database registry binds model version and feature version. A probability
+claim also requires `model_versions.probability_supported=true`. Model training,
+calibration evidence, promotion and SHAP remain Module 4 work; no model was
+trained or promoted by the schema phase.
+
+## Member 5: evidence and delivery
+
+`AlertEvidence` binds alert/run/snapshot/score, exact payload bytes, digest,
+evidence/feature versions and times. DTO and database both check that the digest
+matches the nonempty bytes. SQL triggers block later evidence modification.
+Canonicalization and payload field/precision rules remain Module 5 work.
+Outbox/anchor records are separate mutable delivery state; no chain call is made
+in this phase. Integrity does not prove incident reality or scientific accuracy.
+
+## Current runnable API and CLI
+
+`GET /health/live` returns HTTP 200 and `{"status":"ok"}` without querying
+PostgreSQL or providers. Settings validate at startup. Bootstrap OpenAPI is
+available at `/openapi.json`; regional reads/readiness/jobs/auth endpoints follow
+in Phases 1.4/1.5.
+
+`firewatch check-config` emits sanitized status, `db-check` checks a pooled UTC
+connection, and `seed-regions --config configs/regions.yaml` creates/updates regions
+atomically with stable IDs. Invalid configuration exits 2; database failure exits
+1 without exposing credentials or driver details. CLI help needs no secrets.
+
+## Phase 1.4 producer metadata and public projections
+
+Completed outputs remain immutable. Before completion, a pipeline may save
+`input_asset_manifest.freshness.latest_weather_valid_at` and
+`latest_retrieved_at` as timezone-aware ISO strings for run-specific freshness.
+Missing metadata remains null, never substituted from unrelated weather rows.
+Replay scenarios expose completed runs only when the saved
+`replay_scenario` object contains a slug `id` and optional safe `name` and
+`description`. The API does not accept arbitrary replay imports or create runs.
+
+Shared read selection joins snapshots, the run's selected scorer, matching
+features and optional alert. Lists, GeoJSON and summary use the same predicates.
+Read sessions issue `SET TRANSACTION READ ONLY`; no GET publishes a run or job.
+Evidence API payloads are credential-safe projections, while SHA-256 verification
+always uses the immutable original canonical bytes. Source-file/artifact verification
+is opt-in as described in the Phase 5.2 [verification contract](evidence-verification.md);
+default reads remain payload-only.
+
+## Phase 1.5 operator admission: jobs-v1
+
+`schemas/operator.py` defines strict refresh/replay/empty-anchor bodies, trusted
+replays-v1 configuration and typed acceptance. `repositories/jobs.py` owns the
+short write transaction and global admission lock; handlers return only after
+commit. Idempotency hashes canonical operation/request identity, while job payloads
+freeze server-selected versions, cutoff, region, replay assets or anchor target.
+All fields reject client-supplied credentials/paths/override extras by construction.
+
+The worker payload `schema_version` is `jobs-v1`, distinct from the public api-v1
+response and internal contracts-v1 DTOs. Jobs are admission records, not execution
+results. Phase 3.5 implements fenced leases, bounded retries and frozen stage
+checkpoints before marking refresh/replay success. Scorer execution currently supports
+only the documented baseline-v1; anchor execution remains Module 5. See
+[durable worker](durable-worker.md). Future
+producers must use the same advisory-lock/capacity admission protocol. Full endpoint
+contracts and bounds are in [operator API](operator-api.md).
+
+## Phase 2.3 normalized FIRMS handoff
+
+`normalize_firms_batch(FirmsBatch, NormalizationPolicy)` returns a versioned
+`NormalizedFirmsBatch` containing validated snapshots, exact observation/revision
+keys, rejections and a bounded quality summary. `persist_normalized` owns no commit;
+call it inside the caller's write transaction. `RevisionPolicy` selects one product
+per sensor and explicit source batches. `freeze_firms_inputs` pins exact source
+revisions in the existing run manifest. Downstream processing uses returned
+`SelectedDetection.observation` values rather than canonical first-seen measurements.
+See the [full normalization contract](firms-normalization.md). Existing public REST
+contracts and shared detection/source DTOs remain compatible.
+
+## Phase 2.4 archive handoff
+
+`ArchiveManifest` records trusted local provenance, explicit delivered date coverage
+and mandatory 24-hour feature/label margins. `prepare_archive` streams the exact
+shared row normalizer into a disk-backed index; `import_prepared` commits bounded
+revision chunks with atomic database checkpoints. A day is selectable only after
+its entire source is published. `handoff.json` and the local Member 4 manifest carry
+real provenance and batch IDs. Month/sensor/region inventories distinguish raw
+provider/confidence classes from unknown supervised labels. See the
+[archive contract](firms-archive-import.md) and [JSON schema](firms-archive-manifest.schema.json).
+
+
+## Phase 2.5 refresh handoff
+
+RefreshSpec pins the 48-hour cutoff, NRT products, normalizer/key versions and
+policy. RefreshSummary reports independent product coverage and nullable
+counts. A failed sensor is unknown/partial, never a known zero. SelectedDetection
+JSONL records and handoff.json retain exact source batch/revision identities
+and a verified payload hash. Existing API-v1 status fields are extended additively
+for Member 1; the public dictionary is regenerated. See the
+[refresh contract](firms-refresh.md). No completed Run is created by ingestion.
+
+
+## Phase 3.6 deterministic replay
+
+`ReplayScenario.bundle_sha256` optionally binds a trusted replay-bundle-v1 manifest.
+The scenario catalog retains replays-v1 compatibility for earlier API admission
+fixtures. The new CLI requires a prepared bundle. Bundle-backed jobs add the digest
+to private jobs-v1 payloads and verify files/canonical inputs again at execution.
+Disabled regions are eligible for verified historical bundles without enabling live
+scheduling. `build_run_features` accepts typed EnrichmentPins so replay never
+reselects cache revisions. `claim(..., job_id=...)` supports targeted CLI execution.
+See [replay interfaces and portability](deterministic-replay.md).
+
+
+## Phase 3.7 pipeline handoff
+
+`export-pipeline-handoff` exports completed runs only; `verify-pipeline-handoff`
+checks file hashes, Arrow schemas, original feature hashes, missing flags, units,
+source memberships and API DTOs without a database. pipeline-handoff-v1 binds
+features.parquet, memberships.parquet, schema/provenance JSON and runs/jobs JSON.
+The 31 model_input_names are the only training inputs; metadata is explicitly
+separated and no target/split/prediction columns are supplied. See
+[handoff contract](pipeline-handoff.md) and [schema](pipeline-handoff.schema.json).
+
+## Phase 4.6 inference contract
+
+`ScoreResult.warnings` is an additive field; the shared batch scorer also persists
+these warnings inside explanation JSON and mirrors them in quality flags. Existing
+hotspot responses expose saved warnings through `quality_flags`. Supervised
+inference requires an externally issued `ApprovedScorer` reference and a compact
+digest-pinned `inference-bundle-v1`; candidate verification grants no approval.
+All 31 signed SHAP contributions explain the raw underlying forest-vote fraction,
+with base value, additivity target, units and missing/imputed states. Calibrated
+probability remains separate. Baselines expose actual terms instead of SHAP.
+See [inference protocol](inference-and-explanations.md) and
+[score schema](inference-score-v1.schema.json). Registry resolution/promotion is
+Phase 4.7; the current worker and real dataset remain baseline-only.
+
+## Phase 4.7 approved execution
+
+Worker execution now resolves managed approved model references and freezes them
+per run. `ACTIVE_SCORER=registry` selects the transactional active pointer for new
+jobs; explicit baseline configuration remains artifact-free. Required-data or
+model failures withhold scoring with fixed job error codes instead of changing
+methods. Schema/readiness and frontend handoff report the shared revision 0003.
+See [promotion and rollback](model-registry-and-promotion.md).

@@ -1,0 +1,16 @@
+{
+  "schema_version": "model-approval-review-v1",
+  "decision": "approve",
+  "reviewer": "Talha",
+  "model_author": "Codex automated development agent",
+  "independent_review": true,
+  "limitations_acknowledged": true,
+  "evaluation_manifest_sha256": "fdbd705d6c1fe088872a548c39626fb15e89e71b17aaccea61ad871e8de4d02f",
+  "inference_manifest_sha256": "40506f4ac97c0b75522afd7b16a7d0d9c19f9ebb33affe8f2c9484c493e15b51",
+  "model_card_sha256": "52a34f8840163590f10ff1e105510f6086653e3004bf572ef22b1ad61d8c4c80",
+  "rationale": "Talha confirmed that he reviewed this exact candidate and explicitly approved its limited use for historical northern-California replay, acknowledging the documented limitations. Approval excludes live use and probability claims.",
+  "supported_modes": [
+    "replay"
+  ],
+  "live_generalization_reviewed": false
+}

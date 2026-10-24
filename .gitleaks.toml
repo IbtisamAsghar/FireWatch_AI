@@ -1,0 +1,26 @@
+title = "FireWatch reviewed scanner exceptions"
+[extend]
+useDefault = true
+
+# Exact non-secret protocol labels and a synthetic test credential. No path exclusions.
+[[rules]]
+id = "generic-api-key"
+[[rules.allowlists]]
+description = "Public protocol identifiers and synthetic FIRMS fixture"
+regexTarget = "secret"
+regexes = [
+  '^firms-observation-v1$',
+  '^synthetic-firms-test-key-1234567890$',
+]
+
+# A generic key heuristic treats these public digests as credentials. Require both
+# the exact metadata path/line shape and the generic rule; other rules still scan.
+[[rules.allowlists]]
+description = "Public alert key and versioned API source checksums"
+condition = "AND"
+regexTarget = "line"
+paths = ['''(^|/)docs/phase-5\.[234]-smoke\.json$''']
+regexes = [
+  '''^\s*"alert_key": "0x[0-9a-f]{64}",?$''',
+  '''^\s*"src/firewatch/schemas/api\.py": "[0-9a-f]{64}",?$''',
+]

@@ -1,6 +1,8 @@
 """Dependency-free repository checks; run with Python 3.12 from any directory."""
 
 import ast
+import hashlib
+import json
 import re
 import subprocess
 import sys
@@ -14,6 +16,9 @@ REQUIRED = (
     "CONTRIBUTING.md",
     "FireWatchImplementationPlan.md",
     ".env.example",
+    ".env.compose.example",
+    "Dockerfile",
+    "compose.yaml",
     ".gitignore",
     ".dockerignore",
     ".editorconfig",
@@ -95,6 +100,8 @@ def main():
     for name in (
         ".env",
         ".env.production",
+        ".env.compose",
+        "deploy/bundles/private-release/model.json",
         "secrets/token.txt",
         "wallets/demo.json",
         "keystore/demo.json",
@@ -111,23 +118,45 @@ def main():
         result = git("check-ignore", "--no-index", "-q", name)
         if result.returncode != 0:
             errors.append(f"Git does not exclude sensitive/generated path: {name}")
-    for name in (".env.example", "models/README.md", "data/sample/README.md", "requirements.lock"):
+    for name in (
+        ".env.example",
+        ".env.compose.example",
+        "models/README.md",
+        "data/sample/README.md",
+        "requirements.lock",
+    ):
         result = git("check-ignore", "--no-index", "-q", name)
         if result.returncode != 1:
             errors.append(f"Git unexpectedly ignores required project path: {name}")
     tracked = git("ls-files", "-z")
     if tracked.returncode:
         errors.append("Cannot inspect tracked files with Git.")
+    delivery_path = ROOT / "docs/branch-delivery-inventory.json"
+    delivery = (
+        json.loads(delivery_path.read_text(encoding="utf-8")).get("files_sha256", {})
+        if delivery_path.is_file()
+        else {}
+    )
     for name in tracked.stdout.split("\0"):
-        if not name or name == ".env.example":
+        if not name or name in {".env.example", ".env.compose.example"}:
             continue
         parts = Path(name).parts
+        reviewed_artifact = (
+            name.startswith(("data/", "models/"))
+            and name in delivery
+            and (ROOT / name).is_file()
+            and hashlib.sha256((ROOT / name).read_bytes()).hexdigest() == delivery[name]
+        )
         if (
             Path(name).name == ".env"
             or Path(name).name.startswith(".env.")
             or any(part in {"wallets", "keystore", "secrets", ".venv"} for part in parts)
-            or name.startswith(("data/raw/", "data/archive/", "backups/", ".chain/"))
-            or (name.startswith("models/") and name != "models/README.md")
+            or name.startswith(("backups/", ".chain/"))
+            or (
+                name.startswith(("data/raw/", "data/archive/", "models/"))
+                and name != "models/README.md"
+                and not reviewed_artifact
+            )
             or Path(name).suffix.lower()
             in {".pem", ".key", ".p12", ".pfx", ".joblib", ".pkl", ".pickle"}
         ):

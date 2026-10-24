@@ -18,6 +18,7 @@ from firewatch.api.routes.reads import health, operator, router
 from firewatch.api.security import OperatorBoundary
 from firewatch.config import Settings, get_settings
 from firewatch.db.session import Database
+from firewatch.evidence.chain_rpc import RpcAnchorReader
 from firewatch.logging import install_redaction
 
 
@@ -55,7 +56,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         close_redaction = install_redaction(configured)
         application.state.clock = lambda: datetime.now(UTC)
         application.state.artifacts = ArtifactInspector()
-        application.state.anchor_reader = None
+        reader = RpcAnchorReader(configured) if configured.chain_enabled else None
+        application.state.anchor_reader = reader
         try:
             database = Database(configured)
             application.state.database = database
@@ -64,6 +66,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             finally:
                 database.close()
         finally:
+            if reader is not None:
+                reader.close()
             close_redaction()
 
     application = FastAPI(

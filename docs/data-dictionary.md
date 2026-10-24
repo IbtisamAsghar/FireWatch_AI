@@ -218,3 +218,43 @@ created_at and release_sha256. Run orchestration's scorer object stores model ID
 version, manifest SHA256, approval reference and private managed path. These pins
 cannot be rewritten on resume; scores persist their actual model_id and nullable
 probability. The registry does not modify saved alerts or retrospective scores.
+
+## Phase 5.2 verification audit
+
+`Verification.local_status` compares exact saved payload bytes; `anchor_status`
+independently reports the read-only chain comparison. `artifact_verification`
+defaults to `not_performed`; opt-in checks return `verified`, `mismatch`, `partial`
+or `unavailable`. `artifact_audit` provides the matching aggregate status, an
+overall reason, scope `referenced_local_files` and safe item-level UUID/kind/status/
+reason fields. No file paths or credentials are public. `integrity_notice`
+explains privileged-rewrite and scientific-validity limitations. Existing fields,
+API version and immutable evidence encodings are unchanged; these fields are
+additive. See [verification](evidence-verification.md).
+
+## Phase 5.3 contract identities
+
+`alert-registry-v1` derives an opaque `bytes32 alertKey` with SHA-256 over the
+versioned domain separator and the alert UUID's 16 network-order bytes. Its
+`bytes32 evidenceDigest` is the exact saved evidence SHA-256, directly decoded
+from hexadecimal. The registry stores only that key/digest and an immutable
+writer; the anchoring event indexes key, digest and writer. Model version and
+other provenance remain in the hashed off-chain payload. Local test receipts
+declare `network_kind=local`, chain ID 31337 and the deployed address. No database
+migration or application anchoring state changes in this phase. See
+[the wire contract](alert-registry.md).
+
+## Phase 5.4 delivery state
+
+`anchor_outbox.receipt_metadata.schema_version=anchor-delivery-v1` freezes network,
+network kind, signer, alert key, exact evidence digest, nonce, gas limit/price,
+signed transaction bytes/hash and preparation time before broadcast. Later fields
+record broadcast time, canonical block hash/height, confirmations, consecutive
+errors, reorg count and known nonce consumption. This private mutable state is
+separate from immutable evidence; it is never a public hash preimage.
+
+`anchors` stores the exact destination, attempted digest, transaction/block
+identity and confirmation status. A failed/submitted row is not proof of anchoring.
+Operator anchor jobs follow the corresponding outbox status. `AnchorView.alert_key`
+is an additive public opaque identity; RPC verification independently checks the
+saved receipt and canonical chain. No migration is needed. See
+[delivery states](durable-anchoring.md).

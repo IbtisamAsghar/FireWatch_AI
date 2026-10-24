@@ -118,6 +118,17 @@
       "AnchorView": {
         "additionalProperties": false,
         "properties": {
+          "alert_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Alert Key"
+          },
           "block_hash": {
             "anyOf": [
               {
@@ -170,6 +181,103 @@
           "network_kind"
         ],
         "title": "AnchorView",
+        "type": "object"
+      },
+      "ArtifactAudit": {
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ArtifactCheck"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "reason": {
+            "enum": [
+              "not_requested",
+              "completed",
+              "payload_mismatch",
+              "unsupported_payload",
+              "invalid_references",
+              "reference_limit"
+            ],
+            "title": "Reason",
+            "type": "string"
+          },
+          "scope": {
+            "const": "referenced_local_files",
+            "default": "referenced_local_files",
+            "title": "Scope",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "not_performed",
+              "verified",
+              "mismatch",
+              "partial",
+              "unavailable"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "reason"
+        ],
+        "title": "ArtifactAudit",
+        "type": "object"
+      },
+      "ArtifactCheck": {
+        "additionalProperties": false,
+        "properties": {
+          "artifact_id": {
+            "format": "uuid",
+            "title": "Artifact Id",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "source",
+              "model"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "reason": {
+            "enum": [
+              "checksum_match",
+              "checksum_mismatch",
+              "metadata_mismatch",
+              "missing_record",
+              "missing_file",
+              "unsafe_path",
+              "read_failed",
+              "size_limit",
+              "invalid_manifest"
+            ],
+            "title": "Reason",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "match",
+              "mismatch",
+              "unavailable"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "artifact_id",
+          "status",
+          "reason"
+        ],
+        "title": "ArtifactCheck",
         "type": "object"
       },
       "BoundingBox": {
@@ -2104,9 +2212,18 @@
             "title": "Anchors",
             "type": "array"
           },
+          "artifact_audit": {
+            "$ref": "#/components/schemas/ArtifactAudit"
+          },
           "artifact_verification": {
-            "const": "not_performed",
             "default": "not_performed",
+            "enum": [
+              "not_performed",
+              "verified",
+              "mismatch",
+              "partial",
+              "unavailable"
+            ],
             "title": "Artifact Verification",
             "type": "string"
           },
@@ -2124,6 +2241,11 @@
           },
           "freshness": {
             "$ref": "#/components/schemas/Freshness"
+          },
+          "integrity_notice": {
+            "default": "Local hashes detect changes relative to the saved digest; an attacker controlling both can rewrite both. A matching independently anchored digest supplies a separate comparison point. Local-chain anchoring is a demonstration, not independent public notarization. Integrity does not prove a fire is real or a model is correct. Artifact checks cover referenced local file bytes, not scientific validity or approval.",
+            "title": "Integrity Notice",
+            "type": "string"
           },
           "local_status": {
             "enum": [

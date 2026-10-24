@@ -1,0 +1,19 @@
+{
+  "schema_version": "contract-toolchain-v1",
+  "foundry_version": "1.8.6",
+  "solidity_version": "0.8.30",
+  "platforms": {
+    "win32-amd64": {
+      "foundry_url": "https://github.com/foundry-rs/foundry/releases/download/v1.8.6/foundry_v1.8.6_win32_amd64.zip",
+      "foundry_sha256": "924d6395786af438e7cb315f6835185f99d727ed6127dbbc4e6a62eb14edcfff",
+      "solc_url": "https://raw.githubusercontent.com/ethereum/solc-bin/gh-pages/windows-amd64/solc-windows-amd64-v0.8.30+commit.73712a01.exe",
+      "solc_sha256": "ccbd3ed44d5fbd26fe039702d403421f1212d2e8752e3cbe3bfd074986911586"
+    },
+    "linux-amd64": {
+      "foundry_url": "https://github.com/foundry-rs/foundry/releases/download/v1.8.6/foundry_v1.8.6_linux_amd64.tar.gz",
+      "foundry_sha256": "58850106984038f3a7200f38a4182c8cb423d3a4f4c7848eacbc2453e6bc35fc",
+      "solc_url": "https://raw.githubusercontent.com/ethereum/solc-bin/gh-pages/linux-amd64/solc-linux-amd64-v0.8.30+commit.73712a01",
+      "solc_sha256": "f3e987dc6ecebd4bd350c48edcbc320b46cf9e3109bd3fc3d88f1acaf4c428f7"
+    }
+  }
+}

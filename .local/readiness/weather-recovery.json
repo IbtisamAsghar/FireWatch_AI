@@ -1,0 +1,11 @@
+{
+  "recovered_at": "2026-10-24T13:59:45.605265+00:00",
+  "data_kind": "real",
+  "provider": "Open-Meteo",
+  "product": "historical_forecast",
+  "model": "gfs_seamless",
+  "cells": 6,
+  "rows": 144,
+  "start": "2024-07-24T23:00:00+00:00",
+  "end": "2024-07-25T22:00:00+00:00"
+}

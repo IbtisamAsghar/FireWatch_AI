@@ -15,6 +15,8 @@ from sqlalchemy.orm import Session
 
 from firewatch.config import Settings
 from firewatch.db.models import Alert, Anchor, AnchorOutbox, ModelVersion, Run
+from firewatch.evidence.anchor import alert_key
+from firewatch.evidence.verify import audit_artifacts, verify_payload
 from firewatch.ml.baselines import BASELINE_VERSIONS
 from firewatch.ml.inference_bundle import load_bundle as load_inference_bundle
 from firewatch.ml.registry import ModelRegistryError, selected_version
@@ -59,6 +61,8 @@ SENSITIVE_KEYS = {
     "raw_values",
     "input_asset_manifest",
     "training_manifest",
+    "raw_transaction",
+    "signed_transaction",
     "raw_path",
     "path",
 }
@@ -350,14 +354,19 @@ def verification(
     now: datetime,
     settings: Settings,
     reader: AnchorReader | None,
+    *,
+    verify_artifacts: bool = False,
 ) -> Verification:
-    computed = hashlib.sha256(alert.canonical_payload).hexdigest()
+    local_status, computed = verify_payload(alert.canonical_payload, alert.original_hash)
     rows = session.scalars(
         select(Anchor)
         .where(Anchor.alert_id == alert.id)
         .order_by(Anchor.chain_id, Anchor.contract_address)
     ).all()
-    views = [AnchorView.model_validate(anchor) for anchor in rows]
+    views = [
+        AnchorView.model_validate(anchor).model_copy(update={"alert_key": alert_key(alert.id)})
+        for anchor in rows
+    ]
     pending = session.scalar(
         select(AnchorOutbox.id)
         .where(
@@ -369,31 +378,64 @@ def verification(
     anchor_state = "unanchored"
     if rows:
         anchor_state = "anchor_unavailable"
-        if settings.chain_enabled and reader is not None:
+        confirmed = [view for view in views if view.confirmation_status == AnchorStatus.CONFIRMED]
+        if not confirmed and (
+            pending
+            or any(
+                view.confirmation_status in {AnchorStatus.QUEUED, AnchorStatus.SUBMITTED}
+                for view in views
+            )
+        ):
+            anchor_state = "anchor_pending"
+        elif confirmed and settings.chain_enabled and reader is not None:
             try:
                 digests = [
-                    reader.read_digest(anchor).removeprefix("0x").lower() for anchor in views
+                    reader.read_digest(anchor).removeprefix("0x").lower() for anchor in confirmed
                 ]
                 if not all(re.fullmatch(r"[0-9a-f]{64}", digest) for digest in digests):
                     raise ValueError("Invalid chain digest")
                 anchor_state = (
                     "anchor_match"
                     if all(digest == alert.original_hash for digest in digests)
+                    and len(confirmed) == len(views)
                     else "anchor_mismatch"
                 )
+                if all(digest == alert.original_hash for digest in digests) and (
+                    len(confirmed) != len(views)
+                ):
+                    anchor_state = (
+                        "anchor_pending"
+                        if pending
+                        or any(
+                            view.confirmation_status
+                            in {AnchorStatus.QUEUED, AnchorStatus.SUBMITTED}
+                            for view in views
+                        )
+                        else "anchor_unavailable"
+                    )
             except Exception:
                 # Adapter failures/outages do not masquerade as integrity mismatches.
                 anchor_state = "anchor_unavailable"
     elif pending:
         anchor_state = "anchor_pending"
+    artifact_audit = (
+        audit_artifacts(session, alert.canonical_payload, alert.original_hash, settings)
+        if verify_artifacts
+        else None
+    )
     return Verification(
         **context(session, run, now, settings).model_dump(),
         alert_id=alert.id,
-        local_status="local_match" if computed == alert.original_hash else "local_mismatch",
+        local_status="local_match" if local_status == "local_match" else "local_mismatch",
         original_hash=alert.original_hash,
         computed_hash=computed,
         anchor_status=anchor_state,
         anchors=views,
+        **(
+            {"artifact_verification": artifact_audit.status, "artifact_audit": artifact_audit}
+            if artifact_audit is not None
+            else {}
+        ),
     )
 
 

@@ -1,0 +1,16 @@
+{
+  "schema_version": "model-approval-review-v1",
+  "decision": "pending",
+  "reviewer": null,
+  "model_author": "Codex automated development agent",
+  "independent_review": false,
+  "limitations_acknowledged": false,
+  "evaluation_manifest_sha256": "fdbd705d6c1fe088872a548c39626fb15e89e71b17aaccea61ad871e8de4d02f",
+  "inference_manifest_sha256": "40506f4ac97c0b75522afd7b16a7d0d9c19f9ebb33affe8f2c9484c493e15b51",
+  "model_card_sha256": "52a34f8840163590f10ff1e105510f6086653e3004bf572ef22b1ad61d8c4c80",
+  "rationale": "Pending actual independent review of the historical northern-California ranking candidate, sparse training weather, uncalibrated output, logistic comparison and lack of live NRT validation.",
+  "supported_modes": [
+    "replay"
+  ],
+  "live_generalization_reviewed": false
+}

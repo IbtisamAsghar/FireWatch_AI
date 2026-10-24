@@ -1,0 +1,1 @@
+{ "transaction_limit" : 5000, "current_transactions": 200, "transaction_interval" : "10 minutes" }

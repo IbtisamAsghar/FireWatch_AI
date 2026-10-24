@@ -1,5 +1,24 @@
 # FireWatch scorer and candidate model card
 
+Current local release preparation, 24 October 2026: the new candidate
+`forest-independent-2025-v2` passed the fixed ranking gates on a separately
+reserved 2025 final holdout and was approved by Talha for historical replay.
+It is now registry-active. Its exact report, artifact pins and review are described in
+[the current review package](independent-2025-model-review.md).
+Real weather/climate-enriched ML and baseline hotspot results are available through
+[the local readiness guide](local-real-readiness.md). The trained candidate
+is approved only for historical northern-California replay. Metrics below describe the older 2024 release.
+
+Local recovery, 24 October 2026: a new real-data development forest is now saved
+in this checkout. See [the recovery record](recovered-model-training.md).
+The historical final metrics below apply to the original release candidate,
+not to this newly fitted artifact. Neither candidate is approved or active.
+
+## Historical 2024 candidate record
+
+The following sections retain the earlier candidate's historical state and metrics.
+They do not describe the current `forest-independent-2025-v2` activation above.
+
 Release state: **ranking candidate passed final evaluation; independent approval pending**.
 The default scorer remains `baseline-v1`; no ML model is approved or active.
 Historical backfill fixed the zero-eligible-row blocker. The frozen one-shot

@@ -222,6 +222,7 @@ __marimo__/
 # FireWatch project exclusions (retain generic Python rules above)
 .env.*
 !.env.example
+!.env.compose.example
 *.pem
 *.key
 *.p12
@@ -245,8 +246,14 @@ __marimo__/
 /.chain/
 /broadcast/
 /node_modules/
+/contracts/out/
+/contracts/cache/
+/contracts/broadcast/
+/contracts/cache_forge/
 
 # Native local infrastructure must never enter version control
 /.local/
 /.runtime/
 *.dump
+/deploy/bundles/*
+!/deploy/bundles/README.md

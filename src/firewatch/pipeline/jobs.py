@@ -54,6 +54,7 @@ def schedule(session: Session, settings: Settings, now: datetime) -> int:
             select(func.count())
             .select_from(Job)
             .where(Job.status.in_([JobStatus.QUEUED, JobStatus.RUNNING]))
+            .where(Job.type.in_([JobType.REFRESH, JobType.REPLAY]))
         )
         or 0
     )

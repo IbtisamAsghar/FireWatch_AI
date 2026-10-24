@@ -26,10 +26,14 @@ def read_lock(name: str) -> dict[str, set[str]]:
 def main() -> None:
     runtime = read_lock("requirements.lock")
     development = read_lock("requirements-dev.lock")
+    security = read_lock("requirements-security.lock")
     for package, versions in runtime.items():
         if development.get(package) != versions:
             raise ValueError(f"Runtime/development lock mismatch: {package}")
-    print(f"Locks agree: {len(runtime)} runtime, {len(development)} development packages.")
+    print(
+        f"Locks agree: {len(runtime)} runtime, {len(development)} development packages; "
+        f"{len(security)} isolated security-tool packages."
+    )
 
 
 if __name__ == "__main__":

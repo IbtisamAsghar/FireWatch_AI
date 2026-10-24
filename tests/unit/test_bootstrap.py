@@ -77,7 +77,7 @@ def test_secret_repr_and_safe_error(monkeypatch):
 
 def test_optional_sources_not_needed_until_ingestion():
     assert valid_settings(firms_map_key="REPLACE_ME").firms_map_key is None
-    with pytest.raises(ValidationError, match="CHAIN_PRIVATE_KEY"):
+    with pytest.raises(ValidationError, match="ALERT_REGISTRY_ADDRESS"):
         valid_settings(chain_enabled=True)
 
 

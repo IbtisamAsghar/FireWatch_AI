@@ -1,0 +1,30 @@
+{
+  "api_version": "api-v1",
+  "contracts_version": "contracts-v1",
+  "files_sha256": {
+    "demo-index.json": "b82c52c761389d267d9b8eb4e8c7a9bcfc5cddbbf980212bf4935dbdcc7a30ff",
+    "docs/api-field-dictionary.json": "666d37a64c1849c7b5ff6e2242c047158f4cbb84960c68592600d1f30727c02c",
+    "docs/contracts.md": "874887ce1ee1cb1bbc4ac46281526e09f29c685e0a00376b0479a683d37fb002",
+    "docs/data-dictionary.md": "0c2cb094a0062093caf2580011ea5bfe054f9c7f3d5c5589b678fe3dc623e575",
+    "docs/database-schema.md": "a04ef3e64d045c11aa262680ef98f0a9d697b978c3a84396638b834adfa76adf",
+    "docs/demo-walkthrough.md": "079d488efce584a04af554e2019a9e74484323b3536b8a2341e37b2224a14f19",
+    "docs/frontend-handoff.md": "27b430f38a326b38496e234fd1b08af8e33838378be6f26dc03eb3b686756eea",
+    "docs/operator-api.md": "68c0bd4909b5a8a2ece497e47353c3aedf39824f865bb2d3e69b1e562264f0e7",
+    "docs/phase-1.6-checklist.md": "601bc72cc626f61d21b95859fc9d711c571b30911e96e25c51b2d4f7d2eead66",
+    "examples.json": "16498ad81abd901ad88d6f07fae8741c724c549a8f070c8e60771038eeb9d893",
+    "field-dictionary.json": "666d37a64c1849c7b5ff6e2242c047158f4cbb84960c68592600d1f30727c02c",
+    "openapi.json": "3cdc4eca4db97f72523596da622f15a82e4992ada74bc94b205ced4b027946ac"
+  },
+  "fixture": "synthetic-demo-v1",
+  "fixture_sha256": "fb6e62fdd107c503700ba81b121a2f8e0afee3c5b14c35185cba6a812a3d1041",
+  "limitations": [
+    "Synthetic acceptance fixtures; not real fire observations.",
+    "No worker execution, real-data replay, trained model or chain proof is claimed.",
+    "Request correlation IDs and regular seeded region UUIDs can vary between exports."
+  ],
+  "migration_revision": "0003",
+  "read_operations_demonstrated": 15,
+  "schema_version": "handoff-v1",
+  "synthetic": true,
+  "total_operations": 18
+}

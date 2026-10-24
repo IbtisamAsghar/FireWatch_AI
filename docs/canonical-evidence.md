@@ -130,7 +130,8 @@ unchanged because dataset, replay and ML packages also depend on it.
 Normal hotspot/score API responses retain numeric fields. The opaque alert payload
 uses decimal strings for this version and remains a public, potentially redacted
 projection. Hash verification always uses the saved bytes, never that projection.
-Full artifact verification and expanded verification API behavior remain Phase 5.2.
+Phase 5.2 now supplies opt-in checks of directly referenced local artifact bytes
+and expanded verification API behavior; see [verification](evidence-verification.md).
 Integrity evidence does not establish that a fire exists or a model is correct.
 
 ## Reproduce local acceptance

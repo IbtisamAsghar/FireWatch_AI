@@ -1,0 +1,2 @@
+# Isolated release tooling; never installed into the application image.
+pip-audit==2.10.1

@@ -1,0 +1,19 @@
+schema_version: target-dataset-design-2025-holdout-v1
+target_spec_sha256: 30e9f3b1ea4c12b7af465c959c4c97140aeb0de171ce6c9b894ef69c3c23393f
+region: northern-california
+bbox:
+  west: -122.5
+  south: 38.5
+  east: -120.0
+  north: 40.5
+periods:
+- start: '2022-05-01T00:00:00Z'
+  end: '2022-11-01T00:00:00Z'
+- start: '2024-05-01T00:00:00Z'
+  end: '2024-11-01T00:00:00Z'
+- start: '2025-05-01T00:00:00Z'
+  end: '2025-11-01T00:00:00Z'
+feature_lookback_hours: 24
+reference_years: [2010, 2019]
+split_policy: historical-2025-independent-holdout-v1
+final_test_access: forbidden_during_target_design

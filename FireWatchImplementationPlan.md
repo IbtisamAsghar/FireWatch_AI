@@ -874,30 +874,34 @@ runs and saved alerts preserve their exact original bytes. See
 
 ### Phase 5.5: CI and integration quality
 
-- [ ] GitHub Actions installs locked dependencies and runs Ruff, mypy, pytest, and a container build.
-- [ ] Use a PostgreSQL service matching the deployment major version for migration/integration tests.
-- [ ] Mock external APIs with recorded sanitized fixtures; CI must not require live keys or network provider availability.
-- [ ] Test: import -> cluster -> enrich -> feature -> baseline/model -> alert -> API -> verify.
-- [ ] Separately allow a manual opt-in live provider smoke test with secrets.
-- [ ] Keep a trusted, small test model artifact or build one deterministically inside tests; never download arbitrary pickle files.
-- [ ] Run contract tests for canonical evidence bytes/hash and OpenAPI response compatibility.
-- [ ] Test worker crash recovery, duplicate job submission, partial provider outage, empty region, missing model, and replay/live isolation.
-- [ ] Export test reports, OpenAPI, and build metadata as CI artifacts.
-- [ ] Add dependency vulnerability scanning and secret scanning to the release workflow.
+Implementation and local evidence: [acceptance](docs/phase-5.5-checklist.md). Hosted CI/container execution remains a release gate.
+
+- [x] GitHub Actions installs locked dependencies and runs Ruff, mypy, pytest, and a container build.
+- [x] Use a PostgreSQL service matching the deployment major version for migration/integration tests.
+- [x] Mock external APIs with recorded sanitized fixtures; CI must not require live keys or network provider availability.
+- [x] Test: import -> cluster -> enrich -> feature -> baseline/model -> alert -> API -> verify.
+- [x] Separately allow a manual opt-in live provider smoke test with secrets.
+- [x] Keep a trusted, small test model artifact or build one deterministically inside tests; never download arbitrary pickle files.
+- [x] Run contract tests for canonical evidence bytes/hash and OpenAPI response compatibility.
+- [x] Test worker crash recovery, duplicate job submission, partial provider outage, empty region, missing model, and replay/live isolation.
+- [x] Export test reports, OpenAPI, and build metadata as CI artifacts.
+- [x] Add dependency vulnerability scanning and secret scanning to the release workflow.
 
 ### Phase 5.6: Build containers and local full-stack backend
 
-- [ ] Build one Linux Python image from the locked package set; run as a non-root user.
-- [ ] API command: `uvicorn firewatch.main:app --host 0.0.0.0 --port 8000`.
-- [ ] Worker command: `python -m firewatch.worker`.
-- [ ] Migration command: `alembic upgrade head`, executed once as a release step.
-- [ ] Define Compose services `db`, `api`, `worker`; optional `anvil`; production adds `caddy`.
-- [ ] Use DB health checks/startup conditions plus application retry logic, rather than assuming container start means database readiness. [S8]
-- [ ] Mount persistent PostgreSQL, raw-data, model, and Caddy storage volumes.
-- [ ] API mounts model artifacts read-only; worker/data paths receive only needed write permissions.
-- [ ] Add readiness checks and restart policies; preserve logs on stdout/stderr.
-- [ ] Keep real training/history archives outside the image; copy approved model artifacts through a versioned deployment bundle.
-- [ ] Verify full backend starts locally from the README with no frontend process.
+Implementation: [stack runbook](docs/container-stack.md), [acceptance and runtime limits](docs/phase-5.6-checklist.md).
+
+- [ ] Build one Linux Python image from the locked package set; run as a non-root user. Dockerfile/CI checks implemented; engine execution pending.
+- [x] API command: `uvicorn firewatch.main:app --host 0.0.0.0 --port 8000`.
+- [x] Worker command: `python -m firewatch.worker`.
+- [x] Migration command: `alembic upgrade head`, executed once as a release step.
+- [x] Define Compose services `db`, `api`, `worker`; optional `anvil`; production adds `caddy`.
+- [x] Use DB health checks/startup conditions plus application retry logic, rather than assuming container start means database readiness. [S8]
+- [x] Mount persistent PostgreSQL, raw-data, model, and Caddy storage volumes.
+- [x] API mounts model artifacts read-only; worker/data paths receive only needed write permissions.
+- [x] Add readiness checks and restart policies; preserve logs on stdout/stderr.
+- [x] Keep real training/history archives outside the image; copy approved model artifacts through a versioned deployment bundle.
+- [ ] Verify full backend starts locally from the README with no frontend process. Hosted acceptance is implemented; local Docker engine unavailable.
 
 ### Phase 5.7: Deploy on a Linux server
 

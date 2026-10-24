@@ -1,0 +1,240 @@
+2026-10-24 18:14:24.016 PKT [18352] LOG:  starting PostgreSQL 16.15, compiled by Visual C++ build 1944, 64-bit
+2026-10-24 18:14:24.016 PKT [18352] LOG:  listening on IPv4 address "127.0.0.1", port 55432
+2026-10-24 18:14:24.034 PKT [23432] LOG:  database system was shut down at 2026-10-24 18:14:13 PKT
+2026-10-24 18:14:24.051 PKT [18352] LOG:  database system is ready to accept connections
+2026-10-24 18:19:24.560 PKT [19864] LOG:  checkpoint starting: time
+2026-10-24 18:23:54.254 PKT [19864] LOG:  checkpoint complete: wrote 10785 buffers (65.8%); 0 WAL file(s) added, 0 removed, 6 recycled; write=269.525 s, sync=0.148 s, total=269.694 s; sync files=429, longest=0.001 s, average=0.001 s; distance=109064 kB, estimate=109064 kB; lsn=0/7FFA490, redo lsn=0/7FFA458
+2026-10-24 18:39:24.262 PKT [19864] LOG:  checkpoint starting: time
+2026-10-24 18:39:25.190 PKT [19864] LOG:  checkpoint complete: wrote 9 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.913 s, sync=0.004 s, total=0.929 s; sync files=9, longest=0.001 s, average=0.001 s; distance=8 kB, estimate=98159 kB; lsn=0/7FFC4C8, redo lsn=0/7FFC490
+2026-10-24 18:44:24.191 PKT [19864] LOG:  checkpoint starting: time
+2026-10-24 18:44:24.617 PKT [19864] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.404 s, sync=0.007 s, total=0.426 s; sync files=4, longest=0.003 s, average=0.002 s; distance=8 kB, estimate=88344 kB; lsn=0/7FFE500, redo lsn=0/7FFE4C8
+2026-10-24 19:04:24.618 PKT [19864] LOG:  checkpoint starting: time
+2026-10-24 19:05:27.867 PKT [19864] LOG:  checkpoint complete: wrote 631 buffers (3.9%); 0 WAL file(s) added, 0 removed, 1 recycled; write=63.216 s, sync=0.024 s, total=63.250 s; sync files=59, longest=0.002 s, average=0.001 s; distance=5291 kB, estimate=80038 kB; lsn=0/85291A0, redo lsn=0/8529168
+2026-10-24 19:14:24.869 PKT [19864] LOG:  checkpoint starting: time
+2026-10-24 19:15:43.682 PKT [18464] ERROR:  Saved alert evidence is immutable
+2026-10-24 19:15:43.682 PKT [18464] CONTEXT:  PL/pgSQL function firewatch_immutable_alert() line 3 at RAISE
+2026-10-24 19:15:43.682 PKT [18464] STATEMENT:  UPDATE alerts SET canonical_payload=$1, original_hash=$2::VARCHAR WHERE alerts.id = $3::UUID
+2026-10-24 19:15:46.114 PKT [22432] ERROR:  cannot execute UPDATE in a read-only transaction
+2026-10-24 19:15:46.114 PKT [22432] STATEMENT:  UPDATE regions SET description='must never commit'
+2026-10-24 19:16:36.071 PKT [18660] ERROR:  Approved model identities and artifacts are immutable
+2026-10-24 19:16:36.071 PKT [18660] CONTEXT:  PL/pgSQL function firewatch_guard_model_registry() line 11 at RAISE
+2026-10-24 19:16:36.071 PKT [18660] STATEMENT:  UPDATE model_versions SET artifact_hash=$1::VARCHAR
+2026-10-24 19:16:36.073 PKT [18660] ERROR:  Approved model identities and artifacts are immutable
+2026-10-24 19:16:36.073 PKT [18660] CONTEXT:  PL/pgSQL function firewatch_guard_model_registry() line 11 at RAISE
+2026-10-24 19:16:36.073 PKT [18660] STATEMENT:  DELETE FROM model_versions
+2026-10-24 19:16:36.075 PKT [18660] ERROR:  Model approval audit records are immutable
+2026-10-24 19:16:36.075 PKT [18660] CONTEXT:  PL/pgSQL function firewatch_guard_model_registry() line 4 at RAISE
+2026-10-24 19:16:36.075 PKT [18660] STATEMENT:  UPDATE model_promotions SET reviewer=$1::VARCHAR
+2026-10-24 19:16:36.076 PKT [18660] ERROR:  Model approval audit records are immutable
+2026-10-24 19:16:36.076 PKT [18660] CONTEXT:  PL/pgSQL function firewatch_guard_model_registry() line 4 at RAISE
+2026-10-24 19:16:36.076 PKT [18660] STATEMENT:  DELETE FROM model_promotions
+2026-10-24 19:16:38.746 PKT [11804] ERROR:  Completed run outputs are immutable
+2026-10-24 19:16:38.746 PKT [11804] CONTEXT:  PL/pgSQL function firewatch_guard_output() line 21 at RAISE
+2026-10-24 19:16:38.746 PKT [11804] STATEMENT:  UPDATE scores SET priority_score=$1 WHERE scores.id = $2::UUID
+2026-10-24 19:16:41.008 PKT [8348] ERROR:  Run approval pins are immutable
+2026-10-24 19:16:41.008 PKT [8348] CONTEXT:  PL/pgSQL function firewatch_guard_scorer_pin() line 8 at RAISE
+2026-10-24 19:16:41.008 PKT [8348] STATEMENT:  UPDATE runs SET input_asset_manifest=$1::JSONB WHERE runs.id = $2::UUID
+2026-10-24 19:16:51.042 PKT [19808] ERROR:  canceling statement due to lock timeout
+2026-10-24 19:16:51.042 PKT [19808] STATEMENT:  SELECT pg_advisory_xact_lock($1::BIGINT) AS pg_advisory_xact_lock_1
+2026-10-24 19:17:43.172 PKT [23384] ERROR:  cannot execute INSERT in a read-only transaction
+2026-10-24 19:17:43.172 PKT [23384] STATEMENT:  INSERT INTO regions(name,west,south,east,north) VALUES ('forbidden-write',70,33,74,36)
+2026-10-24 19:18:07.561 PKT [24496] ERROR:  new row for relation "regions" violates check constraint "ck_regions_longitude_bounds"
+2026-10-24 19:18:07.561 PKT [24496] DETAIL:  Failing row contains (test-b0b64a68b30d4c8c9894f54193339d71, 75, 33, 74, 36, f, , 22a6c8ea-6289-45d2-9fa1-c2f9d0437fee).
+2026-10-24 19:18:07.561 PKT [24496] STATEMENT:  UPDATE regions SET west=$1 WHERE regions.id = $2::UUID
+2026-10-24 19:18:07.563 PKT [24496] ERROR:  new row for relation "regions" violates check constraint "ck_regions_latitude_bounds"
+2026-10-24 19:18:07.563 PKT [24496] DETAIL:  Failing row contains (test-138bca03d6df4dd0a97b5969b05ea1c2, 70, 91, 74, 36, f, , 277a112f-0635-45ff-9404-1792eae5af24).
+2026-10-24 19:18:07.563 PKT [24496] STATEMENT:  UPDATE regions SET south=$1 WHERE regions.id = $2::UUID
+2026-10-24 19:18:07.566 PKT [24496] ERROR:  new row for relation "regions" violates check constraint "ck_regions_latitude_bounds"
+2026-10-24 19:18:07.566 PKT [24496] DETAIL:  Failing row contains (test-a93b8242ef0a40a297fcf96f554b2bef, 70, 33, 74, -95, f, , 7be696ee-ddab-4395-8568-a4c67f55c3b4).
+2026-10-24 19:18:07.566 PKT [24496] STATEMENT:  UPDATE regions SET north=$1 WHERE regions.id = $2::UUID
+2026-10-24 19:18:07.575 PKT [24496] ERROR:  All required stages must succeed before completion
+2026-10-24 19:18:07.575 PKT [24496] CONTEXT:  PL/pgSQL function firewatch_guard_completion() line 16 at RAISE
+2026-10-24 19:18:07.575 PKT [24496] STATEMENT:  UPDATE runs SET status=$1, completed_at=$2::TIMESTAMP WITH TIME ZONE WHERE runs.id = $3::UUID
+2026-10-24 19:18:07.597 PKT [24496] ERROR:  Latest live must reference a completed live run of the same region
+2026-10-24 19:18:07.597 PKT [24496] CONTEXT:  PL/pgSQL function firewatch_guard_live_head() line 7 at RAISE
+2026-10-24 19:18:07.597 PKT [24496] STATEMENT:  UPDATE live_run_heads SET run_id=$1::UUID WHERE live_run_heads.region_id = $2::UUID
+2026-10-24 19:18:07.598 PKT [24496] ERROR:  Latest live cutoff cannot move backwards or replace a tie
+2026-10-24 19:18:07.598 PKT [24496] CONTEXT:  PL/pgSQL function firewatch_guard_live_head() line 13 at RAISE
+2026-10-24 19:18:07.598 PKT [24496] STATEMENT:  UPDATE live_run_heads SET run_id=$1::UUID WHERE live_run_heads.region_id = $2::UUID
+2026-10-24 19:18:07.601 PKT [24496] ERROR:  Latest live must reference a completed live run of the same region
+2026-10-24 19:18:07.601 PKT [24496] CONTEXT:  PL/pgSQL function firewatch_guard_live_head() line 7 at RAISE
+2026-10-24 19:18:07.601 PKT [24496] STATEMENT:  INSERT INTO live_run_heads (region_id, run_id) VALUES ($1::UUID, $2::UUID)
+2026-10-24 19:18:07.617 PKT [24496] ERROR:  Run has incomplete snapshot memberships, features or scores
+2026-10-24 19:18:07.617 PKT [24496] CONTEXT:  PL/pgSQL function firewatch_guard_completion() line 31 at RAISE
+2026-10-24 19:18:07.617 PKT [24496] STATEMENT:  UPDATE runs SET status=$1, completed_at=$2::TIMESTAMP WITH TIME ZONE WHERE runs.id = $3::UUID
+2026-10-24 19:18:07.629 PKT [24496] ERROR:  insert or update on table "feature_sets" violates foreign key constraint "fk_feature_sets_snapshot_id_cluster_snapshots"
+2026-10-24 19:18:07.629 PKT [24496] DETAIL:  Key (snapshot_id, run_id)=(88f984b7-f555-47aa-a5dd-0ee7e0291dd7, ab0b37fa-c0b2-4e19-9562-3d765ed2a6f9) is not present in table "cluster_snapshots".
+2026-10-24 19:18:07.629 PKT [24496] STATEMENT:  UPDATE feature_sets SET run_id=$1 WHERE snapshot_id=$2
+2026-10-24 19:18:07.630 PKT [24496] ERROR:  insert or update on table "scores" violates foreign key constraint "fk_scores_snapshot_id_cluster_snapshots"
+2026-10-24 19:18:07.630 PKT [24496] DETAIL:  Key (snapshot_id, run_id)=(88f984b7-f555-47aa-a5dd-0ee7e0291dd7, ab0b37fa-c0b2-4e19-9562-3d765ed2a6f9) is not present in table "cluster_snapshots".
+2026-10-24 19:18:07.630 PKT [24496] STATEMENT:  UPDATE scores SET run_id=$1 WHERE snapshot_id=$2
+2026-10-24 19:18:07.641 PKT [24496] ERROR:  new row for relation "scores" violates check constraint "ck_scores_probability_claim"
+2026-10-24 19:18:07.641 PKT [24496] DETAIL:  Failing row contains (c3b67a41-a2b1-4683-984d-938eb08c4330, adeb27ef-3fde-4a37-8bb2-7ea003ed5dfd, baseline-v1, null, 0.7, baseline, 0.9, HIGH, {}, 2025-06-10 16:00:00+00, 122cac5e-b0a8-4e8a-be3c-6dc6a8090165).
+2026-10-24 19:18:07.641 PKT [24496] STATEMENT:  UPDATE scores SET escalation_probability=$1 WHERE scores.id = $2::UUID
+2026-10-24 19:18:07.644 PKT [24496] ERROR:  Model release does not support probability claims
+2026-10-24 19:18:07.644 PKT [24496] CONTEXT:  PL/pgSQL function firewatch_guard_output() line 55 at RAISE
+2026-10-24 19:18:07.644 PKT [24496] STATEMENT:  UPDATE scores SET scorer_version=$1::VARCHAR, model_id=$2::UUID, score_kind=$3, escalation_probability=$4 WHERE scores.id = $5::UUID
+2026-10-24 19:18:07.654 PKT [24496] ERROR:  Critical scores require saved evidence before completion
+2026-10-24 19:18:07.654 PKT [24496] CONTEXT:  PL/pgSQL function firewatch_guard_completion() line 37 at RAISE
+2026-10-24 19:18:07.654 PKT [24496] STATEMENT:  UPDATE runs SET status=$1, completed_at=$2::TIMESTAMP WITH TIME ZONE WHERE runs.id = $3::UUID
+2026-10-24 19:18:07.657 PKT [24496] ERROR:  Saved alert evidence is immutable
+2026-10-24 19:18:07.657 PKT [24496] CONTEXT:  PL/pgSQL function firewatch_immutable_alert() line 3 at RAISE
+2026-10-24 19:18:07.657 PKT [24496] STATEMENT:  UPDATE alerts SET evidence_schema_version='changed' WHERE id=$1
+2026-10-24 19:18:07.658 PKT [24496] ERROR:  Saved alert evidence is immutable
+2026-10-24 19:18:07.658 PKT [24496] CONTEXT:  PL/pgSQL function firewatch_immutable_alert() line 3 at RAISE
+2026-10-24 19:18:07.658 PKT [24496] STATEMENT:  DELETE FROM alerts WHERE id=$1
+2026-10-24 19:18:07.661 PKT [24496] ERROR:  Saved alert evidence is immutable
+2026-10-24 19:18:07.661 PKT [24496] CONTEXT:  PL/pgSQL function firewatch_immutable_alert() line 3 at RAISE
+2026-10-24 19:18:07.661 PKT [24496] STATEMENT:  TRUNCATE alerts CASCADE
+2026-10-24 19:18:07.673 PKT [24496] ERROR:  new row for relation "alerts" violates check constraint "ck_alerts_payload_hash_match"
+2026-10-24 19:18:07.673 PKT [24496] DETAIL:  Failing row contains (02a18049-f766-442e-9541-8cd76355fff7, 48b9ae8a-38ec-4a95-805a-ee81a188544b, 41a7f487-dba8-489c-85aa-c73451cadcb3, \x6368616e676564, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, v1, 2026-10-24 14:18:07.666299+00, 856918a2-7d12-45e8-9d2d-854c8df68470).
+2026-10-24 19:18:07.673 PKT [24496] STATEMENT:  INSERT INTO alerts (snapshot_id, run_id, score_id, canonical_payload, original_hash, evidence_schema_version, id) VALUES ($1::UUID, $2::UUID, $3::UUID, $4, $5::VARCHAR, $6::VARCHAR, $7::UUID) RETURNING alerts.created_at
+2026-10-24 19:18:07.684 PKT [24496] ERROR:  Completed runs are immutable
+2026-10-24 19:18:07.684 PKT [24496] CONTEXT:  PL/pgSQL function firewatch_guard_completion() line 10 at RAISE
+2026-10-24 19:18:07.684 PKT [24496] STATEMENT:  UPDATE runs SET status='running' WHERE id=$1
+2026-10-24 19:18:07.685 PKT [24496] ERROR:  Completed run outputs are immutable
+2026-10-24 19:18:07.685 PKT [24496] CONTEXT:  PL/pgSQL function firewatch_guard_output() line 21 at RAISE
+2026-10-24 19:18:07.685 PKT [24496] STATEMENT:  UPDATE scores SET priority_score=0.1 WHERE id=$1
+2026-10-24 19:18:07.686 PKT [24496] ERROR:  Completed run outputs are immutable
+2026-10-24 19:18:07.686 PKT [24496] CONTEXT:  PL/pgSQL function firewatch_guard_output() line 21 at RAISE
+2026-10-24 19:18:07.686 PKT [24496] STATEMENT:  DELETE FROM feature_sets WHERE snapshot_id=$1
+2026-10-24 19:18:07.686 PKT [24496] ERROR:  Completed run outputs are immutable
+2026-10-24 19:18:07.686 PKT [24496] CONTEXT:  PL/pgSQL function firewatch_guard_output() line 21 at RAISE
+2026-10-24 19:18:07.686 PKT [24496] STATEMENT:  DELETE FROM cluster_members WHERE snapshot_id=$1
+2026-10-24 19:18:07.688 PKT [24496] ERROR:  Cannot truncate completed run data
+2026-10-24 19:18:07.688 PKT [24496] CONTEXT:  PL/pgSQL function firewatch_guard_truncate() line 4 at RAISE
+2026-10-24 19:18:07.688 PKT [24496] STATEMENT:  TRUNCATE cluster_snapshots CASCADE
+2026-10-24 19:18:07.696 PKT [24496] ERROR:  Cluster member is outside the run region or observation cutoff
+2026-10-24 19:18:07.696 PKT [24496] CONTEXT:  PL/pgSQL function firewatch_guard_output() line 36 at RAISE
+2026-10-24 19:18:07.696 PKT [24496] STATEMENT:  INSERT INTO cluster_members (snapshot_id, detection_id) VALUES ($1::UUID, $2::UUID)
+2026-10-24 19:18:07.763 PKT [24496] ERROR:  Model feature version does not match the run
+2026-10-24 19:18:07.763 PKT [24496] CONTEXT:  PL/pgSQL function firewatch_guard_output() line 48 at RAISE
+2026-10-24 19:18:07.763 PKT [24496] STATEMENT:  UPDATE scores SET scorer_version=$1::VARCHAR, model_id=$2::UUID, score_kind=$3 WHERE scores.id = $4::UUID
+2026-10-24 19:18:07.784 PKT [14280] ERROR:  insert or update on table "alerts" violates foreign key constraint "fk_alerts_score_id_scores"
+2026-10-24 19:18:07.784 PKT [14280] DETAIL:  Key (score_id, snapshot_id, run_id)=(0e1d7d89-c846-4594-9b42-03d419d6921e, b45a53a5-bea2-43a3-b6a3-e7201e4d466d, 9cbdf0ee-510b-46c2-b068-282d0b425144) is not present in table "scores".
+2026-10-24 19:18:07.784 PKT [14280] STATEMENT:  INSERT INTO alerts (snapshot_id, run_id, score_id, canonical_payload, original_hash, evidence_schema_version, id) VALUES ($1::UUID, $2::UUID, $3::UUID, $4, $5::VARCHAR, $6::VARCHAR, $7::UUID) RETURNING alerts.created_at
+2026-10-24 19:18:57.280 PKT [19864] LOG:  checkpoint complete: wrote 1979 buffers (12.1%); 0 WAL file(s) added, 2 removed, 0 recycled; write=269.149 s, sync=3.159 s, total=272.411 s; sync files=36579, longest=0.003 s, average=0.001 s; distance=30547 kB, estimate=75089 kB; lsn=0/20856990, redo lsn=0/A2FDF68
+2026-10-24 19:24:24.284 PKT [19864] LOG:  checkpoint starting: time
+2026-10-24 19:28:58.422 PKT [19864] LOG:  checkpoint complete: wrote 3428 buffers (20.9%); 0 WAL file(s) added, 0 removed, 22 recycled; write=269.732 s, sync=0.039 s, total=274.138 s; sync files=120, longest=0.002 s, average=0.001 s; distance=365927 kB, estimate=365927 kB; lsn=0/20C80878, redo lsn=0/20857C98
+2026-10-24 19:34:24.425 PKT [19864] LOG:  checkpoint starting: time
+2026-10-24 19:35:12.229 PKT [19864] LOG:  checkpoint complete: wrote 472 buffers (2.9%); 0 WAL file(s) added, 0 removed, 0 recycled; write=47.292 s, sync=0.510 s, total=47.805 s; sync files=4292, longest=0.002 s, average=0.001 s; distance=5566 kB, estimate=329891 kB; lsn=0/236DA398, redo lsn=0/20DC7888
+2026-10-24 19:36:12.510 PKT [23480] ERROR:  Saved alert evidence is immutable
+2026-10-24 19:36:12.510 PKT [23480] CONTEXT:  PL/pgSQL function firewatch_immutable_alert() line 3 at RAISE
+2026-10-24 19:36:12.510 PKT [23480] STATEMENT:  UPDATE alerts SET canonical_payload=$1, original_hash=$2::VARCHAR WHERE alerts.id = $3::UUID
+2026-10-24 19:36:14.623 PKT [19860] ERROR:  cannot execute UPDATE in a read-only transaction
+2026-10-24 19:36:14.623 PKT [19860] STATEMENT:  UPDATE regions SET description='must never commit'
+2026-10-24 19:36:59.208 PKT [28456] ERROR:  Approved model identities and artifacts are immutable
+2026-10-24 19:36:59.208 PKT [28456] CONTEXT:  PL/pgSQL function firewatch_guard_model_registry() line 11 at RAISE
+2026-10-24 19:36:59.208 PKT [28456] STATEMENT:  UPDATE model_versions SET artifact_hash=$1::VARCHAR
+2026-10-24 19:36:59.209 PKT [28456] ERROR:  Approved model identities and artifacts are immutable
+2026-10-24 19:36:59.209 PKT [28456] CONTEXT:  PL/pgSQL function firewatch_guard_model_registry() line 11 at RAISE
+2026-10-24 19:36:59.209 PKT [28456] STATEMENT:  DELETE FROM model_versions
+2026-10-24 19:36:59.210 PKT [28456] ERROR:  Model approval audit records are immutable
+2026-10-24 19:36:59.210 PKT [28456] CONTEXT:  PL/pgSQL function firewatch_guard_model_registry() line 4 at RAISE
+2026-10-24 19:36:59.210 PKT [28456] STATEMENT:  UPDATE model_promotions SET reviewer=$1::VARCHAR
+2026-10-24 19:36:59.211 PKT [28456] ERROR:  Model approval audit records are immutable
+2026-10-24 19:36:59.211 PKT [28456] CONTEXT:  PL/pgSQL function firewatch_guard_model_registry() line 4 at RAISE
+2026-10-24 19:36:59.211 PKT [28456] STATEMENT:  DELETE FROM model_promotions
+2026-10-24 19:37:01.135 PKT [2140] ERROR:  Completed run outputs are immutable
+2026-10-24 19:37:01.135 PKT [2140] CONTEXT:  PL/pgSQL function firewatch_guard_output() line 21 at RAISE
+2026-10-24 19:37:01.135 PKT [2140] STATEMENT:  UPDATE scores SET priority_score=$1 WHERE scores.id = $2::UUID
+2026-10-24 19:37:02.709 PKT [24480] ERROR:  Run approval pins are immutable
+2026-10-24 19:37:02.709 PKT [24480] CONTEXT:  PL/pgSQL function firewatch_guard_scorer_pin() line 8 at RAISE
+2026-10-24 19:37:02.709 PKT [24480] STATEMENT:  UPDATE runs SET input_asset_manifest=$1::JSONB WHERE runs.id = $2::UUID
+2026-10-24 19:37:10.015 PKT [26480] ERROR:  canceling statement due to lock timeout
+2026-10-24 19:37:10.015 PKT [26480] STATEMENT:  SELECT pg_advisory_xact_lock($1::BIGINT) AS pg_advisory_xact_lock_1
+2026-10-24 19:37:54.418 PKT [23812] ERROR:  cannot execute INSERT in a read-only transaction
+2026-10-24 19:37:54.418 PKT [23812] STATEMENT:  INSERT INTO regions(name,west,south,east,north) VALUES ('forbidden-write',70,33,74,36)
+2026-10-24 19:38:25.338 PKT [4756] ERROR:  new row for relation "regions" violates check constraint "ck_regions_longitude_bounds"
+2026-10-24 19:38:25.338 PKT [4756] DETAIL:  Failing row contains (test-2a88e61d6e114b1dbc18003e89fb54d9, 75, 33, 74, 36, f, , efbeea4d-d5b1-46ea-bd9e-7e8b4f77f874).
+2026-10-24 19:38:25.338 PKT [4756] STATEMENT:  UPDATE regions SET west=$1 WHERE regions.id = $2::UUID
+2026-10-24 19:38:25.343 PKT [4756] ERROR:  new row for relation "regions" violates check constraint "ck_regions_latitude_bounds"
+2026-10-24 19:38:25.343 PKT [4756] DETAIL:  Failing row contains (test-848f7d27ac2441b49cb9857dc4f40002, 70, 91, 74, 36, f, , 39c16b65-1df6-4abe-b0a1-191bb42978d4).
+2026-10-24 19:38:25.343 PKT [4756] STATEMENT:  UPDATE regions SET south=$1 WHERE regions.id = $2::UUID
+2026-10-24 19:38:25.348 PKT [4756] ERROR:  new row for relation "regions" violates check constraint "ck_regions_latitude_bounds"
+2026-10-24 19:38:25.348 PKT [4756] DETAIL:  Failing row contains (test-aac49c137f9a439baae3aa77fb531e2c, 70, 33, 74, -95, f, , 62d6dd75-12fe-4061-a4f3-92f5852fdf3d).
+2026-10-24 19:38:25.348 PKT [4756] STATEMENT:  UPDATE regions SET north=$1 WHERE regions.id = $2::UUID
+2026-10-24 19:38:25.361 PKT [4756] ERROR:  All required stages must succeed before completion
+2026-10-24 19:38:25.361 PKT [4756] CONTEXT:  PL/pgSQL function firewatch_guard_completion() line 16 at RAISE
+2026-10-24 19:38:25.361 PKT [4756] STATEMENT:  UPDATE runs SET status=$1, completed_at=$2::TIMESTAMP WITH TIME ZONE WHERE runs.id = $3::UUID
+2026-10-24 19:38:25.393 PKT [4756] ERROR:  Latest live must reference a completed live run of the same region
+2026-10-24 19:38:25.393 PKT [4756] CONTEXT:  PL/pgSQL function firewatch_guard_live_head() line 7 at RAISE
+2026-10-24 19:38:25.393 PKT [4756] STATEMENT:  UPDATE live_run_heads SET run_id=$1::UUID WHERE live_run_heads.region_id = $2::UUID
+2026-10-24 19:38:25.394 PKT [4756] ERROR:  Latest live cutoff cannot move backwards or replace a tie
+2026-10-24 19:38:25.394 PKT [4756] CONTEXT:  PL/pgSQL function firewatch_guard_live_head() line 13 at RAISE
+2026-10-24 19:38:25.394 PKT [4756] STATEMENT:  UPDATE live_run_heads SET run_id=$1::UUID WHERE live_run_heads.region_id = $2::UUID
+2026-10-24 19:38:25.399 PKT [4756] ERROR:  Latest live must reference a completed live run of the same region
+2026-10-24 19:38:25.399 PKT [4756] CONTEXT:  PL/pgSQL function firewatch_guard_live_head() line 7 at RAISE
+2026-10-24 19:38:25.399 PKT [4756] STATEMENT:  INSERT INTO live_run_heads (region_id, run_id) VALUES ($1::UUID, $2::UUID)
+2026-10-24 19:38:25.421 PKT [4756] ERROR:  Run has incomplete snapshot memberships, features or scores
+2026-10-24 19:38:25.421 PKT [4756] CONTEXT:  PL/pgSQL function firewatch_guard_completion() line 31 at RAISE
+2026-10-24 19:38:25.421 PKT [4756] STATEMENT:  UPDATE runs SET status=$1, completed_at=$2::TIMESTAMP WITH TIME ZONE WHERE runs.id = $3::UUID
+2026-10-24 19:38:25.441 PKT [4756] ERROR:  insert or update on table "feature_sets" violates foreign key constraint "fk_feature_sets_snapshot_id_cluster_snapshots"
+2026-10-24 19:38:25.441 PKT [4756] DETAIL:  Key (snapshot_id, run_id)=(fcf8fd04-e326-4695-8751-4904d286a03e, 52a1dcdf-a3cf-4a8c-ba4f-b72812677dc9) is not present in table "cluster_snapshots".
+2026-10-24 19:38:25.441 PKT [4756] STATEMENT:  UPDATE feature_sets SET run_id=$1 WHERE snapshot_id=$2
+2026-10-24 19:38:25.442 PKT [4756] ERROR:  insert or update on table "scores" violates foreign key constraint "fk_scores_snapshot_id_cluster_snapshots"
+2026-10-24 19:38:25.442 PKT [4756] DETAIL:  Key (snapshot_id, run_id)=(fcf8fd04-e326-4695-8751-4904d286a03e, 52a1dcdf-a3cf-4a8c-ba4f-b72812677dc9) is not present in table "cluster_snapshots".
+2026-10-24 19:38:25.442 PKT [4756] STATEMENT:  UPDATE scores SET run_id=$1 WHERE snapshot_id=$2
+2026-10-24 19:38:25.458 PKT [4756] ERROR:  new row for relation "scores" violates check constraint "ck_scores_probability_claim"
+2026-10-24 19:38:25.458 PKT [4756] DETAIL:  Failing row contains (01383e7b-16a2-4438-80a8-737d9793333e, ad145abd-d595-48e2-bb86-725a0fb8a15a, baseline-v1, null, 0.7, baseline, 0.9, HIGH, {}, 2025-06-10 16:00:00+00, d1ad61cd-df63-4789-94a2-63fa2a294c23).
+2026-10-24 19:38:25.458 PKT [4756] STATEMENT:  UPDATE scores SET escalation_probability=$1 WHERE scores.id = $2::UUID
+2026-10-24 19:38:25.463 PKT [4756] ERROR:  Model release does not support probability claims
+2026-10-24 19:38:25.463 PKT [4756] CONTEXT:  PL/pgSQL function firewatch_guard_output() line 55 at RAISE
+2026-10-24 19:38:25.463 PKT [4756] STATEMENT:  UPDATE scores SET scorer_version=$1::VARCHAR, model_id=$2::UUID, score_kind=$3, escalation_probability=$4 WHERE scores.id = $5::UUID
+2026-10-24 19:38:25.481 PKT [4756] ERROR:  Critical scores require saved evidence before completion
+2026-10-24 19:38:25.481 PKT [4756] CONTEXT:  PL/pgSQL function firewatch_guard_completion() line 37 at RAISE
+2026-10-24 19:38:25.481 PKT [4756] STATEMENT:  UPDATE runs SET status=$1, completed_at=$2::TIMESTAMP WITH TIME ZONE WHERE runs.id = $3::UUID
+2026-10-24 19:38:25.484 PKT [4756] ERROR:  Saved alert evidence is immutable
+2026-10-24 19:38:25.484 PKT [4756] CONTEXT:  PL/pgSQL function firewatch_immutable_alert() line 3 at RAISE
+2026-10-24 19:38:25.484 PKT [4756] STATEMENT:  UPDATE alerts SET evidence_schema_version='changed' WHERE id=$1
+2026-10-24 19:38:25.485 PKT [4756] ERROR:  Saved alert evidence is immutable
+2026-10-24 19:38:25.485 PKT [4756] CONTEXT:  PL/pgSQL function firewatch_immutable_alert() line 3 at RAISE
+2026-10-24 19:38:25.485 PKT [4756] STATEMENT:  DELETE FROM alerts WHERE id=$1
+2026-10-24 19:38:25.489 PKT [4756] ERROR:  Saved alert evidence is immutable
+2026-10-24 19:38:25.489 PKT [4756] CONTEXT:  PL/pgSQL function firewatch_immutable_alert() line 3 at RAISE
+2026-10-24 19:38:25.489 PKT [4756] STATEMENT:  TRUNCATE alerts CASCADE
+2026-10-24 19:38:25.510 PKT [4756] ERROR:  new row for relation "alerts" violates check constraint "ck_alerts_payload_hash_match"
+2026-10-24 19:38:25.510 PKT [4756] DETAIL:  Failing row contains (9de828a7-16ea-446f-af32-40748702a84a, 22d89aae-81f0-4991-b48d-a68e0d8ffcb7, f85bcdb8-9f05-4b6b-a8f9-bc6c3e2aa980, \x6368616e676564, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, v1, 2026-10-24 14:38:25.498774+00, 00fb3a79-8ff6-4bb4-9e84-409dfd4bad31).
+2026-10-24 19:38:25.510 PKT [4756] STATEMENT:  INSERT INTO alerts (snapshot_id, run_id, score_id, canonical_payload, original_hash, evidence_schema_version, id) VALUES ($1::UUID, $2::UUID, $3::UUID, $4, $5::VARCHAR, $6::VARCHAR, $7::UUID) RETURNING alerts.created_at
+2026-10-24 19:38:25.527 PKT [4756] ERROR:  Completed runs are immutable
+2026-10-24 19:38:25.527 PKT [4756] CONTEXT:  PL/pgSQL function firewatch_guard_completion() line 10 at RAISE
+2026-10-24 19:38:25.527 PKT [4756] STATEMENT:  UPDATE runs SET status='running' WHERE id=$1
+2026-10-24 19:38:25.528 PKT [4756] ERROR:  Completed run outputs are immutable
+2026-10-24 19:38:25.528 PKT [4756] CONTEXT:  PL/pgSQL function firewatch_guard_output() line 21 at RAISE
+2026-10-24 19:38:25.528 PKT [4756] STATEMENT:  UPDATE scores SET priority_score=0.1 WHERE id=$1
+2026-10-24 19:38:25.529 PKT [4756] ERROR:  Completed run outputs are immutable
+2026-10-24 19:38:25.529 PKT [4756] CONTEXT:  PL/pgSQL function firewatch_guard_output() line 21 at RAISE
+2026-10-24 19:38:25.529 PKT [4756] STATEMENT:  DELETE FROM feature_sets WHERE snapshot_id=$1
+2026-10-24 19:38:25.530 PKT [4756] ERROR:  Completed run outputs are immutable
+2026-10-24 19:38:25.530 PKT [4756] CONTEXT:  PL/pgSQL function firewatch_guard_output() line 21 at RAISE
+2026-10-24 19:38:25.530 PKT [4756] STATEMENT:  DELETE FROM cluster_members WHERE snapshot_id=$1
+2026-10-24 19:38:25.532 PKT [4756] ERROR:  Cannot truncate completed run data
+2026-10-24 19:38:25.532 PKT [4756] CONTEXT:  PL/pgSQL function firewatch_guard_truncate() line 4 at RAISE
+2026-10-24 19:38:25.532 PKT [4756] STATEMENT:  TRUNCATE cluster_snapshots CASCADE
+2026-10-24 19:38:25.545 PKT [4756] ERROR:  Cluster member is outside the run region or observation cutoff
+2026-10-24 19:38:25.545 PKT [4756] CONTEXT:  PL/pgSQL function firewatch_guard_output() line 36 at RAISE
+2026-10-24 19:38:25.545 PKT [4756] STATEMENT:  INSERT INTO cluster_members (snapshot_id, detection_id) VALUES ($1::UUID, $2::UUID)
+2026-10-24 19:38:25.630 PKT [4756] ERROR:  Model feature version does not match the run
+2026-10-24 19:38:25.630 PKT [4756] CONTEXT:  PL/pgSQL function firewatch_guard_output() line 48 at RAISE
+2026-10-24 19:38:25.630 PKT [4756] STATEMENT:  UPDATE scores SET scorer_version=$1::VARCHAR, model_id=$2::UUID, score_kind=$3 WHERE scores.id = $4::UUID
+2026-10-24 19:38:25.659 PKT [27692] ERROR:  insert or update on table "alerts" violates foreign key constraint "fk_alerts_score_id_scores"
+2026-10-24 19:38:25.659 PKT [27692] DETAIL:  Key (score_id, snapshot_id, run_id)=(115fb076-e3b0-4124-af73-a8fecf7729c9, d670f1fb-4bcb-4f37-b1cf-31541032106f, 4da877f5-3ec7-43d2-9d7c-31213096d321) is not present in table "scores".
+2026-10-24 19:38:25.659 PKT [27692] STATEMENT:  INSERT INTO alerts (snapshot_id, run_id, score_id, canonical_payload, original_hash, evidence_schema_version, id) VALUES ($1::UUID, $2::UUID, $3::UUID, $4, $5::VARCHAR, $6::VARCHAR, $7::UUID) RETURNING alerts.created_at
+2026-10-24 19:39:24.065 PKT [19864] LOG:  checkpoint starting: time
+2026-10-24 19:44:08.531 PKT [19864] LOG:  checkpoint complete: wrote 3902 buffers (23.8%); 0 WAL file(s) added, 0 removed, 23 recycled; write=269.950 s, sync=6.461 s, total=284.466 s; sync files=32078, longest=0.002 s, average=0.001 s; distance=371693 kB, estimate=371693 kB; lsn=0/37D03788, redo lsn=0/378C2D10
+2026-10-24 22:06:59.913 PKT [17292] LOG:  starting PostgreSQL 16.15, compiled by Visual C++ build 1944, 64-bit
+2026-10-24 22:06:59.913 PKT [17292] LOG:  listening on IPv4 address "127.0.0.1", port 55432
+2026-10-24 22:06:59.947 PKT [24208] LOG:  database system was interrupted; last known up at 2026-10-24 19:44:00 PKT
+2026-10-24 22:07:00.205 PKT [24208] LOG:  database system was not properly shut down; automatic recovery in progress
+2026-10-24 22:07:00.209 PKT [24208] LOG:  redo starts at 0/378C2D10
+2026-10-24 22:07:00.246 PKT [24208] LOG:  invalid record length at 0/37D03838: expected at least 24, got 0
+2026-10-24 22:07:00.246 PKT [24208] LOG:  redo done at 0/37D03800 system usage: CPU: user: 0.01 s, system: 0.01 s, elapsed: 0.03 s
+2026-10-24 22:07:00.249 PKT [5512] LOG:  checkpoint starting: end-of-recovery immediate wait
+2026-10-24 22:07:00.289 PKT [5512] LOG:  checkpoint complete: wrote 867 buffers (5.3%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.009 s, sync=0.029 s, total=0.042 s; sync files=55, longest=0.004 s, average=0.001 s; distance=4354 kB, estimate=4354 kB; lsn=0/37D03838, redo lsn=0/37D03838
+2026-10-24 22:07:00.308 PKT [17292] LOG:  database system is ready to accept connections
+2026-10-24 22:12:00.290 PKT [5512] LOG:  checkpoint starting: time
+2026-10-24 22:12:12.105 PKT [12204] LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2026-10-24 22:12:12.271 PKT [19724] LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2026-10-24 22:13:06.478 PKT [5512] LOG:  checkpoint complete: wrote 659 buffers (4.0%); 0 WAL file(s) added, 1 removed, 0 recycled; write=66.159 s, sync=0.024 s, total=66.189 s; sync files=65, longest=0.002 s, average=0.001 s; distance=5192 kB, estimate=5192 kB; lsn=0/3855EC78, redo lsn=0/38215988

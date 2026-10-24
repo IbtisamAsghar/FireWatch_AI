@@ -17,6 +17,187 @@ from firewatch.db.session import Database
 app = typer.Typer(help="FireWatch AI backend operators' CLI.", no_args_is_help=True)
 
 
+@app.command("anchor-worker")
+def anchor_worker_command(once: Annotated[bool, typer.Option()] = False) -> None:
+    """Run the dedicated anchor signer independently of scoring."""
+    from firewatch.anchor_worker import main as anchor_main
+
+    raise typer.Exit(anchor_main(["--once"] if once else []))
+
+
+@app.command("anchor-status")
+def anchor_status_command(
+    outbox_id: Annotated[str | None, typer.Option()] = None,
+    job_id: Annotated[str | None, typer.Option()] = None,
+) -> None:
+    """Read safe outbox progress; never prints signed bytes or signing keys."""
+    from uuid import UUID
+
+    from sqlalchemy import text
+
+    from firewatch.db.models import AnchorOutbox, Job
+    from firewatch.schemas.common import JobType
+
+    database = None
+    try:
+        if (outbox_id is None) == (job_id is None):
+            raise ValueError("Select one outbox or job ID")
+        identifier = UUID(outbox_id or job_id or "")
+        database = Database(get_settings())
+        with database.session() as session:
+            session.execute(text("SET TRANSACTION READ ONLY"))
+            if job_id is not None:
+                job = session.get(Job, identifier)
+                if job is None or job.type != JobType.ANCHOR:
+                    raise ValueError("Unknown anchor job")
+                identifier = UUID(job.payload["outbox_id"])
+            row = session.get(AnchorOutbox, identifier)
+            if row is None:
+                raise ValueError("Unknown outbox")
+            typer.echo(
+                json.dumps(
+                    dict(
+                        outbox_id=str(row.id),
+                        alert_id=str(row.alert_id),
+                        network=row.network,
+                        status=row.status.value,
+                        attempts=row.attempts,
+                        transaction_hash=row.tx_hash,
+                        error=row.error,
+                        available_at=row.available_at.isoformat(),
+                        confirmations=row.receipt_metadata.get("confirmations"),
+                        block_height=row.receipt_metadata.get("block_height"),
+                        block_hash=row.receipt_metadata.get("block_hash"),
+                    )
+                )
+            )
+    except (ConfigurationError, ValueError, KeyError, SQLAlchemyError):
+        typer.echo("Anchor status unavailable. Check the outbox ID and configuration.", err=True)
+        raise typer.Exit(2) from None
+    finally:
+        if database is not None:
+            database.close()
+
+
+@app.command("retry-anchor")
+def retry_anchor_command(outbox_id: Annotated[str, typer.Option()]) -> None:
+    """Requeue a failed delivery without replacing an uncertain signed transaction."""
+    from datetime import UTC, datetime
+    from uuid import UUID
+
+    from sqlalchemy import func, select
+    from sqlalchemy.orm import Session
+
+    from firewatch.db.models import AnchorOutbox
+    from firewatch.evidence.anchor_delivery import network, signer_lock, sync_jobs
+    from firewatch.evidence.chain_rpc import ChainError, TransactionSigner
+    from firewatch.schemas.common import AnchorStatus
+
+    database = None
+    try:
+        identifier = UUID(outbox_id)
+        settings = get_settings()
+        if not settings.chain_enabled:
+            raise ValueError("Chain disabled")
+        signer = TransactionSigner(settings)
+        database = Database(settings)
+        with database.engine.connect() as connection:
+            lock = signer_lock(settings.chain_id, signer.address)
+            if not connection.scalar(select(func.pg_try_advisory_xact_lock(lock))):
+                raise ValueError("Signer busy")
+            with Session(connection) as session:
+                row = session.get(AnchorOutbox, identifier)
+                if (
+                    row is None
+                    or row.network != network(settings)
+                    or row.status != AnchorStatus.FAILED
+                    or row.receipt_metadata.get("nonce_consumed")
+                ):
+                    raise ValueError("Not safely retryable")
+                row.status = AnchorStatus.SUBMITTED if row.tx_hash else AnchorStatus.QUEUED
+                row.error = None
+                row.available_at = datetime.now(UTC)
+                row.receipt_metadata = dict(row.receipt_metadata) | {"consecutive_errors": 0}
+                sync_jobs(session, row)
+                session.flush()
+                connection.commit()
+        typer.echo("Anchor delivery requeued; any saved transaction identity was preserved.")
+    except (ConfigurationError, ValueError, SQLAlchemyError, ChainError):
+        typer.echo(
+            "Anchor retry unavailable; check destination, signer and delivery state.", err=True
+        )
+        raise typer.Exit(2) from None
+    finally:
+        if database is not None:
+            database.close()
+
+
+@app.command("verify-alert")
+def verify_alert_command(
+    alert_id: Annotated[str, typer.Option(help="Saved alert UUID.")],
+    artifacts: Annotated[
+        bool, typer.Option(help="Audit referenced local artifact checksums.")
+    ] = False,
+    payload_copy: Annotated[
+        Path | None, typer.Option(help="Compare a local copy with the saved digest; never writes.")
+    ] = None,
+) -> None:
+    """Read-only saved evidence audit; chain execution is never attempted."""
+    from datetime import UTC, datetime
+    from uuid import UUID
+
+    from sqlalchemy import text
+
+    from firewatch.api.errors import APIError
+    from firewatch.api.presentation import verification
+    from firewatch.api.routes.reads import saved_alert
+    from firewatch.evidence.verify import MAX_PAYLOAD_BYTES, verify_payload
+    from firewatch.schemas.api import ScopeQuery
+
+    database = None
+    try:
+        identifier = UUID(alert_id)
+        settings = get_settings()
+        database = Database(settings)
+        with database.session() as session:
+            session.execute(text("SET TRANSACTION READ ONLY"))
+            alert, run = saved_alert(identifier, ScopeQuery(), session)
+            result = verification(
+                session,
+                alert,
+                run,
+                datetime.now(UTC),
+                settings,
+                None,
+                verify_artifacts=artifacts,
+            )
+            output = result.model_dump(mode="json")
+            mismatch = result.local_status == "local_mismatch" or (
+                result.artifact_verification == "mismatch"
+            )
+            if payload_copy is not None:
+                with payload_copy.open("rb") as stream:
+                    content = stream.read(MAX_PAYLOAD_BYTES + 1)
+                if len(content) > MAX_PAYLOAD_BYTES:
+                    raise ValueError("Payload copy exceeds bound")
+                status, computed = verify_payload(content, alert.original_hash)
+                output["copied_payload"] = {"local_status": status, "computed_hash": computed}
+                mismatch = mismatch or status == "local_mismatch"
+            typer.echo(json.dumps(output))
+            if mismatch:
+                raise typer.Exit(1)
+            if artifacts and result.artifact_verification != "verified":
+                raise typer.Exit(2)
+    except (ConfigurationError, ValueError, OSError, SQLAlchemyError, APIError):
+        typer.echo(
+            "Evidence audit unavailable. Check the alert, local files and configuration.", err=True
+        )
+        raise typer.Exit(2) from None
+    finally:
+        if database is not None:
+            database.close()
+
+
 @app.command("check-config")
 def check_config() -> None:
     """Validate configuration without connecting or displaying secret values."""

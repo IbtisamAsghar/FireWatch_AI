@@ -35,6 +35,13 @@ checklist. Verify enforcement on a disposable branch/PR without changing main.
 GitHub plan/repository visibility can affect ruleset availability; if unavailable,
 record that limitation explicitly. Do not claim documentation enforces a rule.
 
+Phase 5.5 adds `dependency-and-secret-scanning` and `linux-container-build`.
+Require these alongside `backend-linux`, `backend-windows`, `solidity-contracts`
+and the scaffold checks after their first hosted run. See
+[the release checks](ci-and-integration.md). Configure the optional
+`live-provider-smoke` environment/secret only for manually requested provider
+checks; it is not required for pull requests.
+
 ## Issues and review
 
 The task template under `.github/ISSUE_TEMPLATE` and PR template become

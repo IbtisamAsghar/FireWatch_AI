@@ -1,0 +1,33 @@
+{
+  "fixture": "synthetic-demo-v1",
+  "ids": {
+    "alert": "c877bd15-2f51-5ebe-b0d8-f707f4919a15",
+    "empty": "6bdceece-3b3b-5fb3-9049-9703c4219fa1",
+    "job": "e0e632c5-4874-555a-a2a7-0cf23fc8251c",
+    "live": "a7c0e61b-b5b7-5450-baa3-94e0a5ff38a0",
+    "live-critical": "bd90ec0b-6eb3-5081-a831-14f642bca0ab",
+    "live-low": "f9d6810d-492a-5359-989b-a0f27cb9b117",
+    "pending": "7ec7707c-f846-5b65-94f8-6b32fb2dd87f",
+    "region": "a715a16e-58f7-535f-b4f3-bc0149583c54",
+    "replay": "e930414f-ace1-55bc-8a43-5fd889d182de",
+    "replay-high": "3cd63898-ec44-512f-bfe6-a856c1706ee8"
+  },
+  "requests": {
+    "get_alert": "/api/v1/alerts/c877bd15-2f51-5ebe-b0d8-f707f4919a15",
+    "get_current_model": "/api/v1/models/current",
+    "get_hotspot": "/api/v1/hotspots/bd90ec0b-6eb3-5081-a831-14f642bca0ab",
+    "get_hotspots_geojson": "/api/v1/hotspots.geojson?run_id=a7c0e61b-b5b7-5450-baa3-94e0a5ff38a0",
+    "get_job": "/api/v1/jobs/e0e632c5-4874-555a-a2a7-0cf23fc8251c",
+    "get_run": "/api/v1/runs/a7c0e61b-b5b7-5450-baa3-94e0a5ff38a0",
+    "get_status": "/api/v1/status",
+    "get_summary": "/api/v1/summary?run_id=a7c0e61b-b5b7-5450-baa3-94e0a5ff38a0",
+    "health_live": "/health/live",
+    "health_ready": "/health/ready",
+    "list_hotspots": "/api/v1/hotspots?run_id=a7c0e61b-b5b7-5450-baa3-94e0a5ff38a0",
+    "list_regions": "/api/v1/regions",
+    "list_replays": "/api/v1/replays",
+    "list_runs": "/api/v1/runs?region_id=a715a16e-58f7-535f-b4f3-bc0149583c54",
+    "verify_alert": "/api/v1/alerts/c877bd15-2f51-5ebe-b0d8-f707f4919a15/verify"
+  },
+  "synthetic": true
+}

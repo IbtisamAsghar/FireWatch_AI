@@ -1,0 +1,221 @@
+x-app-environment: &app-environment
+  APP_ENV: development
+  LOG_LEVEL: INFO
+  DATABASE_URL: postgresql+psycopg://firewatch:${APP_DATABASE_PASSWORD:?Generate .env.compose first}@db:5432/firewatch
+  ADMIN_API_TOKEN: ${ADMIN_API_TOKEN:?Generate .env.compose first}
+  PUBLIC_READS_ENABLED: ${PUBLIC_READS_ENABLED:-true}
+  CORS_ORIGINS: ${CORS_ORIGINS:-[]}
+  ACTIVE_SCORER: ${ACTIVE_SCORER:-baseline-v1}
+  RAW_DATA_DIR: /var/lib/firewatch/raw
+  MODEL_DIR: /var/lib/firewatch/models
+  REPLAY_BUNDLE_DIR: /var/lib/firewatch/replays
+  STARTUP_TIMEOUT_SECONDS: '120'
+  CHAIN_ENABLED: ${CHAIN_ENABLED:-false}
+  CHAIN_RPC_URL: ${CHAIN_RPC_URL:-http://anvil:8545}
+  CHAIN_ID: ${CHAIN_ID:-31337}
+  CHAIN_NETWORK_KIND: ${CHAIN_NETWORK_KIND:-local}
+  CHAIN_LOCAL_RPC_HOSTS: '["127.0.0.1","localhost","::1","anvil"]'
+  ALERT_REGISTRY_ADDRESS: ${ALERT_REGISTRY_ADDRESS:-}
+  MPLCONFIGDIR: /tmp/matplotlib
+
+x-app: &app
+  image: firewatch-backend:${FIREWATCH_IMAGE_TAG:-local}
+  build: .
+  init: true
+  user: '10001:10001'
+  read_only: true
+  tmpfs:
+    - /tmp:rw,nosuid,noexec,size=128m
+  cap_drop: [ALL]
+  security_opt: [no-new-privileges:true]
+  logging:
+    driver: json-file
+    options: {max-size: 10m, max-file: '3'}
+  environment: *app-environment
+
+services:
+  db:
+    image: postgres:16.15-bookworm@sha256:d81f7b51697014367236d07ec58b54153fc28f828b72bf247fe5c7487520bcb0
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: firewatch_bootstrap
+      POSTGRES_DB: firewatch
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Generate .env.compose first}
+      APP_DATABASE_PASSWORD: ${APP_DATABASE_PASSWORD:?Generate .env.compose first}
+      POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./deploy/postgres-init.sh:/docker-entrypoint-initdb.d/10-firewatch.sh:ro
+    networks: [database]
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    logging:
+      driver: json-file
+      options: {max-size: 10m, max-file: '3'}
+
+  storage-init:
+    <<: *app
+    user: '0:0'
+    restart: 'no'
+    entrypoint: [python, -m, firewatch.deployment]
+    command: [init-storage]
+    environment: {}
+    network_mode: none
+    cap_add: [CHOWN, FOWNER]
+    volumes:
+      - raw_data:/var/lib/firewatch/raw
+      - model_data:/var/lib/firewatch/models
+      - replay_data:/var/lib/firewatch/replays
+      - anvil_data:/var/lib/firewatch/chain
+
+  migrate:
+    <<: *app
+    profiles: [tools]
+    restart: 'no'
+    command: [--database-only, alembic, upgrade, head]
+    networks: [database]
+    depends_on:
+      db: {condition: service_healthy}
+
+  seed:
+    <<: *app
+    profiles: [tools]
+    restart: 'no'
+    command: [firewatch, seed-regions, --config, configs/regions.yaml]
+    networks: [database]
+    volumes:
+      - ./configs:/app/configs:ro
+    depends_on:
+      db: {condition: service_healthy}
+
+  api:
+    <<: *app
+    restart: unless-stopped
+    networks: [database, outbound]
+    ports: ['127.0.0.1:${COMPOSE_API_PORT:-8000}:8000']
+    volumes:
+      - raw_data:/var/lib/firewatch/raw:ro
+      - model_data:/var/lib/firewatch/models:ro
+      - replay_data:/var/lib/firewatch/replays:ro
+      - ./configs:/app/configs:ro
+    depends_on:
+      db: {condition: service_healthy, restart: true}
+      storage-init: {condition: service_completed_successfully}
+    healthcheck:
+      test: [CMD, python, -c, 'import urllib.request; urllib.request.urlopen("http://127.0.0.1:8000/health/ready", timeout=4).close()']
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 15s
+    stop_grace_period: 30s
+
+  worker:
+    <<: *app
+    restart: unless-stopped
+    command: [python, -m, firewatch.worker]
+    networks: [database, outbound]
+    environment:
+      <<: *app-environment
+      FIRMS_MAP_KEY: ${FIRMS_MAP_KEY:-}
+    volumes:
+      - raw_data:/var/lib/firewatch/raw
+      - model_data:/var/lib/firewatch/models:ro
+      - replay_data:/var/lib/firewatch/replays:ro
+      - ./configs:/app/configs:ro
+    depends_on:
+      db: {condition: service_healthy, restart: true}
+      storage-init: {condition: service_completed_successfully}
+    healthcheck:
+      test: [CMD, python, -m, firewatch.runtime, --health]
+      interval: 15s
+      timeout: 10s
+      retries: 8
+      start_period: 15s
+    stop_grace_period: 120s
+
+  operator:
+    <<: *app
+    profiles: [tools]
+    restart: 'no'
+    command: [firewatch, --help]
+    networks: [database, outbound]
+    environment:
+      <<: *app-environment
+      FIRMS_MAP_KEY: ${FIRMS_MAP_KEY:-}
+    volumes:
+      - raw_data:/var/lib/firewatch/raw
+      - model_data:/var/lib/firewatch/models
+      - replay_data:/var/lib/firewatch/replays
+      - ./configs:/app/configs:ro
+      - ./deploy/bundles:/imports:ro
+
+  anvil:
+    image: ghcr.io/foundry-rs/foundry:v1.8.6@sha256:4a16a86f41d30418fbdca47ce2868121bbb0aeaa0a34bde2dd1e2911c4be2464
+    profiles: [chain]
+    user: '10001:10001'
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    tmpfs: [/tmp:rw,nosuid,noexec,size=64m]
+    restart: unless-stopped
+    entrypoint: [anvil]
+    command: [--host, 0.0.0.0, --port, '8545', --chain-id, '31337', --accounts, '0', --state, /state/anvil.json, --state-interval, '30', --silent]
+    volumes:
+      - anvil_data:/state
+    networks: [database]
+    depends_on:
+      storage-init: {condition: service_completed_successfully}
+    healthcheck:
+      test: [CMD, cast, block-number, --rpc-url, 'http://127.0.0.1:8545']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    stop_grace_period: 30s
+
+  anchor-worker:
+    <<: *app
+    profiles: [chain]
+    restart: unless-stopped
+    command: [python, -m, firewatch.anchor_worker]
+    networks: [database, outbound]
+    environment:
+      <<: *app-environment
+      CHAIN_PRIVATE_KEY: ${CHAIN_PRIVATE_KEY:-}
+    volumes:
+      - raw_data:/var/lib/firewatch/raw:ro
+      - model_data:/var/lib/firewatch/models:ro
+      - replay_data:/var/lib/firewatch/replays:ro
+    depends_on:
+      db: {condition: service_healthy}
+      anvil: {condition: service_healthy}
+    stop_grace_period: 30s
+
+  caddy:
+    image: caddy:2.11.7-alpine@sha256:eb4d35b7452d1ab6171fbdbe8d9275b2301dad6dad92115d91e19fb9b24d510f
+    profiles: [proxy]
+    restart: unless-stopped
+    ports: ['127.0.0.1:${COMPOSE_HTTP_PORT:-8080}:80']
+    volumes:
+      - ./deploy/Caddyfile.local:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks: [outbound]
+    depends_on:
+      api: {condition: service_healthy}
+
+networks:
+  database: {internal: true}
+  outbound: {}
+
+volumes:
+  postgres_data:
+  raw_data:
+  model_data:
+  replay_data:
+  anvil_data:
+  caddy_data:
+  caddy_config:

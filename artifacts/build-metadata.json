@@ -1,0 +1,14 @@
+{
+  "files": {
+    "Dockerfile": "d64d06c466e24198e69d017d541f7758d41d59e161a231692852cbefaa3baf5e",
+    "dist/firewatch_ai-0.1.0-py3-none-any.whl": "e9bc22b614262ab687a068c7cb4ae3b3d616afd7cf35b27e94e39b652bf947f0",
+    "dist/firewatch_ai-0.1.0.tar.gz": "927b7d638b5856903c6549fb4f0d2b8cf2e68062bc50a00223b1398818263827",
+    "requirements-dev.lock": "e8cbc825af7efc133d2e35a1caaa1fbd0a43303656c107059329140839bf6146",
+    "requirements.lock": "2812234646443da0338166c62dd09c07e91ec97dfc1b020b26949ea0bc01c7e8"
+  },
+  "migration_revision": "0003",
+  "python": "3.12.7",
+  "revision": "ed0605b3fdd813f172a6e664fb61c9092cfc0347",
+  "schema_version": "build-v1",
+  "working_tree_dirty": true
+}

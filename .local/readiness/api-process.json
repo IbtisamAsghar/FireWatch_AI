@@ -1,0 +1,6 @@
+{
+  "root": "C:\\Users\\talha\\Desktop\\FireWatch_AI",
+  "port": 8000,
+  "pid": 23648,
+  "command": "uvicorn firewatch.main:app"
+}

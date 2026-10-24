@@ -1,0 +1,46 @@
+schema_version: replays-v1
+scenarios:
+- id: norcal-ready-active-v1
+  name: Real northern California hotspots with recovered weather, 25 July 2024
+  region_name: northern-california
+  window_start: '2024-07-24T22:00:00Z'
+  window_end: '2024-07-25T22:00:00Z'
+  scorer_version: baseline-v1
+  feature_version: features-v1
+  asset_ids:
+  - afd822bc-78b3-5636-9039-252abad9a17f
+  - d549f799-f10c-5ee0-9442-0bd21edaa94e
+  bundle_sha256: 3135cce435703ff9a04960f7e50c8c45aebc87715ac01093a25608f18538746a
+- id: norcal-ready-quiet-v1
+  name: Real northern California quiet observation window, 6 May 2024
+  region_name: northern-california
+  window_start: '2024-05-05T12:00:00Z'
+  window_end: '2024-05-06T12:00:00Z'
+  scorer_version: baseline-v1
+  feature_version: features-v1
+  asset_ids:
+  - 477c3207-49ef-56dc-a771-7415fe0c4f67
+  - 7f7e519c-a3e4-5e39-9aa0-cb4cc50228a1
+  bundle_sha256: d0c9c66cc71c6e4b92d03071238493c93c7d56988b36cbd049796e1931893dc4
+- id: norcal-weather-climate-v1
+  name: Real northern California hotspots, weather and climate context, 26 July 2024
+  region_name: northern-california
+  window_start: '2024-07-25T00:00:00Z'
+  window_end: '2024-07-26T00:00:00Z'
+  scorer_version: baseline-v1
+  feature_version: features-v1
+  asset_ids:
+  - 8211fcd7-365e-5112-a9be-4e857abd3a24
+  - d549f799-f10c-5ee0-9442-0bd21edaa94e
+  bundle_sha256: 1d70b030ac34a843a0ed8b2aed0e9f45296365005c09655d1f2904b1443cfeb4
+- asset_ids:
+  - 8211fcd7-365e-5112-a9be-4e857abd3a24
+  - d549f799-f10c-5ee0-9442-0bd21edaa94e
+  bundle_sha256: 2a3c239f79a15f08a0723ec11071394f4b8b8f306a1bec17a92a46e59d013944
+  feature_version: features-v1
+  id: norcal-ml-weather-v1
+  name: Real northern California hotspots, weather and climate context, 26 July 2024
+  region_name: northern-california
+  scorer_version: forest-independent-2025-v2
+  window_end: '2024-07-26T00:00:00Z'
+  window_start: '2024-07-25T00:00:00Z'

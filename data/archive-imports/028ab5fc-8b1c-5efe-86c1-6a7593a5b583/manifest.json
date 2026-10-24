@@ -1,0 +1,111 @@
+{
+  "schema_version": "firms-archive-manifest-v1",
+  "trusted_local_input": true,
+  "source_url": "https://firms.modaps.eosdis.nasa.gov/content/academy/data_api/firms_api_use.html",
+  "source_kind": "area_api_sample",
+  "archive_request_id": null,
+  "product": "VIIRS_NOAA20_SP",
+  "sensor": "NOAA-20",
+  "interval": {
+    "start_date": "2025-04-30",
+    "end_date": "2025-11-01"
+  },
+  "region": "northern-california",
+  "bbox": {
+    "west": -122.5,
+    "south": 38.5,
+    "east": -120.0,
+    "north": 40.5
+  },
+  "sha256": "4a07c1f996d8b020c737bb31dcd7e8b015ba53c5c3c65806ac886fe88b9144ca",
+  "retrieved_at": "2026-10-24T14:13:10.970320Z",
+  "attribution_url": "https://www.earthdata.nasa.gov/data/tools/firms",
+  "earliest_feature_cutoff": "2025-05-01T00:00:00Z",
+  "last_label_cutoff": "2025-10-31T23:59:59Z",
+  "cutoff_purpose": "proposed",
+  "covered_intervals": [
+    {
+      "start_date": "2025-04-30",
+      "end_date": "2025-11-01"
+    }
+  ],
+  "expected_active_intervals": [],
+  "confirmed_empty_intervals": [
+    {
+      "start_date": "2025-05-03",
+      "end_date": "2025-05-03"
+    },
+    {
+      "start_date": "2025-05-17",
+      "end_date": "2025-05-17"
+    },
+    {
+      "start_date": "2025-05-18",
+      "end_date": "2025-05-18"
+    },
+    {
+      "start_date": "2025-05-19",
+      "end_date": "2025-05-19"
+    },
+    {
+      "start_date": "2025-06-08",
+      "end_date": "2025-06-08"
+    },
+    {
+      "start_date": "2025-06-23",
+      "end_date": "2025-06-23"
+    },
+    {
+      "start_date": "2025-06-28",
+      "end_date": "2025-06-28"
+    },
+    {
+      "start_date": "2025-07-06",
+      "end_date": "2025-07-06"
+    },
+    {
+      "start_date": "2025-07-13",
+      "end_date": "2025-07-13"
+    },
+    {
+      "start_date": "2025-08-10",
+      "end_date": "2025-08-10"
+    },
+    {
+      "start_date": "2025-09-07",
+      "end_date": "2025-09-07"
+    },
+    {
+      "start_date": "2025-09-09",
+      "end_date": "2025-09-09"
+    },
+    {
+      "start_date": "2025-09-14",
+      "end_date": "2025-09-14"
+    },
+    {
+      "start_date": "2025-09-19",
+      "end_date": "2025-09-19"
+    },
+    {
+      "start_date": "2025-09-29",
+      "end_date": "2025-09-29"
+    },
+    {
+      "start_date": "2025-10-01",
+      "end_date": "2025-10-01"
+    },
+    {
+      "start_date": "2025-10-15",
+      "end_date": "2025-10-15"
+    },
+    {
+      "start_date": "2025-10-25",
+      "end_date": "2025-10-25"
+    },
+    {
+      "start_date": "2025-10-26",
+      "end_date": "2025-10-26"
+    }
+  ]
+}

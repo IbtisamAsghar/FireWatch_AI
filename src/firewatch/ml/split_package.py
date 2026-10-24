@@ -20,7 +20,13 @@ from firewatch.ml.events import (
     build_event_catalog,
 )
 from firewatch.ml.labels import DatasetDesign
-from firewatch.ml.splits import SplitResult, SplitSample, SplitSpec, create_splits
+from firewatch.ml.splits import (
+    SplitResult,
+    SplitSample,
+    SplitSpec,
+    create_splits,
+    default_split_spec,
+)
 from firewatch.pipeline.handoff import _decode_json
 from firewatch.processing.features import MODEL_INPUT_NAMES
 from firewatch.schemas.common import Product, Sensor
@@ -58,6 +64,21 @@ def load_split_spec(path: Path) -> SplitSpec:
     if len(raw) > 65536:
         raise ValueError("Oversized split specification")
     return SplitSpec.model_validate(yaml.safe_load(raw))
+
+
+def validate_design_split(design: DatasetDesign, spec: SplitSpec) -> None:
+    """The explicit 2025 experiment cannot move final rows into development."""
+    if design.schema_version != "target-dataset-design-2025-holdout-v1":
+        return
+    from datetime import UTC, datetime
+
+    expected = default_split_spec().model_dump()
+    expected["blocks"][-1].update(
+        start=datetime(2025, 5, 1, tzinfo=UTC), end=datetime(2025, 11, 1, tzinfo=UTC)
+    )
+    expected["cv_boundaries"][-1] = datetime(2025, 5, 1, tzinfo=UTC)
+    if spec != SplitSpec.model_validate(expected):
+        raise ValueError("The 2025 dataset requires its frozen independent-holdout split policy")
 
 
 def load_source_observations(root: Path, expected_hash: str) -> list[EventObservation]:
@@ -108,7 +129,11 @@ def load_source_observations(root: Path, expected_hash: str) -> list[EventObserv
             ):
                 raise ValueError("Overlapping or incomplete seasonal event sources")
             batches[key] = (dataset["import_id"], batch["batch_id"])
-    for year in (2022, 2024):
+    years = {2022, 2024}
+    for dataset in imports.values():
+        source = ArchiveManifest.model_validate(dataset["source_manifest"])
+        years.update(day.year for day in source.days())
+    for year in sorted(years):
         first, last = date(year, 4, 30), date(year, 11, 1)
         if any(
             (Product.NOAA20_SP, str(first + timedelta(days=i))) not in batches
@@ -206,6 +231,8 @@ def export_splits(
 ) -> SplitResult:
     verify_label_package(labels, label_sha256)
     spec = load_split_spec(spec_path)
+    design = DatasetDesign.model_validate_json((labels / "dataset-design.json").read_bytes())
+    validate_design_split(design, spec)
     catalog = build_event_catalog(
         load_source_observations(sources, source_sha256),
         source_sha256,
@@ -327,6 +354,7 @@ def _verify(root: Path, expected_hash: str | None) -> dict[str, Any]:
     design = DatasetDesign.model_validate(
         _decode_json((root / "labels" / "dataset-design.json").read_bytes())
     )
+    validate_design_split(design, spec)
     names = {
         "event-catalog.json",
         "event-review.json",

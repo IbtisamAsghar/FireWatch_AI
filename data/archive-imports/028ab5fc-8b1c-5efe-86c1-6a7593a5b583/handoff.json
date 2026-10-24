@@ -1,0 +1,2317 @@
+{
+  "schema_version": "firms-archive-import-v1",
+  "import_id": "028ab5fc-8b1c-5efe-86c1-6a7593a5b583",
+  "status": "completed",
+  "source_manifest": {
+    "schema_version": "firms-archive-manifest-v1",
+    "trusted_local_input": true,
+    "source_url": "https://firms.modaps.eosdis.nasa.gov/content/academy/data_api/firms_api_use.html",
+    "source_kind": "area_api_sample",
+    "archive_request_id": null,
+    "product": "VIIRS_NOAA20_SP",
+    "sensor": "NOAA-20",
+    "interval": {
+      "start_date": "2025-04-30",
+      "end_date": "2025-11-01"
+    },
+    "region": "northern-california",
+    "bbox": {
+      "west": -122.5,
+      "south": 38.5,
+      "east": -120.0,
+      "north": 40.5
+    },
+    "sha256": "4a07c1f996d8b020c737bb31dcd7e8b015ba53c5c3c65806ac886fe88b9144ca",
+    "retrieved_at": "2026-10-24T14:13:10.970320Z",
+    "attribution_url": "https://www.earthdata.nasa.gov/data/tools/firms",
+    "earliest_feature_cutoff": "2025-05-01T00:00:00Z",
+    "last_label_cutoff": "2025-10-31T23:59:59Z",
+    "cutoff_purpose": "proposed",
+    "covered_intervals": [
+      {
+        "start_date": "2025-04-30",
+        "end_date": "2025-11-01"
+      }
+    ],
+    "expected_active_intervals": [],
+    "confirmed_empty_intervals": [
+      {
+        "start_date": "2025-05-03",
+        "end_date": "2025-05-03"
+      },
+      {
+        "start_date": "2025-05-17",
+        "end_date": "2025-05-17"
+      },
+      {
+        "start_date": "2025-05-18",
+        "end_date": "2025-05-18"
+      },
+      {
+        "start_date": "2025-05-19",
+        "end_date": "2025-05-19"
+      },
+      {
+        "start_date": "2025-06-08",
+        "end_date": "2025-06-08"
+      },
+      {
+        "start_date": "2025-06-23",
+        "end_date": "2025-06-23"
+      },
+      {
+        "start_date": "2025-06-28",
+        "end_date": "2025-06-28"
+      },
+      {
+        "start_date": "2025-07-06",
+        "end_date": "2025-07-06"
+      },
+      {
+        "start_date": "2025-07-13",
+        "end_date": "2025-07-13"
+      },
+      {
+        "start_date": "2025-08-10",
+        "end_date": "2025-08-10"
+      },
+      {
+        "start_date": "2025-09-07",
+        "end_date": "2025-09-07"
+      },
+      {
+        "start_date": "2025-09-09",
+        "end_date": "2025-09-09"
+      },
+      {
+        "start_date": "2025-09-14",
+        "end_date": "2025-09-14"
+      },
+      {
+        "start_date": "2025-09-19",
+        "end_date": "2025-09-19"
+      },
+      {
+        "start_date": "2025-09-29",
+        "end_date": "2025-09-29"
+      },
+      {
+        "start_date": "2025-10-01",
+        "end_date": "2025-10-01"
+      },
+      {
+        "start_date": "2025-10-15",
+        "end_date": "2025-10-15"
+      },
+      {
+        "start_date": "2025-10-25",
+        "end_date": "2025-10-25"
+      },
+      {
+        "start_date": "2025-10-26",
+        "end_date": "2025-10-26"
+      }
+    ]
+  },
+  "original_path": "C:\\Users\\talha\\Desktop\\FireWatch_AI\\data\\archive-imports\\028ab5fc-8b1c-5efe-86c1-6a7593a5b583\\original.csv",
+  "quality_path": "C:\\Users\\talha\\Desktop\\FireWatch_AI\\data\\archive-imports\\028ab5fc-8b1c-5efe-86c1-6a7593a5b583\\quality.json",
+  "inventory": {
+    "schema_version": "firms-archive-import-v1",
+    "source_sha256": "4a07c1f996d8b020c737bb31dcd7e8b015ba53c5c3c65806ac886fe88b9144ca",
+    "source_kind": "area_api_sample",
+    "fetched_count": 1909,
+    "accepted_count": 1909,
+    "rejected_count": 0,
+    "duplicate_count": 0,
+    "revision_count": 1909,
+    "revised_count": 0,
+    "rejection_counts": {},
+    "quality_flag_counts": {},
+    "daily_counts": {
+      "2025-04-30": {
+        "fetched": 17,
+        "accepted": 17
+      },
+      "2025-05-01": {
+        "fetched": 6,
+        "accepted": 6
+      },
+      "2025-05-02": {
+        "fetched": 22,
+        "accepted": 22
+      },
+      "2025-05-03": {},
+      "2025-05-04": {
+        "fetched": 8,
+        "accepted": 8
+      },
+      "2025-05-05": {
+        "fetched": 4,
+        "accepted": 4
+      },
+      "2025-05-06": {
+        "fetched": 12,
+        "accepted": 12
+      },
+      "2025-05-07": {
+        "fetched": 15,
+        "accepted": 15
+      },
+      "2025-05-08": {
+        "fetched": 15,
+        "accepted": 15
+      },
+      "2025-05-09": {
+        "fetched": 5,
+        "accepted": 5
+      },
+      "2025-05-10": {
+        "fetched": 5,
+        "accepted": 5
+      },
+      "2025-05-11": {
+        "fetched": 1,
+        "accepted": 1
+      },
+      "2025-05-12": {
+        "fetched": 5,
+        "accepted": 5
+      },
+      "2025-05-13": {
+        "fetched": 14,
+        "accepted": 14
+      },
+      "2025-05-14": {
+        "fetched": 2,
+        "accepted": 2
+      },
+      "2025-05-15": {
+        "fetched": 16,
+        "accepted": 16
+      },
+      "2025-05-16": {
+        "fetched": 12,
+        "accepted": 12
+      },
+      "2025-05-17": {},
+      "2025-05-18": {},
+      "2025-05-19": {},
+      "2025-05-20": {
+        "fetched": 16,
+        "accepted": 16
+      },
+      "2025-05-21": {
+        "fetched": 11,
+        "accepted": 11
+      },
+      "2025-05-22": {
+        "fetched": 14,
+        "accepted": 14
+      },
+      "2025-05-23": {
+        "fetched": 16,
+        "accepted": 16
+      },
+      "2025-05-24": {
+        "fetched": 9,
+        "accepted": 9
+      },
+      "2025-05-25": {
+        "fetched": 5,
+        "accepted": 5
+      },
+      "2025-05-26": {
+        "fetched": 2,
+        "accepted": 2
+      },
+      "2025-05-27": {
+        "fetched": 3,
+        "accepted": 3
+      },
+      "2025-05-28": {
+        "fetched": 2,
+        "accepted": 2
+      },
+      "2025-05-29": {
+        "fetched": 9,
+        "accepted": 9
+      },
+      "2025-05-30": {
+        "fetched": 26,
+        "accepted": 26
+      },
+      "2025-05-31": {
+        "fetched": 6,
+        "accepted": 6
+      },
+      "2025-06-01": {
+        "fetched": 2,
+        "accepted": 2
+      },
+      "2025-06-02": {
+        "fetched": 1,
+        "accepted": 1
+      },
+      "2025-06-03": {
+        "fetched": 17,
+        "accepted": 17
+      },
+      "2025-06-04": {
+        "fetched": 11,
+        "accepted": 11
+      },
+      "2025-06-05": {
+        "fetched": 20,
+        "accepted": 20
+      },
+      "2025-06-06": {
+        "fetched": 12,
+        "accepted": 12
+      },
+      "2025-06-07": {
+        "fetched": 1,
+        "accepted": 1
+      },
+      "2025-06-08": {},
+      "2025-06-09": {
+        "fetched": 14,
+        "accepted": 14
+      },
+      "2025-06-10": {
+        "fetched": 20,
+        "accepted": 20
+      },
+      "2025-06-11": {
+        "fetched": 14,
+        "accepted": 14
+      },
+      "2025-06-12": {
+        "fetched": 4,
+        "accepted": 4
+      },
+      "2025-06-13": {
+        "fetched": 5,
+        "accepted": 5
+      },
+      "2025-06-14": {
+        "fetched": 12,
+        "accepted": 12
+      },
+      "2025-06-15": {
+        "fetched": 3,
+        "accepted": 3
+      },
+      "2025-06-16": {
+        "fetched": 12,
+        "accepted": 12
+      },
+      "2025-06-17": {
+        "fetched": 4,
+        "accepted": 4
+      },
+      "2025-06-18": {
+        "fetched": 1,
+        "accepted": 1
+      },
+      "2025-06-19": {
+        "fetched": 26,
+        "accepted": 26
+      },
+      "2025-06-20": {
+        "fetched": 7,
+        "accepted": 7
+      },
+      "2025-06-21": {
+        "fetched": 1,
+        "accepted": 1
+      },
+      "2025-06-22": {
+        "fetched": 1,
+        "accepted": 1
+      },
+      "2025-06-23": {},
+      "2025-06-24": {
+        "fetched": 8,
+        "accepted": 8
+      },
+      "2025-06-25": {
+        "fetched": 16,
+        "accepted": 16
+      },
+      "2025-06-26": {
+        "fetched": 10,
+        "accepted": 10
+      },
+      "2025-06-27": {
+        "fetched": 10,
+        "accepted": 10
+      },
+      "2025-06-28": {},
+      "2025-06-29": {
+        "fetched": 1,
+        "accepted": 1
+      },
+      "2025-06-30": {
+        "fetched": 6,
+        "accepted": 6
+      },
+      "2025-07-01": {
+        "fetched": 11,
+        "accepted": 11
+      },
+      "2025-07-02": {
+        "fetched": 10,
+        "accepted": 10
+      },
+      "2025-07-03": {
+        "fetched": 3,
+        "accepted": 3
+      },
+      "2025-07-04": {
+        "fetched": 4,
+        "accepted": 4
+      },
+      "2025-07-05": {
+        "fetched": 3,
+        "accepted": 3
+      },
+      "2025-07-06": {},
+      "2025-07-07": {
+        "fetched": 7,
+        "accepted": 7
+      },
+      "2025-07-08": {
+        "fetched": 4,
+        "accepted": 4
+      },
+      "2025-07-09": {
+        "fetched": 4,
+        "accepted": 4
+      },
+      "2025-07-10": {
+        "fetched": 5,
+        "accepted": 5
+      },
+      "2025-07-11": {
+        "fetched": 4,
+        "accepted": 4
+      },
+      "2025-07-12": {
+        "fetched": 3,
+        "accepted": 3
+      },
+      "2025-07-13": {},
+      "2025-07-14": {
+        "fetched": 1,
+        "accepted": 1
+      },
+      "2025-07-15": {
+        "fetched": 4,
+        "accepted": 4
+      },
+      "2025-07-16": {
+        "fetched": 28,
+        "accepted": 28
+      },
+      "2025-07-17": {
+        "fetched": 18,
+        "accepted": 18
+      },
+      "2025-07-18": {
+        "fetched": 9,
+        "accepted": 9
+      },
+      "2025-07-19": {
+        "fetched": 2,
+        "accepted": 2
+      },
+      "2025-07-20": {
+        "fetched": 2,
+        "accepted": 2
+      },
+      "2025-07-21": {
+        "fetched": 12,
+        "accepted": 12
+      },
+      "2025-07-22": {
+        "fetched": 8,
+        "accepted": 8
+      },
+      "2025-07-23": {
+        "fetched": 12,
+        "accepted": 12
+      },
+      "2025-07-24": {
+        "fetched": 8,
+        "accepted": 8
+      },
+      "2025-07-25": {
+        "fetched": 2,
+        "accepted": 2
+      },
+      "2025-07-26": {
+        "fetched": 4,
+        "accepted": 4
+      },
+      "2025-07-27": {
+        "fetched": 1,
+        "accepted": 1
+      },
+      "2025-07-28": {
+        "fetched": 3,
+        "accepted": 3
+      },
+      "2025-07-29": {
+        "fetched": 5,
+        "accepted": 5
+      },
+      "2025-07-30": {
+        "fetched": 4,
+        "accepted": 4
+      },
+      "2025-07-31": {
+        "fetched": 4,
+        "accepted": 4
+      },
+      "2025-08-01": {
+        "fetched": 12,
+        "accepted": 12
+      },
+      "2025-08-02": {
+        "fetched": 4,
+        "accepted": 4
+      },
+      "2025-08-03": {
+        "fetched": 2,
+        "accepted": 2
+      },
+      "2025-08-04": {
+        "fetched": 8,
+        "accepted": 8
+      },
+      "2025-08-05": {
+        "fetched": 1,
+        "accepted": 1
+      },
+      "2025-08-06": {
+        "fetched": 1,
+        "accepted": 1
+      },
+      "2025-08-07": {
+        "fetched": 7,
+        "accepted": 7
+      },
+      "2025-08-08": {
+        "fetched": 13,
+        "accepted": 13
+      },
+      "2025-08-09": {
+        "fetched": 2,
+        "accepted": 2
+      },
+      "2025-08-10": {},
+      "2025-08-11": {
+        "fetched": 4,
+        "accepted": 4
+      },
+      "2025-08-12": {
+        "fetched": 3,
+        "accepted": 3
+      },
+      "2025-08-13": {
+        "fetched": 4,
+        "accepted": 4
+      },
+      "2025-08-14": {
+        "fetched": 4,
+        "accepted": 4
+      },
+      "2025-08-15": {
+        "fetched": 3,
+        "accepted": 3
+      },
+      "2025-08-16": {
+        "fetched": 5,
+        "accepted": 5
+      },
+      "2025-08-17": {
+        "fetched": 3,
+        "accepted": 3
+      },
+      "2025-08-18": {
+        "fetched": 11,
+        "accepted": 11
+      },
+      "2025-08-19": {
+        "fetched": 2,
+        "accepted": 2
+      },
+      "2025-08-20": {
+        "fetched": 4,
+        "accepted": 4
+      },
+      "2025-08-21": {
+        "fetched": 22,
+        "accepted": 22
+      },
+      "2025-08-22": {
+        "fetched": 37,
+        "accepted": 37
+      },
+      "2025-08-23": {
+        "fetched": 83,
+        "accepted": 83
+      },
+      "2025-08-24": {
+        "fetched": 51,
+        "accepted": 51
+      },
+      "2025-08-25": {
+        "fetched": 3,
+        "accepted": 3
+      },
+      "2025-08-26": {
+        "fetched": 1,
+        "accepted": 1
+      },
+      "2025-08-27": {
+        "fetched": 7,
+        "accepted": 7
+      },
+      "2025-08-28": {
+        "fetched": 8,
+        "accepted": 8
+      },
+      "2025-08-29": {
+        "fetched": 9,
+        "accepted": 9
+      },
+      "2025-08-30": {
+        "fetched": 1,
+        "accepted": 1
+      },
+      "2025-08-31": {
+        "fetched": 1,
+        "accepted": 1
+      },
+      "2025-09-01": {
+        "fetched": 1,
+        "accepted": 1
+      },
+      "2025-09-02": {
+        "fetched": 1,
+        "accepted": 1
+      },
+      "2025-09-03": {
+        "fetched": 9,
+        "accepted": 9
+      },
+      "2025-09-04": {
+        "fetched": 5,
+        "accepted": 5
+      },
+      "2025-09-05": {
+        "fetched": 7,
+        "accepted": 7
+      },
+      "2025-09-06": {
+        "fetched": 5,
+        "accepted": 5
+      },
+      "2025-09-07": {},
+      "2025-09-08": {
+        "fetched": 11,
+        "accepted": 11
+      },
+      "2025-09-09": {},
+      "2025-09-10": {
+        "fetched": 5,
+        "accepted": 5
+      },
+      "2025-09-11": {
+        "fetched": 8,
+        "accepted": 8
+      },
+      "2025-09-12": {
+        "fetched": 11,
+        "accepted": 11
+      },
+      "2025-09-13": {
+        "fetched": 8,
+        "accepted": 8
+      },
+      "2025-09-14": {},
+      "2025-09-15": {
+        "fetched": 16,
+        "accepted": 16
+      },
+      "2025-09-16": {
+        "fetched": 1,
+        "accepted": 1
+      },
+      "2025-09-17": {
+        "fetched": 5,
+        "accepted": 5
+      },
+      "2025-09-18": {
+        "fetched": 2,
+        "accepted": 2
+      },
+      "2025-09-19": {},
+      "2025-09-20": {
+        "fetched": 18,
+        "accepted": 18
+      },
+      "2025-09-21": {
+        "fetched": 8,
+        "accepted": 8
+      },
+      "2025-09-22": {
+        "fetched": 9,
+        "accepted": 9
+      },
+      "2025-09-23": {
+        "fetched": 24,
+        "accepted": 24
+      },
+      "2025-09-24": {
+        "fetched": 34,
+        "accepted": 34
+      },
+      "2025-09-25": {
+        "fetched": 24,
+        "accepted": 24
+      },
+      "2025-09-26": {
+        "fetched": 17,
+        "accepted": 17
+      },
+      "2025-09-27": {
+        "fetched": 36,
+        "accepted": 36
+      },
+      "2025-09-28": {
+        "fetched": 12,
+        "accepted": 12
+      },
+      "2025-09-29": {},
+      "2025-09-30": {
+        "fetched": 2,
+        "accepted": 2
+      },
+      "2025-10-01": {},
+      "2025-10-02": {
+        "fetched": 3,
+        "accepted": 3
+      },
+      "2025-10-03": {
+        "fetched": 3,
+        "accepted": 3
+      },
+      "2025-10-04": {
+        "fetched": 3,
+        "accepted": 3
+      },
+      "2025-10-05": {
+        "fetched": 8,
+        "accepted": 8
+      },
+      "2025-10-06": {
+        "fetched": 11,
+        "accepted": 11
+      },
+      "2025-10-07": {
+        "fetched": 23,
+        "accepted": 23
+      },
+      "2025-10-08": {
+        "fetched": 39,
+        "accepted": 39
+      },
+      "2025-10-09": {
+        "fetched": 25,
+        "accepted": 25
+      },
+      "2025-10-10": {
+        "fetched": 51,
+        "accepted": 51
+      },
+      "2025-10-11": {
+        "fetched": 23,
+        "accepted": 23
+      },
+      "2025-10-12": {
+        "fetched": 15,
+        "accepted": 15
+      },
+      "2025-10-13": {
+        "fetched": 6,
+        "accepted": 6
+      },
+      "2025-10-14": {
+        "fetched": 2,
+        "accepted": 2
+      },
+      "2025-10-15": {},
+      "2025-10-16": {
+        "fetched": 8,
+        "accepted": 8
+      },
+      "2025-10-17": {
+        "fetched": 19,
+        "accepted": 19
+      },
+      "2025-10-18": {
+        "fetched": 13,
+        "accepted": 13
+      },
+      "2025-10-19": {
+        "fetched": 7,
+        "accepted": 7
+      },
+      "2025-10-20": {
+        "fetched": 17,
+        "accepted": 17
+      },
+      "2025-10-21": {
+        "fetched": 61,
+        "accepted": 61
+      },
+      "2025-10-22": {
+        "fetched": 9,
+        "accepted": 9
+      },
+      "2025-10-23": {
+        "fetched": 42,
+        "accepted": 42
+      },
+      "2025-10-24": {
+        "fetched": 24,
+        "accepted": 24
+      },
+      "2025-10-25": {},
+      "2025-10-26": {},
+      "2025-10-27": {
+        "fetched": 45,
+        "accepted": 45
+      },
+      "2025-10-28": {
+        "fetched": 32,
+        "accepted": 32
+      },
+      "2025-10-29": {
+        "fetched": 45,
+        "accepted": 45
+      },
+      "2025-10-30": {
+        "fetched": 38,
+        "accepted": 38
+      },
+      "2025-10-31": {
+        "fetched": 26,
+        "accepted": 26
+      },
+      "2025-11-01": {
+        "fetched": 14,
+        "accepted": 14
+      }
+    },
+    "missing_date_intervals": [],
+    "empty_intervals": [
+      {
+        "start_date": "2025-05-03",
+        "end_date": "2025-05-03"
+      },
+      {
+        "start_date": "2025-05-17",
+        "end_date": "2025-05-19"
+      },
+      {
+        "start_date": "2025-06-08",
+        "end_date": "2025-06-08"
+      },
+      {
+        "start_date": "2025-06-23",
+        "end_date": "2025-06-23"
+      },
+      {
+        "start_date": "2025-06-28",
+        "end_date": "2025-06-28"
+      },
+      {
+        "start_date": "2025-07-06",
+        "end_date": "2025-07-06"
+      },
+      {
+        "start_date": "2025-07-13",
+        "end_date": "2025-07-13"
+      },
+      {
+        "start_date": "2025-08-10",
+        "end_date": "2025-08-10"
+      },
+      {
+        "start_date": "2025-09-07",
+        "end_date": "2025-09-07"
+      },
+      {
+        "start_date": "2025-09-09",
+        "end_date": "2025-09-09"
+      },
+      {
+        "start_date": "2025-09-14",
+        "end_date": "2025-09-14"
+      },
+      {
+        "start_date": "2025-09-19",
+        "end_date": "2025-09-19"
+      },
+      {
+        "start_date": "2025-09-29",
+        "end_date": "2025-09-29"
+      },
+      {
+        "start_date": "2025-10-01",
+        "end_date": "2025-10-01"
+      },
+      {
+        "start_date": "2025-10-15",
+        "end_date": "2025-10-15"
+      },
+      {
+        "start_date": "2025-10-25",
+        "end_date": "2025-10-26"
+      }
+    ],
+    "unexpectedly_empty_intervals": [],
+    "unconfirmed_empty_intervals": [],
+    "inventory": [
+      {
+        "month": "2025-04",
+        "sensor": "NOAA-20",
+        "product": "VIIRS_NOAA20_SP",
+        "region": "northern-california",
+        "class_label": "unlabeled",
+        "confidence_class": "nominal",
+        "provider_class": "0",
+        "observations": 12,
+        "distinct_fire_periods_proxy": 1
+      },
+      {
+        "month": "2025-04",
+        "sensor": "NOAA-20",
+        "product": "VIIRS_NOAA20_SP",
+        "region": "northern-california",
+        "class_label": "unlabeled",
+        "confidence_class": "low",
+        "provider_class": "0",
+        "observations": 5,
+        "distinct_fire_periods_proxy": 1
+      },
+      {
+        "month": "2025-05",
+        "sensor": "NOAA-20",
+        "product": "VIIRS_NOAA20_SP",
+        "region": "northern-california",
+        "class_label": "unlabeled",
+        "confidence_class": "nominal",
+        "provider_class": "0",
+        "observations": 198,
+        "distinct_fire_periods_proxy": 4
+      },
+      {
+        "month": "2025-05",
+        "sensor": "NOAA-20",
+        "product": "VIIRS_NOAA20_SP",
+        "region": "northern-california",
+        "class_label": "unlabeled",
+        "confidence_class": "low",
+        "provider_class": "0",
+        "observations": 38,
+        "distinct_fire_periods_proxy": 9
+      },
+      {
+        "month": "2025-05",
+        "sensor": "NOAA-20",
+        "product": "VIIRS_NOAA20_SP",
+        "region": "northern-california",
+        "class_label": "unlabeled",
+        "confidence_class": "high",
+        "provider_class": "0",
+        "observations": 23,
+        "distinct_fire_periods_proxy": 8
+      },
+      {
+        "month": "2025-05",
+        "sensor": "NOAA-20",
+        "product": "VIIRS_NOAA20_SP",
+        "region": "northern-california",
+        "class_label": "unlabeled",
+        "confidence_class": "nominal",
+        "provider_class": "3",
+        "observations": 1,
+        "distinct_fire_periods_proxy": 1
+      },
+      {
+        "month": "2025-05",
+        "sensor": "NOAA-20",
+        "product": "VIIRS_NOAA20_SP",
+        "region": "northern-california",
+        "class_label": "unlabeled",
+        "confidence_class": "high",
+        "provider_class": "3",
+        "observations": 1,
+        "distinct_fire_periods_proxy": 1
+      },
+      {
+        "month": "2025-06",
+        "sensor": "NOAA-20",
+        "product": "VIIRS_NOAA20_SP",
+        "region": "northern-california",
+        "class_label": "unlabeled",
+        "confidence_class": "nominal",
+        "provider_class": "0",
+        "observations": 180,
+        "distinct_fire_periods_proxy": 7
+      },
+      {
+        "month": "2025-06",
+        "sensor": "NOAA-20",
+        "product": "VIIRS_NOAA20_SP",
+        "region": "northern-california",
+        "class_label": "unlabeled",
+        "confidence_class": "low",
+        "provider_class": "0",
+        "observations": 36,
+        "distinct_fire_periods_proxy": 8
+      },
+      {
+        "month": "2025-06",
+        "sensor": "NOAA-20",
+        "product": "VIIRS_NOAA20_SP",
+        "region": "northern-california",
+        "class_label": "unlabeled",
+        "confidence_class": "high",
+        "provider_class": "0",
+        "observations": 23,
+        "distinct_fire_periods_proxy": 6
+      },
+      {
+        "month": "2025-07",
+        "sensor": "NOAA-20",
+        "product": "VIIRS_NOAA20_SP",
+        "region": "northern-california",
+        "class_label": "unlabeled",
+        "confidence_class": "nominal",
+        "provider_class": "0",
+        "observations": 127,
+        "distinct_fire_periods_proxy": 10
+      },
+      {
+        "month": "2025-07",
+        "sensor": "NOAA-20",
+        "product": "VIIRS_NOAA20_SP",
+        "region": "northern-california",
+        "class_label": "unlabeled",
+        "confidence_class": "low",
+        "provider_class": "0",
+        "observations": 46,
+        "distinct_fire_periods_proxy": 8
+      },
+      {
+        "month": "2025-07",
+        "sensor": "NOAA-20",
+        "product": "VIIRS_NOAA20_SP",
+        "region": "northern-california",
+        "class_label": "unlabeled",
+        "confidence_class": "high",
+        "provider_class": "0",
+        "observations": 12,
+        "distinct_fire_periods_proxy": 4
+      },
+      {
+        "month": "2025-08",
+        "sensor": "NOAA-20",
+        "product": "VIIRS_NOAA20_SP",
+        "region": "northern-california",
+        "class_label": "unlabeled",
+        "confidence_class": "nominal",
+        "provider_class": "0",
+        "observations": 263,
+        "distinct_fire_periods_proxy": 7
+      },
+      {
+        "month": "2025-08",
+        "sensor": "NOAA-20",
+        "product": "VIIRS_NOAA20_SP",
+        "region": "northern-california",
+        "class_label": "unlabeled",
+        "confidence_class": "low",
+        "provider_class": "0",
+        "observations": 23,
+        "distinct_fire_periods_proxy": 9
+      },
+      {
+        "month": "2025-08",
+        "sensor": "NOAA-20",
+        "product": "VIIRS_NOAA20_SP",
+        "region": "northern-california",
+        "class_label": "unlabeled",
+        "confidence_class": "high",
+        "provider_class": "0",
+        "observations": 30,
+        "distinct_fire_periods_proxy": 4
+      },
+      {
+        "month": "2025-09",
+        "sensor": "NOAA-20",
+        "product": "VIIRS_NOAA20_SP",
+        "region": "northern-california",
+        "class_label": "unlabeled",
+        "confidence_class": "nominal",
+        "provider_class": "0",
+        "observations": 229,
+        "distinct_fire_periods_proxy": 7
+      },
+      {
+        "month": "2025-09",
+        "sensor": "NOAA-20",
+        "product": "VIIRS_NOAA20_SP",
+        "region": "northern-california",
+        "class_label": "unlabeled",
+        "confidence_class": "high",
+        "provider_class": "0",
+        "observations": 19,
+        "distinct_fire_periods_proxy": 6
+      },
+      {
+        "month": "2025-09",
+        "sensor": "NOAA-20",
+        "product": "VIIRS_NOAA20_SP",
+        "region": "northern-california",
+        "class_label": "unlabeled",
+        "confidence_class": "low",
+        "provider_class": "0",
+        "observations": 31,
+        "distinct_fire_periods_proxy": 7
+      },
+      {
+        "month": "2025-10",
+        "sensor": "NOAA-20",
+        "product": "VIIRS_NOAA20_SP",
+        "region": "northern-california",
+        "class_label": "unlabeled",
+        "confidence_class": "nominal",
+        "provider_class": "0",
+        "observations": 524,
+        "distinct_fire_periods_proxy": 4
+      },
+      {
+        "month": "2025-10",
+        "sensor": "NOAA-20",
+        "product": "VIIRS_NOAA20_SP",
+        "region": "northern-california",
+        "class_label": "unlabeled",
+        "confidence_class": "high",
+        "provider_class": "0",
+        "observations": 47,
+        "distinct_fire_periods_proxy": 6
+      },
+      {
+        "month": "2025-10",
+        "sensor": "NOAA-20",
+        "product": "VIIRS_NOAA20_SP",
+        "region": "northern-california",
+        "class_label": "unlabeled",
+        "confidence_class": "low",
+        "provider_class": "0",
+        "observations": 27,
+        "distinct_fire_periods_proxy": 8
+      },
+      {
+        "month": "2025-11",
+        "sensor": "NOAA-20",
+        "product": "VIIRS_NOAA20_SP",
+        "region": "northern-california",
+        "class_label": "unlabeled",
+        "confidence_class": "nominal",
+        "provider_class": "0",
+        "observations": 13,
+        "distinct_fire_periods_proxy": 1
+      },
+      {
+        "month": "2025-11",
+        "sensor": "NOAA-20",
+        "product": "VIIRS_NOAA20_SP",
+        "region": "northern-california",
+        "class_label": "unlabeled",
+        "confidence_class": "low",
+        "provider_class": "0",
+        "observations": 1,
+        "distinct_fire_periods_proxy": 1
+      }
+    ],
+    "distinct_fire_periods_proxy": 27,
+    "period_definition": "Adjacent observation times separated by more than 24 hours; thermal-activity proxy, not independent fire events.",
+    "training_classes": {
+      "unlabeled": 1909,
+      "positive": null,
+      "negative": null
+    },
+    "observation_history_complete": true,
+    "margins_hours": 24,
+    "weather_history": "not_imported",
+    "baseline_history": "not_imported",
+    "ready_for_supervised_training": false,
+    "limitations": [
+      "No training labels or independent event IDs have been supplied.",
+      "Temporal activity periods do not prove event-separated evaluation is possible.",
+      "Sparse hotspot rows cannot prove satellite/cloud-free observation coverage."
+    ],
+    "mixed_product_rows": 0,
+    "normalization_policy": {
+      "invalid_frp": "reject",
+      "missing_frp": "allow",
+      "rejection_samples": 20
+    },
+    "normalizer_version": "firms-normalizer-v1"
+  },
+  "source_batch_ids": [
+    "1e73d011-c412-5b8d-8b5f-bf9bc5b1e119",
+    "6d640903-414d-545a-bd58-8f852df7881a",
+    "7050b767-6b8b-576d-b084-3b5512620843",
+    "03f0fcd7-4cc2-51c2-8bb2-056f0cfdd2fb",
+    "60dacfba-b324-5399-a845-565ca08446f1",
+    "b8c8861e-2a13-58d5-8b86-c45af20b1f74",
+    "0f0f8be2-03d1-56db-804a-c8ed652965eb",
+    "c1f9dfba-ca03-5f51-bd12-f6b2e10e6af7",
+    "8a71ba8d-faae-5580-9ed4-c9b3dbe0eb65",
+    "1cf6ff40-e2eb-5162-b9b9-d6423d2ad4f4",
+    "eeb3e71e-01b7-5f25-a6f8-b8f511f38b82",
+    "cd65b635-0347-5bc7-b80d-75c18a9df4ef",
+    "63561462-8caa-57c9-bca8-bf7996a9f7ed",
+    "f90a156d-5299-5785-a303-18e2b475a034",
+    "ecad8952-eb2a-54bd-83a7-e8d89046a33e",
+    "24ce6350-1851-5ec8-bb95-1c98a4c79b2c",
+    "2cf46b45-bd48-52a9-b9db-1562b32c27d1",
+    "269cf6b9-2171-5ed8-8e1c-65a99977ad2e",
+    "b15079e8-70bc-523d-8552-4df5df731a9c",
+    "2679f263-c56c-5118-873c-d660b54fcc15",
+    "7d0564d3-fd3b-5c98-8a21-c8bd5285f912",
+    "49b8c7cc-2d98-5068-a51c-738770c02538",
+    "3db4d9b6-8325-5fdf-9549-1e3838adc6c4",
+    "c1138c1b-58af-506d-9c23-d01ea993126f",
+    "2949b85d-f8f7-5661-847f-8de72c935406",
+    "042eb456-e7e8-5af6-a28e-24fb8bf302b5",
+    "64a05dd7-2c51-53b1-80d2-310a34db5833",
+    "d681e388-e59e-5ad5-b6a7-8059960f3f2e",
+    "a98fd4fd-efc6-5cbd-a176-f1f7c78eee80",
+    "d7592d7e-ec43-5da3-9a8c-723e3f923f56",
+    "698b825d-4d18-5465-9cf9-ed7e021ff190",
+    "9ed4b393-ef79-5a61-8a88-9e1323759acd",
+    "4a4c3d45-d515-59ec-8293-01f7b52e62ed",
+    "2e374240-1b69-5d70-8854-8a887208fc21",
+    "d252e1e9-4d06-51ce-8939-8524d3d13698",
+    "83c26d77-2dbf-55c6-a2d6-99ee2abea83b",
+    "60b8df4d-3a87-558b-bf69-f5c8118e2aff",
+    "f65e73fd-4dfb-56c5-8a3c-014acca87c46",
+    "324d29df-ccd6-5094-965b-7a6318d6aa55",
+    "1984b3f8-79f7-5300-b7e7-f81881620773",
+    "9508e536-3d02-5913-b714-350d0e057a2e",
+    "3fe3e1bc-fdc2-51c9-bd2c-814ee8fea996",
+    "3d4f954f-8b13-55e5-90af-8f1a5ec9aeab",
+    "d865b9a8-7fcd-5cf4-b083-db508430bd20",
+    "3ae3ad6d-c65e-5faf-a325-2148076c8742",
+    "7591ac2e-be49-5266-b46d-daf6d1cb3532",
+    "fa093312-6b70-509e-a03b-5d590209a9ca",
+    "1f086607-f9fc-55c0-8420-9c3383acf879",
+    "26b15ef1-7952-58e3-979c-db6ce42646ab",
+    "41a3a5a1-6846-52c4-b324-c8261cb023df",
+    "b0caa070-5bfa-590f-9730-a75e5d9e08bd",
+    "3ac85d53-3bf2-579c-98cc-ee929c82eb46",
+    "aaaa08b9-a318-55d6-9e7b-0581fcf8f17e",
+    "df3ae722-62bf-5c45-b906-da9da9f9a610",
+    "c366e401-4ac6-59d7-928a-755aa30eed06",
+    "f1ecf2c7-02ea-5b9c-8fef-e6bd22f62341",
+    "8f0061c0-6da3-522a-8b68-dee3cad0d2ee",
+    "2858fae3-22f2-569e-843e-c45e6d25fdfe",
+    "d3edf231-7b22-5312-830f-ec56d255f6af",
+    "6c8905dd-a35f-5fca-86c4-78b2647230e2",
+    "52354fd5-e0d7-5eeb-b4e2-d16625acf283",
+    "ae117e78-0bdc-51aa-9fbf-17ce265d3375",
+    "f0a08b90-86ff-5926-8daf-9713c9e81488",
+    "617ff4d5-df40-5b6b-bf7c-1c0e6ac1a88a",
+    "03573b67-71c7-5e38-902a-ab322d4048a5",
+    "6ef01ea3-d8cc-5aec-90d3-c33b5c5b6f1e",
+    "0c710294-b69e-5faa-8aec-814ed26c69f3",
+    "edbf2477-d1ae-5ccc-8982-14d6e2191fe7",
+    "ff9036af-ffe5-5f71-b094-ea443702160f",
+    "84f97c82-be12-5c7b-84eb-68008ad99825",
+    "f7b57818-18ad-5d1b-94b2-49165f50329d",
+    "5a36a954-a849-57c5-b5e5-2d711b10eab8",
+    "98be7628-6a35-59ba-b939-730176771122",
+    "5ad4750e-7eef-5bd7-af09-acc6d8e82b8e",
+    "eae9e447-f813-5e4a-b9f9-999255dcc00e",
+    "f82a414a-1db1-55c6-a53f-bc98cbdb733f",
+    "b3fe0416-05c0-5c84-8f36-a69b760d72cc",
+    "d7a40075-3c97-5008-96d5-ba88d7665aa4",
+    "b2fe0e27-86bd-5a0c-b139-b39ec28cb176",
+    "08bd04c0-f6ce-50ae-abad-eba5e0c2df6d",
+    "f0b8ec68-db12-583f-a056-1bc1a2c361e4",
+    "8c948846-8fa8-5187-b923-292e68ed5e2e",
+    "d81fed83-740d-5e36-9a8e-eb7bc2dbe594",
+    "99dc209d-e67f-50ba-bfa0-0938fd133747",
+    "4ea35d52-b162-59c8-8f03-fda57d5f07a3",
+    "a1a429e3-52cb-5b26-b30e-89ad64b305fa",
+    "2402facb-0594-5333-96ea-84a8d788f83a",
+    "b5550fa6-f28d-58bb-b904-8471840ac624",
+    "50574c0d-7f26-5bc7-98bd-bbf1233a1bd5",
+    "c093d780-bfa1-5b7a-a063-a9aed2f467a5",
+    "af66c7a5-005d-5a17-9456-829f6969a96d",
+    "ccc62e54-ec06-5130-b9c8-3f1ae2283f87",
+    "a3095715-0977-5b3b-a221-032930123b8a",
+    "f5f9a1a5-f8d8-53b7-8fe9-4288d06d6c13",
+    "a1cc4438-5f35-51f7-aefd-21f3989a915a",
+    "e80047fb-4b1f-54ee-91b9-788002a6309a",
+    "5ddcfe92-abb7-5bf9-8fbd-313999086d3a",
+    "2fc01b8d-8e5c-5a2c-8cd5-9ae8315488a1",
+    "c26656b6-e102-564e-8a6a-bc197633bc43",
+    "eb315c17-f521-555c-8b7b-39d029d96bb5",
+    "3b21b048-d98e-5c2a-a372-55520b683a4e",
+    "72c8dfc9-0e29-55a4-b0d4-769da87f2573",
+    "1e72ab64-9cff-5c56-bbba-624f418ce5c0",
+    "97e1a17b-1f2b-51c6-949c-577c9a7d3e68",
+    "fdcca5e1-e4f2-5ce0-b578-354a1e46f03d",
+    "183a4402-d75f-5a48-8584-3fbf17c8c9da",
+    "c970d9c8-1844-565a-820a-fcb5e6e2b41c",
+    "c6c71e26-6d03-53ea-889b-432b959647ba",
+    "6ac3010d-fa1f-5e13-b77a-c8922a166602",
+    "923076b6-45c0-5a08-a621-e93adfca9b49",
+    "c43b80ba-5ba8-53e6-89b4-4d2d8b468a3c",
+    "5fb885d8-de42-5c0b-a01a-465bef0c0a96",
+    "f6ae183a-61b9-5074-9626-67a6c7c4e57d",
+    "4b269575-f4af-554e-b994-6ce70460a45a",
+    "849a25c5-257b-5c47-aa6d-383d06068b7d",
+    "0d546d3f-6006-583e-9f95-18430658e52e",
+    "bcfa16b6-d726-5d4a-a90e-f7b5ffe9fbf7",
+    "34df75b4-ce4c-5678-85c6-95b6ea5cd000",
+    "3b46f77c-b9f7-5b47-90a0-8ce15b260e48",
+    "b149d6cd-c3e2-5511-9334-d41096a780c2",
+    "138e9c8d-44ae-52cd-89d9-c67ac1818d22",
+    "cf60604e-d01c-51f1-afe8-6468b328d38e",
+    "a414a4b3-ce1f-5257-a8b9-81fe45ea618e",
+    "013ca7e1-fb1e-51ad-be25-0660db119bb8",
+    "2fdd96da-0a9c-5936-a150-affb31126b80",
+    "e3e6c70f-7af5-5783-a627-cc819fc24811",
+    "c9e65e69-fe8c-5455-bd62-457a2799c1f4",
+    "7daf45a2-55d9-5bf3-b4be-e433889a69d9",
+    "9e4adff4-02c9-5281-a534-9dcdac83d080",
+    "b1fcced3-6ea9-5b5c-9fb3-f6786e86ea41",
+    "bd23ce60-cfb7-52d2-b314-766d292883e1",
+    "55bb3e76-0c16-5c6b-911c-f44ac8c4e81e",
+    "289cf2e9-ead8-5059-8439-792b9bee56c1",
+    "d76846f3-8476-50c4-aef1-ed3c9c12e22c",
+    "c2176ddd-9abf-59f2-8ce3-0ae37d5f6cec",
+    "00437821-14bc-5159-9087-67b63bd93478",
+    "5fae5583-6102-5dd9-a8d4-f69b114d32ee",
+    "d40b4857-6ca4-5b4f-9531-6652a5917861",
+    "e434d7b7-2a65-5be5-b496-e5aae61207f0",
+    "1d978c14-f5bd-55b4-b156-28d9dd045422",
+    "a266eb32-5b61-5518-b51c-14ca7dd40799",
+    "948aac6b-3fa4-5a67-adb0-d0f482f38a1c",
+    "77b69b6d-7820-594f-bd79-6efc6e969cb6",
+    "d39ae867-6537-59a3-a8ef-23457e8307fe",
+    "b73f924a-ee9a-5648-bcc9-50b802daf96d",
+    "98d294d4-1af6-5958-b28e-8bfa5403cc61",
+    "e534c219-615b-5448-8c39-b4f36e496f94",
+    "c027e0fa-643c-59f4-9d4f-9fbca34880ce",
+    "0d6d5104-f159-5b47-839d-1239e44e925e",
+    "0368deea-65f4-5575-bebf-216860fe7b15",
+    "af31f638-480e-500e-acc5-9eab68de25c2",
+    "4b5676c0-2a5e-519a-9740-38a63ba402ff",
+    "12c8ed10-c5d0-5578-aef0-48ffd3258597",
+    "49aeb347-c832-51ca-9b0b-0a703301ced8",
+    "6b6c6fe0-3354-52a4-9ca3-686f2d175f7a",
+    "f08f7bbd-4311-512e-88ee-4444a854adcf",
+    "4762c55c-4043-5915-b5ba-e6834b41ad25",
+    "75aaa8d9-8b7e-5877-bafd-80c52fa6ad8c",
+    "3c055fd5-ac9e-5bef-91b5-fb749043cfda",
+    "b1683659-a300-5e4c-8ebd-96b92e821443",
+    "3fabadb0-1842-59cc-a663-e2334c25a2e9",
+    "c248bab7-1b65-5968-892c-da4e6aa3114e",
+    "7d996cf9-4627-5258-ab04-b0a928186ddd",
+    "551c79c5-04a3-527a-a659-a0e12bda39c5",
+    "700ebaa5-1edd-5123-8294-f0f29d26cba3",
+    "2e4ca2fc-7feb-542f-878e-8bdf360dc0cd",
+    "8340c920-a082-5e79-8efc-9e2684d3c151",
+    "11bc9916-ebb4-5a11-9ebe-fa6a402a82ab",
+    "c29cbe8c-a876-53f8-8f95-137bbd4fb405",
+    "cbdc2159-d7ad-592e-ac7e-f4f5c896e74d",
+    "0a722295-8265-5abe-ad1a-7ad1f9de3c8f",
+    "5d90a361-4ed1-571f-867d-24b0defa99c9",
+    "7bcd017d-bf0d-5740-a4c2-98932e0f42b7",
+    "cccd41f2-7e9e-539b-a5aa-359d11428c98",
+    "2be243ab-d7d8-518c-9dcd-5c93ff497b27",
+    "1ea93f28-a842-52d0-a7ed-f5ba4d7ef054",
+    "d79a8787-54d5-5108-8efe-0e6be37feb90",
+    "6a113818-a909-59e6-b61b-5bca965bbe59",
+    "a403bbd5-0860-51d6-8676-eca5e880f0e1",
+    "0a76ade1-b0c7-5e2c-b91a-819227834ef0",
+    "029d4ba2-18ee-5f57-a869-b5e73a051844",
+    "0cf12ff9-a82c-5227-9ac0-5da661eb63ae",
+    "0bfa2de1-7cc6-50b3-9f2d-318236f5fbad",
+    "be6bfb9e-6115-557a-bff7-5b3e63ef760d",
+    "8b959b9e-8018-5b43-9a03-d77336419228",
+    "767e70fb-a7ab-5f6e-adf7-1b64e92539e8"
+  ],
+  "source_batches": [
+    {
+      "date": "2025-04-30",
+      "batch_id": "1e73d011-c412-5b8d-8b5f-bf9bc5b1e119",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-05-01",
+      "batch_id": "6d640903-414d-545a-bd58-8f852df7881a",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-05-02",
+      "batch_id": "7050b767-6b8b-576d-b084-3b5512620843",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-05-03",
+      "batch_id": "03f0fcd7-4cc2-51c2-8bb2-056f0cfdd2fb",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-05-04",
+      "batch_id": "60dacfba-b324-5399-a845-565ca08446f1",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-05-05",
+      "batch_id": "b8c8861e-2a13-58d5-8b86-c45af20b1f74",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-05-06",
+      "batch_id": "0f0f8be2-03d1-56db-804a-c8ed652965eb",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-05-07",
+      "batch_id": "c1f9dfba-ca03-5f51-bd12-f6b2e10e6af7",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-05-08",
+      "batch_id": "8a71ba8d-faae-5580-9ed4-c9b3dbe0eb65",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-05-09",
+      "batch_id": "1cf6ff40-e2eb-5162-b9b9-d6423d2ad4f4",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-05-10",
+      "batch_id": "eeb3e71e-01b7-5f25-a6f8-b8f511f38b82",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-05-11",
+      "batch_id": "cd65b635-0347-5bc7-b80d-75c18a9df4ef",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-05-12",
+      "batch_id": "63561462-8caa-57c9-bca8-bf7996a9f7ed",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-05-13",
+      "batch_id": "f90a156d-5299-5785-a303-18e2b475a034",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-05-14",
+      "batch_id": "ecad8952-eb2a-54bd-83a7-e8d89046a33e",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-05-15",
+      "batch_id": "24ce6350-1851-5ec8-bb95-1c98a4c79b2c",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-05-16",
+      "batch_id": "2cf46b45-bd48-52a9-b9db-1562b32c27d1",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-05-17",
+      "batch_id": "269cf6b9-2171-5ed8-8e1c-65a99977ad2e",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-05-18",
+      "batch_id": "b15079e8-70bc-523d-8552-4df5df731a9c",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-05-19",
+      "batch_id": "2679f263-c56c-5118-873c-d660b54fcc15",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-05-20",
+      "batch_id": "7d0564d3-fd3b-5c98-8a21-c8bd5285f912",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-05-21",
+      "batch_id": "49b8c7cc-2d98-5068-a51c-738770c02538",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-05-22",
+      "batch_id": "3db4d9b6-8325-5fdf-9549-1e3838adc6c4",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-05-23",
+      "batch_id": "c1138c1b-58af-506d-9c23-d01ea993126f",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-05-24",
+      "batch_id": "2949b85d-f8f7-5661-847f-8de72c935406",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-05-25",
+      "batch_id": "042eb456-e7e8-5af6-a28e-24fb8bf302b5",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-05-26",
+      "batch_id": "64a05dd7-2c51-53b1-80d2-310a34db5833",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-05-27",
+      "batch_id": "d681e388-e59e-5ad5-b6a7-8059960f3f2e",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-05-28",
+      "batch_id": "a98fd4fd-efc6-5cbd-a176-f1f7c78eee80",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-05-29",
+      "batch_id": "d7592d7e-ec43-5da3-9a8c-723e3f923f56",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-05-30",
+      "batch_id": "698b825d-4d18-5465-9cf9-ed7e021ff190",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-05-31",
+      "batch_id": "9ed4b393-ef79-5a61-8a88-9e1323759acd",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-06-01",
+      "batch_id": "4a4c3d45-d515-59ec-8293-01f7b52e62ed",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-06-02",
+      "batch_id": "2e374240-1b69-5d70-8854-8a887208fc21",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-06-03",
+      "batch_id": "d252e1e9-4d06-51ce-8939-8524d3d13698",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-06-04",
+      "batch_id": "83c26d77-2dbf-55c6-a2d6-99ee2abea83b",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-06-05",
+      "batch_id": "60b8df4d-3a87-558b-bf69-f5c8118e2aff",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-06-06",
+      "batch_id": "f65e73fd-4dfb-56c5-8a3c-014acca87c46",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-06-07",
+      "batch_id": "324d29df-ccd6-5094-965b-7a6318d6aa55",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-06-08",
+      "batch_id": "1984b3f8-79f7-5300-b7e7-f81881620773",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-06-09",
+      "batch_id": "9508e536-3d02-5913-b714-350d0e057a2e",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-06-10",
+      "batch_id": "3fe3e1bc-fdc2-51c9-bd2c-814ee8fea996",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-06-11",
+      "batch_id": "3d4f954f-8b13-55e5-90af-8f1a5ec9aeab",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-06-12",
+      "batch_id": "d865b9a8-7fcd-5cf4-b083-db508430bd20",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-06-13",
+      "batch_id": "3ae3ad6d-c65e-5faf-a325-2148076c8742",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-06-14",
+      "batch_id": "7591ac2e-be49-5266-b46d-daf6d1cb3532",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-06-15",
+      "batch_id": "fa093312-6b70-509e-a03b-5d590209a9ca",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-06-16",
+      "batch_id": "1f086607-f9fc-55c0-8420-9c3383acf879",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-06-17",
+      "batch_id": "26b15ef1-7952-58e3-979c-db6ce42646ab",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-06-18",
+      "batch_id": "41a3a5a1-6846-52c4-b324-c8261cb023df",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-06-19",
+      "batch_id": "b0caa070-5bfa-590f-9730-a75e5d9e08bd",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-06-20",
+      "batch_id": "3ac85d53-3bf2-579c-98cc-ee929c82eb46",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-06-21",
+      "batch_id": "aaaa08b9-a318-55d6-9e7b-0581fcf8f17e",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-06-22",
+      "batch_id": "df3ae722-62bf-5c45-b906-da9da9f9a610",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-06-23",
+      "batch_id": "c366e401-4ac6-59d7-928a-755aa30eed06",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-06-24",
+      "batch_id": "f1ecf2c7-02ea-5b9c-8fef-e6bd22f62341",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-06-25",
+      "batch_id": "8f0061c0-6da3-522a-8b68-dee3cad0d2ee",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-06-26",
+      "batch_id": "2858fae3-22f2-569e-843e-c45e6d25fdfe",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-06-27",
+      "batch_id": "d3edf231-7b22-5312-830f-ec56d255f6af",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-06-28",
+      "batch_id": "6c8905dd-a35f-5fca-86c4-78b2647230e2",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-06-29",
+      "batch_id": "52354fd5-e0d7-5eeb-b4e2-d16625acf283",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-06-30",
+      "batch_id": "ae117e78-0bdc-51aa-9fbf-17ce265d3375",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-07-01",
+      "batch_id": "f0a08b90-86ff-5926-8daf-9713c9e81488",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-07-02",
+      "batch_id": "617ff4d5-df40-5b6b-bf7c-1c0e6ac1a88a",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-07-03",
+      "batch_id": "03573b67-71c7-5e38-902a-ab322d4048a5",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-07-04",
+      "batch_id": "6ef01ea3-d8cc-5aec-90d3-c33b5c5b6f1e",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-07-05",
+      "batch_id": "0c710294-b69e-5faa-8aec-814ed26c69f3",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-07-06",
+      "batch_id": "edbf2477-d1ae-5ccc-8982-14d6e2191fe7",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-07-07",
+      "batch_id": "ff9036af-ffe5-5f71-b094-ea443702160f",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-07-08",
+      "batch_id": "84f97c82-be12-5c7b-84eb-68008ad99825",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-07-09",
+      "batch_id": "f7b57818-18ad-5d1b-94b2-49165f50329d",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-07-10",
+      "batch_id": "5a36a954-a849-57c5-b5e5-2d711b10eab8",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-07-11",
+      "batch_id": "98be7628-6a35-59ba-b939-730176771122",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-07-12",
+      "batch_id": "5ad4750e-7eef-5bd7-af09-acc6d8e82b8e",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-07-13",
+      "batch_id": "eae9e447-f813-5e4a-b9f9-999255dcc00e",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-07-14",
+      "batch_id": "f82a414a-1db1-55c6-a53f-bc98cbdb733f",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-07-15",
+      "batch_id": "b3fe0416-05c0-5c84-8f36-a69b760d72cc",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-07-16",
+      "batch_id": "d7a40075-3c97-5008-96d5-ba88d7665aa4",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-07-17",
+      "batch_id": "b2fe0e27-86bd-5a0c-b139-b39ec28cb176",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-07-18",
+      "batch_id": "08bd04c0-f6ce-50ae-abad-eba5e0c2df6d",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-07-19",
+      "batch_id": "f0b8ec68-db12-583f-a056-1bc1a2c361e4",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-07-20",
+      "batch_id": "8c948846-8fa8-5187-b923-292e68ed5e2e",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-07-21",
+      "batch_id": "d81fed83-740d-5e36-9a8e-eb7bc2dbe594",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-07-22",
+      "batch_id": "99dc209d-e67f-50ba-bfa0-0938fd133747",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-07-23",
+      "batch_id": "4ea35d52-b162-59c8-8f03-fda57d5f07a3",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-07-24",
+      "batch_id": "a1a429e3-52cb-5b26-b30e-89ad64b305fa",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-07-25",
+      "batch_id": "2402facb-0594-5333-96ea-84a8d788f83a",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-07-26",
+      "batch_id": "b5550fa6-f28d-58bb-b904-8471840ac624",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-07-27",
+      "batch_id": "50574c0d-7f26-5bc7-98bd-bbf1233a1bd5",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-07-28",
+      "batch_id": "c093d780-bfa1-5b7a-a063-a9aed2f467a5",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-07-29",
+      "batch_id": "af66c7a5-005d-5a17-9456-829f6969a96d",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-07-30",
+      "batch_id": "ccc62e54-ec06-5130-b9c8-3f1ae2283f87",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-07-31",
+      "batch_id": "a3095715-0977-5b3b-a221-032930123b8a",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-08-01",
+      "batch_id": "f5f9a1a5-f8d8-53b7-8fe9-4288d06d6c13",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-08-02",
+      "batch_id": "a1cc4438-5f35-51f7-aefd-21f3989a915a",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-08-03",
+      "batch_id": "e80047fb-4b1f-54ee-91b9-788002a6309a",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-08-04",
+      "batch_id": "5ddcfe92-abb7-5bf9-8fbd-313999086d3a",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-08-05",
+      "batch_id": "2fc01b8d-8e5c-5a2c-8cd5-9ae8315488a1",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-08-06",
+      "batch_id": "c26656b6-e102-564e-8a6a-bc197633bc43",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-08-07",
+      "batch_id": "eb315c17-f521-555c-8b7b-39d029d96bb5",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-08-08",
+      "batch_id": "3b21b048-d98e-5c2a-a372-55520b683a4e",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-08-09",
+      "batch_id": "72c8dfc9-0e29-55a4-b0d4-769da87f2573",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-08-10",
+      "batch_id": "1e72ab64-9cff-5c56-bbba-624f418ce5c0",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-08-11",
+      "batch_id": "97e1a17b-1f2b-51c6-949c-577c9a7d3e68",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-08-12",
+      "batch_id": "fdcca5e1-e4f2-5ce0-b578-354a1e46f03d",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-08-13",
+      "batch_id": "183a4402-d75f-5a48-8584-3fbf17c8c9da",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-08-14",
+      "batch_id": "c970d9c8-1844-565a-820a-fcb5e6e2b41c",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-08-15",
+      "batch_id": "c6c71e26-6d03-53ea-889b-432b959647ba",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-08-16",
+      "batch_id": "6ac3010d-fa1f-5e13-b77a-c8922a166602",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-08-17",
+      "batch_id": "923076b6-45c0-5a08-a621-e93adfca9b49",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-08-18",
+      "batch_id": "c43b80ba-5ba8-53e6-89b4-4d2d8b468a3c",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-08-19",
+      "batch_id": "5fb885d8-de42-5c0b-a01a-465bef0c0a96",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-08-20",
+      "batch_id": "f6ae183a-61b9-5074-9626-67a6c7c4e57d",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-08-21",
+      "batch_id": "4b269575-f4af-554e-b994-6ce70460a45a",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-08-22",
+      "batch_id": "849a25c5-257b-5c47-aa6d-383d06068b7d",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-08-23",
+      "batch_id": "0d546d3f-6006-583e-9f95-18430658e52e",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-08-24",
+      "batch_id": "bcfa16b6-d726-5d4a-a90e-f7b5ffe9fbf7",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-08-25",
+      "batch_id": "34df75b4-ce4c-5678-85c6-95b6ea5cd000",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-08-26",
+      "batch_id": "3b46f77c-b9f7-5b47-90a0-8ce15b260e48",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-08-27",
+      "batch_id": "b149d6cd-c3e2-5511-9334-d41096a780c2",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-08-28",
+      "batch_id": "138e9c8d-44ae-52cd-89d9-c67ac1818d22",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-08-29",
+      "batch_id": "cf60604e-d01c-51f1-afe8-6468b328d38e",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-08-30",
+      "batch_id": "a414a4b3-ce1f-5257-a8b9-81fe45ea618e",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-08-31",
+      "batch_id": "013ca7e1-fb1e-51ad-be25-0660db119bb8",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-09-01",
+      "batch_id": "2fdd96da-0a9c-5936-a150-affb31126b80",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-09-02",
+      "batch_id": "e3e6c70f-7af5-5783-a627-cc819fc24811",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-09-03",
+      "batch_id": "c9e65e69-fe8c-5455-bd62-457a2799c1f4",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-09-04",
+      "batch_id": "7daf45a2-55d9-5bf3-b4be-e433889a69d9",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-09-05",
+      "batch_id": "9e4adff4-02c9-5281-a534-9dcdac83d080",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-09-06",
+      "batch_id": "b1fcced3-6ea9-5b5c-9fb3-f6786e86ea41",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-09-07",
+      "batch_id": "bd23ce60-cfb7-52d2-b314-766d292883e1",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-09-08",
+      "batch_id": "55bb3e76-0c16-5c6b-911c-f44ac8c4e81e",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-09-09",
+      "batch_id": "289cf2e9-ead8-5059-8439-792b9bee56c1",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-09-10",
+      "batch_id": "d76846f3-8476-50c4-aef1-ed3c9c12e22c",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-09-11",
+      "batch_id": "c2176ddd-9abf-59f2-8ce3-0ae37d5f6cec",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-09-12",
+      "batch_id": "00437821-14bc-5159-9087-67b63bd93478",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-09-13",
+      "batch_id": "5fae5583-6102-5dd9-a8d4-f69b114d32ee",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-09-14",
+      "batch_id": "d40b4857-6ca4-5b4f-9531-6652a5917861",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-09-15",
+      "batch_id": "e434d7b7-2a65-5be5-b496-e5aae61207f0",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-09-16",
+      "batch_id": "1d978c14-f5bd-55b4-b156-28d9dd045422",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-09-17",
+      "batch_id": "a266eb32-5b61-5518-b51c-14ca7dd40799",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-09-18",
+      "batch_id": "948aac6b-3fa4-5a67-adb0-d0f482f38a1c",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-09-19",
+      "batch_id": "77b69b6d-7820-594f-bd79-6efc6e969cb6",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-09-20",
+      "batch_id": "d39ae867-6537-59a3-a8ef-23457e8307fe",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-09-21",
+      "batch_id": "b73f924a-ee9a-5648-bcc9-50b802daf96d",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-09-22",
+      "batch_id": "98d294d4-1af6-5958-b28e-8bfa5403cc61",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-09-23",
+      "batch_id": "e534c219-615b-5448-8c39-b4f36e496f94",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-09-24",
+      "batch_id": "c027e0fa-643c-59f4-9d4f-9fbca34880ce",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-09-25",
+      "batch_id": "0d6d5104-f159-5b47-839d-1239e44e925e",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-09-26",
+      "batch_id": "0368deea-65f4-5575-bebf-216860fe7b15",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-09-27",
+      "batch_id": "af31f638-480e-500e-acc5-9eab68de25c2",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-09-28",
+      "batch_id": "4b5676c0-2a5e-519a-9740-38a63ba402ff",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-09-29",
+      "batch_id": "12c8ed10-c5d0-5578-aef0-48ffd3258597",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-09-30",
+      "batch_id": "49aeb347-c832-51ca-9b0b-0a703301ced8",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-10-01",
+      "batch_id": "6b6c6fe0-3354-52a4-9ca3-686f2d175f7a",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-10-02",
+      "batch_id": "f08f7bbd-4311-512e-88ee-4444a854adcf",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-10-03",
+      "batch_id": "4762c55c-4043-5915-b5ba-e6834b41ad25",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-10-04",
+      "batch_id": "75aaa8d9-8b7e-5877-bafd-80c52fa6ad8c",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-10-05",
+      "batch_id": "3c055fd5-ac9e-5bef-91b5-fb749043cfda",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-10-06",
+      "batch_id": "b1683659-a300-5e4c-8ebd-96b92e821443",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-10-07",
+      "batch_id": "3fabadb0-1842-59cc-a663-e2334c25a2e9",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-10-08",
+      "batch_id": "c248bab7-1b65-5968-892c-da4e6aa3114e",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-10-09",
+      "batch_id": "7d996cf9-4627-5258-ab04-b0a928186ddd",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-10-10",
+      "batch_id": "551c79c5-04a3-527a-a659-a0e12bda39c5",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-10-11",
+      "batch_id": "700ebaa5-1edd-5123-8294-f0f29d26cba3",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-10-12",
+      "batch_id": "2e4ca2fc-7feb-542f-878e-8bdf360dc0cd",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-10-13",
+      "batch_id": "8340c920-a082-5e79-8efc-9e2684d3c151",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-10-14",
+      "batch_id": "11bc9916-ebb4-5a11-9ebe-fa6a402a82ab",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-10-15",
+      "batch_id": "c29cbe8c-a876-53f8-8f95-137bbd4fb405",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-10-16",
+      "batch_id": "cbdc2159-d7ad-592e-ac7e-f4f5c896e74d",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-10-17",
+      "batch_id": "0a722295-8265-5abe-ad1a-7ad1f9de3c8f",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-10-18",
+      "batch_id": "5d90a361-4ed1-571f-867d-24b0defa99c9",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-10-19",
+      "batch_id": "7bcd017d-bf0d-5740-a4c2-98932e0f42b7",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-10-20",
+      "batch_id": "cccd41f2-7e9e-539b-a5aa-359d11428c98",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-10-21",
+      "batch_id": "2be243ab-d7d8-518c-9dcd-5c93ff497b27",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-10-22",
+      "batch_id": "1ea93f28-a842-52d0-a7ed-f5ba4d7ef054",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-10-23",
+      "batch_id": "d79a8787-54d5-5108-8efe-0e6be37feb90",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-10-24",
+      "batch_id": "6a113818-a909-59e6-b61b-5bca965bbe59",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-10-25",
+      "batch_id": "a403bbd5-0860-51d6-8676-eca5e880f0e1",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-10-26",
+      "batch_id": "0a76ade1-b0c7-5e2c-b91a-819227834ef0",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-10-27",
+      "batch_id": "029d4ba2-18ee-5f57-a869-b5e73a051844",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-10-28",
+      "batch_id": "0cf12ff9-a82c-5227-9ac0-5da661eb63ae",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-10-29",
+      "batch_id": "0bfa2de1-7cc6-50b3-9f2d-318236f5fbad",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-10-30",
+      "batch_id": "be6bfb9e-6115-557a-bff7-5b3e63ef760d",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-10-31",
+      "batch_id": "8b959b9e-8018-5b43-9a03-d77336419228",
+      "coverage_complete": true
+    },
+    {
+      "date": "2025-11-01",
+      "batch_id": "767e70fb-a7ab-5f6e-adf7-1b64e92539e8",
+      "coverage_complete": true
+    }
+  ],
+  "database": {
+    "source_asset_id": "028ab5fc-8b1c-5efe-86c1-6a7593a5b583",
+    "region_id": "7f3d9687-4935-4e17-83ee-42a40ce1dd0a",
+    "inserted_observations_total": 1909,
+    "inserted_observations_this_run": 1909,
+    "revision_snapshots_total": 1909,
+    "reused": false,
+    "chunk_rows": 1000
+  },
+  "member_4_handoff": {
+    "labels": "not_created",
+    "positive_count": null,
+    "negative_count": null,
+    "weather_and_baseline_history": "separate Phase 3 work required",
+    "training_readiness": "not_ready_without_labels_and_independent_event_review",
+    "frozen_run_input_policy": "firms-selection-v1",
+    "observation_history_complete": true
+  }
+}

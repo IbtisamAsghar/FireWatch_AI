@@ -1,0 +1,75 @@
+[
+  {
+    "job_id": "eae339a7-b9ef-44f4-96f9-8e786030232b",
+    "run_id": "db292694-80fa-54c5-8daf-aa209f0a820d",
+    "scenario_id": "norcal-ready-active-v1",
+    "mode": "replay",
+    "status": "completed",
+    "as_of": "2024-07-25T22:00:00+00:00",
+    "processed_at": "2026-10-24T14:00:05.447770+00:00",
+    "feature_hashes": [
+      "72e216f1f75e056f01d0ae95527da62cbb7db20a3139be3a010b6edeb20c63cf",
+      "7605bb9f70122190413ae354b8ef45f7a40b0723280d0c1ea8420e3bd57bf3df",
+      "9d72590bd47faf283b4b9266078368b02e263fbf6fee72a0d18a0cfd12014b58",
+      "8c7acb108731e6c3ee65cfa7045487ed7219a01a0fda0eba33238d379745a2df",
+      "3a56a1ac63655fa4c0f4a3ce7b95b0839405bc1594877985a13540d3421c20ed",
+      "0d518832dcf66fe6d362f29718ee062b93d20a60d6882802af6f59fee77d2003"
+    ],
+    "priority_scores": [
+      11.86,
+      1122.61,
+      6.77,
+      1564.68,
+      10.69,
+      23.9
+    ],
+    "priorities": [
+      "MEDIUM",
+      "CRITICAL",
+      "LOW",
+      "CRITICAL",
+      "MEDIUM",
+      "MEDIUM"
+    ],
+    "scored_at": [
+      "2026-10-24T14:00:05.280525+00:00",
+      "2026-10-24T14:00:05.280525+00:00",
+      "2026-10-24T14:00:05.280525+00:00",
+      "2026-10-24T14:00:05.280525+00:00",
+      "2026-10-24T14:00:05.280525+00:00",
+      "2026-10-24T14:00:05.280525+00:00"
+    ],
+    "completeness": "partial",
+    "coverage_warnings": [
+      "climate_baseline_missing",
+      "members_outside_centroid_radius",
+      "rainfall_deficit_24h_mm_missing",
+      "rainfall_deficit_missing",
+      "temperature_departure_c_missing",
+      "temperature_departure_missing"
+    ],
+    "alerts": 2,
+    "data_kind": "real",
+    "scenario_kind": "active",
+    "bundle_sha256": "3135cce435703ff9a04960f7e50c8c45aebc87715ac01093a25608f18538746a"
+  },
+  {
+    "job_id": "f71dfbbd-3867-421b-9ec3-89fda50f650f",
+    "run_id": "2372cf3c-770a-5e25-b2eb-04c5d9a0b64a",
+    "scenario_id": "norcal-ready-quiet-v1",
+    "mode": "replay",
+    "status": "completed",
+    "as_of": "2024-05-06T12:00:00+00:00",
+    "processed_at": "2026-10-24T14:00:05.653464+00:00",
+    "feature_hashes": [],
+    "priority_scores": [],
+    "priorities": [],
+    "scored_at": [],
+    "completeness": "complete",
+    "coverage_warnings": [],
+    "alerts": 0,
+    "data_kind": "real",
+    "scenario_kind": "quiet",
+    "bundle_sha256": "d0c9c66cc71c6e4b92d03071238493c93c7d56988b36cbd049796e1931893dc4"
+  }
+]

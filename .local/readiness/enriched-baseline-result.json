@@ -1,0 +1,49 @@
+{
+  "job_id": "8ef5cc93-c223-4b80-9ffc-642de68d1ade",
+  "run_id": "63c1b8df-4f31-544d-9691-16f8ef39f9bf",
+  "scenario_id": "norcal-weather-climate-v1",
+  "mode": "replay",
+  "status": "completed",
+  "as_of": "2024-07-26T00:00:00+00:00",
+  "processed_at": "2026-10-24T17:07:25.001713+00:00",
+  "feature_hashes": [
+    "b6a0da795428b4b95bbdc0ef228f43fe7d65d0a9a8dfbcf7f327b559279adea5",
+    "76b61aabe87cbbd5ffcc21c29963b3845ec1ebe30425e0c097df5b257c05e278",
+    "3e74b9e6a7b371086572ef9c888238ccd500a663445171bb5277a9b972da7480",
+    "165d54d01cc791b2d01789406a077bae2ee5ac07c10c10d7372e4f042aa8b649",
+    "a1de8da4b213d891830bd28ea0bd6feebe1597d5bacc3a01da2be30cac0e0d8d",
+    "2e32a8ecf305459259e30e88354fc0680580cdb33c80e847476b5f0cae43e3f8"
+  ],
+  "priority_scores": [
+    23.9,
+    10.69,
+    6.77,
+    11.86,
+    1564.68,
+    1122.61
+  ],
+  "priorities": [
+    "MEDIUM",
+    "MEDIUM",
+    "LOW",
+    "MEDIUM",
+    "CRITICAL",
+    "CRITICAL"
+  ],
+  "scored_at": [
+    "2026-10-24T17:07:24.868713+00:00",
+    "2026-10-24T17:07:24.868713+00:00",
+    "2026-10-24T17:07:24.868713+00:00",
+    "2026-10-24T17:07:24.868713+00:00",
+    "2026-10-24T17:07:24.868713+00:00",
+    "2026-10-24T17:07:24.868713+00:00"
+  ],
+  "completeness": "partial",
+  "coverage_warnings": [
+    "members_outside_centroid_radius"
+  ],
+  "alerts": 2,
+  "data_kind": "real",
+  "scenario_kind": "active",
+  "bundle_sha256": "1d70b030ac34a843a0ed8b2aed0e9f45296365005c09655d1f2904b1443cfeb4"
+}

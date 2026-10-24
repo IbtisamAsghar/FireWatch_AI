@@ -1,0 +1,1151 @@
+{
+  "examples": {
+    "empty_completed_run": {
+      "method": "GET",
+      "path": "/api/v1/hotspots?run_id=6bdceece-3b3b-5fb3-9049-9703c4219fa1",
+      "response": {
+        "as_of": "2025-06-10T12:00:00Z",
+        "data_completeness": "complete",
+        "freshness": {
+          "completed_at": "2025-06-10T12:02:00Z",
+          "evaluated_at": "2025-06-11T12:03:00Z",
+          "latest_detection_at": null,
+          "latest_retrieved_at": null,
+          "latest_scored_at": null,
+          "latest_weather_valid_at": null,
+          "observation_age_hours": null,
+          "observations_stale": null,
+          "quality_flags": [
+            "weather_freshness_unavailable",
+            "no_snapshot_observations"
+          ],
+          "reference_kind": "historical_cutoff",
+          "reference_time": "2025-06-10T12:00:00Z",
+          "weather_age_hours": null,
+          "weather_stale": null
+        },
+        "items": [],
+        "limit": 50,
+        "mode": "replay",
+        "offset": 0,
+        "research_notice": "Research and decision-support prototype only. Satellite thermal anomalies and model priority scores can be wrong or incomplete. Do not use FireWatch AI for emergency response, preservation of life, or protection of property. Confirm important events with official authorities and operational fire services.",
+        "run_id": "6bdceece-3b3b-5fb3-9049-9703c4219fa1",
+        "schema_version": "api-v1",
+        "total": 0
+      },
+      "status": 200
+    },
+    "get_alert": {
+      "method": "GET",
+      "path": "/api/v1/alerts/c877bd15-2f51-5ebe-b0d8-f707f4919a15",
+      "response": {
+        "alert_id": "c877bd15-2f51-5ebe-b0d8-f707f4919a15",
+        "as_of": "2025-06-11T12:00:00Z",
+        "created_at": "2025-06-11T12:01:00Z",
+        "data_completeness": "complete",
+        "evidence_schema_version": "evidence-v1",
+        "freshness": {
+          "completed_at": "2025-06-11T12:02:00Z",
+          "evaluated_at": "2025-06-11T12:03:00Z",
+          "latest_detection_at": "2025-06-11T11:00:00Z",
+          "latest_retrieved_at": "2025-06-11T12:00:00Z",
+          "latest_scored_at": "2025-06-11T12:01:00Z",
+          "latest_weather_valid_at": "2025-06-11T10:00:00Z",
+          "observation_age_hours": 1.05,
+          "observations_stale": false,
+          "quality_flags": [],
+          "reference_kind": "current_time",
+          "reference_time": "2025-06-11T12:03:00Z",
+          "weather_age_hours": 2.05,
+          "weather_stale": false
+        },
+        "mode": "live",
+        "original_hash": "0c67b2b826f81d1d4f5860d60967872753053f3be13a43b9e6a79494ab225083",
+        "payload": {
+          "fixture": "synthetic-demo-v1",
+          "frp_mw": 42.0,
+          "notice": "Invented software acceptance fixtures. No real fire observations or trained predictions.",
+          "run_id": "a7c0e61b-b5b7-5450-baa3-94e0a5ff38a0",
+          "snapshot_id": "bd90ec0b-6eb3-5081-a831-14f642bca0ab",
+          "synthetic": true
+        },
+        "payload_redacted": false,
+        "payload_representation": "public_projection",
+        "research_notice": "Research and decision-support prototype only. Satellite thermal anomalies and model priority scores can be wrong or incomplete. Do not use FireWatch AI for emergency response, preservation of life, or protection of property. Confirm important events with official authorities and operational fire services.",
+        "run_id": "a7c0e61b-b5b7-5450-baa3-94e0a5ff38a0",
+        "schema_version": "api-v1",
+        "score_id": "0cb4a2f3-3cb5-53d0-90e2-336e5646b372",
+        "snapshot_id": "bd90ec0b-6eb3-5081-a831-14f642bca0ab",
+        "verification": {
+          "alert_id": "c877bd15-2f51-5ebe-b0d8-f707f4919a15",
+          "anchor_status": "unanchored",
+          "anchors": [],
+          "artifact_audit": {
+            "items": [],
+            "reason": "not_requested",
+            "scope": "referenced_local_files",
+            "status": "not_performed"
+          },
+          "artifact_verification": "not_performed",
+          "as_of": "2025-06-11T12:00:00Z",
+          "computed_hash": "0c67b2b826f81d1d4f5860d60967872753053f3be13a43b9e6a79494ab225083",
+          "data_completeness": "complete",
+          "freshness": {
+            "completed_at": "2025-06-11T12:02:00Z",
+            "evaluated_at": "2025-06-11T12:03:00Z",
+            "latest_detection_at": "2025-06-11T11:00:00Z",
+            "latest_retrieved_at": "2025-06-11T12:00:00Z",
+            "latest_scored_at": "2025-06-11T12:01:00Z",
+            "latest_weather_valid_at": "2025-06-11T10:00:00Z",
+            "observation_age_hours": 1.05,
+            "observations_stale": false,
+            "quality_flags": [],
+            "reference_kind": "current_time",
+            "reference_time": "2025-06-11T12:03:00Z",
+            "weather_age_hours": 2.05,
+            "weather_stale": false
+          },
+          "integrity_notice": "Local hashes detect changes relative to the saved digest; an attacker controlling both can rewrite both. A matching independently anchored digest supplies a separate comparison point. Local-chain anchoring is a demonstration, not independent public notarization. Integrity does not prove a fire is real or a model is correct. Artifact checks cover referenced local file bytes, not scientific validity or approval.",
+          "local_status": "local_match",
+          "mode": "live",
+          "original_hash": "0c67b2b826f81d1d4f5860d60967872753053f3be13a43b9e6a79494ab225083",
+          "research_notice": "Research and decision-support prototype only. Satellite thermal anomalies and model priority scores can be wrong or incomplete. Do not use FireWatch AI for emergency response, preservation of life, or protection of property. Confirm important events with official authorities and operational fire services.",
+          "run_id": "a7c0e61b-b5b7-5450-baa3-94e0a5ff38a0",
+          "schema_version": "api-v1"
+        }
+      },
+      "status": 200
+    },
+    "get_current_model": {
+      "method": "GET",
+      "path": "/api/v1/models/current",
+      "response": {
+        "artifact_ready": true,
+        "artifact_required": false,
+        "feature_version": "features-v1",
+        "limitations": [
+          "Satellite-observed strengthening is a research proxy, not physical fire severity.",
+          "Priority categories remain provisional; approval does not establish physical severity."
+        ],
+        "model_id": null,
+        "probability_supported": false,
+        "research_notice": "Research and decision-support prototype only. Satellite thermal anomalies and model priority scores can be wrong or incomplete. Do not use FireWatch AI for emergency response, preservation of life, or protection of property. Confirm important events with official authorities and operational fire services.",
+        "schema_version": "api-v1",
+        "score_kind": "baseline",
+        "scorer_version": "baseline-v1",
+        "scoring_available": true,
+        "status": "ready"
+      },
+      "status": 200
+    },
+    "get_hotspot": {
+      "method": "GET",
+      "path": "/api/v1/hotspots/bd90ec0b-6eb3-5081-a831-14f642bca0ab",
+      "response": {
+        "algorithm_version": "synthetic-demo-v1",
+        "as_of": "2025-06-11T12:00:00Z",
+        "data_completeness": "complete",
+        "evidence": {
+          "alert_id": "c877bd15-2f51-5ebe-b0d8-f707f4919a15",
+          "as_of": "2025-06-11T12:00:00Z",
+          "created_at": "2025-06-11T12:01:00Z",
+          "data_completeness": "complete",
+          "evidence_schema_version": "evidence-v1",
+          "freshness": {
+            "completed_at": "2025-06-11T12:02:00Z",
+            "evaluated_at": "2025-06-11T12:03:00Z",
+            "latest_detection_at": "2025-06-11T11:00:00Z",
+            "latest_retrieved_at": "2025-06-11T12:00:00Z",
+            "latest_scored_at": "2025-06-11T12:01:00Z",
+            "latest_weather_valid_at": "2025-06-11T10:00:00Z",
+            "observation_age_hours": 1.05,
+            "observations_stale": false,
+            "quality_flags": [],
+            "reference_kind": "current_time",
+            "reference_time": "2025-06-11T12:03:00Z",
+            "weather_age_hours": 2.05,
+            "weather_stale": false
+          },
+          "mode": "live",
+          "original_hash": "0c67b2b826f81d1d4f5860d60967872753053f3be13a43b9e6a79494ab225083",
+          "payload": {
+            "fixture": "synthetic-demo-v1",
+            "frp_mw": 42.0,
+            "notice": "Invented software acceptance fixtures. No real fire observations or trained predictions.",
+            "run_id": "a7c0e61b-b5b7-5450-baa3-94e0a5ff38a0",
+            "snapshot_id": "bd90ec0b-6eb3-5081-a831-14f642bca0ab",
+            "synthetic": true
+          },
+          "payload_redacted": false,
+          "payload_representation": "public_projection",
+          "research_notice": "Research and decision-support prototype only. Satellite thermal anomalies and model priority scores can be wrong or incomplete. Do not use FireWatch AI for emergency response, preservation of life, or protection of property. Confirm important events with official authorities and operational fire services.",
+          "run_id": "a7c0e61b-b5b7-5450-baa3-94e0a5ff38a0",
+          "schema_version": "api-v1",
+          "score_id": "0cb4a2f3-3cb5-53d0-90e2-336e5646b372",
+          "snapshot_id": "bd90ec0b-6eb3-5081-a831-14f642bca0ab",
+          "verification": {
+            "alert_id": "c877bd15-2f51-5ebe-b0d8-f707f4919a15",
+            "anchor_status": "unanchored",
+            "anchors": [],
+            "artifact_audit": {
+              "items": [],
+              "reason": "not_requested",
+              "scope": "referenced_local_files",
+              "status": "not_performed"
+            },
+            "artifact_verification": "not_performed",
+            "as_of": "2025-06-11T12:00:00Z",
+            "computed_hash": "0c67b2b826f81d1d4f5860d60967872753053f3be13a43b9e6a79494ab225083",
+            "data_completeness": "complete",
+            "freshness": {
+              "completed_at": "2025-06-11T12:02:00Z",
+              "evaluated_at": "2025-06-11T12:03:00Z",
+              "latest_detection_at": "2025-06-11T11:00:00Z",
+              "latest_retrieved_at": "2025-06-11T12:00:00Z",
+              "latest_scored_at": "2025-06-11T12:01:00Z",
+              "latest_weather_valid_at": "2025-06-11T10:00:00Z",
+              "observation_age_hours": 1.05,
+              "observations_stale": false,
+              "quality_flags": [],
+              "reference_kind": "current_time",
+              "reference_time": "2025-06-11T12:03:00Z",
+              "weather_age_hours": 2.05,
+              "weather_stale": false
+            },
+            "integrity_notice": "Local hashes detect changes relative to the saved digest; an attacker controlling both can rewrite both. A matching independently anchored digest supplies a separate comparison point. Local-chain anchoring is a demonstration, not independent public notarization. Integrity does not prove a fire is real or a model is correct. Artifact checks cover referenced local file bytes, not scientific validity or approval.",
+            "local_status": "local_match",
+            "mode": "live",
+            "original_hash": "0c67b2b826f81d1d4f5860d60967872753053f3be13a43b9e6a79494ab225083",
+            "research_notice": "Research and decision-support prototype only. Satellite thermal anomalies and model priority scores can be wrong or incomplete. Do not use FireWatch AI for emergency response, preservation of life, or protection of property. Confirm important events with official authorities and operational fire services.",
+            "run_id": "a7c0e61b-b5b7-5450-baa3-94e0a5ff38a0",
+            "schema_version": "api-v1"
+          }
+        },
+        "explanation": {
+          "reasons": [
+            "Invented software acceptance fixtures. No real fire observations or trained predictions."
+          ],
+          "synthetic": true
+        },
+        "feature_hash": "307ea8c50db895bdd031109b8f27d899f7898c08ca9f2791b41089fc82a61e8c",
+        "features": {
+          "frp_max_mw": 42.0,
+          "temperature_c": 32.0,
+          "wind_ms": 5.0
+        },
+        "freshness": {
+          "completed_at": "2025-06-11T12:02:00Z",
+          "evaluated_at": "2025-06-11T12:03:00Z",
+          "latest_detection_at": "2025-06-11T11:00:00Z",
+          "latest_retrieved_at": "2025-06-11T12:00:00Z",
+          "latest_scored_at": "2025-06-11T12:01:00Z",
+          "latest_weather_valid_at": "2025-06-11T10:00:00Z",
+          "observation_age_hours": 1.05,
+          "observations_stale": false,
+          "quality_flags": [],
+          "reference_kind": "current_time",
+          "reference_time": "2025-06-11T12:03:00Z",
+          "weather_age_hours": 2.05,
+          "weather_stale": false
+        },
+        "hotspot": {
+          "alert_id": "c877bd15-2f51-5ebe-b0d8-f707f4919a15",
+          "escalation_probability": null,
+          "feature_version": "features-v1",
+          "frp_max_mw": 42.0,
+          "frp_sum_mw": 42.0,
+          "latest_detection_at": "2025-06-11T11:00:00Z",
+          "latitude": 34.0,
+          "longitude": 71.0,
+          "member_count": 1,
+          "priority": "CRITICAL",
+          "priority_score": 0.95,
+          "quality_flags": [
+            "synthetic_fixture"
+          ],
+          "reasons": [
+            "Invented software acceptance fixtures. No real fire observations or trained predictions."
+          ],
+          "score_kind": "baseline",
+          "scored_at": "2025-06-11T12:01:00Z",
+          "scorer_version": "baseline-v1",
+          "snapshot_id": "bd90ec0b-6eb3-5081-a831-14f642bca0ab"
+        },
+        "missing_flags": {
+          "frp_max_mw": false,
+          "temperature_c": false,
+          "wind_ms": false
+        },
+        "mode": "live",
+        "research_notice": "Research and decision-support prototype only. Satellite thermal anomalies and model priority scores can be wrong or incomplete. Do not use FireWatch AI for emergency response, preservation of life, or protection of property. Confirm important events with official authorities and operational fire services.",
+        "run_id": "a7c0e61b-b5b7-5450-baa3-94e0a5ff38a0",
+        "schema_version": "api-v1",
+        "units": {
+          "frp_max_mw": "MW",
+          "temperature_c": "degC",
+          "wind_ms": "m/s"
+        }
+      },
+      "status": 200
+    },
+    "get_hotspots_geojson": {
+      "method": "GET",
+      "path": "/api/v1/hotspots.geojson?run_id=a7c0e61b-b5b7-5450-baa3-94e0a5ff38a0",
+      "response": {
+        "as_of": "2025-06-11T12:00:00Z",
+        "data_completeness": "complete",
+        "features": [
+          {
+            "geometry": {
+              "coordinates": [
+                71.0,
+                34.0
+              ],
+              "type": "Point"
+            },
+            "id": "bd90ec0b-6eb3-5081-a831-14f642bca0ab",
+            "properties": {
+              "alert_id": "c877bd15-2f51-5ebe-b0d8-f707f4919a15",
+              "escalation_probability": null,
+              "feature_version": "features-v1",
+              "frp_max_mw": 42.0,
+              "frp_sum_mw": 42.0,
+              "latest_detection_at": "2025-06-11T11:00:00Z",
+              "latitude": 34.0,
+              "longitude": 71.0,
+              "member_count": 1,
+              "priority": "CRITICAL",
+              "priority_score": 0.95,
+              "quality_flags": [
+                "synthetic_fixture"
+              ],
+              "reasons": [
+                "Invented software acceptance fixtures. No real fire observations or trained predictions."
+              ],
+              "score_kind": "baseline",
+              "scored_at": "2025-06-11T12:01:00Z",
+              "scorer_version": "baseline-v1",
+              "snapshot_id": "bd90ec0b-6eb3-5081-a831-14f642bca0ab"
+            },
+            "type": "Feature"
+          },
+          {
+            "geometry": {
+              "coordinates": [
+                73.0,
+                35.0
+              ],
+              "type": "Point"
+            },
+            "id": "f9d6810d-492a-5359-989b-a0f27cb9b117",
+            "properties": {
+              "alert_id": null,
+              "escalation_probability": null,
+              "feature_version": "features-v1",
+              "frp_max_mw": null,
+              "frp_sum_mw": null,
+              "latest_detection_at": "2025-06-11T11:00:00Z",
+              "latitude": 35.0,
+              "longitude": 73.0,
+              "member_count": 1,
+              "priority": "LOW",
+              "priority_score": 0.15,
+              "quality_flags": [
+                "frp_max_mw_missing",
+                "synthetic_fixture",
+                "temperature_c_missing",
+                "wind_ms_missing"
+              ],
+              "reasons": [
+                "Invented software acceptance fixtures. No real fire observations or trained predictions."
+              ],
+              "score_kind": "baseline",
+              "scored_at": "2025-06-11T12:01:00Z",
+              "scorer_version": "baseline-v1",
+              "snapshot_id": "f9d6810d-492a-5359-989b-a0f27cb9b117"
+            },
+            "type": "Feature"
+          }
+        ],
+        "freshness": {
+          "completed_at": "2025-06-11T12:02:00Z",
+          "evaluated_at": "2025-06-11T12:03:00Z",
+          "latest_detection_at": "2025-06-11T11:00:00Z",
+          "latest_retrieved_at": "2025-06-11T12:00:00Z",
+          "latest_scored_at": "2025-06-11T12:01:00Z",
+          "latest_weather_valid_at": "2025-06-11T10:00:00Z",
+          "observation_age_hours": 1.05,
+          "observations_stale": false,
+          "quality_flags": [],
+          "reference_kind": "current_time",
+          "reference_time": "2025-06-11T12:03:00Z",
+          "weather_age_hours": 2.05,
+          "weather_stale": false
+        },
+        "limit": 2000,
+        "mode": "live",
+        "offset": 0,
+        "research_notice": "Research and decision-support prototype only. Satellite thermal anomalies and model priority scores can be wrong or incomplete. Do not use FireWatch AI for emergency response, preservation of life, or protection of property. Confirm important events with official authorities and operational fire services.",
+        "returned": 2,
+        "run_id": "a7c0e61b-b5b7-5450-baa3-94e0a5ff38a0",
+        "schema_version": "api-v1",
+        "total": 2,
+        "truncated": false,
+        "type": "FeatureCollection"
+      },
+      "status": 200
+    },
+    "get_job": {
+      "method": "GET",
+      "path": "/api/v1/jobs/e0e632c5-4874-555a-a2a7-0cf23fc8251c",
+      "response": {
+        "attempts": 0,
+        "available_at": "2025-06-11T12:00:00Z",
+        "failure": null,
+        "heartbeat_at": null,
+        "job_id": "e0e632c5-4874-555a-a2a7-0cf23fc8251c",
+        "lease_until": null,
+        "research_notice": "Research and decision-support prototype only. Satellite thermal anomalies and model priority scores can be wrong or incomplete. Do not use FireWatch AI for emergency response, preservation of life, or protection of property. Confirm important events with official authorities and operational fire services.",
+        "result_run_id": null,
+        "schema_version": "api-v1",
+        "stages": {},
+        "status": "queued",
+        "type": "refresh"
+      },
+      "status": 200
+    },
+    "get_run": {
+      "method": "GET",
+      "path": "/api/v1/runs/a7c0e61b-b5b7-5450-baa3-94e0a5ff38a0",
+      "response": {
+        "as_of": "2025-06-11T12:00:00Z",
+        "completed_at": "2025-06-11T12:02:00Z",
+        "config_hash": "fb6e62fdd107c503700ba81b121a2f8e0afee3c5b14c35185cba6a812a3d1041",
+        "created_at": "2025-06-11T12:00:00Z",
+        "data_completeness": "complete",
+        "feature_version": "features-v1",
+        "freshness": {
+          "completed_at": "2025-06-11T12:02:00Z",
+          "evaluated_at": "2025-06-11T12:03:00Z",
+          "latest_detection_at": "2025-06-11T11:00:00Z",
+          "latest_retrieved_at": "2025-06-11T12:00:00Z",
+          "latest_scored_at": "2025-06-11T12:01:00Z",
+          "latest_weather_valid_at": "2025-06-11T10:00:00Z",
+          "observation_age_hours": 1.05,
+          "observations_stale": false,
+          "quality_flags": [],
+          "reference_kind": "current_time",
+          "reference_time": "2025-06-11T12:03:00Z",
+          "weather_age_hours": 2.05,
+          "weather_stale": false
+        },
+        "mode": "live",
+        "region_id": "a715a16e-58f7-535f-b4f3-bc0149583c54",
+        "research_notice": "Research and decision-support prototype only. Satellite thermal anomalies and model priority scores can be wrong or incomplete. Do not use FireWatch AI for emergency response, preservation of life, or protection of property. Confirm important events with official authorities and operational fire services.",
+        "run_id": "a7c0e61b-b5b7-5450-baa3-94e0a5ff38a0",
+        "schema_version": "api-v1",
+        "scorer_version": "baseline-v1",
+        "stages": {
+          "enrichment": "succeeded",
+          "evidence": "succeeded",
+          "features": "succeeded",
+          "ingest": "succeeded",
+          "scoring": "succeeded",
+          "snapshots": "succeeded"
+        },
+        "started_at": "2025-06-11T12:00:00Z",
+        "status": "completed"
+      },
+      "status": 200
+    },
+    "get_status": {
+      "method": "GET",
+      "path": "/api/v1/status",
+      "response": {
+        "chain_enabled": false,
+        "climate_baseline_count": 0,
+        "evaluated_at": "2025-06-11T12:03:00Z",
+        "firms_configured": false,
+        "refreshes": [
+          {
+            "last_successful_refresh_at": null,
+            "latest_live_run_id": null,
+            "region_id": "5f6d75f6-398c-4ab9-b5c9-ab6958dc2984"
+          },
+          {
+            "last_successful_refresh_at": null,
+            "latest_live_run_id": null,
+            "region_id": "38eda098-9f03-4dfc-a0ed-93db45042439"
+          },
+          {
+            "last_successful_refresh_at": "2025-06-11T12:02:00Z",
+            "latest_live_run_id": "a7c0e61b-b5b7-5450-baa3-94e0a5ff38a0",
+            "region_id": "a715a16e-58f7-535f-b4f3-bc0149583c54"
+          }
+        ],
+        "research_notice": "Research and decision-support prototype only. Satellite thermal anomalies and model priority scores can be wrong or incomplete. Do not use FireWatch AI for emergency response, preservation of life, or protection of property. Confirm important events with official authorities and operational fire services.",
+        "schema_version": "api-v1",
+        "scorer": {
+          "artifact_ready": true,
+          "artifact_required": false,
+          "feature_version": "features-v1",
+          "limitations": [
+            "Satellite-observed strengthening is a research proxy, not physical fire severity.",
+            "Priority categories remain provisional; approval does not establish physical severity."
+          ],
+          "model_id": null,
+          "probability_supported": false,
+          "research_notice": "Research and decision-support prototype only. Satellite thermal anomalies and model priority scores can be wrong or incomplete. Do not use FireWatch AI for emergency response, preservation of life, or protection of property. Confirm important events with official authorities and operational fire services.",
+          "schema_version": "api-v1",
+          "score_kind": "baseline",
+          "scorer_version": "baseline-v1",
+          "scoring_available": true,
+          "status": "ready"
+        },
+        "sources": [
+          {
+            "accepted_count": null,
+            "completed_chunks": null,
+            "coverage": null,
+            "duplicate_count": null,
+            "fetched_count": null,
+            "last_attempt_at": null,
+            "last_successful_retrieval_at": null,
+            "latest_attempt_succeeded": null,
+            "latest_detection_at": null,
+            "next_retry_at": null,
+            "product": "VIIRS_NOAA20_NRT",
+            "refresh_id": null,
+            "region_id": "5f6d75f6-398c-4ab9-b5c9-ab6958dc2984",
+            "rejected_count": null,
+            "status": "never_fetched",
+            "total_chunks": null
+          },
+          {
+            "accepted_count": null,
+            "completed_chunks": null,
+            "coverage": null,
+            "duplicate_count": null,
+            "fetched_count": null,
+            "last_attempt_at": null,
+            "last_successful_retrieval_at": null,
+            "latest_attempt_succeeded": null,
+            "latest_detection_at": null,
+            "next_retry_at": null,
+            "product": "VIIRS_NOAA21_NRT",
+            "refresh_id": null,
+            "region_id": "5f6d75f6-398c-4ab9-b5c9-ab6958dc2984",
+            "rejected_count": null,
+            "status": "never_fetched",
+            "total_chunks": null
+          },
+          {
+            "accepted_count": null,
+            "completed_chunks": null,
+            "coverage": null,
+            "duplicate_count": null,
+            "fetched_count": null,
+            "last_attempt_at": null,
+            "last_successful_retrieval_at": null,
+            "latest_attempt_succeeded": null,
+            "latest_detection_at": null,
+            "next_retry_at": null,
+            "product": "VIIRS_NOAA20_NRT",
+            "refresh_id": null,
+            "region_id": "38eda098-9f03-4dfc-a0ed-93db45042439",
+            "rejected_count": null,
+            "status": "never_fetched",
+            "total_chunks": null
+          },
+          {
+            "accepted_count": null,
+            "completed_chunks": null,
+            "coverage": null,
+            "duplicate_count": null,
+            "fetched_count": null,
+            "last_attempt_at": null,
+            "last_successful_retrieval_at": null,
+            "latest_attempt_succeeded": null,
+            "latest_detection_at": null,
+            "next_retry_at": null,
+            "product": "VIIRS_NOAA21_NRT",
+            "refresh_id": null,
+            "region_id": "38eda098-9f03-4dfc-a0ed-93db45042439",
+            "rejected_count": null,
+            "status": "never_fetched",
+            "total_chunks": null
+          },
+          {
+            "accepted_count": 2,
+            "completed_chunks": null,
+            "coverage": null,
+            "duplicate_count": 0,
+            "fetched_count": 2,
+            "last_attempt_at": "2025-06-11T12:00:00Z",
+            "last_successful_retrieval_at": "2025-06-11T12:00:00Z",
+            "latest_attempt_succeeded": true,
+            "latest_detection_at": "2025-06-11T11:00:00Z",
+            "next_retry_at": null,
+            "product": "VIIRS_NOAA20_NRT",
+            "refresh_id": null,
+            "region_id": "a715a16e-58f7-535f-b4f3-bc0149583c54",
+            "rejected_count": 0,
+            "status": "ok",
+            "total_chunks": null
+          },
+          {
+            "accepted_count": null,
+            "completed_chunks": null,
+            "coverage": null,
+            "duplicate_count": null,
+            "fetched_count": null,
+            "last_attempt_at": null,
+            "last_successful_retrieval_at": null,
+            "latest_attempt_succeeded": null,
+            "latest_detection_at": null,
+            "next_retry_at": null,
+            "product": "VIIRS_NOAA21_NRT",
+            "refresh_id": null,
+            "region_id": "a715a16e-58f7-535f-b4f3-bc0149583c54",
+            "rejected_count": null,
+            "status": "never_fetched",
+            "total_chunks": null
+          }
+        ],
+        "weather_latest_retrieved_at": null
+      },
+      "status": 200
+    },
+    "get_summary": {
+      "method": "GET",
+      "path": "/api/v1/summary?run_id=a7c0e61b-b5b7-5450-baa3-94e0a5ff38a0",
+      "response": {
+        "as_of": "2025-06-11T12:00:00Z",
+        "data_completeness": "complete",
+        "filters": {
+          "bbox": null,
+          "priority": null,
+          "run_id": "a7c0e61b-b5b7-5450-baa3-94e0a5ff38a0"
+        },
+        "freshness": {
+          "completed_at": "2025-06-11T12:02:00Z",
+          "evaluated_at": "2025-06-11T12:03:00Z",
+          "latest_detection_at": "2025-06-11T11:00:00Z",
+          "latest_retrieved_at": "2025-06-11T12:00:00Z",
+          "latest_scored_at": "2025-06-11T12:01:00Z",
+          "latest_weather_valid_at": "2025-06-11T10:00:00Z",
+          "observation_age_hours": 1.05,
+          "observations_stale": false,
+          "quality_flags": [],
+          "reference_kind": "current_time",
+          "reference_time": "2025-06-11T12:03:00Z",
+          "weather_age_hours": 2.05,
+          "weather_stale": false
+        },
+        "mode": "live",
+        "priority_counts": {
+          "CRITICAL": 1,
+          "HIGH": 0,
+          "LOW": 1,
+          "MEDIUM": 0
+        },
+        "research_notice": "Research and decision-support prototype only. Satellite thermal anomalies and model priority scores can be wrong or incomplete. Do not use FireWatch AI for emergency response, preservation of life, or protection of property. Confirm important events with official authorities and operational fire services.",
+        "run_id": "a7c0e61b-b5b7-5450-baa3-94e0a5ff38a0",
+        "schema_version": "api-v1",
+        "score_kind_counts": {
+          "baseline": 2,
+          "model_score": 0,
+          "probability": 0
+        },
+        "total": 2
+      },
+      "status": 200
+    },
+    "health_live": {
+      "method": "GET",
+      "path": "/health/live",
+      "response": {
+        "status": "ok"
+      },
+      "status": 200
+    },
+    "health_ready": {
+      "method": "GET",
+      "path": "/health/ready",
+      "response": {
+        "artifact_ready": true,
+        "database": "ready",
+        "schema_revision": "0003",
+        "status": "ready"
+      },
+      "status": 200
+    },
+    "invalid_filter": {
+      "method": "GET",
+      "path": "/api/v1/hotspots?run_id=a7c0e61b-b5b7-5450-baa3-94e0a5ff38a0&limit=201",
+      "response": {
+        "error": {
+          "code": "VALIDATION_ERROR",
+          "message": "Invalid path, query, header or request body.",
+          "request_id": "b0ed2272-7d8e-4f8f-a506-4c1e430cb287",
+          "retryable": false
+        }
+      },
+      "status": 422
+    },
+    "list_hotspots": {
+      "method": "GET",
+      "path": "/api/v1/hotspots?run_id=a7c0e61b-b5b7-5450-baa3-94e0a5ff38a0",
+      "response": {
+        "as_of": "2025-06-11T12:00:00Z",
+        "data_completeness": "complete",
+        "freshness": {
+          "completed_at": "2025-06-11T12:02:00Z",
+          "evaluated_at": "2025-06-11T12:03:00Z",
+          "latest_detection_at": "2025-06-11T11:00:00Z",
+          "latest_retrieved_at": "2025-06-11T12:00:00Z",
+          "latest_scored_at": "2025-06-11T12:01:00Z",
+          "latest_weather_valid_at": "2025-06-11T10:00:00Z",
+          "observation_age_hours": 1.05,
+          "observations_stale": false,
+          "quality_flags": [],
+          "reference_kind": "current_time",
+          "reference_time": "2025-06-11T12:03:00Z",
+          "weather_age_hours": 2.05,
+          "weather_stale": false
+        },
+        "items": [
+          {
+            "alert_id": "c877bd15-2f51-5ebe-b0d8-f707f4919a15",
+            "escalation_probability": null,
+            "feature_version": "features-v1",
+            "frp_max_mw": 42.0,
+            "frp_sum_mw": 42.0,
+            "latest_detection_at": "2025-06-11T11:00:00Z",
+            "latitude": 34.0,
+            "longitude": 71.0,
+            "member_count": 1,
+            "priority": "CRITICAL",
+            "priority_score": 0.95,
+            "quality_flags": [
+              "synthetic_fixture"
+            ],
+            "reasons": [
+              "Invented software acceptance fixtures. No real fire observations or trained predictions."
+            ],
+            "score_kind": "baseline",
+            "scored_at": "2025-06-11T12:01:00Z",
+            "scorer_version": "baseline-v1",
+            "snapshot_id": "bd90ec0b-6eb3-5081-a831-14f642bca0ab"
+          },
+          {
+            "alert_id": null,
+            "escalation_probability": null,
+            "feature_version": "features-v1",
+            "frp_max_mw": null,
+            "frp_sum_mw": null,
+            "latest_detection_at": "2025-06-11T11:00:00Z",
+            "latitude": 35.0,
+            "longitude": 73.0,
+            "member_count": 1,
+            "priority": "LOW",
+            "priority_score": 0.15,
+            "quality_flags": [
+              "frp_max_mw_missing",
+              "synthetic_fixture",
+              "temperature_c_missing",
+              "wind_ms_missing"
+            ],
+            "reasons": [
+              "Invented software acceptance fixtures. No real fire observations or trained predictions."
+            ],
+            "score_kind": "baseline",
+            "scored_at": "2025-06-11T12:01:00Z",
+            "scorer_version": "baseline-v1",
+            "snapshot_id": "f9d6810d-492a-5359-989b-a0f27cb9b117"
+          }
+        ],
+        "limit": 50,
+        "mode": "live",
+        "offset": 0,
+        "research_notice": "Research and decision-support prototype only. Satellite thermal anomalies and model priority scores can be wrong or incomplete. Do not use FireWatch AI for emergency response, preservation of life, or protection of property. Confirm important events with official authorities and operational fire services.",
+        "run_id": "a7c0e61b-b5b7-5450-baa3-94e0a5ff38a0",
+        "schema_version": "api-v1",
+        "total": 2
+      },
+      "status": 200
+    },
+    "list_regions": {
+      "method": "GET",
+      "path": "/api/v1/regions",
+      "response": {
+        "items": [
+          {
+            "available_modes": [],
+            "bbox": {
+              "east": 74.0,
+              "north": 36.0,
+              "south": 33.0,
+              "west": 70.0
+            },
+            "enabled": false,
+            "latest_live_run_id": null,
+            "name": "demo-region",
+            "region_id": "5f6d75f6-398c-4ab9-b5c9-ab6958dc2984"
+          },
+          {
+            "available_modes": [],
+            "bbox": {
+              "east": -120.0,
+              "north": 40.5,
+              "south": 38.5,
+              "west": -122.5
+            },
+            "enabled": false,
+            "latest_live_run_id": null,
+            "name": "northern-california",
+            "region_id": "38eda098-9f03-4dfc-a0ed-93db45042439"
+          },
+          {
+            "available_modes": [
+              "live",
+              "replay"
+            ],
+            "bbox": {
+              "east": 74.0,
+              "north": 36.0,
+              "south": 33.0,
+              "west": 70.0
+            },
+            "enabled": false,
+            "latest_live_run_id": "a7c0e61b-b5b7-5450-baa3-94e0a5ff38a0",
+            "name": "synthetic-demo-v1",
+            "region_id": "a715a16e-58f7-535f-b4f3-bc0149583c54"
+          }
+        ],
+        "limit": 50,
+        "offset": 0,
+        "research_notice": "Research and decision-support prototype only. Satellite thermal anomalies and model priority scores can be wrong or incomplete. Do not use FireWatch AI for emergency response, preservation of life, or protection of property. Confirm important events with official authorities and operational fire services.",
+        "schema_version": "api-v1",
+        "total": 3
+      },
+      "status": 200
+    },
+    "list_replays": {
+      "method": "GET",
+      "path": "/api/v1/replays",
+      "response": {
+        "items": [
+          {
+            "as_of": "2025-06-10T12:00:00Z",
+            "data_completeness": "complete",
+            "description": "Invented software acceptance fixtures. No real fire observations or trained predictions.",
+            "feature_version": "features-v1",
+            "freshness": {
+              "completed_at": "2025-06-10T12:02:00Z",
+              "evaluated_at": "2025-06-11T12:03:00Z",
+              "latest_detection_at": "2025-06-10T11:00:00Z",
+              "latest_retrieved_at": "2025-06-10T12:00:00Z",
+              "latest_scored_at": "2025-06-10T12:01:00Z",
+              "latest_weather_valid_at": "2025-06-10T10:00:00Z",
+              "observation_age_hours": 1.0,
+              "observations_stale": false,
+              "quality_flags": [],
+              "reference_kind": "historical_cutoff",
+              "reference_time": "2025-06-10T12:00:00Z",
+              "weather_age_hours": 2.0,
+              "weather_stale": false
+            },
+            "mode": "replay",
+            "name": "Synthetic historical acceptance fixture",
+            "region_id": "a715a16e-58f7-535f-b4f3-bc0149583c54",
+            "research_notice": "Research and decision-support prototype only. Satellite thermal anomalies and model priority scores can be wrong or incomplete. Do not use FireWatch AI for emergency response, preservation of life, or protection of property. Confirm important events with official authorities and operational fire services.",
+            "run_id": "e930414f-ace1-55bc-8a43-5fd889d182de",
+            "scenario_id": "synthetic-demo-v1",
+            "schema_version": "api-v1",
+            "scorer_version": "baseline-v1"
+          }
+        ],
+        "limit": 50,
+        "offset": 0,
+        "research_notice": "Research and decision-support prototype only. Satellite thermal anomalies and model priority scores can be wrong or incomplete. Do not use FireWatch AI for emergency response, preservation of life, or protection of property. Confirm important events with official authorities and operational fire services.",
+        "schema_version": "api-v1",
+        "total": 1
+      },
+      "status": 200
+    },
+    "list_runs": {
+      "method": "GET",
+      "path": "/api/v1/runs?region_id=a715a16e-58f7-535f-b4f3-bc0149583c54",
+      "response": {
+        "items": [
+          {
+            "as_of": "2025-06-11T12:00:00Z",
+            "completed_at": "2025-06-11T12:02:00Z",
+            "config_hash": "fb6e62fdd107c503700ba81b121a2f8e0afee3c5b14c35185cba6a812a3d1041",
+            "created_at": "2025-06-11T12:00:00Z",
+            "data_completeness": "complete",
+            "feature_version": "features-v1",
+            "freshness": {
+              "completed_at": "2025-06-11T12:02:00Z",
+              "evaluated_at": "2025-06-11T12:03:00Z",
+              "latest_detection_at": "2025-06-11T11:00:00Z",
+              "latest_retrieved_at": "2025-06-11T12:00:00Z",
+              "latest_scored_at": "2025-06-11T12:01:00Z",
+              "latest_weather_valid_at": "2025-06-11T10:00:00Z",
+              "observation_age_hours": 1.05,
+              "observations_stale": false,
+              "quality_flags": [],
+              "reference_kind": "current_time",
+              "reference_time": "2025-06-11T12:03:00Z",
+              "weather_age_hours": 2.05,
+              "weather_stale": false
+            },
+            "mode": "live",
+            "region_id": "a715a16e-58f7-535f-b4f3-bc0149583c54",
+            "research_notice": "Research and decision-support prototype only. Satellite thermal anomalies and model priority scores can be wrong or incomplete. Do not use FireWatch AI for emergency response, preservation of life, or protection of property. Confirm important events with official authorities and operational fire services.",
+            "run_id": "a7c0e61b-b5b7-5450-baa3-94e0a5ff38a0",
+            "schema_version": "api-v1",
+            "scorer_version": "baseline-v1",
+            "stages": {
+              "enrichment": "succeeded",
+              "evidence": "succeeded",
+              "features": "succeeded",
+              "ingest": "succeeded",
+              "scoring": "succeeded",
+              "snapshots": "succeeded"
+            },
+            "started_at": "2025-06-11T12:00:00Z",
+            "status": "completed"
+          },
+          {
+            "as_of": "2025-06-10T12:00:00Z",
+            "completed_at": "2025-06-10T12:02:00Z",
+            "config_hash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "created_at": "2025-06-10T12:00:00Z",
+            "data_completeness": "complete",
+            "feature_version": "features-v1",
+            "freshness": {
+              "completed_at": "2025-06-10T12:02:00Z",
+              "evaluated_at": "2025-06-11T12:03:00Z",
+              "latest_detection_at": null,
+              "latest_retrieved_at": null,
+              "latest_scored_at": null,
+              "latest_weather_valid_at": null,
+              "observation_age_hours": null,
+              "observations_stale": null,
+              "quality_flags": [
+                "weather_freshness_unavailable",
+                "no_snapshot_observations"
+              ],
+              "reference_kind": "historical_cutoff",
+              "reference_time": "2025-06-10T12:00:00Z",
+              "weather_age_hours": null,
+              "weather_stale": null
+            },
+            "mode": "replay",
+            "region_id": "a715a16e-58f7-535f-b4f3-bc0149583c54",
+            "research_notice": "Research and decision-support prototype only. Satellite thermal anomalies and model priority scores can be wrong or incomplete. Do not use FireWatch AI for emergency response, preservation of life, or protection of property. Confirm important events with official authorities and operational fire services.",
+            "run_id": "6bdceece-3b3b-5fb3-9049-9703c4219fa1",
+            "schema_version": "api-v1",
+            "scorer_version": "baseline-v1",
+            "stages": {
+              "enrichment": "succeeded",
+              "evidence": "succeeded",
+              "features": "succeeded",
+              "ingest": "succeeded",
+              "scoring": "succeeded",
+              "snapshots": "succeeded"
+            },
+            "started_at": "2025-06-10T12:00:00Z",
+            "status": "completed"
+          },
+          {
+            "as_of": "2025-06-10T12:00:00Z",
+            "completed_at": "2025-06-10T12:02:00Z",
+            "config_hash": "fb6e62fdd107c503700ba81b121a2f8e0afee3c5b14c35185cba6a812a3d1041",
+            "created_at": "2025-06-10T12:00:00Z",
+            "data_completeness": "complete",
+            "feature_version": "features-v1",
+            "freshness": {
+              "completed_at": "2025-06-10T12:02:00Z",
+              "evaluated_at": "2025-06-11T12:03:00Z",
+              "latest_detection_at": "2025-06-10T11:00:00Z",
+              "latest_retrieved_at": "2025-06-10T12:00:00Z",
+              "latest_scored_at": "2025-06-10T12:01:00Z",
+              "latest_weather_valid_at": "2025-06-10T10:00:00Z",
+              "observation_age_hours": 1.0,
+              "observations_stale": false,
+              "quality_flags": [],
+              "reference_kind": "historical_cutoff",
+              "reference_time": "2025-06-10T12:00:00Z",
+              "weather_age_hours": 2.0,
+              "weather_stale": false
+            },
+            "mode": "replay",
+            "region_id": "a715a16e-58f7-535f-b4f3-bc0149583c54",
+            "research_notice": "Research and decision-support prototype only. Satellite thermal anomalies and model priority scores can be wrong or incomplete. Do not use FireWatch AI for emergency response, preservation of life, or protection of property. Confirm important events with official authorities and operational fire services.",
+            "run_id": "e930414f-ace1-55bc-8a43-5fd889d182de",
+            "schema_version": "api-v1",
+            "scorer_version": "baseline-v1",
+            "stages": {
+              "enrichment": "succeeded",
+              "evidence": "succeeded",
+              "features": "succeeded",
+              "ingest": "succeeded",
+              "scoring": "succeeded",
+              "snapshots": "succeeded"
+            },
+            "started_at": "2025-06-10T12:00:00Z",
+            "status": "completed"
+          }
+        ],
+        "limit": 50,
+        "offset": 0,
+        "research_notice": "Research and decision-support prototype only. Satellite thermal anomalies and model priority scores can be wrong or incomplete. Do not use FireWatch AI for emergency response, preservation of life, or protection of property. Confirm important events with official authorities and operational fire services.",
+        "schema_version": "api-v1",
+        "total": 3
+      },
+      "status": 200
+    },
+    "missing_operator_token": {
+      "method": "GET",
+      "path": "/api/v1/jobs/e0e632c5-4874-555a-a2a7-0cf23fc8251c",
+      "response": {
+        "error": {
+          "code": "UNAUTHORIZED",
+          "message": "A valid operator bearer token is required.",
+          "request_id": "490da241-7086-4b4c-a1bd-806c93903c85",
+          "retryable": false
+        }
+      },
+      "status": 401
+    },
+    "pending_run": {
+      "method": "GET",
+      "path": "/api/v1/hotspots?run_id=7ec7707c-f846-5b65-94f8-6b32fb2dd87f",
+      "response": {
+        "error": {
+          "code": "RUN_NOT_READY",
+          "message": "The requested run is not completed.",
+          "request_id": "418f64b9-115c-4d88-bf6f-e8245c8ee37b",
+          "retryable": true
+        }
+      },
+      "status": 503
+    },
+    "replay_hotspots": {
+      "method": "GET",
+      "path": "/api/v1/hotspots?run_id=e930414f-ace1-55bc-8a43-5fd889d182de",
+      "response": {
+        "as_of": "2025-06-10T12:00:00Z",
+        "data_completeness": "complete",
+        "freshness": {
+          "completed_at": "2025-06-10T12:02:00Z",
+          "evaluated_at": "2025-06-11T12:03:00Z",
+          "latest_detection_at": "2025-06-10T11:00:00Z",
+          "latest_retrieved_at": "2025-06-10T12:00:00Z",
+          "latest_scored_at": "2025-06-10T12:01:00Z",
+          "latest_weather_valid_at": "2025-06-10T10:00:00Z",
+          "observation_age_hours": 1.0,
+          "observations_stale": false,
+          "quality_flags": [],
+          "reference_kind": "historical_cutoff",
+          "reference_time": "2025-06-10T12:00:00Z",
+          "weather_age_hours": 2.0,
+          "weather_stale": false
+        },
+        "items": [
+          {
+            "alert_id": null,
+            "escalation_probability": null,
+            "feature_version": "features-v1",
+            "frp_max_mw": 12.0,
+            "frp_sum_mw": 12.0,
+            "latest_detection_at": "2025-06-10T11:00:00Z",
+            "latitude": 33.5,
+            "longitude": 72.0,
+            "member_count": 1,
+            "priority": "HIGH",
+            "priority_score": 0.7,
+            "quality_flags": [
+              "synthetic_fixture"
+            ],
+            "reasons": [
+              "Invented software acceptance fixtures. No real fire observations or trained predictions."
+            ],
+            "score_kind": "baseline",
+            "scored_at": "2025-06-10T12:01:00Z",
+            "scorer_version": "baseline-v1",
+            "snapshot_id": "3cd63898-ec44-512f-bfe6-a856c1706ee8"
+          }
+        ],
+        "limit": 50,
+        "mode": "replay",
+        "offset": 0,
+        "research_notice": "Research and decision-support prototype only. Satellite thermal anomalies and model priority scores can be wrong or incomplete. Do not use FireWatch AI for emergency response, preservation of life, or protection of property. Confirm important events with official authorities and operational fire services.",
+        "run_id": "e930414f-ace1-55bc-8a43-5fd889d182de",
+        "schema_version": "api-v1",
+        "total": 1
+      },
+      "status": 200
+    },
+    "unknown_run": {
+      "method": "GET",
+      "path": "/api/v1/runs/00000000-0000-4000-8000-000000000000",
+      "response": {
+        "error": {
+          "code": "RUN_NOT_FOUND",
+          "message": "The requested run was not found.",
+          "request_id": "5796189b-229e-4e8e-a4fa-4eb107368ee8",
+          "retryable": false
+        }
+      },
+      "status": 404
+    },
+    "verify_alert": {
+      "method": "GET",
+      "path": "/api/v1/alerts/c877bd15-2f51-5ebe-b0d8-f707f4919a15/verify",
+      "response": {
+        "alert_id": "c877bd15-2f51-5ebe-b0d8-f707f4919a15",
+        "anchor_status": "unanchored",
+        "anchors": [],
+        "artifact_audit": {
+          "items": [],
+          "reason": "not_requested",
+          "scope": "referenced_local_files",
+          "status": "not_performed"
+        },
+        "artifact_verification": "not_performed",
+        "as_of": "2025-06-11T12:00:00Z",
+        "computed_hash": "0c67b2b826f81d1d4f5860d60967872753053f3be13a43b9e6a79494ab225083",
+        "data_completeness": "complete",
+        "freshness": {
+          "completed_at": "2025-06-11T12:02:00Z",
+          "evaluated_at": "2025-06-11T12:03:00Z",
+          "latest_detection_at": "2025-06-11T11:00:00Z",
+          "latest_retrieved_at": "2025-06-11T12:00:00Z",
+          "latest_scored_at": "2025-06-11T12:01:00Z",
+          "latest_weather_valid_at": "2025-06-11T10:00:00Z",
+          "observation_age_hours": 1.05,
+          "observations_stale": false,
+          "quality_flags": [],
+          "reference_kind": "current_time",
+          "reference_time": "2025-06-11T12:03:00Z",
+          "weather_age_hours": 2.05,
+          "weather_stale": false
+        },
+        "integrity_notice": "Local hashes detect changes relative to the saved digest; an attacker controlling both can rewrite both. A matching independently anchored digest supplies a separate comparison point. Local-chain anchoring is a demonstration, not independent public notarization. Integrity does not prove a fire is real or a model is correct. Artifact checks cover referenced local file bytes, not scientific validity or approval.",
+        "local_status": "local_match",
+        "mode": "live",
+        "original_hash": "0c67b2b826f81d1d4f5860d60967872753053f3be13a43b9e6a79494ab225083",
+        "research_notice": "Research and decision-support prototype only. Satellite thermal anomalies and model priority scores can be wrong or incomplete. Do not use FireWatch AI for emergency response, preservation of life, or protection of property. Confirm important events with official authorities and operational fire services.",
+        "run_id": "a7c0e61b-b5b7-5450-baa3-94e0a5ff38a0",
+        "schema_version": "api-v1"
+      },
+      "status": 200
+    }
+  },
+  "fixture": "synthetic-demo-v1",
+  "synthetic": true
+}

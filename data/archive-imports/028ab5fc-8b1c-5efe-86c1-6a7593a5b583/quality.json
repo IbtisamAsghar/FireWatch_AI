@@ -1,0 +1,1061 @@
+{
+  "schema_version": "firms-archive-import-v1",
+  "source_sha256": "4a07c1f996d8b020c737bb31dcd7e8b015ba53c5c3c65806ac886fe88b9144ca",
+  "source_kind": "area_api_sample",
+  "fetched_count": 1909,
+  "accepted_count": 1909,
+  "rejected_count": 0,
+  "duplicate_count": 0,
+  "revision_count": 1909,
+  "revised_count": 0,
+  "rejection_counts": {},
+  "quality_flag_counts": {},
+  "daily_counts": {
+    "2025-04-30": {
+      "fetched": 17,
+      "accepted": 17
+    },
+    "2025-05-01": {
+      "fetched": 6,
+      "accepted": 6
+    },
+    "2025-05-02": {
+      "fetched": 22,
+      "accepted": 22
+    },
+    "2025-05-03": {},
+    "2025-05-04": {
+      "fetched": 8,
+      "accepted": 8
+    },
+    "2025-05-05": {
+      "fetched": 4,
+      "accepted": 4
+    },
+    "2025-05-06": {
+      "fetched": 12,
+      "accepted": 12
+    },
+    "2025-05-07": {
+      "fetched": 15,
+      "accepted": 15
+    },
+    "2025-05-08": {
+      "fetched": 15,
+      "accepted": 15
+    },
+    "2025-05-09": {
+      "fetched": 5,
+      "accepted": 5
+    },
+    "2025-05-10": {
+      "fetched": 5,
+      "accepted": 5
+    },
+    "2025-05-11": {
+      "fetched": 1,
+      "accepted": 1
+    },
+    "2025-05-12": {
+      "fetched": 5,
+      "accepted": 5
+    },
+    "2025-05-13": {
+      "fetched": 14,
+      "accepted": 14
+    },
+    "2025-05-14": {
+      "fetched": 2,
+      "accepted": 2
+    },
+    "2025-05-15": {
+      "fetched": 16,
+      "accepted": 16
+    },
+    "2025-05-16": {
+      "fetched": 12,
+      "accepted": 12
+    },
+    "2025-05-17": {},
+    "2025-05-18": {},
+    "2025-05-19": {},
+    "2025-05-20": {
+      "fetched": 16,
+      "accepted": 16
+    },
+    "2025-05-21": {
+      "fetched": 11,
+      "accepted": 11
+    },
+    "2025-05-22": {
+      "fetched": 14,
+      "accepted": 14
+    },
+    "2025-05-23": {
+      "fetched": 16,
+      "accepted": 16
+    },
+    "2025-05-24": {
+      "fetched": 9,
+      "accepted": 9
+    },
+    "2025-05-25": {
+      "fetched": 5,
+      "accepted": 5
+    },
+    "2025-05-26": {
+      "fetched": 2,
+      "accepted": 2
+    },
+    "2025-05-27": {
+      "fetched": 3,
+      "accepted": 3
+    },
+    "2025-05-28": {
+      "fetched": 2,
+      "accepted": 2
+    },
+    "2025-05-29": {
+      "fetched": 9,
+      "accepted": 9
+    },
+    "2025-05-30": {
+      "fetched": 26,
+      "accepted": 26
+    },
+    "2025-05-31": {
+      "fetched": 6,
+      "accepted": 6
+    },
+    "2025-06-01": {
+      "fetched": 2,
+      "accepted": 2
+    },
+    "2025-06-02": {
+      "fetched": 1,
+      "accepted": 1
+    },
+    "2025-06-03": {
+      "fetched": 17,
+      "accepted": 17
+    },
+    "2025-06-04": {
+      "fetched": 11,
+      "accepted": 11
+    },
+    "2025-06-05": {
+      "fetched": 20,
+      "accepted": 20
+    },
+    "2025-06-06": {
+      "fetched": 12,
+      "accepted": 12
+    },
+    "2025-06-07": {
+      "fetched": 1,
+      "accepted": 1
+    },
+    "2025-06-08": {},
+    "2025-06-09": {
+      "fetched": 14,
+      "accepted": 14
+    },
+    "2025-06-10": {
+      "fetched": 20,
+      "accepted": 20
+    },
+    "2025-06-11": {
+      "fetched": 14,
+      "accepted": 14
+    },
+    "2025-06-12": {
+      "fetched": 4,
+      "accepted": 4
+    },
+    "2025-06-13": {
+      "fetched": 5,
+      "accepted": 5
+    },
+    "2025-06-14": {
+      "fetched": 12,
+      "accepted": 12
+    },
+    "2025-06-15": {
+      "fetched": 3,
+      "accepted": 3
+    },
+    "2025-06-16": {
+      "fetched": 12,
+      "accepted": 12
+    },
+    "2025-06-17": {
+      "fetched": 4,
+      "accepted": 4
+    },
+    "2025-06-18": {
+      "fetched": 1,
+      "accepted": 1
+    },
+    "2025-06-19": {
+      "fetched": 26,
+      "accepted": 26
+    },
+    "2025-06-20": {
+      "fetched": 7,
+      "accepted": 7
+    },
+    "2025-06-21": {
+      "fetched": 1,
+      "accepted": 1
+    },
+    "2025-06-22": {
+      "fetched": 1,
+      "accepted": 1
+    },
+    "2025-06-23": {},
+    "2025-06-24": {
+      "fetched": 8,
+      "accepted": 8
+    },
+    "2025-06-25": {
+      "fetched": 16,
+      "accepted": 16
+    },
+    "2025-06-26": {
+      "fetched": 10,
+      "accepted": 10
+    },
+    "2025-06-27": {
+      "fetched": 10,
+      "accepted": 10
+    },
+    "2025-06-28": {},
+    "2025-06-29": {
+      "fetched": 1,
+      "accepted": 1
+    },
+    "2025-06-30": {
+      "fetched": 6,
+      "accepted": 6
+    },
+    "2025-07-01": {
+      "fetched": 11,
+      "accepted": 11
+    },
+    "2025-07-02": {
+      "fetched": 10,
+      "accepted": 10
+    },
+    "2025-07-03": {
+      "fetched": 3,
+      "accepted": 3
+    },
+    "2025-07-04": {
+      "fetched": 4,
+      "accepted": 4
+    },
+    "2025-07-05": {
+      "fetched": 3,
+      "accepted": 3
+    },
+    "2025-07-06": {},
+    "2025-07-07": {
+      "fetched": 7,
+      "accepted": 7
+    },
+    "2025-07-08": {
+      "fetched": 4,
+      "accepted": 4
+    },
+    "2025-07-09": {
+      "fetched": 4,
+      "accepted": 4
+    },
+    "2025-07-10": {
+      "fetched": 5,
+      "accepted": 5
+    },
+    "2025-07-11": {
+      "fetched": 4,
+      "accepted": 4
+    },
+    "2025-07-12": {
+      "fetched": 3,
+      "accepted": 3
+    },
+    "2025-07-13": {},
+    "2025-07-14": {
+      "fetched": 1,
+      "accepted": 1
+    },
+    "2025-07-15": {
+      "fetched": 4,
+      "accepted": 4
+    },
+    "2025-07-16": {
+      "fetched": 28,
+      "accepted": 28
+    },
+    "2025-07-17": {
+      "fetched": 18,
+      "accepted": 18
+    },
+    "2025-07-18": {
+      "fetched": 9,
+      "accepted": 9
+    },
+    "2025-07-19": {
+      "fetched": 2,
+      "accepted": 2
+    },
+    "2025-07-20": {
+      "fetched": 2,
+      "accepted": 2
+    },
+    "2025-07-21": {
+      "fetched": 12,
+      "accepted": 12
+    },
+    "2025-07-22": {
+      "fetched": 8,
+      "accepted": 8
+    },
+    "2025-07-23": {
+      "fetched": 12,
+      "accepted": 12
+    },
+    "2025-07-24": {
+      "fetched": 8,
+      "accepted": 8
+    },
+    "2025-07-25": {
+      "fetched": 2,
+      "accepted": 2
+    },
+    "2025-07-26": {
+      "fetched": 4,
+      "accepted": 4
+    },
+    "2025-07-27": {
+      "fetched": 1,
+      "accepted": 1
+    },
+    "2025-07-28": {
+      "fetched": 3,
+      "accepted": 3
+    },
+    "2025-07-29": {
+      "fetched": 5,
+      "accepted": 5
+    },
+    "2025-07-30": {
+      "fetched": 4,
+      "accepted": 4
+    },
+    "2025-07-31": {
+      "fetched": 4,
+      "accepted": 4
+    },
+    "2025-08-01": {
+      "fetched": 12,
+      "accepted": 12
+    },
+    "2025-08-02": {
+      "fetched": 4,
+      "accepted": 4
+    },
+    "2025-08-03": {
+      "fetched": 2,
+      "accepted": 2
+    },
+    "2025-08-04": {
+      "fetched": 8,
+      "accepted": 8
+    },
+    "2025-08-05": {
+      "fetched": 1,
+      "accepted": 1
+    },
+    "2025-08-06": {
+      "fetched": 1,
+      "accepted": 1
+    },
+    "2025-08-07": {
+      "fetched": 7,
+      "accepted": 7
+    },
+    "2025-08-08": {
+      "fetched": 13,
+      "accepted": 13
+    },
+    "2025-08-09": {
+      "fetched": 2,
+      "accepted": 2
+    },
+    "2025-08-10": {},
+    "2025-08-11": {
+      "fetched": 4,
+      "accepted": 4
+    },
+    "2025-08-12": {
+      "fetched": 3,
+      "accepted": 3
+    },
+    "2025-08-13": {
+      "fetched": 4,
+      "accepted": 4
+    },
+    "2025-08-14": {
+      "fetched": 4,
+      "accepted": 4
+    },
+    "2025-08-15": {
+      "fetched": 3,
+      "accepted": 3
+    },
+    "2025-08-16": {
+      "fetched": 5,
+      "accepted": 5
+    },
+    "2025-08-17": {
+      "fetched": 3,
+      "accepted": 3
+    },
+    "2025-08-18": {
+      "fetched": 11,
+      "accepted": 11
+    },
+    "2025-08-19": {
+      "fetched": 2,
+      "accepted": 2
+    },
+    "2025-08-20": {
+      "fetched": 4,
+      "accepted": 4
+    },
+    "2025-08-21": {
+      "fetched": 22,
+      "accepted": 22
+    },
+    "2025-08-22": {
+      "fetched": 37,
+      "accepted": 37
+    },
+    "2025-08-23": {
+      "fetched": 83,
+      "accepted": 83
+    },
+    "2025-08-24": {
+      "fetched": 51,
+      "accepted": 51
+    },
+    "2025-08-25": {
+      "fetched": 3,
+      "accepted": 3
+    },
+    "2025-08-26": {
+      "fetched": 1,
+      "accepted": 1
+    },
+    "2025-08-27": {
+      "fetched": 7,
+      "accepted": 7
+    },
+    "2025-08-28": {
+      "fetched": 8,
+      "accepted": 8
+    },
+    "2025-08-29": {
+      "fetched": 9,
+      "accepted": 9
+    },
+    "2025-08-30": {
+      "fetched": 1,
+      "accepted": 1
+    },
+    "2025-08-31": {
+      "fetched": 1,
+      "accepted": 1
+    },
+    "2025-09-01": {
+      "fetched": 1,
+      "accepted": 1
+    },
+    "2025-09-02": {
+      "fetched": 1,
+      "accepted": 1
+    },
+    "2025-09-03": {
+      "fetched": 9,
+      "accepted": 9
+    },
+    "2025-09-04": {
+      "fetched": 5,
+      "accepted": 5
+    },
+    "2025-09-05": {
+      "fetched": 7,
+      "accepted": 7
+    },
+    "2025-09-06": {
+      "fetched": 5,
+      "accepted": 5
+    },
+    "2025-09-07": {},
+    "2025-09-08": {
+      "fetched": 11,
+      "accepted": 11
+    },
+    "2025-09-09": {},
+    "2025-09-10": {
+      "fetched": 5,
+      "accepted": 5
+    },
+    "2025-09-11": {
+      "fetched": 8,
+      "accepted": 8
+    },
+    "2025-09-12": {
+      "fetched": 11,
+      "accepted": 11
+    },
+    "2025-09-13": {
+      "fetched": 8,
+      "accepted": 8
+    },
+    "2025-09-14": {},
+    "2025-09-15": {
+      "fetched": 16,
+      "accepted": 16
+    },
+    "2025-09-16": {
+      "fetched": 1,
+      "accepted": 1
+    },
+    "2025-09-17": {
+      "fetched": 5,
+      "accepted": 5
+    },
+    "2025-09-18": {
+      "fetched": 2,
+      "accepted": 2
+    },
+    "2025-09-19": {},
+    "2025-09-20": {
+      "fetched": 18,
+      "accepted": 18
+    },
+    "2025-09-21": {
+      "fetched": 8,
+      "accepted": 8
+    },
+    "2025-09-22": {
+      "fetched": 9,
+      "accepted": 9
+    },
+    "2025-09-23": {
+      "fetched": 24,
+      "accepted": 24
+    },
+    "2025-09-24": {
+      "fetched": 34,
+      "accepted": 34
+    },
+    "2025-09-25": {
+      "fetched": 24,
+      "accepted": 24
+    },
+    "2025-09-26": {
+      "fetched": 17,
+      "accepted": 17
+    },
+    "2025-09-27": {
+      "fetched": 36,
+      "accepted": 36
+    },
+    "2025-09-28": {
+      "fetched": 12,
+      "accepted": 12
+    },
+    "2025-09-29": {},
+    "2025-09-30": {
+      "fetched": 2,
+      "accepted": 2
+    },
+    "2025-10-01": {},
+    "2025-10-02": {
+      "fetched": 3,
+      "accepted": 3
+    },
+    "2025-10-03": {
+      "fetched": 3,
+      "accepted": 3
+    },
+    "2025-10-04": {
+      "fetched": 3,
+      "accepted": 3
+    },
+    "2025-10-05": {
+      "fetched": 8,
+      "accepted": 8
+    },
+    "2025-10-06": {
+      "fetched": 11,
+      "accepted": 11
+    },
+    "2025-10-07": {
+      "fetched": 23,
+      "accepted": 23
+    },
+    "2025-10-08": {
+      "fetched": 39,
+      "accepted": 39
+    },
+    "2025-10-09": {
+      "fetched": 25,
+      "accepted": 25
+    },
+    "2025-10-10": {
+      "fetched": 51,
+      "accepted": 51
+    },
+    "2025-10-11": {
+      "fetched": 23,
+      "accepted": 23
+    },
+    "2025-10-12": {
+      "fetched": 15,
+      "accepted": 15
+    },
+    "2025-10-13": {
+      "fetched": 6,
+      "accepted": 6
+    },
+    "2025-10-14": {
+      "fetched": 2,
+      "accepted": 2
+    },
+    "2025-10-15": {},
+    "2025-10-16": {
+      "fetched": 8,
+      "accepted": 8
+    },
+    "2025-10-17": {
+      "fetched": 19,
+      "accepted": 19
+    },
+    "2025-10-18": {
+      "fetched": 13,
+      "accepted": 13
+    },
+    "2025-10-19": {
+      "fetched": 7,
+      "accepted": 7
+    },
+    "2025-10-20": {
+      "fetched": 17,
+      "accepted": 17
+    },
+    "2025-10-21": {
+      "fetched": 61,
+      "accepted": 61
+    },
+    "2025-10-22": {
+      "fetched": 9,
+      "accepted": 9
+    },
+    "2025-10-23": {
+      "fetched": 42,
+      "accepted": 42
+    },
+    "2025-10-24": {
+      "fetched": 24,
+      "accepted": 24
+    },
+    "2025-10-25": {},
+    "2025-10-26": {},
+    "2025-10-27": {
+      "fetched": 45,
+      "accepted": 45
+    },
+    "2025-10-28": {
+      "fetched": 32,
+      "accepted": 32
+    },
+    "2025-10-29": {
+      "fetched": 45,
+      "accepted": 45
+    },
+    "2025-10-30": {
+      "fetched": 38,
+      "accepted": 38
+    },
+    "2025-10-31": {
+      "fetched": 26,
+      "accepted": 26
+    },
+    "2025-11-01": {
+      "fetched": 14,
+      "accepted": 14
+    }
+  },
+  "missing_date_intervals": [],
+  "empty_intervals": [
+    {
+      "start_date": "2025-05-03",
+      "end_date": "2025-05-03"
+    },
+    {
+      "start_date": "2025-05-17",
+      "end_date": "2025-05-19"
+    },
+    {
+      "start_date": "2025-06-08",
+      "end_date": "2025-06-08"
+    },
+    {
+      "start_date": "2025-06-23",
+      "end_date": "2025-06-23"
+    },
+    {
+      "start_date": "2025-06-28",
+      "end_date": "2025-06-28"
+    },
+    {
+      "start_date": "2025-07-06",
+      "end_date": "2025-07-06"
+    },
+    {
+      "start_date": "2025-07-13",
+      "end_date": "2025-07-13"
+    },
+    {
+      "start_date": "2025-08-10",
+      "end_date": "2025-08-10"
+    },
+    {
+      "start_date": "2025-09-07",
+      "end_date": "2025-09-07"
+    },
+    {
+      "start_date": "2025-09-09",
+      "end_date": "2025-09-09"
+    },
+    {
+      "start_date": "2025-09-14",
+      "end_date": "2025-09-14"
+    },
+    {
+      "start_date": "2025-09-19",
+      "end_date": "2025-09-19"
+    },
+    {
+      "start_date": "2025-09-29",
+      "end_date": "2025-09-29"
+    },
+    {
+      "start_date": "2025-10-01",
+      "end_date": "2025-10-01"
+    },
+    {
+      "start_date": "2025-10-15",
+      "end_date": "2025-10-15"
+    },
+    {
+      "start_date": "2025-10-25",
+      "end_date": "2025-10-26"
+    }
+  ],
+  "unexpectedly_empty_intervals": [],
+  "unconfirmed_empty_intervals": [],
+  "inventory": [
+    {
+      "month": "2025-04",
+      "sensor": "NOAA-20",
+      "product": "VIIRS_NOAA20_SP",
+      "region": "northern-california",
+      "class_label": "unlabeled",
+      "confidence_class": "nominal",
+      "provider_class": "0",
+      "observations": 12,
+      "distinct_fire_periods_proxy": 1
+    },
+    {
+      "month": "2025-04",
+      "sensor": "NOAA-20",
+      "product": "VIIRS_NOAA20_SP",
+      "region": "northern-california",
+      "class_label": "unlabeled",
+      "confidence_class": "low",
+      "provider_class": "0",
+      "observations": 5,
+      "distinct_fire_periods_proxy": 1
+    },
+    {
+      "month": "2025-05",
+      "sensor": "NOAA-20",
+      "product": "VIIRS_NOAA20_SP",
+      "region": "northern-california",
+      "class_label": "unlabeled",
+      "confidence_class": "nominal",
+      "provider_class": "0",
+      "observations": 198,
+      "distinct_fire_periods_proxy": 4
+    },
+    {
+      "month": "2025-05",
+      "sensor": "NOAA-20",
+      "product": "VIIRS_NOAA20_SP",
+      "region": "northern-california",
+      "class_label": "unlabeled",
+      "confidence_class": "low",
+      "provider_class": "0",
+      "observations": 38,
+      "distinct_fire_periods_proxy": 9
+    },
+    {
+      "month": "2025-05",
+      "sensor": "NOAA-20",
+      "product": "VIIRS_NOAA20_SP",
+      "region": "northern-california",
+      "class_label": "unlabeled",
+      "confidence_class": "high",
+      "provider_class": "0",
+      "observations": 23,
+      "distinct_fire_periods_proxy": 8
+    },
+    {
+      "month": "2025-05",
+      "sensor": "NOAA-20",
+      "product": "VIIRS_NOAA20_SP",
+      "region": "northern-california",
+      "class_label": "unlabeled",
+      "confidence_class": "nominal",
+      "provider_class": "3",
+      "observations": 1,
+      "distinct_fire_periods_proxy": 1
+    },
+    {
+      "month": "2025-05",
+      "sensor": "NOAA-20",
+      "product": "VIIRS_NOAA20_SP",
+      "region": "northern-california",
+      "class_label": "unlabeled",
+      "confidence_class": "high",
+      "provider_class": "3",
+      "observations": 1,
+      "distinct_fire_periods_proxy": 1
+    },
+    {
+      "month": "2025-06",
+      "sensor": "NOAA-20",
+      "product": "VIIRS_NOAA20_SP",
+      "region": "northern-california",
+      "class_label": "unlabeled",
+      "confidence_class": "nominal",
+      "provider_class": "0",
+      "observations": 180,
+      "distinct_fire_periods_proxy": 7
+    },
+    {
+      "month": "2025-06",
+      "sensor": "NOAA-20",
+      "product": "VIIRS_NOAA20_SP",
+      "region": "northern-california",
+      "class_label": "unlabeled",
+      "confidence_class": "low",
+      "provider_class": "0",
+      "observations": 36,
+      "distinct_fire_periods_proxy": 8
+    },
+    {
+      "month": "2025-06",
+      "sensor": "NOAA-20",
+      "product": "VIIRS_NOAA20_SP",
+      "region": "northern-california",
+      "class_label": "unlabeled",
+      "confidence_class": "high",
+      "provider_class": "0",
+      "observations": 23,
+      "distinct_fire_periods_proxy": 6
+    },
+    {
+      "month": "2025-07",
+      "sensor": "NOAA-20",
+      "product": "VIIRS_NOAA20_SP",
+      "region": "northern-california",
+      "class_label": "unlabeled",
+      "confidence_class": "nominal",
+      "provider_class": "0",
+      "observations": 127,
+      "distinct_fire_periods_proxy": 10
+    },
+    {
+      "month": "2025-07",
+      "sensor": "NOAA-20",
+      "product": "VIIRS_NOAA20_SP",
+      "region": "northern-california",
+      "class_label": "unlabeled",
+      "confidence_class": "low",
+      "provider_class": "0",
+      "observations": 46,
+      "distinct_fire_periods_proxy": 8
+    },
+    {
+      "month": "2025-07",
+      "sensor": "NOAA-20",
+      "product": "VIIRS_NOAA20_SP",
+      "region": "northern-california",
+      "class_label": "unlabeled",
+      "confidence_class": "high",
+      "provider_class": "0",
+      "observations": 12,
+      "distinct_fire_periods_proxy": 4
+    },
+    {
+      "month": "2025-08",
+      "sensor": "NOAA-20",
+      "product": "VIIRS_NOAA20_SP",
+      "region": "northern-california",
+      "class_label": "unlabeled",
+      "confidence_class": "nominal",
+      "provider_class": "0",
+      "observations": 263,
+      "distinct_fire_periods_proxy": 7
+    },
+    {
+      "month": "2025-08",
+      "sensor": "NOAA-20",
+      "product": "VIIRS_NOAA20_SP",
+      "region": "northern-california",
+      "class_label": "unlabeled",
+      "confidence_class": "low",
+      "provider_class": "0",
+      "observations": 23,
+      "distinct_fire_periods_proxy": 9
+    },
+    {
+      "month": "2025-08",
+      "sensor": "NOAA-20",
+      "product": "VIIRS_NOAA20_SP",
+      "region": "northern-california",
+      "class_label": "unlabeled",
+      "confidence_class": "high",
+      "provider_class": "0",
+      "observations": 30,
+      "distinct_fire_periods_proxy": 4
+    },
+    {
+      "month": "2025-09",
+      "sensor": "NOAA-20",
+      "product": "VIIRS_NOAA20_SP",
+      "region": "northern-california",
+      "class_label": "unlabeled",
+      "confidence_class": "nominal",
+      "provider_class": "0",
+      "observations": 229,
+      "distinct_fire_periods_proxy": 7
+    },
+    {
+      "month": "2025-09",
+      "sensor": "NOAA-20",
+      "product": "VIIRS_NOAA20_SP",
+      "region": "northern-california",
+      "class_label": "unlabeled",
+      "confidence_class": "high",
+      "provider_class": "0",
+      "observations": 19,
+      "distinct_fire_periods_proxy": 6
+    },
+    {
+      "month": "2025-09",
+      "sensor": "NOAA-20",
+      "product": "VIIRS_NOAA20_SP",
+      "region": "northern-california",
+      "class_label": "unlabeled",
+      "confidence_class": "low",
+      "provider_class": "0",
+      "observations": 31,
+      "distinct_fire_periods_proxy": 7
+    },
+    {
+      "month": "2025-10",
+      "sensor": "NOAA-20",
+      "product": "VIIRS_NOAA20_SP",
+      "region": "northern-california",
+      "class_label": "unlabeled",
+      "confidence_class": "nominal",
+      "provider_class": "0",
+      "observations": 524,
+      "distinct_fire_periods_proxy": 4
+    },
+    {
+      "month": "2025-10",
+      "sensor": "NOAA-20",
+      "product": "VIIRS_NOAA20_SP",
+      "region": "northern-california",
+      "class_label": "unlabeled",
+      "confidence_class": "high",
+      "provider_class": "0",
+      "observations": 47,
+      "distinct_fire_periods_proxy": 6
+    },
+    {
+      "month": "2025-10",
+      "sensor": "NOAA-20",
+      "product": "VIIRS_NOAA20_SP",
+      "region": "northern-california",
+      "class_label": "unlabeled",
+      "confidence_class": "low",
+      "provider_class": "0",
+      "observations": 27,
+      "distinct_fire_periods_proxy": 8
+    },
+    {
+      "month": "2025-11",
+      "sensor": "NOAA-20",
+      "product": "VIIRS_NOAA20_SP",
+      "region": "northern-california",
+      "class_label": "unlabeled",
+      "confidence_class": "nominal",
+      "provider_class": "0",
+      "observations": 13,
+      "distinct_fire_periods_proxy": 1
+    },
+    {
+      "month": "2025-11",
+      "sensor": "NOAA-20",
+      "product": "VIIRS_NOAA20_SP",
+      "region": "northern-california",
+      "class_label": "unlabeled",
+      "confidence_class": "low",
+      "provider_class": "0",
+      "observations": 1,
+      "distinct_fire_periods_proxy": 1
+    }
+  ],
+  "distinct_fire_periods_proxy": 27,
+  "period_definition": "Adjacent observation times separated by more than 24 hours; thermal-activity proxy, not independent fire events.",
+  "training_classes": {
+    "unlabeled": 1909,
+    "positive": null,
+    "negative": null
+  },
+  "observation_history_complete": true,
+  "margins_hours": 24,
+  "weather_history": "not_imported",
+  "baseline_history": "not_imported",
+  "ready_for_supervised_training": false,
+  "limitations": [
+    "No training labels or independent event IDs have been supplied.",
+    "Temporal activity periods do not prove event-separated evaluation is possible.",
+    "Sparse hotspot rows cannot prove satellite/cloud-free observation coverage."
+  ],
+  "mixed_product_rows": 0,
+  "normalization_policy": {
+    "invalid_frp": "reject",
+    "missing_frp": "allow",
+    "rejection_samples": 20
+  },
+  "normalizer_version": "firms-normalizer-v1"
+}

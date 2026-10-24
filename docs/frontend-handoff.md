@@ -142,15 +142,24 @@ URLs, paths and raw source manifests are removed/redacted, with bounded depth
 and sizes. `payload_redacted` indicates a changed projection. Saved canonical
 bytes remain untouched; `original_hash` refers to those bytes, **not** the public
 projection. `/verify` recomputes SHA-256 over the original stored bytes and reports
-`local_match` or `local_mismatch`. It does not verify external source/model files
-(`artifact_verification=not_performed`) or certify the scientific claims.
+`local_match` or `local_mismatch`. External source/model files are unchecked by
+default (`artifact_verification=not_performed`). Phase 5.2 adds opt-in
+`verify_artifacts=true` on alert detail and verification. This checks supported
+source/model files pinned in original evidence and returns `verified`, `mismatch`,
+`partial` or `unavailable`, with safe per-artifact IDs and reasons in
+`artifact_audit`. Missing files remain distinct from mismatches, and local hash
+results remain independent. No result certifies scientific claims.
+See [verification contract and limits](evidence-verification.md).
 
 Anchor states are `unanchored`, `anchor_pending`, `anchor_match`,
 `anchor_mismatch`, `anchor_unavailable`. Queued/submitted outbox rows are pending.
 Saved receipt metadata alone never establishes `anchor_match`: a trusted read-only
-chain adapter must retrieve and match the digest. No RPC adapter is implemented
-in this phase, so existing receipts report unavailable until Module 5 integrates
-one. Adapter outages/invalid responses stay unavailable, not a false mismatch.
+chain adapter must retrieve and match the digest. Phase 5.4 supplies a real
+read-only RPC adapter when chain configuration is enabled. It checks destination,
+receipt status, canonical block identity, confirmations and the alert key's digest.
+`AnchorView.alert_key` adds the opaque versioned contract identity. Missing keys,
+unconfigured historical destinations, outages, invalid responses and reorgs stay
+unavailable, not a false mismatch. API processes need no private signing key.
 Verification GETs cannot enqueue work, sign transactions or change evidence;
 all database-backed read routes enforce PostgreSQL read-only transactions.
 

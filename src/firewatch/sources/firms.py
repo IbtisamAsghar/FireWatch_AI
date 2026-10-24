@@ -143,9 +143,17 @@ class QuotaLedger:
         connection.execute(
             "CREATE TABLE IF NOT EXISTS cooldown (key_id TEXT PRIMARY KEY, until_time REAL)"
         )
+        connection.execute(
+            "CREATE TABLE IF NOT EXISTS reservation_state ("
+            "token TEXT PRIMARY KEY, key_id TEXT, usage_id INTEGER, completed_at REAL)"
+        )
+        connection.execute(
+            "CREATE TABLE IF NOT EXISTS provider_observation ("
+            "key_id TEXT PRIMARY KEY, observed_at REAL, units INTEGER)"
+        )
         return connection
 
-    def reserve(self, units: int, now: float) -> None:
+    def reserve(self, units: int, now: float) -> str:
         with closing(self._connect()) as connection, connection:
             connection.execute("BEGIN IMMEDIATE")
             connection.execute("DELETE FROM usage WHERE at <= ?", (now - 600,))
@@ -160,14 +168,73 @@ class QuotaLedger:
                 "SELECT COALESCE(SUM(units),0), MIN(at) FROM usage WHERE key_id=?",
                 (self.key_id,),
             ).fetchone()
+            observed = connection.execute(
+                "SELECT observed_at, units FROM provider_observation WHERE key_id=?",
+                (self.key_id,),
+            ).fetchone()
+            if observed and observed[0] > now - 600:
+                used += observed[1]
+                oldest = min(oldest, observed[0]) if oldest is not None else observed[0]
             if used + units > self.limit:
                 raise FirmsError(
                     "RATE_LIMITED",
                     retryable=True,
                     retry_after_seconds=max(1, (oldest or now) + 600 - now),
                 )
-            connection.execute("INSERT INTO usage VALUES (?,?,?)", (self.key_id, now, units))
+            cursor = connection.execute(
+                "INSERT INTO usage VALUES (?,?,?)", (self.key_id, now, units)
+            )
+            token = uuid4().hex
+            # SQLite may reuse a deleted rowid. A stale completion token must not
+            # settle a later request that happens to receive that same rowid.
+            connection.execute(
+                "DELETE FROM reservation_state WHERE usage_id=?", (cursor.lastrowid,)
+            )
+            connection.execute(
+                "INSERT INTO reservation_state VALUES (?,?,?,NULL)",
+                (token, self.key_id, cursor.lastrowid),
+            )
             connection.commit()
+            return token
+
+    def settle(self, token: str, now: float) -> None:
+        """Mark a fully received HTTP operation; timeouts remain reserved."""
+        with closing(self._connect()) as connection, connection:
+            connection.execute(
+                "UPDATE reservation_state SET completed_at=? WHERE token=? AND key_id=?",
+                (now, token, self.key_id),
+            )
+
+    def observe(self, used: int, started_at: float) -> None:
+        """Reconcile only completions preceding a fresh validated provider query.
+
+        In-flight, unknown legacy and later completions keep their full reservations.
+        A late response cannot replace a newer provider observation. The snapshot
+        itself retains a conservative ten-minute lifetime; no quota/cooldown is reset.
+        """
+        if type(used) is not int or used < 0:
+            raise ValueError("Invalid provider quota observation")
+        with closing(self._connect()) as connection, connection:
+            connection.execute("BEGIN IMMEDIATE")
+            previous = connection.execute(
+                "SELECT observed_at FROM provider_observation WHERE key_id=?", (self.key_id,)
+            ).fetchone()
+            if previous and started_at <= previous[0]:
+                return
+            connection.execute(
+                "DELETE FROM usage WHERE key_id=? AND rowid IN "
+                "(SELECT usage_id FROM reservation_state WHERE key_id=? "
+                "AND completed_at < ?)",
+                (self.key_id, self.key_id, started_at),
+            )
+            connection.execute(
+                "DELETE FROM reservation_state WHERE usage_id NOT IN (SELECT rowid FROM usage)"
+            )
+            connection.execute(
+                "INSERT INTO provider_observation VALUES (?,?,?) ON CONFLICT(key_id) "
+                "DO UPDATE SET observed_at=excluded.observed_at,units=excluded.units",
+                (self.key_id, started_at, used),
+            )
 
     def defer(self, until: float) -> None:
         with closing(self._connect()) as connection, connection:
@@ -318,8 +385,10 @@ class FirmsClient:
         deadline: float,
     ) -> _Response:
         units = 100 if kind == "quota" else 1000
-        self.ledger.reserve(units, self._now().timestamp())
+        reservation = self.ledger.reserve(units, self._now().timestamp())
         result = self._receive(url, deadline)
+        if result.complete and result.status is not None:
+            self.ledger.settle(reservation, self._now().timestamp())
         item: dict[str, Any] = {
             "kind": kind,
             "retrieved_at": self._now().isoformat(),
@@ -369,6 +438,7 @@ class FirmsClient:
         return result
 
     def _quota(self, folder: Path, manifest: dict[str, Any], deadline: float) -> None:
+        started_at = self._now().timestamp()
         response = self._exchange(
             "quota",
             f"{HOST}/mapserver/mapkey_status/?MAP_KEY={self._key.get_secret_value()}",
@@ -392,6 +462,7 @@ class FirmsClient:
         manifest["provider_quota_before"] = {"limit": limit, "used": used}
         if used + 1100 > min(self.policy.window_units, limit):
             raise FirmsError("RATE_LIMITED", retryable=True, retry_after_seconds=600)
+        self.ledger.observe(used, started_at)
 
     def _csv(self, body: bytes) -> tuple[list[str], list[dict[str, str]]]:
         return parse_firms_csv(body, max_rows=self.policy.max_rows)

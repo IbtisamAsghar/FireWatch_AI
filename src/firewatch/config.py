@@ -67,12 +67,25 @@ class Settings(BaseSettings):
     chain_id: int = Field(default=31337, gt=0)
     alert_registry_address: str = ""
     chain_private_key: SecretStr | None = None
+    chain_network_kind: Literal["local", "testnet", "mainnet"] = "local"
+    chain_local_rpc_hosts: list[str] = Field(
+        default_factory=lambda: ["127.0.0.1", "localhost", "::1"]
+    )
+    chain_confirmations: int = Field(default=2, ge=1, le=256)
+    chain_rpc_timeout_seconds: float = Field(default=3, ge=0.1, le=15)
+    chain_poll_seconds: int = Field(default=5, ge=1, le=60)
+    chain_recheck_seconds: int = Field(default=60, ge=1, le=3600)
+    chain_max_attempts: int = Field(default=20, ge=1, le=100)
+    chain_gas_limit: int = Field(default=100000, ge=50000, le=500000)
+    chain_max_gas_price_wei: int = Field(default=200000000000, ge=1)
     public_api_hostname: str = ""
     db_pool_size: int = Field(default=5, ge=1, le=20)
     db_max_overflow: int = Field(default=5, ge=0, le=20)
     db_pool_timeout_seconds: int = Field(default=10, ge=1, le=60)
     db_connect_timeout_seconds: int = Field(default=5, ge=1, le=30)
     db_statement_timeout_ms: int = Field(default=30000, ge=100, le=300000)
+    startup_timeout_seconds: float = Field(default=120, ge=1, le=600)
+    startup_retry_seconds: float = Field(default=1, ge=0.1, le=30)
 
     @field_validator("database_url")
     @classmethod
@@ -133,10 +146,17 @@ class Settings(BaseSettings):
             if url.scheme not in {"http", "https"} or not url.hostname:
                 raise ValueError("Enabled chain requires a valid HTTP(S) CHAIN_RPC_URL")
             key = self.chain_private_key.get_secret_value() if self.chain_private_key else ""
-            if not re.fullmatch(r"(?:0x)?[0-9a-fA-F]{64}", key):
-                raise ValueError("Enabled chain requires a 32-byte hexadecimal CHAIN_PRIVATE_KEY")
+            if key and not re.fullmatch(r"(?:0x)?[0-9a-fA-F]{64}", key):
+                raise ValueError("CHAIN_PRIVATE_KEY must be 32-byte hexadecimal when supplied")
             if not re.fullmatch(r"0x[0-9a-fA-F]{40}", self.alert_registry_address):
                 raise ValueError("Enabled chain requires a valid ALERT_REGISTRY_ADDRESS")
+            if int(self.alert_registry_address[2:], 16) == 0:
+                raise ValueError("Enabled chain requires a nonzero registry address")
+            if (
+                self.chain_network_kind == "local"
+                and url.hostname not in self.chain_local_rpc_hosts
+            ):
+                raise ValueError("Local chain RPC must use an explicitly allowed local hostname")
         return self
 
 

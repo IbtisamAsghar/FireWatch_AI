@@ -63,6 +63,12 @@ class ScopeQuery(DTO):
     run_id: UUID | None = None
 
 
+class VerificationQuery(ScopeQuery):
+    verify_artifacts: bool = Field(
+        default=False, description="Opt in to bounded, read-only local artifact checksum checks."
+    )
+
+
 class HotspotFilters(DTO):
     run_id: UUID
     priority: Priority | None = None
@@ -273,6 +279,7 @@ class ReplayView(RunContext):
 
 
 class AnchorView(DTO):
+    alert_key: str | None = None
     chain_id: int
     contract_address: str
     transaction_hash: str
@@ -280,6 +287,37 @@ class AnchorView(DTO):
     block_height: int | None
     confirmation_status: AnchorStatus
     network_kind: str
+
+
+class ArtifactCheck(DTO):
+    kind: Literal["source", "model"]
+    artifact_id: UUID
+    status: Literal["match", "mismatch", "unavailable"]
+    reason: Literal[
+        "checksum_match",
+        "checksum_mismatch",
+        "metadata_mismatch",
+        "missing_record",
+        "missing_file",
+        "unsafe_path",
+        "read_failed",
+        "size_limit",
+        "invalid_manifest",
+    ]
+
+
+class ArtifactAudit(DTO):
+    status: Literal["not_performed", "verified", "mismatch", "partial", "unavailable"]
+    reason: Literal[
+        "not_requested",
+        "completed",
+        "payload_mismatch",
+        "unsupported_payload",
+        "invalid_references",
+        "reference_limit",
+    ]
+    items: list[ArtifactCheck] = Field(default_factory=list)
+    scope: Literal["referenced_local_files"] = "referenced_local_files"
 
 
 class Verification(RunContext):
@@ -291,7 +329,19 @@ class Verification(RunContext):
         "unanchored", "anchor_pending", "anchor_match", "anchor_mismatch", "anchor_unavailable"
     ]
     anchors: list[AnchorView]
-    artifact_verification: Literal["not_performed"] = "not_performed"
+    artifact_verification: Literal[
+        "not_performed", "verified", "mismatch", "partial", "unavailable"
+    ] = "not_performed"
+    artifact_audit: ArtifactAudit = Field(
+        default_factory=lambda: ArtifactAudit(status="not_performed", reason="not_requested")
+    )
+    integrity_notice: str = (
+        "Local hashes detect changes relative to the saved digest; an attacker controlling "
+        "both can rewrite both. A matching independently anchored digest supplies a separate "
+        "comparison point. Local-chain anchoring is a demonstration, not independent public "
+        "notarization. Integrity does not prove a fire is real or a model is correct. "
+        "Artifact checks cover referenced local file bytes, not scientific validity or approval."
+    )
 
 
 class AlertView(RunContext):

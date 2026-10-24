@@ -22,9 +22,10 @@ dependencies = [
   "typer>=0.15,<1",
   "pyyaml>=6,<7",
   "numpy>=2,<3",
-  "pyarrow==21.0.0",
+  "pyarrow==23.0.1",
   "scikit-learn>=1.6,<2",
   "matplotlib>=3.10,<4",
+  "eth-account>=0.13.7,<0.14",
 ]
 
 [dependency-groups]

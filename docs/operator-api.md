@@ -187,3 +187,13 @@ HTTPS deployment and the dedicated workers are addressed in their later phases.
 
 Implementation references: [PostgreSQL advisory locks](https://www.postgresql.org/docs/16/explicit-locking.html#ADVISORY-LOCKS)
 and [Python log-record factories](https://docs.python.org/3.12/library/logging.html#logging.setLogRecordFactory).
+
+## Phase 5.4 anchor execution
+
+Anchor admission and refresh/replay admission now use independent queue-capacity
+buckets, each bounded by `MAX_JOB_QUEUE_DEPTH`. A chain backlog cannot stop
+pipeline admission or scheduled refreshes. The dedicated `firewatch anchor-worker`
+processes the outbox and synchronizes associated anchor-job progress. An operator
+can inspect safe details with `anchor-status --job-id UUID`; signed transaction
+bytes, payloads and private keys remain private. No GET submits chain work.
+See [delivery, retry and recovery](durable-anchoring.md).

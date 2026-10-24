@@ -49,3 +49,36 @@ Export selected completed runs with `firewatch export-pipeline-handoff --run-id 
 Use `firewatch verify-pipeline-handoff --path DIRECTORY --manifest-sha256 DIGEST`
 before transfer/use. Preserve immutable handoff and replay directories separately.
 See [Member 3 handoff](pipeline-handoff.md) for the reviewed local package receipt.
+
+## Evidence audits (Phase 5.2)
+
+Run `firewatch verify-alert --alert-id UUID --artifacts` for read-only payload and
+local artifact checks. Retain the original raw/replay source and approved model
+directories; missing files report unavailable or partial, never a false mismatch.
+Investigate mismatches without changing immutable alerts or substituting a new
+checksum. Restore the exact trusted files from backup to their configured roots,
+then repeat verification. Files outside allowed roots are deliberately unavailable.
+The CLI sends no chain requests; chain adapters and execution remain optional
+later work. Use `--payload-copy FILE` only on a separate retained or synthetic copy
+for tamper demonstrations. See [states, bounds and exit codes](evidence-verification.md).
+
+## Local contract acceptance (Phase 5.3)
+
+Run `python scripts/contract_tools.py install`, then `test` or `smoke`, from the
+repository root. The smoke creates and stops a disposable loopback Anvil with a
+fresh test-only signer. It does not configure application anchoring; receipt
+addresses are historical test identities. No default Anvil key or valuable funds
+are used. Follow [the registry guide](alert-registry.md) for wire encoding,
+immutable-writer recovery limits and toolchain pins. Durable outbox processing,
+RPC adapters and receipt/confirmation handling remain Phase 5.4.
+
+## Durable signer and chain verification (Phase 5.4)
+
+Run `firewatch anchor-worker` separately from the scoring worker after configuring
+a registry and its dedicated signer. The API can omit the key. Use
+`firewatch anchor-status --job-id UUID` for safe delivery details and
+`retry-anchor --outbox-id UUID` after correcting eligible failures. Never reset
+signed transaction metadata, skip a nonce or share the signer with external tools.
+Confirmed anchors remain monitored for reorgs; outages do not alter saved evidence.
+See [the complete operating guide](durable-anchoring.md) for spending/confirmation
+policies, ambiguous broadcasts, nonce conflicts and recovery boundaries.

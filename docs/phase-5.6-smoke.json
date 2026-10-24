@@ -1,0 +1,118 @@
+{
+  "actionlint_version": "1.7.12",
+  "actual_stack_first_boot_verified": false,
+  "compose_validator_sha256": "91b1492f0a923427651e2b955739d732ac36b8191193bf4799e62f3e3525c4cd",
+  "compose_validator_version": "5.6.1",
+  "core_and_all_optional_profiles_validate": true,
+  "dependency_versions_changed": false,
+  "development_packages": 88,
+  "docker_cli_available": false,
+  "docker_engine_execution": false,
+  "docker_runtime_acceptance_complete": false,
+  "executed_at": "2026-10-24T12:10:15.689802+00:00",
+  "focused_deployment_tests": 17,
+  "full_offline_regression": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 1,
+    "tests": 1261,
+    "time": 475.172
+  },
+  "hosted_ci_execution": false,
+  "images": {
+    "anvil": "ghcr.io/foundry-rs/foundry:v1.8.6@sha256:4a16a86f41d30418fbdca47ce2868121bbb0aeaa0a34bde2dd1e2911c4be2464",
+    "caddy": "caddy:2.11.7-alpine@sha256:eb4d35b7452d1ab6171fbdbe8d9275b2301dad6dad92115d91e19fb9b24d510f",
+    "postgres": "postgres:16.15-bookworm@sha256:d81f7b51697014367236d07ec58b54153fc28f828b72bf247fe5c7487520bcb0",
+    "python": "python:3.12-slim-bookworm@sha256:6a0e06f5ba0b373d051aabd3fffb9b873f27f9a2a3a14bcbe37dee6f0e3bbc70"
+  },
+  "implementation_complete": true,
+  "installed_wheel_entrypoints": true,
+  "installed_wheel_unavailable_database_gate": true,
+  "mypy_source_files": 106,
+  "native_application_database_used": false,
+  "native_env_modified": false,
+  "pending": [
+    "Run scripts.verify_compose on a Linux Docker engine to verify boot, role/mount isolation, retained volumes and optional services.",
+    "Hosted CI has not been triggered from this workspace."
+  ],
+  "private_compose_env_generated": true,
+  "provider_calls": false,
+  "real_model_approval_or_activation_changed": false,
+  "ruff_format_passed": true,
+  "runtime_packages": 71,
+  "schema_version": "phase-5.6-local-validation-v1",
+  "secret_scan_git_findings": 0,
+  "secret_scan_worktree_findings": 0,
+  "source_and_wheel_build": true,
+  "source_hash_encoding": "UTF-8 with LF newlines; receipt excludes itself",
+  "source_sha256": [
+    {
+      "path": "Dockerfile",
+      "sha256": "d64d06c466e24198e69d017d541f7758d41d59e161a231692852cbefaa3baf5e"
+    },
+    {
+      "path": "compose.yaml",
+      "sha256": "96def4b9941b082299023a24ce6e07105652f1e6c3638f5f818b38689a4beb96"
+    },
+    {
+      "path": ".env.compose.example",
+      "sha256": "a9c97d3ed6ce95a16c6c565d2edcbcf543dfd9f47cb78e1adb796ae6d5e97d37"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "5d900700bd90682c6958349053131d30086659c4141d536478f549f776daf678"
+    },
+    {
+      "path": "deploy/postgres-init.sh",
+      "sha256": "3e3cc3556ce674810101062903084daf28626ed3b0bf49b156eb63f8a4f7f206"
+    },
+    {
+      "path": "deploy/Caddyfile.local",
+      "sha256": "b944e24298e4146ff45de98ee76eb025c3ee9eada744add59b8f1d9b5545a6d1"
+    },
+    {
+      "path": "src/firewatch/config.py",
+      "sha256": "1f87d1737059bed60f107b651953479d513ad7f57db1eac9a50bfc74508b7470"
+    },
+    {
+      "path": "src/firewatch/runtime.py",
+      "sha256": "362bbe1908b686a91f37853b18d948e585179708fe79cd2f4383dde9e643bbb5"
+    },
+    {
+      "path": "src/firewatch/deployment.py",
+      "sha256": "87ff3b7ba0d4f1c01efa99c9329bf9b274622167cc78f073bb6f0d2fb0665182"
+    },
+    {
+      "path": "scripts/compose_stack.py",
+      "sha256": "58fc3e9e10396ec7c97760ce9b37fffe208d54e2530df5d656fb9acce327279f"
+    },
+    {
+      "path": "scripts/verify_compose.py",
+      "sha256": "17357970289e3651e6ef4ad47065413899a71f6bc34b89c46ab29284a7cbf18b"
+    },
+    {
+      "path": "scripts/check_scaffold.py",
+      "sha256": "2bfb9ca70c45c7b8d150172f310df54c04dfa8b4c9371163eca86f61ff91ff32"
+    },
+    {
+      "path": "tests/conftest.py",
+      "sha256": "1b1e9b33096d5a63c6307dfb6c293bbd47360994d8367f54f85b7d47273e5085"
+    },
+    {
+      "path": "tests/unit/test_container_runtime.py",
+      "sha256": "a53b238ea51e97059a235d9cbc9fc39e83bc728c405451c5bd6a10b6dfba154a"
+    },
+    {
+      "path": "tests/unit/test_compose_release.py",
+      "sha256": "6cd6e33a6a4c0c458aa29d9ebe475798143c2c788e01690585376505bda2b268"
+    },
+    {
+      "path": "tests/unit/test_model_transfer.py",
+      "sha256": "f745ddba1e932af55ce397fb28f9814dd8a01f1f30c00244b1f7959181c36829"
+    },
+    {
+      "path": "tests/integration/test_runtime_startup.py",
+      "sha256": "aa965c698cd77e60d8f825d5b18a94467aaeb69291ed22a1609f2218d2859900"
+    }
+  ]
+}

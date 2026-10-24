@@ -130,7 +130,8 @@ features and optional alert. Lists, GeoJSON and summary use the same predicates.
 Read sessions issue `SET TRANSACTION READ ONLY`; no GET publishes a run or job.
 Evidence API payloads are credential-safe projections, while SHA-256 verification
 always uses the immutable original canonical bytes. Source-file/artifact verification
-is explicitly not performed by the alert verification endpoint.
+is opt-in as described in the Phase 5.2 [verification contract](evidence-verification.md);
+default reads remain payload-only.
 
 ## Phase 1.5 operator admission: jobs-v1
 

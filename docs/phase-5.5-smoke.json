@@ -1,0 +1,157 @@
+{
+  "actionlint_version": "1.7.12",
+  "application_database_used": false,
+  "application_env_modified": false,
+  "build_metadata_export": true,
+  "coverage": {
+    "branch-rate": "0.7812",
+    "line-rate": "0.8918",
+    "lines-covered": "10239",
+    "lines-valid": "11481"
+  },
+  "development_packages": 88,
+  "docker_available_locally": false,
+  "docker_execution_verified": false,
+  "executed_at": "2026-10-24T09:49:15.473014+00:00",
+  "final_collection": 1244,
+  "final_collection_includes_one_windows_symlink_skip": true,
+  "frontend_handoff_export": true,
+  "full_regression_precedes_three_opt_in_tests_and_one_final_model_variant": true,
+  "gitleaks_version": "8.30.1",
+  "hosted_ci_executed": false,
+  "ignored_vulnerability_ids": [],
+  "image_published": false,
+  "installed_wheel_http_boot_liveness_openapi_and_failed_db_readiness": true,
+  "isolated_security_tool_packages": 29,
+  "limitations": [
+    "Hosted Linux container build and CI execution remain release gates.",
+    "Live providers are deliberately not called by standard acceptance.",
+    "Existing Windows real-symlink test requires developer-mode privileges.",
+    "Existing Starlette/httpx TestClient deprecation warning remains."
+  ],
+  "live_provider_smoke_executed": false,
+  "model_approval_or_activation_changed": false,
+  "offline_unit_and_failure_and_final_suites": true,
+  "only_existing_package_version_changed": {
+    "pyarrow": {
+      "from": "21.0.0",
+      "to": "23.0.1"
+    }
+  },
+  "openapi_operations": 18,
+  "pip_audit_version": "2.10.1",
+  "public_build_metadata_sha256": "6f281603f2218e8dca9e7d9d947159181f60a6be1ed4c7168f9c7648229b5ede",
+  "remaining_dependency_advisories": 0,
+  "ruff_and_format": true,
+  "runtime_dependency_consistency": true,
+  "runtime_only_installed_wheel": true,
+  "runtime_packages": 71,
+  "schema_version": "phase-5.5-smoke-v1",
+  "secret_scan_history_findings": 0,
+  "secret_scan_worktree_findings": 0,
+  "secret_scanner_negative_control_detected": true,
+  "source_hash_encoding": "UTF-8 text with LF newlines; source receipt excludes itself",
+  "source_sha256": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "0304757314815ceb811f37551ec51dd91d882abf8a19e61ac5a6ce9e9e809097"
+    },
+    {
+      "path": ".github/workflows/live-provider-smoke.yml",
+      "sha256": "2010f52cb0cf72ef772e5d0b2ed9a3dc3eb98278b96573bb2b0a90f3117eea37"
+    },
+    {
+      "path": ".gitleaks.toml",
+      "sha256": "c280952864a416c168a26fe38a6e9db81f3e2523c7ffd5974cb57b92d8aa48eb"
+    },
+    {
+      "path": "Dockerfile",
+      "sha256": "f06b9f88cbdcc0bfb4e58447309bf9e2331afd8a6f03024964f1b3c44d8a141b"
+    },
+    {
+      "path": "requirements.lock",
+      "sha256": "2812234646443da0338166c62dd09c07e91ec97dfc1b020b26949ea0bc01c7e8"
+    },
+    {
+      "path": "requirements-dev.lock",
+      "sha256": "e8cbc825af7efc133d2e35a1caaa1fbd0a43303656c107059329140839bf6146"
+    },
+    {
+      "path": "requirements-security.lock",
+      "sha256": "285a2f3dd54e941cfac0e00d5e1e859fee8320e10b57f9312f1bed12a4ecade0"
+    },
+    {
+      "path": "scripts/check_locks.py",
+      "sha256": "4235ff51a15fe9b2499b37d707e4f32ec5266d59888ef8889dd8f47786cc3457"
+    },
+    {
+      "path": "scripts/container_probe.py",
+      "sha256": "c666499622ab535ec0262e551f672880ac25fc37dada13db4489a8b79b99ff33"
+    },
+    {
+      "path": "scripts/live_provider_smoke.py",
+      "sha256": "156347455802990e67ec3b853614bb5bb3140410434d60ac2a5f6312c2823008"
+    },
+    {
+      "path": "scripts/release_metadata.py",
+      "sha256": "e85e87358924040106d3dce62ab82a2dcb68d12195f27f79a2433283c807e1d5"
+    },
+    {
+      "path": "scripts/scan_secrets.py",
+      "sha256": "937d68e50df29e273b6974fdacc5311cf49d6fb1bc0c0bbe5654b810659acdc0"
+    },
+    {
+      "path": "tests/conftest.py",
+      "sha256": "fdb9de27e67224fbfe014412b504bb1c810b609b81f0421b54b5f9fe10e0f2ca"
+    },
+    {
+      "path": "tests/integration/test_pipeline_end_to_end.py",
+      "sha256": "320775c5efeb35ca2e85073cbbcb8cd5f96046c96f45d8e50fd65823cb84e6c1"
+    },
+    {
+      "path": "tests/unit/test_live_provider_opt_in.py",
+      "sha256": "0fc533d9a82838374a58d4389c80a68b91ce268471af43d57ee53be535da2f24"
+    },
+    {
+      "path": "tests/unit/test_openapi_release_contract.py",
+      "sha256": "0b3b53801f8d61ad4ca8048b9f59b9bb74204b310b792101202f73b8d799b575"
+    },
+    {
+      "path": "tests/fixtures/openapi-v1.json",
+      "sha256": "3cdc4eca4db97f72523596da622f15a82e4992ada74bc94b205ced4b027946ac"
+    }
+  ],
+  "source_wheel_build": true,
+  "strict_mypy_source_files": 104,
+  "test_reports": {
+    "failure-path-offline-results.xml": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 75,
+      "time": 39.971
+    },
+    "phase55-final-results.xml": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 7,
+      "time": 4.114
+    },
+    "test-results.xml": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 1,
+      "tests": 1240,
+      "time": 1767.562
+    },
+    "unit-offline-results.xml": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 1,
+      "tests": 895,
+      "time": 57.462
+    }
+  },
+  "workflow_validation": true
+}

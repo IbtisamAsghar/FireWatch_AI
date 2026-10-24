@@ -1,0 +1,62 @@
+[
+  {
+    "snapshot_id": "856b94c3-bd70-5bbd-9e20-9f7624072e9d",
+    "values": {
+      "temperature_c": 33.6,
+      "humidity_pct": 11.0,
+      "wind_ms": 4.59,
+      "gust_ms": 6.9,
+      "precipitation_24h_mm": 0.0
+    }
+  },
+  {
+    "snapshot_id": "3829da5a-bd7e-5158-8bb5-e38e93089930",
+    "values": {
+      "temperature_c": 32.1,
+      "humidity_pct": 10.0,
+      "wind_ms": 5.39,
+      "gust_ms": 9.0,
+      "precipitation_24h_mm": 0.0
+    }
+  },
+  {
+    "snapshot_id": "f7a827ef-d015-5797-b492-98c5fcfeaaae",
+    "values": {
+      "temperature_c": 37.6,
+      "humidity_pct": 9.0,
+      "wind_ms": 5.8,
+      "gust_ms": 6.8,
+      "precipitation_24h_mm": 0.0
+    }
+  },
+  {
+    "snapshot_id": "022a84f5-0e8d-517a-8ee6-cfdab8988fa8",
+    "values": {
+      "temperature_c": 37.3,
+      "humidity_pct": 19.0,
+      "wind_ms": 4.24,
+      "gust_ms": 5.6,
+      "precipitation_24h_mm": 0.0
+    }
+  },
+  {
+    "snapshot_id": "e75c6f2a-cb67-52a6-b73d-b0bdcf21a9a8",
+    "values": {
+      "temperature_c": 36.3,
+      "humidity_pct": 21.0,
+      "wind_ms": 3.83,
+      "gust_ms": 4.9,
+      "precipitation_24h_mm": 0.0
+    }
+  },
+  {
+    "snapshot_id": "62f92adb-671f-5361-b457-26ca91699828",
+    "values": {
+      "temperature_c": 38.1,
+      "humidity_pct": 11.0,
+      "wind_ms": 4.5,
+      "gust_ms": 5.9,
+      "precipitation_24h_mm": 0.0
+    }
+  }
+]

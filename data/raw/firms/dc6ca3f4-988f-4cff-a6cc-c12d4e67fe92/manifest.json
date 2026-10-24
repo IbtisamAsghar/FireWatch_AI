@@ -1,0 +1,41 @@
+{
+  "schema_version": "firms-request-manifest-v1",
+  "batch_id": "dc6ca3f4-988f-4cff-a6cc-c12d4e67fe92",
+  "provider": "firms",
+  "host": "https://firms.modaps.eosdis.nasa.gov",
+  "endpoint": "/api/area/csv/{MAP_KEY}/{PRODUCT}/{BBOX}/{DAYS}/{DATE}",
+  "request": {
+    "product": "VIIRS_NOAA20_SP",
+    "bbox": {
+      "west": -122.5,
+      "south": 38.5,
+      "east": -120.0,
+      "north": 40.5
+    },
+    "start_date": "2025-05-10",
+    "days": 5
+  },
+  "responses": [
+    {
+      "kind": "quota",
+      "retrieved_at": "2026-10-24T14:07:20.070644+00:00",
+      "http_status": 200,
+      "reserved_transaction_units": 100,
+      "complete": true,
+      "filename": "response-01.bin",
+      "sha256": "c6ec6f5f898d91736ded7c134bd998fa86fa594f13646eedf8605e0f0ef2b55a",
+      "byte_count": 97
+    }
+  ],
+  "status": "failed",
+  "attribution_reference": "https://www.earthdata.nasa.gov/data/tools/firms",
+  "transaction_accounting": "Estimated reservations; provider charges may differ.",
+  "attempts": 1,
+  "provider_quota_before": {
+    "limit": 5000,
+    "used": 30
+  },
+  "error_code": "RATE_LIMITED",
+  "retryable": true,
+  "retry_after_seconds": 215.57183408737183
+}

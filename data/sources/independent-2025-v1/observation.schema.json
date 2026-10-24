@@ -1,0 +1,175 @@
+{
+  "$defs": {
+    "Confidence": {
+      "enum": [
+        "low",
+        "nominal",
+        "high",
+        "unknown"
+      ],
+      "title": "Confidence",
+      "type": "string"
+    },
+    "DayNight": {
+      "enum": [
+        "D",
+        "N"
+      ],
+      "title": "DayNight",
+      "type": "string"
+    },
+    "JsonValue": {},
+    "Product": {
+      "enum": [
+        "VIIRS_NOAA20_NRT",
+        "VIIRS_NOAA21_NRT",
+        "VIIRS_NOAA20_SP",
+        "VIIRS_NOAA21_SP"
+      ],
+      "title": "Product",
+      "type": "string"
+    },
+    "Sensor": {
+      "enum": [
+        "NOAA-20",
+        "NOAA-21"
+      ],
+      "title": "Sensor",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "product": {
+      "$ref": "#/$defs/Product"
+    },
+    "sensor": {
+      "$ref": "#/$defs/Sensor"
+    },
+    "latitude": {
+      "maximum": 90,
+      "minimum": -90,
+      "title": "Latitude",
+      "type": "number"
+    },
+    "longitude": {
+      "maximum": 180,
+      "minimum": -180,
+      "title": "Longitude",
+      "type": "number"
+    },
+    "acquired_at": {
+      "format": "date-time",
+      "title": "Acquired At",
+      "type": "string"
+    },
+    "frp_mw": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Frp Mw"
+    },
+    "brightness_k": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Brightness K"
+    },
+    "confidence_raw": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Confidence Raw"
+    },
+    "confidence": {
+      "$ref": "#/$defs/Confidence",
+      "default": "unknown"
+    },
+    "daynight": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/DayNight"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "scan": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Scan"
+    },
+    "track": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Track"
+    },
+    "raw_values": {
+      "additionalProperties": {
+        "$ref": "#/$defs/JsonValue"
+      },
+      "title": "Raw Values",
+      "type": "object"
+    },
+    "quality_flags": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Quality Flags",
+      "type": "array"
+    },
+    "dedup_key": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Dedup Key",
+      "type": "string"
+    }
+  },
+  "required": [
+    "product",
+    "sensor",
+    "latitude",
+    "longitude",
+    "acquired_at",
+    "dedup_key"
+  ],
+  "title": "DetectionInput",
+  "type": "object"
+}

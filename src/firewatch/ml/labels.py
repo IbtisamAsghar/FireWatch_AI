@@ -80,7 +80,9 @@ class DatasetPeriod(DTO):
 
 
 class DatasetDesign(DTO):
-    schema_version: Literal["target-dataset-design-v1"] = "target-dataset-design-v1"
+    schema_version: Literal["target-dataset-design-v1", "target-dataset-design-2025-holdout-v1"] = (
+        "target-dataset-design-v1"
+    )
     target_spec_sha256: Digest
     region: Literal["northern-california"] = "northern-california"
     bbox: BoundingBox = Field(
@@ -89,7 +91,9 @@ class DatasetDesign(DTO):
     periods: Annotated[list[DatasetPeriod], Field(min_length=1, max_length=10)]
     feature_lookback_hours: Literal[24] = 24
     reference_years: tuple[Literal[2010], Literal[2019]] = (2010, 2019)
-    split_policy: Literal["deferred_to_phase_4_2"] = "deferred_to_phase_4_2"
+    split_policy: Literal["deferred_to_phase_4_2", "historical-2025-independent-holdout-v1"] = (
+        "deferred_to_phase_4_2"
+    )
     final_test_access: Literal["forbidden_during_target_design"] = "forbidden_during_target_design"
 
     @model_validator(mode="after")
@@ -98,9 +102,12 @@ class DatasetDesign(DTO):
             raise ValueError("Changed study bbox requires a reviewed new dataset design")
         if self.target_spec_sha256 != TargetSpec().sha256:
             raise ValueError("Dataset design is not bound to the frozen target")
-        expected = [
-            (datetime(y, 5, 1, tzinfo=UTC), datetime(y, 11, 1, tzinfo=UTC)) for y in (2022, 2024)
-        ]
+        extended = self.schema_version == "target-dataset-design-2025-holdout-v1"
+        policy = "historical-2025-independent-holdout-v1" if extended else "deferred_to_phase_4_2"
+        if self.split_policy != policy:
+            raise ValueError("Dataset version and frozen split policy must agree")
+        years = (2022, 2024, 2025) if extended else (2022, 2024)
+        expected = [(datetime(y, 5, 1, tzinfo=UTC), datetime(y, 11, 1, tzinfo=UTC)) for y in years]
         if [(p.start, p.end) for p in self.periods] != expected:
             raise ValueError("Changed season design requires a reviewed new design version")
         return self

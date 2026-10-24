@@ -1,0 +1,11 @@
+asset_ids:
+- 8211fcd7-365e-5112-a9be-4e857abd3a24
+- d549f799-f10c-5ee0-9442-0bd21edaa94e
+bundle_sha256: 2a3c239f79a15f08a0723ec11071394f4b8b8f306a1bec17a92a46e59d013944
+feature_version: features-v1
+id: norcal-ml-weather-v1
+name: Real northern California hotspots, weather and climate context, 26 July 2024
+region_name: northern-california
+scorer_version: forest-independent-2025-v2
+window_end: '2024-07-26T00:00:00Z'
+window_start: '2024-07-25T00:00:00Z'

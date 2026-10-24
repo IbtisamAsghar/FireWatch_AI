@@ -1,0 +1,86 @@
+{
+  "schema_version": "local-real-backend-readiness-v1",
+  "verified_at": "2026-10-24T17:12:51.020843+00:00",
+  "api_base_url": "http://127.0.0.1:8000",
+  "data_kind": "real",
+  "run_id": "b3f9c88e-d4e2-501b-85b1-8fea26048fb4",
+  "mode": "replay",
+  "hotspots": 6,
+  "evidence_records_verified": 0,
+  "real_weather_and_climate_on_all_six_hotspots": true,
+  "counts": {
+    "satellite_observations": 19771,
+    "weather_records": 288,
+    "climate_baselines": 48,
+    "registered_models": 1
+  },
+  "current_scorer": {
+    "schema_version": "api-v1",
+    "research_notice": "Research and decision-support prototype only. Satellite thermal anomalies and model priority scores can be wrong or incomplete. Do not use FireWatch AI for emergency response, preservation of life, or protection of property. Confirm important events with official authorities and operational fire services.",
+    "scorer_version": "forest-independent-2025-v2",
+    "score_kind": "model_score",
+    "feature_version": "features-v1",
+    "model_id": "141ded25-65ce-40d6-a691-43e9411b9dcb",
+    "status": "ready",
+    "artifact_required": true,
+    "artifact_ready": true,
+    "scoring_available": true,
+    "probability_supported": false,
+    "limitations": [
+      "Satellite-observed strengthening is a research proxy, not physical fire severity.",
+      "Priority categories remain provisional; approval does not establish physical severity."
+    ]
+  },
+  "model_trained": true,
+  "model_release_gates_passed": true,
+  "model_approved": true,
+  "model_activated": true,
+  "independent_review_pending": false,
+  "independent_test_rows": 811,
+  "independent_test_positive_rows": 47,
+  "ranking_average_precision": {
+    "baseline-v1": 0.05074601798118262,
+    "forest": 0.10970080328308784,
+    "forest_no_climate": 0.1085410536379185,
+    "forest_no_weather_climate": 0.11137005122272378,
+    "logistic": 0.13934862851598329,
+    "weighted-baseline-v1": 0.05559405583036306
+  },
+  "full_regression_passed": 1273,
+  "full_regression_skipped": 1,
+  "live_ingestion_enabled": false,
+  "production_deployed": false,
+  "remaining_requirements": [
+    "Separate live NRT generalization review before live ML ingestion",
+    "Production deployment, HTTPS and backup/restore acceptance"
+  ],
+  "baseline_run_id": "63c1b8df-4f31-544d-9691-16f8ef39f9bf",
+  "independent_review_source": "Talha confirmed review and explicitly approved historical replay with documented limitations in this chat.",
+  "registry_release": {
+    "model_id": "141ded25-65ce-40d6-a691-43e9411b9dcb",
+    "version": "forest-independent-2025-v2",
+    "reviewer": "Talha",
+    "approval_event": "d51e77a3-8151-42ae-93c0-e30e8d8aa62d",
+    "activation_revision": 1,
+    "artifact_path": "releases/forest-independent-2025-v2/40506f4ac97c0b75522afd7b16a7d0d9c19f9ebb33affe8f2c9484c493e15b51/bundle",
+    "artifact_sha256": "40506f4ac97c0b75522afd7b16a7d0d9c19f9ebb33affe8f2c9484c493e15b51",
+    "managed_release_sha256": "cadf17776446ca5e577a9724f3e44a520c3ba423ac6b074eec7fc13e1df3df0f",
+    "scope": {
+      "bbox": {
+        "east": -120.0,
+        "west": -122.5,
+        "north": 40.5,
+        "south": 38.5
+      },
+      "modes": [
+        "replay"
+      ],
+      "region": "northern-california",
+      "target_spec_sha256": "30e9f3b1ea4c12b7af465c959c4c97140aeb0de171ce6c9b894ef69c3c23393f"
+    }
+  },
+  "operator_authentication_checked": true,
+  "worker_execution_checked": true,
+  "idempotency_checked": true,
+  "artifact_verification": "no_alerts_emitted"
+}

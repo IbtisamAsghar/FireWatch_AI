@@ -10,3 +10,12 @@
 .env.example text eol=lf
 .gitignore text eol=lf
 .dockerignore text eol=lf
+
+# Published evidence/model hashes bind exact bytes, including line endings.
+data/** -text -whitespace
+models/** -text -whitespace
+artifacts/** -text -whitespace
+dist/** -text -whitespace
+output/** -text -whitespace
+.local/readiness/** -text -whitespace
+.local/model-training/*.log -text -whitespace

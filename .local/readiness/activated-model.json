@@ -1,0 +1,17 @@
+{
+  "schema_version": "api-v1",
+  "research_notice": "Research and decision-support prototype only. Satellite thermal anomalies and model priority scores can be wrong or incomplete. Do not use FireWatch AI for emergency response, preservation of life, or protection of property. Confirm important events with official authorities and operational fire services.",
+  "scorer_version": "forest-independent-2025-v2",
+  "score_kind": "model_score",
+  "feature_version": "features-v1",
+  "model_id": "141ded25-65ce-40d6-a691-43e9411b9dcb",
+  "status": "ready",
+  "artifact_required": true,
+  "artifact_ready": true,
+  "scoring_available": true,
+  "probability_supported": false,
+  "limitations": [
+    "Satellite-observed strengthening is a research proxy, not physical fire severity.",
+    "Priority categories remain provisional; approval does not establish physical severity."
+  ]
+}

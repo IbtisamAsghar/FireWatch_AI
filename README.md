@@ -265,3 +265,70 @@ Alert and optional anchor-outbox publication share one transaction; no chain
 access is needed. Existing alerts and already-admitted runs keep their original
 encoding. See [encoding and compatibility](docs/canonical-evidence.md) and
 [acceptance](docs/phase-5.1-checklist.md).
+
+## Evidence verification and artifact audit (Phase 5.2)
+
+Alert detail and `/alerts/{alert_id}/verify` support opt-in
+`verify_artifacts=true` to check the exact source/model files pinned in saved
+evidence. Payload, artifact and optional anchor results remain independent;
+missing files and RPC outages are distinct from checksum mismatches.
+`firewatch verify-alert --alert-id UUID --artifacts` provides a read-only CLI;
+`--payload-copy FILE` demonstrates tampering without changing saved evidence.
+See [verification and limits](docs/evidence-verification.md) and
+[acceptance](docs/phase-5.2-checklist.md). No chain execution or model activation
+is added.
+
+## Optional Solidity registry (Phase 5.3)
+
+The append-only `AlertRegistry` accepts exact SHA-256 commitments from one
+immutable writer, rejects conflicting overwrites and makes identical retries
+idempotent. Native checksum-pinned Forge tests and a disposable loopback Anvil
+deployment are available through `python scripts/contract_tools.py install`,
+`test` and `smoke`. See [contract tooling](contracts/README.md),
+[wire encoding and deployment](docs/alert-registry.md), and
+[acceptance](docs/phase-5.3-checklist.md). The local demonstration does not enable
+application anchoring or provide independent public notarization; durable
+submission and RPC integration remain Phase 5.4.
+
+## Durable anchoring (Phase 5.4)
+
+`firewatch anchor-worker` runs a separate PostgreSQL-serialized signer. It commits
+transaction bytes/hash before broadcast, recovers the same identity after crashes,
+tracks canonical receipts/confirmations and monitors reorgs. `anchor-status`
+reports safe progress by job/outbox ID; `retry-anchor` safely requeues eligible
+failures. API verification now performs real read-only chain checks without
+requiring the API process to hold a signing key. Chain and pipeline admission
+have independent queue capacity. See [configuration and recovery](docs/durable-anchoring.md)
+and [acceptance](docs/phase-5.4-checklist.md). Local `.env` remains chain-disabled
+unless explicitly configured; no public-chain deployment or ML activation is implied.
+
+## CI and integration quality (Phase 5.5)
+
+Standard CI runs without provider keys and blocks accidental external network
+access during pytest. Full pipeline tests now reach the frontend API and evidence
+verification with cached/missing enrichment and a deterministic synthetic model.
+Release-tag/PR checks add dependency advisories, redacted Git/worktree secret scans,
+a non-root Linux container build, retained test/coverage reports and public build
+metadata. PyArrow is updated to the fixed 23.0.1 release. Live provider checks are
+separate and explicitly opt-in. See [workflow and reproduction](docs/ci-and-integration.md)
+and [acceptance and validation limits](docs/phase-5.5-checklist.md).
+
+## Local full-stack containers (Phase 5.6)
+
+With Docker running Linux containers and Compose installed, use the existing
+Python environment from the repository root:
+
+```powershell
+.\.venv\Scripts\python.exe -m scripts.compose_stack init
+.\.venv\Scripts\python.exe -m scripts.compose_stack up --build
+.\.venv\Scripts\python.exe -m scripts.compose_stack status
+```
+
+Open `http://127.0.0.1:8000/docs`. The helper creates separate protected
+`.env.compose` credentials, applies release migrations/seeding, and starts
+PostgreSQL/API/worker with persistent storage and health checks. Native `.env`
+and database remain separate. No synthetic observations are loaded; regions
+remain disabled until deliberately enabled for real-data ingestion.
+`python -m scripts.compose_stack down` preserves volumes. See
+[startup, real-data use, artifact transfer and optional services](docs/container-stack.md)
+and [verification limits](docs/phase-5.6-checklist.md).

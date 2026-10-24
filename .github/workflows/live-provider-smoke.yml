@@ -1,0 +1,36 @@
+name: Manual live provider smoke
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_live_calls:
+        description: Authorize bounded FIRMS and Open-Meteo requests
+        required: true
+        default: false
+        type: boolean
+permissions:
+  contents: read
+jobs:
+  live-provider:
+    if: inputs.confirm_live_calls
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: live-provider-smoke
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install hashed runtime and package
+        run: |
+          python -m pip install --require-hashes -r requirements-dev.lock
+          python -m pip install . --no-deps --no-build-isolation
+      - name: Explicit live requests
+        env:
+          FIRMS_MAP_KEY: ${{ secrets.FIRMS_MAP_KEY }}
+        run: python -m scripts.live_provider_smoke --live
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: firewatch-live-provider-status
+          path: artifacts/live-provider-smoke.json
+          if-no-files-found: warn

@@ -61,6 +61,11 @@ def enqueue(
                 select(func.count())
                 .select_from(Job)
                 .where(Job.status.in_([JobStatus.QUEUED, JobStatus.RUNNING]))
+                .where(
+                    Job.type == JobType.ANCHOR
+                    if kind == JobType.ANCHOR
+                    else Job.type.in_([JobType.REFRESH, JobType.REPLAY])
+                )
             )
             or 0
         )

@@ -2,7 +2,8 @@ name: Repository checks
 on:
   pull_request:
   push:
-    branches: [main, development, 'codex/**']
+    branches: [main, development, devtalha, 'codex/**']
+    tags: ['v*']
   workflow_dispatch:
 permissions:
   contents: read
@@ -10,6 +11,98 @@ concurrency:
   group: repository-checks-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
+  security:
+    name: dependency-and-secret-scanning
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install isolated hashed security tooling
+        run: python -m pip install --require-hashes -r requirements-security.lock
+      - name: Audit application and development dependency lock
+        run: |
+          mkdir -p artifacts/security
+          python -m pip_audit -r requirements-dev.lock --disable-pip --no-deps --format json --output artifacts/security/dependencies.json
+      - name: Audit security tooling lock
+        if: ${{ !cancelled() }}
+        run: python -m pip_audit -r requirements-security.lock --disable-pip --no-deps --format json --output artifacts/security/tooling.json
+      - name: Scan full Git history and repository worktree
+        if: ${{ !cancelled() }}
+        run: python scripts/scan_secrets.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: firewatch-security-reports
+          path: artifacts/security
+          if-no-files-found: error
+          retention-days: 14
+  container:
+    name: linux-container-build
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install locked Compose operator dependencies
+        run: python -m pip install --require-hashes -r requirements.lock
+      - name: Build package image without publishing
+        run: docker build --pull --tag firewatch-ci:${{ github.sha }} .
+      - name: Verify non-root installed package and command overrides
+        run: |
+          docker run --rm --entrypoint python firewatch-ci:${{ github.sha }} -c "import os, firewatch, pyarrow; assert os.getuid() == 10001; assert not os.path.exists('/app/.env')"
+          docker run --rm --entrypoint firewatch firewatch-ci:${{ github.sha }} --help
+          docker run --rm --entrypoint python firewatch-ci:${{ github.sha }} -m firewatch.worker --help
+          docker run --detach --name firewatch-ci-api --entrypoint uvicorn \
+            --env APP_ENV=test \
+            --env DATABASE_URL=postgresql+psycopg://test:test-password@127.0.0.1:1/firewatch_test \
+            --env ADMIN_API_TOKEN=test-only-container-token-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx \
+            firewatch-ci:${{ github.sha }} firewatch.main:app --host 0.0.0.0 --port 8000
+          trap 'docker rm --force firewatch-ci-api >/dev/null' EXIT
+          docker exec --interactive firewatch-ci-api python - < scripts/container_probe.py
+          mkdir -p artifacts
+          docker image inspect firewatch-ci:${{ github.sha }} --format '{{json .Id}}' > artifacts/container-image-id.json
+      - name: Full stack, durable volumes and optional internal services
+        run: |
+          docker tag firewatch-ci:${{ github.sha }} firewatch-backend:phase56-ci
+          python -m scripts.verify_compose --no-build --image-tag phase56-ci --optional-services
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: firewatch-compose-acceptance
+          path: artifacts/phase-5.6-compose.json
+          if-no-files-found: warn
+      - uses: actions/upload-artifact@v4
+        with:
+          name: firewatch-container-build
+          path: artifacts/container-image-id.json
+          if-no-files-found: error
+  contracts:
+    name: solidity-contracts
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONPATH: src
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install checksum-pinned native contract toolchain
+        run: python scripts/contract_tools.py install
+      - name: Forge tests and isolated loopback Anvil deployment
+        run: python scripts/contract_tools.py smoke
+      - uses: actions/upload-artifact@v4
+        with:
+          name: firewatch-local-contract-acceptance
+          path: artifacts/phase-5.3-smoke.json
+          if-no-files-found: error
   scaffold:
     name: scaffold
     runs-on: ubuntu-latest
@@ -34,7 +127,7 @@ jobs:
       - run: python scripts/check_locks.py
   backend-linux:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 60
     services:
       postgres:
         image: postgres:16
@@ -50,6 +143,7 @@ jobs:
           --health-retries 10
     env:
       FIREWATCH_TEST_DATABASE_URL: postgresql+psycopg://firewatch:ci-only-password@127.0.0.1:5432/firewatch_test
+      FIREWATCH_OFFLINE_TESTS: '1'
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v5
@@ -64,11 +158,29 @@ jobs:
           python -m pip check
       - name: Formatting, lint and types
         run: |
-          ruff check src tests migrations scripts/native_postgres.py scripts/verify_bootstrap.py scripts/check_locks.py scripts/export_openapi.py scripts/demo_api.py scripts/demo_data.py scripts/export_handoff.py scripts/verify_demo.py scripts/verify_firms_handoff.py scripts/verify_worker.py scripts/prepare_replays.py scripts/verify_replays.py scripts/verify_pipeline.py scripts/verify_target_labels.py scripts/verify_splits.py scripts/verify_baselines.py scripts/verify_forest.py scripts/verify_evaluation.py scripts/verify_inference.py scripts/verify_registry.py scripts/verify_acceptance.py scripts/verify_training_backfill.py scripts/verify_evidence.py
-          ruff format --check src tests migrations scripts/native_postgres.py scripts/verify_bootstrap.py scripts/check_locks.py scripts/export_openapi.py scripts/demo_api.py scripts/demo_data.py scripts/export_handoff.py scripts/verify_demo.py scripts/verify_firms_handoff.py scripts/verify_worker.py scripts/prepare_replays.py scripts/verify_replays.py scripts/verify_pipeline.py scripts/verify_target_labels.py scripts/verify_splits.py scripts/verify_baselines.py scripts/verify_forest.py scripts/verify_evaluation.py scripts/verify_inference.py scripts/verify_registry.py scripts/verify_acceptance.py scripts/verify_training_backfill.py scripts/verify_evidence.py
+          ruff check scripts/compose_stack.py scripts/verify_compose.py
+          ruff format --check scripts/compose_stack.py scripts/verify_compose.py
+          ruff check scripts/scan_secrets.py scripts/release_metadata.py scripts/live_provider_smoke.py scripts/container_probe.py
+          ruff format --check scripts/scan_secrets.py scripts/release_metadata.py scripts/live_provider_smoke.py scripts/container_probe.py
+          ruff check src tests migrations scripts/native_postgres.py scripts/verify_bootstrap.py scripts/check_locks.py scripts/export_openapi.py scripts/demo_api.py scripts/demo_data.py scripts/export_handoff.py scripts/verify_demo.py scripts/verify_firms_handoff.py scripts/verify_worker.py scripts/prepare_replays.py scripts/verify_replays.py scripts/verify_pipeline.py scripts/verify_target_labels.py scripts/verify_splits.py scripts/verify_baselines.py scripts/verify_forest.py scripts/verify_evaluation.py scripts/verify_inference.py scripts/verify_registry.py scripts/verify_acceptance.py scripts/verify_training_backfill.py scripts/verify_evidence.py scripts/contract_tools.py scripts/verify_anchoring.py
+          ruff format --check src tests migrations scripts/native_postgres.py scripts/verify_bootstrap.py scripts/check_locks.py scripts/export_openapi.py scripts/demo_api.py scripts/demo_data.py scripts/export_handoff.py scripts/verify_demo.py scripts/verify_firms_handoff.py scripts/verify_worker.py scripts/prepare_replays.py scripts/verify_replays.py scripts/verify_pipeline.py scripts/verify_target_labels.py scripts/verify_splits.py scripts/verify_baselines.py scripts/verify_forest.py scripts/verify_evaluation.py scripts/verify_inference.py scripts/verify_registry.py scripts/verify_acceptance.py scripts/verify_training_backfill.py scripts/verify_evidence.py scripts/contract_tools.py scripts/verify_anchoring.py
           mypy
       - name: Unit, PostgreSQL migration and integrity tests
-        run: python -m pytest --cov=firewatch --cov-report=term-missing --junitxml=test-results.xml
+        run: python -m pytest --cov=firewatch --cov-report=term-missing --cov-report=xml:artifacts/coverage.xml --junitxml=artifacts/test-results.xml
+      - name: Retain regression and coverage reports even on failure
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: firewatch-test-reports
+          path: |
+            artifacts/test-results.xml
+            artifacts/coverage.xml
+          if-no-files-found: error
+          retention-days: 14
+      - name: Live local anchoring acceptance
+        run: |
+          python scripts/contract_tools.py install
+          python -m scripts.verify_anchoring
       - name: Export frontend OpenAPI contract
         run: |
           python scripts/export_openapi.py
@@ -89,6 +201,16 @@ jobs:
           firewatch --help
           firewatch --version
           python -m build --no-isolation
+          python scripts/release_metadata.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: firewatch-build
+          path: |
+            dist/*.whl
+            dist/*.tar.gz
+            artifacts/build-metadata.json
+            artifacts/phase-5.4-smoke.json
+          if-no-files-found: error
       - name: Verify runtime lock in an isolated environment
         run: |
           python -m venv /tmp/firewatch-runtime
@@ -96,6 +218,10 @@ jobs:
           /tmp/firewatch-runtime/bin/python -m pip install --no-deps dist/*.whl
           /tmp/firewatch-runtime/bin/python -m pip check
           /tmp/firewatch-runtime/bin/firewatch --help
+          /tmp/firewatch-runtime/bin/firewatch verify-alert --help
+          /tmp/firewatch-runtime/bin/firewatch anchor-worker --help
+          /tmp/firewatch-runtime/bin/firewatch anchor-status --help
+          /tmp/firewatch-runtime/bin/firewatch retry-anchor --help
           /tmp/firewatch-runtime/bin/firewatch verify-pipeline-handoff --help
           /tmp/firewatch-runtime/bin/firewatch verify-target-labels --help
           /tmp/firewatch-runtime/bin/firewatch verify-splits --help
@@ -122,6 +248,8 @@ jobs:
   backend-windows:
     runs-on: windows-latest
     timeout-minutes: 15
+    env:
+      FIREWATCH_OFFLINE_TESTS: '1'
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v5

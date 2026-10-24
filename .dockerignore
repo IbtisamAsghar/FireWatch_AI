@@ -51,3 +51,4 @@ env.bak
 venv.bak
 .local
 .runtime
+deploy/bundles

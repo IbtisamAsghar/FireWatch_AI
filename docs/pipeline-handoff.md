@@ -57,8 +57,10 @@ UUIDs are strings, counts are int64, feature measurements are float64 and indica
 are booleans. Nullable values remain Arrow nulls; real zero remains zero. Acquisition,
 cutoff and processing times use UTC microsecond timestamps. Units are both field
 metadata and an explicit schema mapping. Parquet is written with version 2.6 and
-Zstandard compression using pinned PyArrow 21.0.0. The supported writer API is
-[Apache Arrow 21 write_table](https://arrow.apache.org/docs/21.0/python/generated/pyarrow.parquet.write_table.html).
+Zstandard compression using pinned PyArrow 23.0.1 (updated in Phase 5.5 for
+CVE-2026-25087). Historical Phase 3.7 receipts retain their original writer version
+and hashes. The supported writer API is
+[Apache Arrow write_table](https://arrow.apache.org/docs/python/generated/pyarrow.parquet.write_table.html).
 
 `lineage_json` preserves exact canonical feature lineage. `provenance.json` includes
 frozen satellite revision policy, snapshot diagnostics, feature config, weather and

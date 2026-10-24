@@ -1,0 +1,58 @@
+{
+  "acceptance": {
+    "adapter_match_mismatch_pending_disabled_and_outage_tests": true,
+    "copied_payload_tamper_detection": true,
+    "credential_safe_responses_and_errors": true,
+    "exact_saved_byte_hashing": true,
+    "historical_legacy_and_retired_model_support": true,
+    "independent_payload_artifact_anchor_states": true,
+    "missing_partial_unsafe_oversize_states": true,
+    "new_behavior_uses_no_provider_requests_or_live_chain_calls": true,
+    "no_dependency_or_migration_changes": true,
+    "no_model_approval_or_activation_changes": true,
+    "read_only_http_and_cli": true,
+    "source_file_and_model_manifest_member_checksums": true
+  },
+  "data_kind": "explicitly-synthetic-test-fixtures",
+  "database_scope": "isolated native PostgreSQL 16; disposable generated test schemas",
+  "files_sha256": {
+    "docs/api-field-dictionary.json": "8504dfb9c7630e71e1153c14886f9b296adc60f4eba679cebe6273f3712e7ce3",
+    "src/firewatch/api/presentation.py": "5171d77ded2452c9264a3e36fcaa6b8ede23520f9d474ea73219cd1f9338b002",
+    "src/firewatch/api/routes/reads.py": "1228c6e3879b849eec9b2b0f2014d2e4691f5713684ab519e6f0fcf2556c9a41",
+    "src/firewatch/cli.py": "9ce8ba009e45034b179792615f39d6f2f4e58146e3a1551a9f7870298f933819",
+    "src/firewatch/evidence/verify.py": "2ea3c78c54cdcc0de54be3ea3b59e8426ea1c422b7b9e31d8160fb9b03220d6c",
+    "src/firewatch/schemas/api.py": "d37778dd9c14c02f8d786db7169ead2e9579c7c009e67c0c583dc6193908aed9",
+    "tests/integration/test_evidence_verification.py": "2f6b0504c5806869b24d0df3eb1c51b0af7846e23581988e32bdeeed54b5e38c",
+    "tests/unit/test_artifact_audit.py": "f44d3c67af7b31b5b0f952e0b009498eb8e4a39b4dd3e926fab8ced7f9423412"
+  },
+  "limitations": [
+    "Real source/replay/model artifact packages are absent from this checkout; no new real-data smoke is claimed.",
+    "Actual RPC adapters and chain execution remain separate optional chain phases.",
+    "Direct referenced-file checks do not prove scientific validity, source authenticity or model approval.",
+    "One existing upstream Starlette/httpx TestClient deprecation warning remains."
+  ],
+  "recorded_at": "2026-10-24T07:54:36.145772+00:00",
+  "schema_revision": "0003",
+  "schema_version": "phase-5.2-acceptance-v1",
+  "validation": {
+    "additional_cases_after_full_collection": 4,
+    "cli_help_without_startup_configuration_passed": true,
+    "configured_secret_scan_passed": true,
+    "final_artifact_suite_passed": 30,
+    "final_artifact_suite_skipped": 1,
+    "focused_http_cli_evidence_passed": 37,
+    "full_regression_passed": 1169,
+    "full_regression_seconds": 458.98,
+    "full_regression_skipped": 1,
+    "hosted_ci_verified": false,
+    "ruff_lint_format_passed": true,
+    "runtime_only_installed_wheel_passed": true,
+    "scaffold_links_and_git_exclusions_passed": true,
+    "skipped_reason": "Real symlink creation requires Windows developer mode or privilege; mocked symlink/junction guards passed.",
+    "source_and_wheel_builds_passed": true,
+    "strict_mypy_source_files": 101,
+    "unchanged_development_lock_packages": 71,
+    "unchanged_runtime_lock_packages": 54,
+    "wheel_settings_network_database_fitting_pickle_denied": true
+  }
+}

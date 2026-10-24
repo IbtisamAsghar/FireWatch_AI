@@ -1,0 +1,8 @@
+INFO:     Started server process [18524]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on [redacted-url] (Press CTRL+C to quit)
+INFO:     Started server process [20160]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on [redacted-url] (Press CTRL+C to quit)

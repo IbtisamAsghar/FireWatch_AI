@@ -317,6 +317,13 @@ def create_splits(
                 excluded.append(row.row_id)
                 continue
             group = groups[row.event_id][0]
+            # A later final-test block may leave a gap after development. Its
+            # later CV end must not admit targets/events extending past the
+            # original development boundary, including a previously used test.
+            development_end = spec.blocks[-2].end - purge
+            if row.as_of >= development_end or group.end >= development_end:
+                excluded.append(row.row_id)
+                continue
             if row.as_of < boundary - purge and group.end < boundary - purge:
                 train.append(row)
             elif (

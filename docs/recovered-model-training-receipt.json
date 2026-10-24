@@ -1,0 +1,97 @@
+{
+  "schema_version": "recovered-real-training-v1",
+  "verified_at": "2026-10-24T13:38:48.272474+00:00",
+  "data_kind": "real_NASA_FIRMS_NOAA20_SP",
+  "region": "northern-california",
+  "seasons": [
+    2022,
+    2024
+  ],
+  "observations": 17862,
+  "original_csv_sha256_matches": true,
+  "synthetic_training_rows": 0,
+  "processed_cutoffs": 1472,
+  "snapshots": 1975,
+  "eligible_rows": 1819,
+  "labels": {
+    "negative": 1662,
+    "positive": 157,
+    "unknown": 156
+  },
+  "missing_weather_rows": 1975,
+  "partition_counts": {
+    "calibration": {
+      "events": 40,
+      "negative": 68,
+      "positive": 4,
+      "rows": 72
+    },
+    "final_test": {
+      "events": 170,
+      "negative": 407,
+      "positive": 33,
+      "rows": 440
+    },
+    "threshold": {
+      "events": 36,
+      "negative": 140,
+      "positive": 40,
+      "rows": 180
+    },
+    "train": {
+      "events": 344,
+      "negative": 739,
+      "positive": 68,
+      "rows": 807
+    },
+    "validation": {
+      "events": 92,
+      "negative": 176,
+      "positive": 5,
+      "rows": 181
+    }
+  },
+  "split_strategy": "grouped_temporal_cv",
+  "selected_parameters": {
+    "class_weight": null,
+    "max_depth": 8,
+    "min_samples_leaf": 3,
+    "n_estimators": 64
+  },
+  "fit_rows": 1094,
+  "model_trained": true,
+  "trained_model_path": "data/models/recovered-seasons-v1/model.json",
+  "training_manifest_sha256": "015937c720d87122f6e72ea33e97fd0f76a5456444268b401ef543c42d5b1779",
+  "training_model_sha256": "2ba40fb76876a2eae8209b7e4c976e11d06d1ddbca08e79546f49411ac0119db",
+  "release_evaluation_performed": false,
+  "approved_runtime_bundle_created": false,
+  "final_test_fit_overlap": 0,
+  "final_test_evaluated_this_run": false,
+  "previous_final_holdout_already_opened": true,
+  "previous_final_metrics_reused_for_this_candidate": false,
+  "probability_supported": false,
+  "calibration_status": "cv_uncalibrated",
+  "training_export_deterministic_verification": true,
+  "portable_prediction_parity_rows": 1304,
+  "independent_local_prediction_check_rows": 32,
+  "portable_model_load_and_score": true,
+  "backend_http_checks": {
+    "/health/live": 200,
+    "/health/ready": 200,
+    "/api/v1/models/current": 200,
+    "/api/v1/regions": 200,
+    "/api/v1/status": 200
+  },
+  "backend_local_database_port": 55432,
+  "active_scorer": "baseline-v1",
+  "model_approved": false,
+  "model_activated": false,
+  "limitations": [
+    "This recovered candidate differs from the old evaluated release; old metrics do not apply.",
+    "Historical SP observations do not establish live NRT generalization.",
+    "Old weather/climate cache was unavailable; missing values and flags are retained.",
+    "Partition audit was automated and conservative, not independent human incident review.",
+    "Original final holdout was previously opened; do not reopen it for a new experiment.",
+    "Release requires recovery of the exact prior release and ledger or a reviewed new independent validation cohort, plus independent model approval."
+  ]
+}

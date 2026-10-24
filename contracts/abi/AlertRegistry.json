@@ -1,0 +1,135 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [
+      {
+        "name": "authorizedWriter",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "anchor",
+    "inputs": [
+      {
+        "name": "alertKey",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      },
+      {
+        "name": "digest",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "created",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "evidenceDigest",
+    "inputs": [
+      {
+        "name": "alertKey",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "writer",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "event",
+    "name": "EvidenceAnchored",
+    "inputs": [
+      {
+        "name": "alertKey",
+        "type": "bytes32",
+        "indexed": true,
+        "internalType": "bytes32"
+      },
+      {
+        "name": "evidenceDigest",
+        "type": "bytes32",
+        "indexed": true,
+        "internalType": "bytes32"
+      },
+      {
+        "name": "writer",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "error",
+    "name": "ConflictingDigest",
+    "inputs": [
+      {
+        "name": "alertKey",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      },
+      {
+        "name": "storedDigest",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      },
+      {
+        "name": "suppliedDigest",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "EmptyAlertKey",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "EmptyEvidenceDigest",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidWriter",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "UnauthorizedWriter",
+    "inputs": []
+  }
+]

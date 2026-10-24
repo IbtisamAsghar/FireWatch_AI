@@ -73,6 +73,7 @@ from firewatch.schemas.api import (
     StatusView,
     Summary,
     Verification,
+    VerificationQuery,
 )
 from firewatch.schemas.common import (
     JobStatus,
@@ -247,7 +248,7 @@ def hotspot_detail(
         units=units,
         feature_hash=features.feature_hash,
         explanation=public_object(row[1].explanation),
-        evidence=alert_detail(row[3], request, session, ScopeQuery(run_id=run.id))
+        evidence=alert_detail(row[3], request, session, VerificationQuery(run_id=run.id))
         if row[3] is not None
         else None,
     )
@@ -324,7 +325,10 @@ def saved_alert(alert_id: UUID, query: ScopeQuery, session: ReadSession) -> tupl
 
 @router.get("/alerts/{alert_id}", response_model=AlertView, operation_id="get_alert")
 def alert_detail(
-    alert_id: UUID, request: Request, session: ReadSession, query: Annotated[ScopeQuery, Query()]
+    alert_id: UUID,
+    request: Request,
+    session: ReadSession,
+    query: Annotated[VerificationQuery, Query()],
 ) -> AlertView:
     alert, run = saved_alert(alert_id, query, session)
     payload, redacted = evidence_projection(alert)
@@ -345,17 +349,27 @@ def alert_detail(
             now(request),
             api_settings(request),
             request.app.state.anchor_reader,
+            verify_artifacts=query.verify_artifacts,
         ),
     )
 
 
 @router.get("/alerts/{alert_id}/verify", response_model=Verification, operation_id="verify_alert")
 def verify_alert(
-    alert_id: UUID, request: Request, session: ReadSession, query: Annotated[ScopeQuery, Query()]
+    alert_id: UUID,
+    request: Request,
+    session: ReadSession,
+    query: Annotated[VerificationQuery, Query()],
 ) -> Verification:
     alert, run = saved_alert(alert_id, query, session)
     return verification(
-        session, alert, run, now(request), api_settings(request), request.app.state.anchor_reader
+        session,
+        alert,
+        run,
+        now(request),
+        api_settings(request),
+        request.app.state.anchor_reader,
+        verify_artifacts=query.verify_artifacts,
     )
 
 

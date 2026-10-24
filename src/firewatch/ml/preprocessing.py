@@ -59,9 +59,9 @@ def development_rows(
 def _matrix(rows: list[SplitSample]) -> Any:
     if not rows:
         raise ValueError("No permitted rows for preprocessing")
+    inputs = [model_inputs(row.target.feature) for row in rows]
     return np.asarray(
-        [[model_inputs(row.target.feature)[name] for name in MODEL_INPUT_NAMES] for row in rows],
-        dtype=np.float64,
+        [[values[name] for name in MODEL_INPUT_NAMES] for values in inputs], dtype=np.float64
     )
 
 

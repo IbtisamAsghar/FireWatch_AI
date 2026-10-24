@@ -221,6 +221,7 @@ __marimo__/
 
 # FireWatch project exclusions (retain generic Python rules above)
 .env.*
+/.env.neon
 !.env.example
 !.env.compose.example
 *.pem

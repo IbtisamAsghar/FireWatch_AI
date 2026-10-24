@@ -1,0 +1,39 @@
+# Existing Neon database; exactly one Free web service, no billable resources.
+services:
+  - type: web
+    name: firewatch-ai-api
+    runtime: python
+    plan: free
+    region: ohio
+    branch: devtalha
+    autoDeployTrigger: 'off'
+    buildCommand: pip install --require-hashes -r requirements.lock && python scripts/render_assets.py verify
+    startCommand: python -m firewatch.runtime uvicorn firewatch.main:app --host 0.0.0.0 --port $PORT --workers 1
+    healthCheckPath: /health/live
+    envVars:
+      - key: PYTHONPATH
+        value: src
+      - key: DATABASE_URL
+        sync: false
+      - key: ADMIN_API_TOKEN
+        generateValue: true
+      - key: APP_ENV
+        value: production
+      - key: ACTIVE_SCORER
+        value: registry
+      - key: MODEL_DIR
+        value: deploy/render/model
+      - key: SOURCE_ARTIFACT_DIR
+        value: deploy/render/assets
+      - key: DB_POOL_SIZE
+        value: '2'
+      - key: DB_MAX_OVERFLOW
+        value: '1'
+      - key: DB_CONNECT_TIMEOUT_SECONDS
+        value: '30'
+      - key: OMP_NUM_THREADS
+        value: '1'
+      - key: OPENBLAS_NUM_THREADS
+        value: '1'
+      - key: MKL_NUM_THREADS
+        value: '1'

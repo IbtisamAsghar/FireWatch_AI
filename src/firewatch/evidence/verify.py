@@ -141,9 +141,16 @@ def _source(session: Session, pin: AssetPin, settings: Settings, budget: ReadBud
         raise AuditFailure("missing_record")
     if asset.content_hash != pin.sha256:
         raise AuditFailure("metadata_mismatch", mismatch=True)
-    content = budget.read(
-        Path(asset.storage_path), [settings.raw_data_dir, settings.replay_bundle_dir]
-    )
+    if settings.source_artifact_dir is not None:
+        # Portable deployments locate immutable public source bytes by their pin,
+        # without rewriting the original workstation locator in the database.
+        content = budget.read(
+            settings.source_artifact_dir / f"{pin.sha256}.bin", [settings.source_artifact_dir]
+        )
+    else:
+        content = budget.read(
+            Path(asset.storage_path), [settings.raw_data_dir, settings.replay_bundle_dir]
+        )
     if hashlib.sha256(content).hexdigest() != pin.sha256:
         raise AuditFailure("checksum_mismatch", mismatch=True)
 

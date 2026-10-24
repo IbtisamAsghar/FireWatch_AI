@@ -83,6 +83,30 @@ def test_audit_all_source_bytes_and_no_writes_or_model_loading(audit, monkeypatc
     assert str(audit[0].raw_data_dir) not in encoded and "storage_path" not in encoded
 
 
+def test_portable_source_mirror_ignores_foreign_locators_and_checks_exact_bytes(audit, tmp_path):
+    settings, _, records, _ = audit
+    mirror = tmp_path / "portable"
+    mirror.mkdir()
+    settings.source_artifact_dir = mirror
+    for record in records.values():
+        content = Path(record.storage_path).read_bytes()
+        (mirror / f"{record.content_hash}.bin").write_bytes(content)
+        record.storage_path = r"Z:\another-workstation\missing.bin"
+    assert run(audit).status == "verified"
+    first = next(iter(records.values()))
+    (mirror / f"{first.content_hash}.bin").write_bytes(b"changed bytes")
+    assert any(item.reason == "checksum_mismatch" for item in run(audit).items)
+    (mirror / f"{first.content_hash}.bin").unlink()
+    assert any(item.reason == "missing_file" for item in run(audit).items)
+
+
+def test_portable_mirror_does_not_override_database_checksum(audit, tmp_path):
+    settings, _, records, _ = audit
+    settings.source_artifact_dir = tmp_path
+    next(iter(records.values())).content_hash = "0" * 64
+    assert any(item.reason == "metadata_mismatch" for item in run(audit).items)
+
+
 @pytest.mark.parametrize(
     "change,expected,reason",
     [

@@ -26,3 +26,5 @@ dist/** -text -whitespace
 output/** -text -whitespace
 .local/readiness/** -text -whitespace
 .local/model-training/*.log -text -whitespace
+deploy/render/assets/** -text -whitespace
+deploy/render/model/** -text -whitespace

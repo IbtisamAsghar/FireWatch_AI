@@ -1,14 +1,14 @@
 {
   "files": {
     "Dockerfile": "72a0282a9c1e7806d454d477d6ff43c8ef660018c7bb21b34c5dc1b2a4028c0c",
-    "dist/firewatch_ai-0.1.0-py3-none-any.whl": "d62d1517146f35daf47c8ff3cc79dbc3ac1d8eae92fe35f5a58a2ea11a48a8db",
-    "dist/firewatch_ai-0.1.0.tar.gz": "84baf75863f6d92ffb17a3729574b05f4c2e5d6a4e1397b25f6cffa4428e6077",
+    "dist/firewatch_ai-0.1.0-py3-none-any.whl": "aae089c300bc1bfcc3d383ce7df07f4e65133b608b370886b356e78c6f74fd23",
+    "dist/firewatch_ai-0.1.0.tar.gz": "ef6bf0ed3ae797f69f77dd2adf7c02081f2048cb6b5776de3060e3f2219f00bc",
     "requirements-dev.lock": "d86a5f76db40c74f2f8e5d9e731e56cfd81893fce24cebc82d354739b0ec3332",
     "requirements.lock": "389d81369934f620b0282baa1b364ed7e6e3fc72f552a80e48b7e159e88a295c"
   },
   "migration_revision": "0003",
   "python": "3.12.10",
-  "revision": "b8963f8849656c25e0603e6bdc190bd6550c7ad3",
+  "revision": "dea3784b8b0bf8cb7b7b75762e2afeebe67929e6",
   "schema_version": "build-v1",
   "source_files_sha256": {
     "src/firewatch/__init__.py": "cbeed228ac6396dd2d03775cc3f425cd72d080b0b8a6c54f24ae9c704ef8aa3c",
@@ -22,7 +22,7 @@
     "src/firewatch/api/routes/reads.py": "c8ccfadff3847bf3c4d53eba4c5cb2716d810461a4be4fe25109a847e55b16ec",
     "src/firewatch/api/security.py": "25da9106d2376afc51d3ae90234885f98b64a983b7ed9c2a01c8935ff0972e0c",
     "src/firewatch/cli.py": "5abf7de16c6fb42db5e223d70d77813211dff6fec1ff6d78dd8a31bf8a220265",
-    "src/firewatch/config.py": "3dd36550be8c95913af5d20ed124b4115c7f19c89bfc40756a318083435e7c4e",
+    "src/firewatch/config.py": "2f585f2db32f7011328378d9b265a3319ace41459e3261bddbef807403055911",
     "src/firewatch/db/__init__.py": "6d9c1823b8051b586449ccd9cf2d53b84b4c9b8c516e2cac47a8ab939594d01d",
     "src/firewatch/db/base.py": "ed3a4f098a4b692fe9482860d95ad7b361bbdcf15d4f93f6c9d284e477c57dc6",
     "src/firewatch/db/models.py": "14c083be8de764329b239253a8d9d9e409da3bb426132ca91da8d315017878f3",
@@ -35,7 +35,7 @@
     "src/firewatch/evidence/chain_rpc.py": "b59ccb8cb3e0e0a4c2923d189d712325581c7dc0e1c6a57794734b5daa3f0329",
     "src/firewatch/evidence/payload.py": "41714d3834b3891eee268213c29ce3b995c3817aabb07d3a215282d022daa099",
     "src/firewatch/evidence/serialization.py": "ece41adfea98636cf075d8f4d5b7be47af9e8b01af100e50c938d406ec8d82e4",
-    "src/firewatch/evidence/verify.py": "2ea3c78c54cdcc0de54be3ea3b59e8426ea1c422b7b9e31d8160fb9b03220d6c",
+    "src/firewatch/evidence/verify.py": "2d827c12ca5b42d77305b52d44d48ca5bbff760b68562ad70db30e270c02f8d1",
     "src/firewatch/logging.py": "21959551b120c8e25373a0b7f887b18d65a3ed49e85509e6f31ba14dc62c4103",
     "src/firewatch/main.py": "3fc5998b860e5a0c70e884663128ead6ee934c5aba30c21a5109be0ecc90c2aa",
     "src/firewatch/ml/__init__.py": "7af79debab029218db4f3bce1c0b5f3011808286745616a0ae351bea4030ba4e",

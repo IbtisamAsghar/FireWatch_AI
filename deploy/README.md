@@ -9,4 +9,5 @@ release migration/seeding, persistent volumes and optional Anvil/local Caddy.
 Start with the [container stack runbook](../docs/container-stack.md). Runtime
 Docker verification remains a hosted/local Docker-engine gate; configuration
 validation alone does not prove service startup. Production HTTPS/deployment is
-Phase 5.7. No public deployment exists yet.
+Phase 5.7. For the Free native Python API using the existing Neon database, see
+[Render + Neon](../docs/render-neon.md) and the root `render.yaml`.

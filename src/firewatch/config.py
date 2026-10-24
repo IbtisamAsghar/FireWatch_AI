@@ -36,6 +36,7 @@ class Settings(BaseSettings):
     cors_origins: list[str] = Field(default_factory=list)
     regions_config: Path = Path("configs/regions.yaml")
     raw_data_dir: Path = Path("data/raw")
+    source_artifact_dir: Path | None = None
     model_dir: Path = Path("models")
     replay_bundle_dir: Path = Path("data/replays")
     replays_config: Path = Path("configs/replays.yaml")
